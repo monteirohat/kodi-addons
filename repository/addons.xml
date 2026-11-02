@@ -23,7 +23,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.0.3" provider-name="Monteiro">
+  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.0.4" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
     </requires>
@@ -37,7 +37,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.hdmi.switcher</source>
-      <news>1.0.3 - Added Monteiro artwork, a detailed description, and project links.</news>
+      <news>1.0.4 - Added a dedicated HDMI Switcher icon with two displays and switching arrows.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>

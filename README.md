@@ -1,6 +1,5 @@
 ![Monteiro repository icon](repository.monteiromedia/resources/icon.png)
 
-
 # Monteiro
 
 Monteiro is a collection of practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi. It provides a single place to install and update utilities that simplify your media-center setup. The collection currently includes HDMI Switcher, which lets you choose the active HDMI display directly from Kodi. New tools and updates are published through this repository.
@@ -8,11 +7,11 @@ Monteiro is a collection of practical, open-source Kodi add-ons for LibreELEC an
 
 ## Artwork
 
-The repository and HDMI Switcher share a navy, cyan, and blue M monogram. The opaque PNG icon is 512 by 512 pixels. The fanart background is a 1280 by 720 JPEG under 1 MB. Both assets are declared in each add-on's `addon.xml` and published at their catalog paths so Kodi can display them before installation.
+The repository uses an M monogram. HDMI Switcher has its own icon with two displays and switching arrows. Both use a navy, cyan, and blue palette. The opaque PNG icon is 512 by 512 pixels. The fanart background is a 1280 by 720 JPEG under 1 MB. Both assets are declared in each add-on's `addon.xml` and published at their catalog paths so Kodi can display them before installation.
 
-The artwork was created with OpenAI image generation. The icon brief specified a simple M monogram with a subtle play-shaped cutout on a dark navy background. The companion fanart brief requested quiet angular ribbons and a small M monogram on the right, leaving room for Kodi's interface.
+The artwork was created with OpenAI image generation. The icon brief specified a simple M monogram with a subtle play-shaped cutout on a dark navy background. The companion fanart brief requested quiet angular ribbons and a small M monogram on the right, leaving room for Kodi's interface. HDMI Switcher's icon brief requested two cyan and blue monitor silhouettes linked by opposing icy-cyan arrows on an opaque navy background.
 
-After publishing, open the Monteiro repository context menu in Kodi and select **Check for updates**. Update the repository add-on and HDMI Switcher to version 1.0.3. If artwork remains cached, restart Kodi after the update.
+After publishing, open the Monteiro repository context menu in Kodi and select **Check for updates**. Update the repository add-on to version 1.0.3 and HDMI Switcher to version 1.0.4. If artwork remains cached, restart Kodi after the update.
 
 ## Available add-ons
 
@@ -23,7 +22,7 @@ After publishing, open the Monteiro repository context menu in Kodi and select *
 
 ## Repository identity
 
-The name shown in Kodi is **Monteiro**. The technical ID remains `repository.monteiromedia` so existing installations can receive this rename through a normal repository update. Version 1.0.3 adds repository artwork and detailed metadata. HDMI Switcher keeps its `script.hdmi.switcher` ID and is also versioned 1.0.3 for its artwork and metadata update.
+The name shown in Kodi is **Monteiro**. The technical ID remains `repository.monteiromedia` so existing installations can receive this rename through a normal repository update. Version 1.0.3 adds repository artwork and detailed metadata. HDMI Switcher keeps its `script.hdmi.switcher` ID and uses version 1.0.4 for its dedicated display-switching icon.
 
 ## Publish on GitHub
 
