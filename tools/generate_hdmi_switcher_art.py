@@ -72,7 +72,8 @@ def render(width, height, paint, background, mode="RGB"):
 
 os.makedirs(MEDIA, exist_ok=True)
 icon = render(512, 512, lambda d, s: mark(d, 8 * s, 6 * s, 512 * s), BG)
-icon.save(os.path.join(RESOURCES, "icon.png"), optimize=True)
+# New file names make Kodi load this artwork instead of a cached copy of the previous icon.
+icon.save(os.path.join(RESOURCES, "hdmi-switcher-icon.png"), optimize=True)
 
 logo = render(256, 256, lambda d, s: mark(d, 4 * s, 3 * s, 256 * s, CLEAR), CLEAR, "RGBA")
 logo.save(os.path.join(MEDIA, "logo.png"), optimize=True)
@@ -89,4 +90,4 @@ def fanart(draw, s):
     draw.rounded_rectangle((456 * s, 456 * s, 536 * s, 464 * s), radius=4 * s, fill=BLUE)
 
 
-render(1280, 720, fanart, BG).save(os.path.join(RESOURCES, "fanart.jpg"), quality=90, optimize=True)
+render(1280, 720, fanart, BG).save(os.path.join(RESOURCES, "hdmi-switcher-fanart.jpg"), quality=90, optimize=True)

@@ -40,7 +40,7 @@
       <a href="#easy-movie">Overview</a> · <a href="script.m3u.movies/README.md">Guide</a>
     </td>
     <td align="center" width="33%">
-      <a href="script.hdmi.switcher/README.md"><img src="script.hdmi.switcher/resources/icon.png" alt="HDMI Switcher" width="120"></a>
+      <a href="script.hdmi.switcher/README.md"><img src="script.hdmi.switcher/resources/hdmi-switcher-icon.png" alt="HDMI Switcher" width="120"></a>
       <h3>HDMI Switcher</h3>
       Choose the active HDMI display of a Raspberry Pi 4 directly from Kodi.
       <br><br>
@@ -87,7 +87,7 @@ Install from **Monteiro > Video add-ons > Easy Movie**. Read the [Easy Movie gui
 
 ### HDMI Switcher
 
-<img src="script.hdmi.switcher/resources/icon.png" alt="HDMI Switcher" width="72" align="left">
+<img src="script.hdmi.switcher/resources/hdmi-switcher-icon.png" alt="HDMI Switcher" width="72" align="left">
 
 **Switch between a small HDMI display and an external monitor without touching the command line.** Pick a display, and Kodi restarts on it.
 

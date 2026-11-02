@@ -1,4 +1,4 @@
-![HDMI Switcher](resources/fanart.jpg)
+![HDMI Switcher](resources/hdmi-switcher-fanart.jpg)
 
 # HDMI Switcher
 
@@ -119,7 +119,7 @@ Increment this add-on's version in `addon.xml` and push the changes. The reposit
 
 Local checks cover XML preservation, repeated switches, invalid configuration rejection, backup creation, cancellation, disconnected displays, and rollback when restart submission fails. The user confirmed successful HDMI display switching on the target Raspberry Pi with version 1.0.4.
 
-Versions 1.1.0 and 1.1.1 were tested on the target Raspberry Pi up to the confirmation, on both displays: the cards, the mark of the active display, navigation, and cancelling. Detection of the active display was tested locally. Switching itself uses the same code as version 1.0.4, but was not repeated with the new window.
+Versions 1.1.0 to 1.1.2 were tested on the target Raspberry Pi up to the confirmation, on both displays: the cards, the mark of the active display, navigation, and cancelling. Detection of the active display was tested locally. Switching itself uses the same code as version 1.0.4, but was not repeated with the new window.
 
 ## References
 
