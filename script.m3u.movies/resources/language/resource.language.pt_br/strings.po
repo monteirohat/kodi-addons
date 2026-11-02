@@ -1,0 +1,403 @@
+# Kodi Media Center language file
+# Addon Name: Easy Movie
+# Addon id: script.m3u.movies
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: pt_BR\n"
+
+msgctxt "#30000"
+msgid "Add list"
+msgstr "Adicionar lista"
+
+msgctxt "#30001"
+msgid "Removed movies"
+msgstr "Filmes removidos"
+
+msgctxt "#30002"
+msgid "Search movies"
+msgstr "Buscar filmes"
+
+msgctxt "#30003"
+msgid "All movies"
+msgstr "Todos os filmes"
+
+msgctxt "#30004"
+msgid "Web address (URL)"
+msgstr "Endereço web (URL)"
+
+msgctxt "#30005"
+msgid "File on this device or network"
+msgstr "Arquivo neste aparelho ou na rede"
+
+msgctxt "#30006"
+msgid "How do you want to add the list?"
+msgstr "Como você quer adicionar a lista?"
+
+msgctxt "#30007"
+msgid "List address"
+msgstr "Endereço da lista"
+
+msgctxt "#30008"
+msgid "Choose the M3U file"
+msgstr "Escolha o arquivo M3U"
+
+msgctxt "#30009"
+msgid "List name"
+msgstr "Nome da lista"
+
+msgctxt "#30010"
+msgid "{0}: {1} movies added"
+msgstr "{0}: {1} filmes adicionados"
+
+msgctxt "#30011"
+msgid "Could not load the list: {0}"
+msgstr "Não foi possível carregar a lista: {0}"
+
+msgctxt "#30012"
+msgid "Update list"
+msgstr "Atualizar lista"
+
+msgctxt "#30013"
+msgid "Rename list"
+msgstr "Renomear lista"
+
+msgctxt "#30014"
+msgid "Delete list"
+msgstr "Excluir lista"
+
+msgctxt "#30015"
+msgid "Delete the list \"{0}\"?"
+msgstr "Excluir a lista \"{0}\"?"
+
+msgctxt "#30016"
+msgid "Check movies in this group"
+msgstr "Verificar filmes deste grupo"
+
+msgctxt "#30017"
+msgid "Export clean M3U"
+msgstr "Exportar M3U limpo"
+
+msgctxt "#30018"
+msgid "Remove movie"
+msgstr "Remover filme"
+
+msgctxt "#30019"
+msgid "Check movie"
+msgstr "Verificar filme"
+
+msgctxt "#30020"
+msgid "Select the movies to restore"
+msgstr "Selecione os filmes para restaurar"
+
+msgctxt "#30021"
+msgid "The movie \"{0}\" is not working. Do you want to remove it from the list?"
+msgstr "O filme \"{0}\" não está funcionando. Deseja remover da lista?"
+
+msgctxt "#30022"
+msgid "Remove"
+msgstr "Remover"
+
+msgctxt "#30023"
+msgid "Keep"
+msgstr "Manter"
+
+msgctxt "#30024"
+msgid "Try again"
+msgstr "Tentar de novo"
+
+msgctxt "#30025"
+msgid "Checking movies"
+msgstr "Verificando filmes"
+
+msgctxt "#30026"
+msgid "{0} of {1} checked, {2} not responding"
+msgstr "{0} de {1} verificados, {2} sem resposta"
+
+msgctxt "#30027"
+msgid "All movies responded."
+msgstr "Todos os filmes responderam."
+
+msgctxt "#30028"
+msgid "Movies not responding — select to remove"
+msgstr "Filmes sem resposta — selecione para remover"
+
+msgctxt "#30029"
+msgid "{0} movies removed"
+msgstr "{0} filmes removidos"
+
+msgctxt "#30030"
+msgid "Movie removed"
+msgstr "Filme removido"
+
+msgctxt "#30031"
+msgid "{0} movies restored"
+msgstr "{0} filmes restaurados"
+
+msgctxt "#30032"
+msgid "Movie is responding"
+msgstr "O filme está respondendo"
+
+msgctxt "#30033"
+msgid "Movie is not responding: {0}"
+msgstr "O filme não responde: {0}"
+
+msgctxt "#30034"
+msgid "Choose where to save the list"
+msgstr "Escolha onde salvar a lista"
+
+msgctxt "#30035"
+msgid "List saved to {0}"
+msgstr "Lista salva em {0}"
+
+msgctxt "#30036"
+msgid "{0} movies"
+msgstr "{0} filmes"
+
+msgctxt "#30037"
+msgid "No removed movies"
+msgstr "Nenhum filme removido"
+
+msgctxt "#30038"
+msgid "The movie \"{0}\" is not responding ({1}). Do you want to remove it from the list?"
+msgstr "O filme \"{0}\" não está respondendo ({1}). Deseja remover da lista?"
+
+msgctxt "#30039"
+msgid "Play anyway"
+msgstr "Abrir mesmo assim"
+
+msgctxt "#30040"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt "#30041"
+msgid "List updated: {0} movies"
+msgstr "Lista atualizada: {0} filmes"
+
+msgctxt "#30042"
+msgid "Search: {0}"
+msgstr "Busca: {0}"
+
+msgctxt "#30043"
+msgid "Other"
+msgstr "Outros"
+
+msgctxt "#30044"
+msgid "Movie title"
+msgstr "Título do filme"
+
+msgctxt "#30045"
+msgid "No movies found"
+msgstr "Nenhum filme encontrado"
+
+msgctxt "#30046"
+msgid "No movies here"
+msgstr "Nenhum filme aqui"
+
+msgctxt "#30047"
+msgid "Could not save the file: {0}"
+msgstr "Não foi possível salvar o arquivo: {0}"
+
+msgctxt "#30048"
+msgid "No lists yet. Select the gear icon above the groups to add one."
+msgstr "Nenhuma lista ainda. Use o ícone de engrenagem acima dos grupos para adicionar."
+
+msgctxt "#30049"
+msgid "No lists yet. Select Add list to start."
+msgstr "Nenhuma lista ainda. Selecione Adicionar lista para começar."
+
+msgctxt "#30050"
+msgid "Easy Movie"
+msgstr "Easy Movie"
+
+msgctxt "#30051"
+msgid "OK: movie details  ·  Menu: options  ·  Back: groups"
+msgstr "OK: detalhes do filme  ·  Menu: opções  ·  Voltar: grupos"
+
+msgctxt "#30052"
+msgid "Now playing"
+msgstr "Assistindo agora"
+
+msgctxt "#30060"
+msgid "M3U lists"
+msgstr "Listas M3U"
+
+msgctxt "#30061"
+msgid "Manage lists"
+msgstr "Gerenciar listas"
+
+msgctxt "#30062"
+msgid "Settings"
+msgstr "Configurações"
+
+msgctxt "#30063"
+msgid "Close"
+msgstr "Fechar"
+
+msgctxt "#30064"
+msgid "Some lists could not be loaded: {0}"
+msgstr "Algumas listas não carregaram: {0}"
+
+msgctxt "#30065"
+msgid "Favorites"
+msgstr "Favoritos"
+
+msgctxt "#30066"
+msgid "No favorites yet. Open a movie and select Add to favorites."
+msgstr "Nenhum favorito ainda. Abra um filme e selecione Adicionar aos favoritos."
+
+msgctxt "#30067"
+msgid "Remove the movie \"{0}\" from the list?"
+msgstr "Remover o filme \"{0}\" da lista?"
+
+msgctxt "#30068"
+msgid "Added to favorites"
+msgstr "Adicionado aos favoritos"
+
+msgctxt "#30069"
+msgid "Removed from favorites"
+msgstr "Removido dos favoritos"
+
+msgctxt "#30070"
+msgid "Add to favorites"
+msgstr "Adicionar aos favoritos"
+
+msgctxt "#30071"
+msgid "Remove from favorites"
+msgstr "Remover dos favoritos"
+
+msgctxt "#30072"
+msgid "{0} of {1} movies did not respond. Remove them from the list?"
+msgstr "{0} de {1} filmes não responderam. Remover da lista?"
+
+msgctxt "#30073"
+msgid "Choose"
+msgstr "Escolher"
+
+msgctxt "#30074"
+msgid "Remove all"
+msgstr "Remover todos"
+
+msgctxt "#30075"
+msgid "GitHub repositories"
+msgstr "Repositórios GitHub"
+
+msgctxt "#30076"
+msgid "Add repository"
+msgstr "Adicionar repositório"
+
+msgctxt "#30077"
+msgid "GitHub repository (owner/name or address)"
+msgstr "Repositório GitHub (dono/nome ou endereço)"
+
+msgctxt "#30078"
+msgid "Search lists"
+msgstr "Buscar listas"
+
+msgctxt "#30079"
+msgid "Delete repository"
+msgstr "Remover repositório"
+
+msgctxt "#30080"
+msgid "Remove the repository \"{0}\"? Lists already added are kept."
+msgstr "Remover o repositório \"{0}\"? As listas já adicionadas continuam."
+
+msgctxt "#30082"
+msgid "No new lists found in {0}."
+msgstr "Nenhuma lista nova encontrada em {0}."
+
+msgctxt "#30083"
+msgid "{0}: select the lists to add"
+msgstr "{0}: selecione as listas para adicionar"
+
+msgctxt "#30084"
+msgid "{0} lists found. Filter by name (optional, e.g. br)"
+msgstr "{0} listas encontradas. Filtrar pelo nome (opcional, ex.: br)"
+
+msgctxt "#30085"
+msgid "Adding lists"
+msgstr "Adicionando listas"
+
+msgctxt "#30086"
+msgid "{0} lists added. {1} ignored because they are empty or not movie lists."
+msgstr "{0} listas adicionadas. {1} ignoradas por estarem vazias ou não serem listas de filmes."
+
+msgctxt "#30087"
+msgid "Could not read the repository: {0}"
+msgstr "Não foi possível ler o repositório: {0}"
+
+msgctxt "#30088"
+msgid "Invalid repository. Use owner/name or the GitHub address."
+msgstr "Repositório inválido. Use dono/nome ou o endereço do GitHub."
+
+msgctxt "#30090"
+msgid "GitHub limit reached. Try again in a few minutes."
+msgstr "Limite do GitHub atingido. Tente de novo em alguns minutos."
+
+msgctxt "#30091"
+msgid "No lists match \"{0}\""
+msgstr "Nenhuma lista corresponde a \"{0}\""
+
+msgctxt "#30092"
+msgid "Repository already added"
+msgstr "Repositório já adicionado"
+
+msgctxt "#30093"
+msgid "GitHub"
+msgstr "GitHub"
+
+msgctxt "#30094"
+msgid "No repositories. Select Add repository to start."
+msgstr "Nenhum repositório. Selecione Adicionar repositório para começar."
+
+msgctxt "#30095"
+msgid "Check movies: {0}"
+msgstr "Verificar filmes: {0}"
+
+msgctxt "#30100"
+msgid "General"
+msgstr "Geral"
+
+msgctxt "#30101"
+msgid "Update lists every (hours)"
+msgstr "Atualizar listas a cada (horas)"
+
+msgctxt "#30102"
+msgid "Check the movie before playing"
+msgstr "Verificar o filme antes de abrir"
+
+msgctxt "#30103"
+msgid "Offer to remove movies that fail to play"
+msgstr "Oferecer remoção de filmes que não abrem"
+
+msgctxt "#30104"
+msgid "Check timeout (seconds)"
+msgstr "Tempo limite da verificação (segundos)"
+
+msgctxt "#30105"
+msgid "Movies checked at the same time"
+msgstr "Filmes verificados ao mesmo tempo"
+
+msgctxt "#30106"
+msgid "Open Easy Movie from the Movies menu"
+msgstr "Abrir o Easy Movie pelo menu Filmes"
+
+msgctxt "#30110"
+msgid "Play"
+msgstr "Assistir"
+
+msgctxt "#30112"
+msgid "{0} h {1} min"
+msgstr "{0} h {1} min"
+
+msgctxt "#30113"
+msgid "{0} min"
+msgstr "{0} min"
+
+msgctxt "#30114"
+msgid "Favorite"
+msgstr "Favoritar"
+
+msgctxt "#30115"
+msgid "Unfavorite"
+msgstr "Desfavoritar"

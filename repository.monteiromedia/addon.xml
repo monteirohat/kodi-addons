@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<addon id="repository.monteiromedia" name="Monteiro" version="1.0.4" provider-name="Monteiro">
+<addon id="repository.monteiromedia" name="Monteiro" version="1.0.5" provider-name="Monteiro">
   <extension point="xbmc.addon.repository" name="Monteiro">
     <dir minversion="21.0.0">
       <info compressed="false">https://raw.githubusercontent.com/monteirohat/kodi-addons/main/repository/addons.xml</info>
@@ -10,12 +10,12 @@
   </extension>
   <extension point="xbmc.addon.metadata">
     <summary lang="en_GB">Practical Kodi add-ons for LibreELEC and Raspberry Pi</summary>
-    <description lang="en_GB">Monteiro is a collection of practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi. It provides a single place to install and update utilities that simplify your media-center setup. The collection currently includes HDMI Switcher, which lets you choose the active HDMI display directly from Kodi, and Easy Channel, which plays M3U lists in a TV box style screen and keeps only the channels that work. New tools and updates are published through this repository.</description>
+    <description lang="en_GB">Monteiro is a collection of practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi. It provides a single place to install and update utilities that simplify your media-center setup. The collection currently includes HDMI Switcher, which lets you choose the active HDMI display directly from Kodi, Easy Channel, which plays M3U lists in a TV box style screen and keeps only the channels that work, and Easy Movie, which shows the movies of M3U lists as a poster catalog. New tools and updates are published through this repository.</description>
     <platform>all</platform>
     <license>MIT</license>
     <website>https://github.com/monteirohat/kodi-addons</website>
     <source>https://github.com/monteirohat/kodi-addons/tree/main/repository.monteiromedia</source>
-    <news>1.0.4 - Added Easy Channel to the description.</news>
+    <news>1.0.5 - Added Easy Movie to the description.</news>
     <assets>
       <icon>resources/icon.png</icon>
       <fanart>resources/fanart.jpg</fanart>
