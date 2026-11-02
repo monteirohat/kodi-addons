@@ -23,7 +23,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.0.4" provider-name="Monteiro">
+  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.1.0" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
     </requires>
@@ -32,15 +32,18 @@
     </extension>
     <extension point="xbmc.addon.metadata">
       <summary lang="en_GB">Choose your active HDMI display directly from Kodi</summary>
-      <description lang="en_GB">Switch between a small HDMI display and an external monitor on LibreELEC for Raspberry Pi 4. Select a display from a simple menu, confirm your choice, and Kodi restarts to apply it. Your display preference is saved for future starts. Existing advanced settings are preserved, and a backup is created before the first change to an existing configuration file. Switching stops current playback and uses one display at a time.</description>
+      <summary lang="pt_BR">Escolha a tela HDMI ativa direto pelo Kodi</summary>
+      <description lang="en_GB">Switch between a small HDMI display and an external monitor on LibreELEC for Raspberry Pi 4. Pick a display from two cards that show which one is active and which ones are connected, confirm your choice, and Kodi restarts on it. Your display preference is saved for future starts. Existing advanced settings are preserved, and a backup is created before the first change to an existing configuration file. Switching stops current playback and uses one display at a time.</description>
+      <description lang="pt_BR">Alterne entre uma tela HDMI pequena e um monitor externo no LibreELEC para Raspberry Pi 4. Escolha a tela em dois cartões que mostram qual está ativa e quais estão conectadas, confirme, e o Kodi reinicia nela. A tela escolhida fica salva para as próximas inicializações. As configurações avançadas existentes são preservadas, e um backup é criado antes da primeira alteração de um arquivo de configuração existente. A troca interrompe o que estiver tocando e usa uma tela por vez.</description>
       <platform>linux</platform>
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.hdmi.switcher</source>
-      <news>1.0.4 - Added a dedicated HDMI Switcher icon with two displays and switching arrows.</news>
+      <news>1.1.0 - New dark display picker matching Easy Channel and Easy Movie, new icon, and Brazilian Portuguese translation.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
+        <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
       </assets>
     </extension>
   </addon>
