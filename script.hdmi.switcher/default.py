@@ -102,8 +102,8 @@ class DisplayPicker(xbmcgui.WindowXMLDialog):
             item.setProperty("state", state)
             item.setProperty("status", status)
             cards.addItem(item)
-            # Start on the first display that is not active, the likely choice.
-            if connector != self.active and start is None:
+            # Start on the active display, so the highlighted card matches the current screen.
+            if connector == self.active:
                 start = index
         cards.selectItem(start or 0)
         self.setFocusId(CARDS)

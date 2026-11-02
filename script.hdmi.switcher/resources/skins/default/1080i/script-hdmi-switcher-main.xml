@@ -46,20 +46,36 @@
     </control>
     <control type="list" id="100">
       <left>400</left>
-      <top>350</top>
+      <top>356</top>
       <width>1120</width>
-      <height>410</height>
+      <height>416</height>
       <orientation>horizontal</orientation>
       <onup>noop</onup>
       <ondown>noop</ondown>
       <scrolltime>150</scrolltime>
       <itemlayout width="560" height="410">
         <control type="image">
+          <left>3</left>
+          <top>-7</top>
+          <width>554</width>
+          <height>414</height>
+          <texture border="16" colordiffuse="FF3B8BFF">panel.png</texture>
+          <visible>String.IsEqual(ListItem.Property(state),active)</visible>
+        </control>
+        <control type="image">
           <left>10</left>
           <top>0</top>
           <width>540</width>
           <height>400</height>
           <texture border="16" colordiffuse="FF222328">panel.png</texture>
+        </control>
+        <control type="image">
+          <left>470</left>
+          <top>26</top>
+          <width>48</width>
+          <height>48</height>
+          <texture colordiffuse="FF3B8BFF">check.png</texture>
+          <visible>String.IsEqual(ListItem.Property(state),active)</visible>
         </control>
         <control type="image">
           <left>190</left>
@@ -129,6 +145,14 @@
       </itemlayout>
       <focusedlayout width="560" height="410">
         <control type="image">
+          <left>3</left>
+          <top>-7</top>
+          <width>554</width>
+          <height>414</height>
+          <texture border="16" colordiffuse="FF3B8BFF">panel.png</texture>
+          <visible>String.IsEqual(ListItem.Property(state),active)</visible>
+        </control>
+        <control type="image">
           <left>10</left>
           <top>0</top>
           <width>540</width>
@@ -143,6 +167,14 @@
           <height>400</height>
           <texture border="16" colordiffuse="FF2C2D33">panel.png</texture>
           <visible>!Control.HasFocus(100)</visible>
+        </control>
+        <control type="image">
+          <left>470</left>
+          <top>26</top>
+          <width>48</width>
+          <height>48</height>
+          <texture colordiffuse="FF3B8BFF">check.png</texture>
+          <visible>String.IsEqual(ListItem.Property(state),active)</visible>
         </control>
         <control type="image">
           <left>190</left>

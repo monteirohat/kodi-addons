@@ -26,22 +26,28 @@ def card(name_color, detail_color, icon_color, condition=None):
     ]
 
 
+def active_mark():
+    """Blue ring and check mark of the active display, shown with or without focus."""
+    return [panel(3, -7, 554, 414, ACCENT, state("active")),
+            image(470, 26, 48, 48, "check.png", ACCENT, state("active"))]
+
+
 def cards():
     return f"""<control type="list" id="100">
   <left>400</left>
-  <top>350</top>
+  <top>356</top>
   <width>1120</width>
-  <height>410</height>
+  <height>416</height>
   <orientation>horizontal</orientation>
   <onup>noop</onup>
   <ondown>noop</ondown>
   <scrolltime>150</scrolltime>
   <itemlayout width="560" height="410">
-{join(panel(10, 0, 540, 400, RAISED), *card(TEXT, TEXT2, TEXT2), spaces=4)}
+{join(active_mark()[0], panel(10, 0, 540, 400, RAISED), active_mark()[1], *card(TEXT, TEXT2, TEXT2), spaces=4)}
   </itemlayout>
   <focusedlayout width="560" height="410">
-{join(panel(10, 0, 540, 400, FOCUS, cards_focus), panel(10, 0, 540, 400, RAISED2, "!" + cards_focus),
-      *card(ON_FOCUS, ON_FOCUS2, ON_FOCUS, cards_focus), *card(TEXT, TEXT2, TEXT2, "!" + cards_focus), spaces=4)}
+{join(active_mark()[0], panel(10, 0, 540, 400, FOCUS, cards_focus), panel(10, 0, 540, 400, RAISED2, "!" + cards_focus),
+      active_mark()[1], *card(ON_FOCUS, ON_FOCUS2, ON_FOCUS, cards_focus), *card(TEXT, TEXT2, TEXT2, "!" + cards_focus), spaces=4)}
   </focusedlayout>
 </control>"""
 

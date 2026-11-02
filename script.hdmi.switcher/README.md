@@ -64,7 +64,7 @@ If the legacy `script.trocar.tela` add-on is installed, uninstall it before usin
 ## Usage
 
 1. Open **HDMI Switcher**.
-2. Select the card of the display you want. Each card shows its port and whether it is the active display, connected, or not connected. The card that is not active is selected first.
+2. Select the card of the display you want. Each card shows its port and whether it is the active display, connected, or not connected. The window opens on the active display, which also has a blue outline and check mark. Move to the other card to switch.
 3. Confirm with **Switch**. Kodi restarts on the selected display.
 
 **Back** closes the window without changes. Selecting the active display only shows that it is already active, and a display that is not connected cannot be selected for a switch.
@@ -119,7 +119,7 @@ Increment this add-on's version in `addon.xml` and push the changes. The reposit
 
 Local checks cover XML preservation, repeated switches, invalid configuration rejection, backup creation, cancellation, disconnected displays, and rollback when restart submission fails. The user confirmed successful HDMI display switching on the target Raspberry Pi with version 1.0.4.
 
-Version 1.1.0 was tested on the target Raspberry Pi up to the confirmation: the cards, their states and navigation, and cancelling. Detection of the active display was tested locally. Switching itself uses the same code as version 1.0.4, but was not repeated with the new window.
+Versions 1.1.0 and 1.1.1 were tested on the target Raspberry Pi up to the confirmation, on both displays: the cards, the mark of the active display, navigation, and cancelling. Detection of the active display was tested locally. Switching itself uses the same code as version 1.0.4, but was not repeated with the new window.
 
 ## References
 
