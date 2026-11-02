@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <addons>
-  <addon id="repository.monteiromedia" name="Monteiro" version="1.0.4" provider-name="Monteiro">
+  <addon id="repository.monteiromedia" name="Monteiro" version="1.0.5" provider-name="Monteiro">
     <extension point="xbmc.addon.repository" name="Monteiro">
       <dir minversion="21.0.0">
         <info compressed="false">https://raw.githubusercontent.com/monteirohat/kodi-addons/main/repository/addons.xml</info>
@@ -11,12 +11,12 @@
     </extension>
     <extension point="xbmc.addon.metadata">
       <summary lang="en_GB">Practical Kodi add-ons for LibreELEC and Raspberry Pi</summary>
-      <description lang="en_GB">Monteiro is a collection of practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi. It provides a single place to install and update utilities that simplify your media-center setup. The collection currently includes HDMI Switcher, which lets you choose the active HDMI display directly from Kodi, and Easy Channel, which plays M3U lists in a TV box style screen and keeps only the channels that work. New tools and updates are published through this repository.</description>
+      <description lang="en_GB">Monteiro is a collection of practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi. It provides a single place to install and update utilities that simplify your media-center setup. The collection currently includes HDMI Switcher, which lets you choose the active HDMI display directly from Kodi, Easy Channel, which plays M3U lists in a TV box style screen and keeps only the channels that work, and Easy Movie, which shows the movies of M3U lists as a poster catalog. New tools and updates are published through this repository.</description>
       <platform>all</platform>
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/repository.monteiromedia</source>
-      <news>1.0.4 - Added Easy Channel to the description.</news>
+      <news>1.0.5 - Added Easy Movie to the description.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
@@ -63,6 +63,35 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.channels</source>
+      <news>1.0.0 - First release.</news>
+      <assets>
+        <icon>resources/icon.png</icon>
+        <fanart>resources/fanart.jpg</fanart>
+        <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+        <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+        <screenshot>resources/screenshots/screenshot-03.jpg</screenshot>
+      </assets>
+    </extension>
+  </addon>
+  <addon id="script.m3u.movies" name="Easy Movie" version="1.0.0" provider-name="Monteiro">
+    <requires>
+      <import addon="xbmc.python" version="3.0.1" />
+    </requires>
+    <extension point="xbmc.python.script" library="default.py">
+      <provides>video</provides>
+    </extension>
+    <extension point="xbmc.service" library="service.py" />
+    <extension point="xbmc.addon.metadata">
+      <summary lang="en_GB">Movie catalog for M3U lists that keeps only the movies that work</summary>
+      <summary lang="pt_BR">Catálogo de filmes para listas M3U que mantém só os filmes que funcionam</summary>
+      <description lang="en_GB">Easy Movie shows the movies of your M3U lists as a poster catalog, with genres on the left and posters on the right. Open a movie to see its details and play it, add it to your favorites, or remove it. Add lists from a web address, a file, or the M3U files of a GitHub repository, all from one manager window and without extra configuration. When a movie fails to play, Easy Movie offers to remove it, so your lists keep only working movies. Check a whole genre at once, restore removed movies at any time, and export a clean M3U file. With an empty movie library, selecting Movies in Kodi's main menu opens Easy Movie.</description>
+      <description lang="pt_BR">O Easy Movie mostra os filmes das suas listas M3U como um catálogo de pôsteres, com os gêneros à esquerda e os pôsteres à direita. Abra um filme para ver os detalhes e assistir, adicionar aos favoritos ou remover. Adicione listas por endereço web, por arquivo ou a partir dos arquivos M3U de um repositório do GitHub, tudo numa única janela de gerenciamento e sem configurações extras. Quando um filme falha ao abrir, o Easy Movie oferece removê-lo, para que suas listas fiquem só com filmes que funcionam. Verifique um gênero inteiro de uma vez, restaure filmes removidos quando quiser e exporte um arquivo M3U limpo. Com a biblioteca de filmes vazia, selecionar Filmes no menu principal do Kodi abre o Easy Movie.</description>
+      <disclaimer lang="en_GB">Easy Movie does not provide any content. It plays the lists you add, and you are responsible for using only lists you are allowed to watch. The suggested GitHub repository lists public domain movies and is maintained by a third party.</disclaimer>
+      <disclaimer lang="pt_BR">O Easy Movie não fornece nenhum conteúdo. Ele reproduz as listas que você adiciona, e você é responsável por usar apenas listas que tem permissão para assistir. O repositório do GitHub sugerido reúne filmes em domínio público e é mantido por terceiros.</disclaimer>
+      <platform>all</platform>
+      <license>MIT</license>
+      <website>https://github.com/monteirohat/kodi-addons</website>
+      <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.movies</source>
       <news>1.0.0 - First release.</news>
       <assets>
         <icon>resources/icon.png</icon>
