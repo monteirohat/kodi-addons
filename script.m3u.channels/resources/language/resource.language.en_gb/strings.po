@@ -1,0 +1,383 @@
+# Kodi Media Center language file
+# Addon Name: Easy Channel
+# Addon id: script.m3u.channels
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "Add list"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Removed channels"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Search channels"
+msgstr ""
+
+msgctxt "#30003"
+msgid "All channels"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Web address (URL)"
+msgstr ""
+
+msgctxt "#30005"
+msgid "File on this device or network"
+msgstr ""
+
+msgctxt "#30006"
+msgid "How do you want to add the list?"
+msgstr ""
+
+msgctxt "#30007"
+msgid "List address"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Choose the M3U file"
+msgstr ""
+
+msgctxt "#30009"
+msgid "List name"
+msgstr ""
+
+msgctxt "#30010"
+msgid "{0}: {1} channels added"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Could not load the list: {0}"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Update list"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Rename list"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Delete list"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Delete the list \"{0}\"?"
+msgstr ""
+
+msgctxt "#30016"
+msgid "Check channels in this group"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Export clean M3U"
+msgstr ""
+
+msgctxt "#30018"
+msgid "Remove channel"
+msgstr ""
+
+msgctxt "#30019"
+msgid "Check channel"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Select the channels to restore"
+msgstr ""
+
+msgctxt "#30021"
+msgid "The channel \"{0}\" is not working. Do you want to remove it from the list?"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Remove"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Keep"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Try again"
+msgstr ""
+
+msgctxt "#30025"
+msgid "Checking channels"
+msgstr ""
+
+msgctxt "#30026"
+msgid "{0} of {1} checked, {2} not responding"
+msgstr ""
+
+msgctxt "#30027"
+msgid "All channels responded."
+msgstr ""
+
+msgctxt "#30028"
+msgid "Channels not responding — select to remove"
+msgstr ""
+
+msgctxt "#30029"
+msgid "{0} channels removed"
+msgstr ""
+
+msgctxt "#30030"
+msgid "Channel removed"
+msgstr ""
+
+msgctxt "#30031"
+msgid "{0} channels restored"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Channel is responding"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Channel is not responding: {0}"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Choose where to save the list"
+msgstr ""
+
+msgctxt "#30035"
+msgid "List saved to {0}"
+msgstr ""
+
+msgctxt "#30036"
+msgid "{0} channels"
+msgstr ""
+
+msgctxt "#30037"
+msgid "No removed channels"
+msgstr ""
+
+msgctxt "#30038"
+msgid "The channel \"{0}\" is not responding ({1}). Do you want to remove it from the list?"
+msgstr ""
+
+msgctxt "#30039"
+msgid "Play anyway"
+msgstr ""
+
+msgctxt "#30040"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30041"
+msgid "List updated: {0} channels"
+msgstr ""
+
+msgctxt "#30042"
+msgid "Search: {0}"
+msgstr ""
+
+msgctxt "#30043"
+msgid "Other"
+msgstr ""
+
+msgctxt "#30044"
+msgid "Channel name"
+msgstr ""
+
+msgctxt "#30045"
+msgid "No channels found"
+msgstr ""
+
+msgctxt "#30046"
+msgid "No channels here"
+msgstr ""
+
+msgctxt "#30047"
+msgid "Could not save the file: {0}"
+msgstr ""
+
+msgctxt "#30048"
+msgid "No lists yet. Select the gear icon above the groups to add one."
+msgstr ""
+
+msgctxt "#30049"
+msgid "No lists yet. Select Add list to start."
+msgstr ""
+
+msgctxt "#30050"
+msgid "Easy Channel"
+msgstr ""
+
+msgctxt "#30051"
+msgid "Right: favorite and remove  ·  Left on the groups: tools  ·  Back: groups"
+msgstr ""
+
+msgctxt "#30052"
+msgid "Now playing"
+msgstr ""
+
+msgctxt "#30060"
+msgid "M3U lists"
+msgstr ""
+
+msgctxt "#30061"
+msgid "Manage lists"
+msgstr ""
+
+msgctxt "#30062"
+msgid "Settings"
+msgstr ""
+
+msgctxt "#30063"
+msgid "Close"
+msgstr ""
+
+msgctxt "#30064"
+msgid "Some lists could not be loaded: {0}"
+msgstr ""
+
+msgctxt "#30100"
+msgid "General"
+msgstr ""
+
+msgctxt "#30101"
+msgid "Update lists every (hours)"
+msgstr ""
+
+msgctxt "#30102"
+msgid "Check the channel before playing"
+msgstr ""
+
+msgctxt "#30103"
+msgid "Offer to remove channels that fail to play"
+msgstr ""
+
+msgctxt "#30104"
+msgid "Check timeout (seconds)"
+msgstr ""
+
+msgctxt "#30105"
+msgid "Channels checked at the same time"
+msgstr ""
+
+msgctxt "#30065"
+msgid "Favorites"
+msgstr ""
+
+msgctxt "#30066"
+msgid "No favorites yet. On a channel, press Right and select the star."
+msgstr ""
+
+msgctxt "#30067"
+msgid "Remove the channel \"{0}\" from the list?"
+msgstr ""
+
+msgctxt "#30068"
+msgid "Added to favorites"
+msgstr ""
+
+msgctxt "#30069"
+msgid "Removed from favorites"
+msgstr ""
+
+msgctxt "#30070"
+msgid "Add to favorites"
+msgstr ""
+
+msgctxt "#30071"
+msgid "Remove from favorites"
+msgstr ""
+
+msgctxt "#30072"
+msgid "{0} of {1} channels did not respond. Remove them from the list?"
+msgstr ""
+
+msgctxt "#30073"
+msgid "Choose"
+msgstr ""
+
+msgctxt "#30074"
+msgid "Remove all"
+msgstr ""
+
+msgctxt "#30075"
+msgid "GitHub repositories"
+msgstr ""
+
+msgctxt "#30076"
+msgid "Add repository"
+msgstr ""
+
+msgctxt "#30077"
+msgid "GitHub repository (owner/name or address)"
+msgstr ""
+
+msgctxt "#30078"
+msgid "Search lists"
+msgstr ""
+
+msgctxt "#30079"
+msgid "Delete repository"
+msgstr ""
+
+msgctxt "#30080"
+msgid "Remove the repository \"{0}\"? Lists already added are kept."
+msgstr ""
+
+msgctxt "#30082"
+msgid "No new lists found in {0}."
+msgstr ""
+
+msgctxt "#30083"
+msgid "{0}: select the lists to add"
+msgstr ""
+
+msgctxt "#30084"
+msgid "{0} lists found. Filter by name (optional, e.g. br)"
+msgstr ""
+
+msgctxt "#30085"
+msgid "Adding lists"
+msgstr ""
+
+msgctxt "#30086"
+msgid "{0} lists added. {1} ignored because they are empty or not channel lists."
+msgstr ""
+
+msgctxt "#30087"
+msgid "Could not read the repository: {0}"
+msgstr ""
+
+msgctxt "#30088"
+msgid "Invalid repository. Use owner/name or the GitHub address."
+msgstr ""
+
+msgctxt "#30090"
+msgid "GitHub limit reached. Try again in a few minutes."
+msgstr ""
+
+msgctxt "#30091"
+msgid "No lists match \"{0}\""
+msgstr ""
+
+msgctxt "#30092"
+msgid "Repository already added"
+msgstr ""
+
+msgctxt "#30093"
+msgid "GitHub"
+msgstr ""
+
+msgctxt "#30094"
+msgid "No repositories. Select Add repository to start."
+msgstr ""
+
+msgctxt "#30095"
+msgid "Check channels: {0}"
+msgstr ""
+
+msgctxt "#30106"
+msgid "Open Easy Channel from the TV menu"
+msgstr ""

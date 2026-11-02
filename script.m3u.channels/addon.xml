@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addon id="script.m3u.channels" name="Easy Channel" version="1.0.0" provider-name="Monteiro">
+  <requires>
+    <import addon="xbmc.python" version="3.0.1" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>video</provides>
+  </extension>
+  <extension point="xbmc.service" library="service.py" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">TV box style player for M3U lists that keeps only the channels that work</summary>
+    <summary lang="pt_BR">Player de listas M3U no estilo TV Box que mantém só os canais que funcionam</summary>
+    <description lang="en_GB">Easy Channel plays M3U lists in a TV box style screen, with groups on the left, channels in the middle and details of the focused channel on the right. Add lists from a web address, a file, or the M3U files of a GitHub repository, all from one manager window and without extra configuration. When a channel fails to play, Easy Channel offers to remove it, so your lists keep only working channels. Mark favorites, check a whole group at once, restore removed channels at any time, and export a clean M3U file. Selecting TV in Kodi's main menu opens Easy Channel.</description>
+    <description lang="pt_BR">O Easy Channel reproduz listas M3U numa tela no estilo TV Box, com os grupos à esquerda, os canais no centro e os detalhes do canal em foco à direita. Adicione listas por endereço web, por arquivo ou a partir dos arquivos M3U de um repositório do GitHub, tudo numa única janela de gerenciamento e sem configurações extras. Quando um canal falha ao abrir, o Easy Channel oferece removê-lo, para que suas listas fiquem só com canais que funcionam. Marque favoritos, verifique um grupo inteiro de uma vez, restaure canais removidos quando quiser e exporte um arquivo M3U limpo. Selecionar TV no menu principal do Kodi abre o Easy Channel.</description>
+    <disclaimer lang="en_GB">Easy Channel does not provide any content. It plays the lists you add, and you are responsible for using only lists you are allowed to watch. The suggested GitHub repositories collect publicly available, free channels and are maintained by third parties.</disclaimer>
+    <disclaimer lang="pt_BR">O Easy Channel não fornece nenhum conteúdo. Ele reproduz as listas que você adiciona, e você é responsável por usar apenas listas que tem permissão para assistir. Os repositórios do GitHub sugeridos reúnem canais públicos e gratuitos e são mantidos por terceiros.</disclaimer>
+    <platform>all</platform>
+    <license>MIT</license>
+    <website>https://github.com/monteirohat/kodi-addons</website>
+    <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.channels</source>
+    <news>1.0.0 - First release.</news>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+      <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+      <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+      <screenshot>resources/screenshots/screenshot-03.jpg</screenshot>
+    </assets>
+  </extension>
+</addon>
