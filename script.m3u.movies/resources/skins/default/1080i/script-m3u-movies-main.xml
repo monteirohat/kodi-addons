@@ -334,6 +334,22 @@
           <texture colordiffuse="FFFFC53D">star.png</texture>
           <visible>String.IsEqual(ListItem.Property(favorite),true)</visible>
         </control>
+        <control type="image">
+          <left>15</left>
+          <top>16</top>
+          <width>38</width>
+          <height>38</height>
+          <texture border="16" colordiffuse="FF0E0F11">panel.png</texture>
+          <visible>String.IsEqual(ListItem.Property(watched),true)</visible>
+        </control>
+        <control type="image">
+          <left>18</left>
+          <top>19</top>
+          <width>32</width>
+          <height>32</height>
+          <texture colordiffuse="FF3B8BFF">check.png</texture>
+          <visible>String.IsEqual(ListItem.Property(watched),true)</visible>
+        </control>
         <control type="label">
           <left>9</left>
           <top>308</top>
@@ -359,7 +375,7 @@
           <top>2</top>
           <width>208</width>
           <height>304</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF3B8BFF">panel.png</texture>
           <visible>Control.HasFocus(300)</visible>
         </control>
         <control type="image">
@@ -392,6 +408,22 @@
           <height>28</height>
           <texture colordiffuse="FFFFC53D">star.png</texture>
           <visible>String.IsEqual(ListItem.Property(favorite),true)</visible>
+        </control>
+        <control type="image">
+          <left>15</left>
+          <top>16</top>
+          <width>38</width>
+          <height>38</height>
+          <texture border="16" colordiffuse="FF0E0F11">panel.png</texture>
+          <visible>String.IsEqual(ListItem.Property(watched),true)</visible>
+        </control>
+        <control type="image">
+          <left>18</left>
+          <top>19</top>
+          <width>32</width>
+          <height>32</height>
+          <texture colordiffuse="FF3B8BFF">check.png</texture>
+          <visible>String.IsEqual(ListItem.Property(watched),true)</visible>
         </control>
         <control type="label">
           <left>9</left>

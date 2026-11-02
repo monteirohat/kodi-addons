@@ -21,6 +21,9 @@ LISTS_FILE = os.path.join(PROFILE, "lists.json")
 REMOVED_FILE = os.path.join(PROFILE, "removed.json")
 FAVORITES_FILE = os.path.join(PROFILE, "favorites.json")
 REPOS_FILE = os.path.join(PROFILE, "repositories.json")
+PROGRESS_FILE = os.path.join(PROFILE, "progress.json")
+# Share of a movie or episode after which it counts as watched.
+WATCHED_AT = 0.9
 # Tags found only in the playlist of a single stream, not in a list of channels.
 STREAM_TAGS = ("#EXT-X-STREAM-INF", "#EXT-X-TARGETDURATION", "#EXT-X-MEDIA-SEQUENCE")
 USER_AGENT = "Kodi/21 Easy Movie"
@@ -172,3 +175,17 @@ def get_repos():
 
 def save_repos(repos):
     write_json(REPOS_FILE, repos)
+
+
+def get_progress():
+    """Playback state by item identity: position and total in seconds, watched, and time of last change."""
+    return read_json(PROGRESS_FILE, {})
+
+
+def save_progress(item_id, position, total):
+    progress = get_progress()
+    watched = total > 0 and position >= total * WATCHED_AT
+    progress[item_id] = {"position": 0 if watched else int(position), "total": int(total),
+                         "watched": watched or progress.get(item_id, {}).get("watched", False), "time": int(time.time())}
+    write_json(PROGRESS_FILE, progress)
+    return progress[item_id]

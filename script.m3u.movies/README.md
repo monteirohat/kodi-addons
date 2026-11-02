@@ -2,18 +2,20 @@
 
 # Easy Movie
 
-Easy Movie is a Kodi add-on that shows the movies of your M3U lists as a poster catalog. Add a list in a few steps, browse movies by genre with the remote, open a movie to see its details, and remove movies that no longer work as soon as they fail. It is the movie companion of [Easy Channel](../script.m3u.channels/README.md), with the same design, list manager and tools.
+Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists as a poster catalog. Add a list in a few steps, browse movies by genre with the remote, open a movie to see its details, and remove movies that no longer work as soon as they fail. It is the movie companion of [Easy Channel](../script.m3u.channels/README.md), with the same design, list manager and tools.
 
 ## Features
 
 - Poster catalog with genres on the left and six posters per row, showing title and running time.
+- Episodes such as `Show S01E02`, `Show 1x02` or `Show T01 E02` are grouped into one series card, with seasons, episodes and a **Continue** button for the next episode.
+- Watched movies and episodes get a check mark, movies and episodes stopped midway resume where you stopped, and a **Continue watching** group lists what is in progress.
 - Movie details with a large poster, genre, running time and source list, and **Play**, **Favorite** and **Remove movie** buttons.
 - Add lists from a web address, a file on the device or network, or the M3U files of a GitHub repository. No playlist configuration is required.
 - When a movie fails to open, or stops right after starting, Easy Movie offers to remove it.
 - **Check movies** tests a whole genre at once and removes the movies that do not respond.
 - **Favorites** genre at the top, kept across list updates.
 - Search across all lists, restore removed movies, and export a clean M3U file for other apps.
-- With an empty movie library, selecting **Movies** in Kodi's main menu opens Easy Movie.
+- With an empty library, selecting **Movies** or **TV shows** in Kodi's main menu opens Easy Movie, on the movies or on the series.
 - Interface in English and Brazilian Portuguese.
 
 ## Screenshots
@@ -53,6 +55,25 @@ Easy Movie requires Kodi 21 (Omega) or later. It was developed and tested on Lib
 The details window shows the poster, title, genre, running time and source list. **Play** starts the movie, **Favorite** adds it to or removes it from **Favorites**, and **Remove movie** removes it after confirmation. **Back** closes the window.
 
 Running time comes from the `#EXTINF` duration in seconds. Lists that use `-1` show no running time.
+
+### Series
+
+Episodes are recognized by their name and grouped into series. The text before the episode code is the series name, so `Breaking Bad S01E02 - Cat's in the Bag` becomes episode 2 of season 1 of **Breaking Bad**, titled *Cat's in the Bag*. When a name is only `S01E01`, the `group-title` is used as the series name. Episodes of the same series from different lists are shown together.
+
+| Recognized codes | Example |
+| --- | --- |
+| `SxxEyy` | `Show S01E02`, `Show s1e2`, `Show S01 E02` |
+| `TxxEyy` | `Show T01E02`, `Show T1 E2` |
+| `NxNN` | `Show 1x02` |
+| Words | `Show Temporada 1 Episódio 2`, `Show Season 1 Episode 2` |
+
+Opening a series shows its poster, seasons and episodes. **Continue** plays the next episode: the one stopped midway, or the first unwatched episode after the last one watched. Select a season and an episode to play any other episode. **Remove series** removes all its episodes.
+
+### Progress and Continue watching
+
+Easy Movie remembers how far each movie and episode was watched. Playing past 90% marks it as watched, shown with a check mark. A movie or episode stopped after the first minute offers **Resume** or **Play from the beginning** the next time.
+
+The groups start with **Continue watching**, with movies stopped midway and series with episodes left, most recent first, followed by **Favorites**, **All movies** and **Series**. Easy Movie opens on **Continue watching** when it has items.
 
 ### Toolbar
 
@@ -94,17 +115,18 @@ The list manager opens over the catalog, and the genres behind it are reloaded a
 
 The repository is maintained by a third party. Searches use the public GitHub API, which allows about 30 searches per hour from one network.
 
-## Movies menu
+## Movies and TV shows menus
 
-When Kodi's movie library is empty, selecting **Movies** in Kodi's main menu opens Easy Movie instead of the empty video sources. Closing Easy Movie returns to the main menu. When the library has movies, Kodi's own movie screens open as usual.
+When Kodi's movie library is empty, selecting **Movies** in Kodi's main menu opens Easy Movie instead of the empty video sources. When the TV show library is empty, **TV shows** opens Easy Movie on the **Series** group. Closing Easy Movie returns to the main menu. When a library has content, Kodi's own screens open as usual.
 
-Turn off **Open Easy Movie from the Movies menu** in the settings to keep Kodi's behavior in every case. This works with the Estuary skin, whose Movies entry Easy Movie recognizes.
+Turn off **Open Easy Movie from the Movies menu** or **Open Easy Movie from the TV shows menu** in the settings to keep Kodi's behavior. This works with the Estuary skin, whose Movies and TV shows entries Easy Movie recognizes.
 
 ## Settings
 
 | Setting | Default | Purpose |
 | --- | --- | --- |
 | Open Easy Movie from the Movies menu | On | Open Easy Movie when **Movies** is selected in Kodi's main menu and the movie library is empty. |
+| Open Easy Movie from the TV shows menu | On | Open Easy Movie on the series when **TV shows** is selected and the TV show library is empty. |
 | Offer to remove movies that fail to play | On | Show the removal dialog after a failed playback. |
 | Check the movie before playing | Off | Test each stream before opening it. Adds a short delay to every movie. |
 | Update lists every (hours) | 12 | Web lists are downloaded again after this interval. The saved copy is used when the provider is offline. |
@@ -128,7 +150,8 @@ Easy Movie stores its data in Kodi's add-on data folder, `userdata/addon_data/sc
 | `lists.json` | Added lists, with their names and addresses. |
 | `cache/` | Saved copies of the lists. |
 | `removed.json` | Removed movies. |
-| `favorites.json` | Favorite movies. |
+| `favorites.json` | Favorite movies and series. |
+| `progress.json` | Playback position and watched state of movies and episodes. |
 | `repositories.json` | GitHub repositories, once the suggested one is changed. |
 
 Easy Movie connects only to the addresses of your lists, streams and posters, and to `api.github.com` and `raw.githubusercontent.com` when you search a repository. It sends no usage data.
@@ -136,7 +159,7 @@ Easy Movie connects only to the addresses of your lists, streams and posters, an
 ## Known limitations
 
 - A check confirms that a stream server answers, not that the movie plays. Movies that pass a check can still fail, and are then offered for removal after playback.
-- Playback does not resume where a movie was stopped.
+- Series are recognized by episode codes in the names. Episodes without a code are shown as movies.
 - Kodi's own dialogs, such as confirmations, selection lists and the keyboard, use the style of the current skin.
 
 ## Disclaimer
@@ -145,19 +168,20 @@ Easy Movie does not provide any content. It plays the lists you add, and you are
 
 ## Development
 
-Easy Movie shares its design and most of its code with Easy Channel. Each add-on keeps its own copy, as the repository conventions ask for self-contained add-ons. `m3u.py`, `probe.py`, `github.py`, `storage.py` and `watcher.py` are the same modules, with the defaults and the `#EXTINF` duration that movies need.
+Easy Movie shares its design and most of its code with Easy Channel. Each add-on keeps its own copy, as the repository conventions ask for self-contained add-ons. `m3u.py`, `probe.py`, `github.py` and `storage.py` are the same modules, with the defaults and the `#EXTINF` duration that movies need. `watcher.py` also records progress, and `series.py` is specific to Easy Movie. `series.py` does not import Kodi modules and can be tested with a regular Python 3 interpreter.
 
 | Path | Purpose |
 | --- | --- |
 | `default.py` | Opens the main window. |
-| `service.py` | Background service for the Movies menu. |
-| `resources/lib/gui.py` | Catalog, movie details, list manager and repository manager. |
-| `resources/lib/watcher.py` | Playback and failure detection. |
+| `service.py` | Background service for the Movies and TV shows menus. |
+| `resources/lib/gui.py` | Catalog, movie and series details, list manager and repository manager. |
+| `resources/lib/series.py` | Episode recognition and grouping into series. |
+| `resources/lib/watcher.py` | Playback, progress and failure detection. |
 | `resources/lib/m3u.py` | M3U parsing and writing. |
 | `resources/lib/probe.py` | Stream checks. |
 | `resources/lib/github.py` | GitHub repository search. |
 | `resources/lib/storage.py` | Lists, cache, favorites and removed movies. |
-| `resources/lib/movies_menu.py` | Movies menu service. |
+| `resources/lib/movies_menu.py` | Movies and TV shows menu service. |
 | `resources/skins/default/` | Window layouts and textures. |
 
 Toolbar tools are declared in `TOOLS` in `resources/lib/gui.py`.

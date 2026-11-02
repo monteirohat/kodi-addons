@@ -1,4 +1,4 @@
-"""Plays channels and reports the ones that fail to open or stop right after starting."""
+"""Plays movies and episodes, reports the ones that fail to open, and keeps track of how far they were watched."""
 
 import threading
 import time
@@ -17,6 +17,8 @@ CHECK_AFTER = 15
 CHECK_TIMEOUT = 8
 # Seconds Kodi waits to connect to a stream server. Kodi's default keeps a dead server busy for over a minute.
 CONNECT_TIMEOUT = 8
+# Seconds between progress reports while a movie plays, so a power cut loses little.
+PROGRESS_EVERY = 15
 
 
 def playable_url(url):
@@ -27,9 +29,11 @@ def playable_url(url):
 
 
 class Watcher(xbmc.Player):
-    def __init__(self, on_failure):
+    def __init__(self, on_failure, on_progress):
         super().__init__()
         self.on_failure = on_failure
+        # Called with the entry, position and total in seconds, and whether playback is over.
+        self.on_progress = on_progress
         self.monitor = xbmc.Monitor()
         self.lock = threading.Lock()
         self.events = []
@@ -54,9 +58,15 @@ class Watcher(xbmc.Player):
         with self.lock:
             self.events.append(event)
 
-    def play_channel(self, entry):
+    def play_channel(self, entry, start=0):
+        """Play an entry, from start seconds when resuming."""
         channel = entry["channel"]
-        # Stop the current channel first so its events are not mistaken for the new one.
+        with self.lock:
+            previous, self.watched = self.watched, None
+        # Keep how far the movie being replaced was watched.
+        if previous and previous["started"]:
+            self.on_progress(previous, previous["position"], previous["total"], True)
+        # Stop the current movie first so its events are not mistaken for the new one.
         if self.isPlaying():
             self.stop()
             for _ in range(30):
@@ -64,7 +74,7 @@ class Watcher(xbmc.Player):
                     break
         with self.lock:
             self.events = []
-            self.watched = dict(entry, opened=time.time(), started=None)
+            self.watched = dict(entry, opened=time.time(), started=None, start=start, position=0, total=0, reported=0)
         url = playable_url(channel["url"])
         item = xbmcgui.ListItem(channel["name"], path=url)
         item.getVideoInfoTag().setTitle(channel["name"])
@@ -85,33 +95,40 @@ class Watcher(xbmc.Player):
                 watched = self.watched
             if watched is None:
                 continue
-            failed = finished = False
+            failed = finished = ended = False
             for event in events:
                 if event == "started":
                     watched["started"] = time.time()
+                    if watched["start"]:
+                        self.seekTime(watched["start"])
                 elif event == "stopped":
-                    # Stopping a channel that never started usually means it was not working.
+                    # Stopping a movie that never started usually means it was not working.
                     failed = watched["started"] is None
                     finished = True
                 elif event == "error":
                     failed = True
                 elif event == "ended":
                     failed = watched["started"] is None or time.time() - watched["started"] < EARLY_END
+                    finished = ended = True
                 if failed or finished:
                     break
-            if watched["started"]:
-                finished = finished or time.time() - watched["started"] > EARLY_END
-            elif not (failed or finished):
+            if watched["started"] and not finished:
+                self.sample(watched)
+            elif not watched["started"] and not (failed or finished):
                 finished = time.time() - watched["opened"] > OPEN_TIMEOUT
                 if not watched.get("checked") and time.time() - watched["opened"] > CHECK_AFTER:
                     watched["checked"] = True
                     failed = probe.check(watched["channel"]["url"], CHECK_TIMEOUT) is not None
             if failed or finished:
                 with self.lock:
-                    # A channel requested meanwhile replaces this one.
+                    # A movie requested meanwhile replaces this one.
                     if self.watched is not watched:
                         continue
                     self.watched = None
+            if finished and not failed and watched["started"]:
+                if ended:
+                    watched["position"] = watched["total"]
+                self.on_progress(watched, watched["position"], watched["total"], True)
             if failed and not self.closed:
                 if self.isPlaying() and watched["started"] is None:
                     self.stop()
@@ -123,6 +140,18 @@ class Watcher(xbmc.Player):
                     if not self.isPlaying() and not xbmc.getCondVisibility("System.HasActiveModalDialog"):
                         break
                 self.on_failure(watched)
+
+    def sample(self, watched):
+        """Remember the playback position, and report it from time to time."""
+        try:
+            if not self.isPlayingVideo():
+                return
+            watched["position"], watched["total"] = self.getTime(), self.getTotalTime()
+        except RuntimeError:
+            return
+        if time.time() - watched["reported"] > PROGRESS_EVERY:
+            watched["reported"] = time.time()
+            self.on_progress(watched, watched["position"], watched["total"], False)
 
     def shutdown(self):
         self.closed = True

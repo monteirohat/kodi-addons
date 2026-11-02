@@ -1,4 +1,4 @@
-"""Movie catalog screen, movie details and the modal list and repository managers."""
+"""Movie and series catalog, movie and series details, and the modal list and repository managers."""
 
 import os
 import re
@@ -9,7 +9,7 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 
-from resources.lib import github, m3u, movies_menu, probe, storage
+from resources.lib import github, m3u, movies_menu, probe, series, storage
 from resources.lib.watcher import Watcher
 
 
@@ -22,6 +22,11 @@ ACTION_BACK = (10, 92)
 ACTION_CONTEXT_MENU = 117
 TOOLBAR, GROUPS, CHANNELS = 100, 200, 300
 DETAILS_PLAY, DETAILS_FAVORITE, DETAILS_REMOVE = 201, 202, 203
+SERIES_SEASONS, SERIES_EPISODES = 300, 400
+# Fixed groups at the top of the list, in this order.
+CONTINUE_GROUP, FAVORITES_GROUP, MOVIES_GROUP, SERIES_GROUP = 0, 1, 2, 3
+# A movie stopped before this many seconds starts from the beginning next time.
+RESUME_AFTER = 60
 GROUP_TITLE, GROUP_COUNT, CHANNELS_EMPTY = 401, 402, 403
 MANAGER_LISTS, MANAGER_EMPTY = 100, 300
 MANAGER_ADD, MANAGER_SETTINGS, MANAGER_CLOSE, MANAGER_GITHUB = 201, 202, 203, 204
@@ -88,6 +93,50 @@ def add_list():
     return True
 
 
+def item_id(item):
+    """Identity of a catalog item for favorites: the stream of a movie or the key of a series."""
+    return "series:" + item["key"] if item.get("series") else item["channel"]["id"]
+
+
+def item_name(item):
+    return item["name"] if item.get("series") else item["channel"]["name"]
+
+
+def item_entries(item):
+    """Playable entries of a catalog item: the movie itself or the episodes of a series."""
+    return item["episodes"] if item.get("series") else [item]
+
+
+def time_text(seconds):
+    hours, rest = divmod(int(seconds), 3600)
+    return "%d:%02d:%02d" % (hours, rest // 60, rest % 60) if hours else "%d:%02d" % (rest // 60, rest % 60)
+
+
+def resumable(state):
+    return bool(state) and not state.get("watched") and state.get("position", 0) >= RESUME_AFTER
+
+
+def next_episode(show, progress):
+    """Episode to continue with: the one stopped midway, or the first unwatched after the last watched one."""
+    episodes = show["episodes"]
+    states = [progress.get(entry["channel"]["id"], {}) for entry in episodes]
+    touched = [(state["time"], index) for index, state in enumerate(states)
+               if state.get("watched") or resumable(state)]
+    if not touched:
+        return episodes[0], False
+    last = max(touched)[1]
+    if not states[last].get("watched"):
+        return episodes[last], True
+    for index in list(range(last + 1, len(episodes))) + list(range(last)):
+        if not states[index].get("watched"):
+            return episodes[index], True
+    return episodes[0], True
+
+
+def episode_code(entry):
+    return text(30133, entry["episode"]["season"], entry["episode"]["number"])
+
+
 def duration_text(seconds):
     if seconds < 60:
         return ""
@@ -127,7 +176,9 @@ class MainWindow(xbmcgui.WindowXML):
         self.shown_name = None
         self.follow_timer = None
         self.grid_position = -1
-        self.watcher = Watcher(self.on_failure)
+        self.start_group = None
+        self.movies, self.shows, self.catalog, self.progress = [], [], [], {}
+        self.watcher = Watcher(self.on_failure, self.on_progress)
 
     def onInit(self):
         # Also called when returning from full screen video. Keep the current state then.
@@ -172,12 +223,25 @@ class MainWindow(xbmcgui.WindowXML):
             busy(False)
         if failed:
             notify(text(30064, ", ".join(failed)))
-        groups = {}
-        for entry in entries:
-            for name in m3u.groups_of(entry["channel"]):
-                groups.setdefault(name, []).append(entry)
         self.all_entries = entries
-        self.groups = [(text(30065), self.favorite_entries()), (text(30003), entries)]
+        self.movies, self.shows = series.build(entries)
+        self.catalog = self.movies + self.shows
+        self.build_groups(position)
+
+    def build_groups(self, position=None):
+        """Rebuild the groups from the loaded catalog, for example after playback changed the progress."""
+        if position is None:
+            position = self.channel_list.getSelectedPosition()
+        groups = {}
+        for movie in self.movies:
+            for name in m3u.groups_of(movie["channel"]):
+                groups.setdefault(name, []).append(movie)
+        for show in self.shows:
+            for name in show["groups"]:
+                groups.setdefault(name, []).append(show)
+        self.progress = storage.get_progress()
+        self.groups = [(text(30116), self.continue_items()), (text(30065), self.favorite_entries()),
+                       (text(30003), self.movies), (text(30117), self.shows)]
         self.groups += [(name, members) for name, members in groups.items() if name]
         if "" in groups:
             self.groups.append((text(30043), groups[""]))
@@ -186,16 +250,33 @@ class MainWindow(xbmcgui.WindowXML):
         names = [name for name, _ in self.groups]
         if self.shown_name in names:
             index = names.index(self.shown_name)
+        elif self.start_group == "series":
+            index = SERIES_GROUP
         else:
-            index = 0 if self.groups[0][1] else 1
+            index = next(index for index in (CONTINUE_GROUP, FAVORITES_GROUP, MOVIES_GROUP)
+                         if self.groups[index][1] or index == MOVIES_GROUP)
         self.group_list.selectItem(index)
         self.show_group(index, max(position, 0))
 
     def favorite_entries(self):
-        by_id = {}
-        for entry in self.all_entries:
-            by_id.setdefault(entry["channel"]["id"], entry)
-        return [by_id[channel_id] for channel_id in storage.get_favorites() if channel_id in by_id]
+        by_id = {item_id(item): item for item in self.catalog}
+        return [by_id[favorite] for favorite in storage.get_favorites() if favorite in by_id]
+
+    def continue_items(self):
+        """Movies stopped midway and series with watched episodes left to watch, most recent first."""
+        started = []
+        for movie in self.movies:
+            state = self.progress.get(movie["channel"]["id"])
+            if resumable(state):
+                started.append((state["time"], movie))
+        for show in self.shows:
+            states = [self.progress.get(entry["channel"]["id"], {}) for entry in show["episodes"]]
+            if all(state.get("watched") for state in states):
+                continue
+            times = [state["time"] for state in states if state.get("watched") or resumable(state)]
+            if times:
+                started.append((max(times), show))
+        return [item for _, item in sorted(started, key=lambda pair: -pair[0])]
 
     def show_group(self, index, position=0):
         name, members = self.groups[index]
@@ -208,19 +289,9 @@ class MainWindow(xbmcgui.WindowXML):
         # Name the group on the check tool, so it is clear which channels it will test.
         check_tool = [method for _, _, method in TOOLS].index("check_group")
         self.toolbar.getListItem(check_tool).setLabel(text(30095, title))
-        self.getControl(GROUP_COUNT).setLabel(text(30036, len(entries)))
+        self.getControl(GROUP_COUNT).setLabel(text(30135) if len(entries) == 1 else text(30132, len(entries)))
         favorites = set(storage.get_favorites())
-        items = []
-        for number, entry in enumerate(entries, 1):
-            channel = entry["channel"]
-            item = xbmcgui.ListItem(channel["name"], entry["list_name"])
-            if channel["logo"]:
-                item.setArt({"icon": channel["logo"], "thumb": channel["logo"], "poster": channel["logo"]})
-            item.setProperty("number", str(number))
-            item.setProperty("duration", duration_text(channel["duration"]))
-            item.setProperty("favorite", "true" if channel["id"] in favorites else "false")
-            item.setProperty("group", "  ·  ".join(name for name in m3u.groups_of(channel) if name) or text(30043))
-            items.append(item)
+        items = [self.card(entry, favorites) for entry in entries]
         self.channel_list.reset()
         self.channel_list.addItems(items)
         if entries:
@@ -229,7 +300,28 @@ class MainWindow(xbmcgui.WindowXML):
         elif not storage.get_lists():
             self.getControl(CHANNELS_EMPTY).setLabel(text(30048))
         else:
-            self.getControl(CHANNELS_EMPTY).setLabel(text(30066 if entries is self.groups[0][1] else 30046))
+            empty = {CONTINUE_GROUP: 30130, FAVORITES_GROUP: 30066}.get(self.shown_index, 30046)
+            self.getControl(CHANNELS_EMPTY).setLabel(text(empty))
+
+    def card(self, entry, favorites):
+        """Catalog card of a movie or a series, with its detail line and badges."""
+        item = xbmcgui.ListItem(item_name(entry), entry["list_name"])
+        logo = entry["logo"] if entry.get("series") else entry["channel"]["logo"]
+        if logo:
+            item.setArt({"icon": logo, "thumb": logo, "poster": logo})
+        if entry.get("series"):
+            episode, started = next_episode(entry, self.progress)
+            count = len(entry["episodes"])
+            detail = episode_code(episode) if started else (text(30134) if count == 1 else text(30127, count))
+            watched = all(self.progress.get(each["channel"]["id"], {}).get("watched") for each in entry["episodes"])
+        else:
+            state = self.progress.get(entry["channel"]["id"], {})
+            detail = text(30126, time_text(state["position"])) if resumable(state) else duration_text(entry["channel"]["duration"])
+            watched = state.get("watched", False)
+        item.setProperty("duration", detail)
+        item.setProperty("favorite", "true" if item_id(entry) in favorites else "false")
+        item.setProperty("watched", "true" if watched else "false")
+        return item
 
     def selected_entry(self):
         position = self.channel_list.getSelectedPosition()
@@ -291,13 +383,16 @@ class MainWindow(xbmcgui.WindowXML):
                 self.open_details(entry)
 
     def open_details(self, entry):
-        details = MovieDetails("script-m3u-movies-details.xml", PATH, "default", "1080i")
-        details.window, details.entry, details.choice = self, entry, None
+        if entry.get("series"):
+            details = SeriesDetails("script-m3u-movies-series.xml", PATH, "default", "1080i")
+        else:
+            details = MovieDetails("script-m3u-movies-details.xml", PATH, "default", "1080i")
+        details.window, details.entry, details.choice, details.episode = self, entry, None, None
         details.doModal()
-        choice = details.choice
+        choice, episode = details.choice, details.episode
         del details
         if choice == "play":
-            self.play(entry)
+            self.play(episode or entry)
         elif choice == "remove":
             self.remove([entry])
 
@@ -313,6 +408,13 @@ class MainWindow(xbmcgui.WindowXML):
         if entry is None:
             return
         channel = entry["channel"]
+        start = 0
+        state = storage.get_progress().get(channel["id"])
+        if resumable(state):
+            choice = xbmcgui.Dialog().contextmenu([text(30124, time_text(state["position"])), text(30125)])
+            if choice < 0:
+                return
+            start = state["position"] if choice == 0 else 0
         if ADDON.getSettingBool("check_before_play"):
             busy(True)
             reason = probe.check(channel["url"], ADDON.getSettingInt("check_timeout"))
@@ -325,7 +427,15 @@ class MainWindow(xbmcgui.WindowXML):
                     self.remove([entry])
                 if answer != 2:
                     return
-        self.watcher.play_channel(entry)
+        self.watcher.play_channel(entry, start)
+
+    def on_progress(self, entry, position, total, finished):
+        """Called by the watcher while a movie plays and when it stops."""
+        if total <= 0:
+            return
+        storage.save_progress(entry["channel"]["id"], position, total)
+        if finished:
+            self.build_groups()
 
     def on_failure(self, entry):
         """Called by the watcher when a channel did not play."""
@@ -340,20 +450,21 @@ class MainWindow(xbmcgui.WindowXML):
             self.watcher.play_channel(entry)
 
     def toggle_favorite(self, entry):
-        added = storage.toggle_favorite(entry["channel"]["id"])
+        added = storage.toggle_favorite(item_id(entry))
         notify(text(30068 if added else 30069))
         favorites = self.favorite_entries()
-        self.groups[0] = (self.groups[0][0], favorites)
-        self.group_list.getListItem(0).setLabel2(str(len(favorites)))
+        self.groups[FAVORITES_GROUP] = (self.groups[FAVORITES_GROUP][0], favorites)
+        self.group_list.getListItem(FAVORITES_GROUP).setLabel2(str(len(favorites)))
         position = self.channel_list.getSelectedPosition()
-        if self.shown_index == 0:
-            self.show_entries(self.groups[0][0], favorites, position)
+        if self.shown_index == FAVORITES_GROUP:
+            self.show_entries(self.groups[FAVORITES_GROUP][0], favorites, position)
             if not favorites:
                 self.setFocusId(GROUPS)
         else:
             self.channel_list.getListItem(position).setProperty("favorite", "true" if added else "false")
 
-    def remove(self, entries):
+    def remove(self, items):
+        entries = [entry for item in items for entry in item_entries(item)]
         by_list = {}
         for entry in entries:
             by_list.setdefault(entry["list"], []).append(entry["channel"])
@@ -366,12 +477,15 @@ class MainWindow(xbmcgui.WindowXML):
         entry = self.selected_entry()
         if entry is None:
             return
-        favorite = entry["channel"]["id"] in storage.get_favorites()
-        choice = xbmcgui.Dialog().contextmenu([text(30071 if favorite else 30070), text(30018), text(30019)])
+        favorite = item_id(entry) in storage.get_favorites()
+        remove_label = text(30122 if entry.get("series") else 30018)
+        choice = xbmcgui.Dialog().contextmenu([text(30071 if favorite else 30070), remove_label, text(30019)])
         if choice == 0:
             self.toggle_favorite(entry)
         elif choice == 1:
             self.remove([entry])
+        elif choice == 2 and entry.get("series"):
+            self.check_entries(entry["episodes"])
         elif choice == 2:
             busy(True)
             reason = probe.check(entry["channel"]["url"], ADDON.getSettingInt("check_timeout"))
@@ -391,7 +505,9 @@ class MainWindow(xbmcgui.WindowXML):
         if not query:
             return
         needle = query.casefold()
-        results = [entry for entry in self.all_entries if needle in entry["channel"]["name"].casefold()]
+        results = [movie for movie in self.movies if needle in movie["channel"]["name"].casefold()]
+        results += [show for show in self.shows if needle in show["name"].casefold()
+                    or any(needle in entry["channel"]["name"].casefold() for entry in show["episodes"])]
         self.shown_index, self.shown_name = -1, None
         self.show_entries(text(30042, query), results)
         if results:
@@ -400,7 +516,9 @@ class MainWindow(xbmcgui.WindowXML):
             notify(text(30045))
 
     def check_group(self):
-        entries = list(self.entries)
+        self.check_entries([entry for item in self.entries for entry in item_entries(item)])
+
+    def check_entries(self, entries):
         if not entries:
             return
         progress = xbmcgui.DialogProgress()
@@ -483,6 +601,83 @@ class MovieDetails(xbmcgui.WindowXMLDialog):
             if xbmcgui.Dialog().yesno(TITLE, text(30067, self.entry["channel"]["name"]),
                                       nolabel=text(30040), yeslabel=text(30022)):
                 self.choice = "remove"
+                self.close()
+
+
+class SeriesDetails(xbmcgui.WindowXMLDialog):
+    """Poster, seasons and episodes of a series. Sets choice and the episode to play for the catalog."""
+
+    def onInit(self):
+        show = self.entry
+        self.progress = storage.get_progress()
+        self.next, started = next_episode(show, self.progress)
+        self.setProperty("title", show["name"])
+        self.setProperty("poster", show["logo"])
+        self.setProperty("info", text(30121, len(show["seasons"]), len(show["episodes"])))
+        self.setProperty("group", "  ·  ".join(show["groups"]) or show["list_name"])
+        self.getControl(DETAILS_PLAY).setLabel(text(30118 if started else 30119, self.next["episode"]["season"],
+                                                    self.next["episode"]["number"]))
+        self.update_favorite()
+        seasons = self.getControl(SERIES_SEASONS)
+        seasons.reset()
+        seasons.addItems([xbmcgui.ListItem(text(30120, season)) for season in show["seasons"]])
+        self.season = show["seasons"].index(self.next["episode"]["season"])
+        seasons.selectItem(self.season)
+        self.show_season(select=self.next)
+        self.setFocusId(DETAILS_PLAY)
+
+    def show_season(self, select=None):
+        season = self.entry["seasons"][self.season]
+        self.episodes = [entry for entry in self.entry["episodes"] if entry["episode"]["season"] == season]
+        items = []
+        for entry in self.episodes:
+            title = entry["episode"]["title"]
+            item = xbmcgui.ListItem("E%02d" % entry["episode"]["number"] + ("  ·  " + title if title else ""))
+            state = self.progress.get(entry["channel"]["id"], {})
+            if resumable(state):
+                item.setLabel2(text(30126, time_text(state["position"])))
+            else:
+                item.setLabel2(duration_text(entry["channel"]["duration"]))
+            item.setProperty("watched", "true" if state.get("watched") else "false")
+            items.append(item)
+        episodes = self.getControl(SERIES_EPISODES)
+        episodes.reset()
+        episodes.addItems(items)
+        if select in self.episodes:
+            episodes.selectItem(self.episodes.index(select))
+
+    def update_favorite(self):
+        favorite = item_id(self.entry) in storage.get_favorites()
+        self.setProperty("favorite", "true" if favorite else "false")
+        self.getControl(DETAILS_FAVORITE).setLabel(text(30115 if favorite else 30114))
+
+    def onAction(self, action):
+        if action.getId() in ACTION_BACK:
+            self.close()
+        elif self.getFocusId() == SERIES_SEASONS:
+            season = self.getControl(SERIES_SEASONS).getSelectedPosition()
+            if season != self.season and 0 <= season < len(self.entry["seasons"]):
+                self.season = season
+                self.show_season()
+
+    def onClick(self, control_id):
+        if control_id == DETAILS_PLAY:
+            self.choice, self.episode = "play", self.next
+            self.close()
+        elif control_id == DETAILS_FAVORITE:
+            self.window.toggle_favorite(self.entry)
+            self.update_favorite()
+        elif control_id == DETAILS_REMOVE:
+            if xbmcgui.Dialog().yesno(TITLE, text(30123, self.entry["name"], len(self.entry["episodes"])),
+                                      nolabel=text(30040), yeslabel=text(30022)):
+                self.choice = "remove"
+                self.close()
+        elif control_id == SERIES_SEASONS:
+            self.setFocusId(SERIES_EPISODES)
+        elif control_id == SERIES_EPISODES:
+            position = self.getControl(SERIES_EPISODES).getSelectedPosition()
+            if 0 <= position < len(self.episodes):
+                self.choice, self.episode = "play", self.episodes[position]
                 self.close()
 
 
@@ -673,12 +868,14 @@ class RepoManager(xbmcgui.WindowXMLDialog):
             self.on_change()
 
 
-def run():
+def run(arguments=()):
+    """Open the catalog. The argument "series" opens it on the series."""
     # Tells the Movies menu service that Easy Movie is already on screen.
     home = xbmcgui.Window(10000)
     home.setProperty(movies_menu.RUNNING_PROPERTY, "open")
     try:
         window = MainWindow("script-m3u-movies-main.xml", PATH, "default", "1080i")
+        window.start_group = "series" if "series" in arguments else None
         window.doModal()
         del window
     finally:

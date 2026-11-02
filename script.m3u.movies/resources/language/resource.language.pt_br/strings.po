@@ -211,8 +211,8 @@ msgid "Easy Movie"
 msgstr "Easy Movie"
 
 msgctxt "#30051"
-msgid "OK: movie details  ·  Menu: options  ·  Back: groups"
-msgstr "OK: detalhes do filme  ·  Menu: opções  ·  Voltar: grupos"
+msgid "OK: details  ·  Menu: options  ·  Back: groups"
+msgstr "OK: detalhes  ·  Menu: opções  ·  Voltar: grupos"
 
 msgctxt "#30052"
 msgid "Now playing"
@@ -401,3 +401,75 @@ msgstr "Favoritar"
 msgctxt "#30115"
 msgid "Unfavorite"
 msgstr "Desfavoritar"
+
+msgctxt "#30116"
+msgid "Continue watching"
+msgstr "Continuar assistindo"
+
+msgctxt "#30117"
+msgid "Series"
+msgstr "Séries"
+
+msgctxt "#30118"
+msgid "Continue: S{0} E{1}"
+msgstr "Continuar: T{0} E{1}"
+
+msgctxt "#30119"
+msgid "Play: S{0} E{1}"
+msgstr "Assistir: T{0} E{1}"
+
+msgctxt "#30120"
+msgid "Season {0}"
+msgstr "Temporada {0}"
+
+msgctxt "#30121"
+msgid "Seasons: {0}  ·  Episodes: {1}"
+msgstr "Temporadas: {0}  ·  Episódios: {1}"
+
+msgctxt "#30122"
+msgid "Remove series"
+msgstr "Remover série"
+
+msgctxt "#30123"
+msgid "Remove the series \"{0}\" and its {1} episodes from the list?"
+msgstr "Remover a série \"{0}\" e seus {1} episódios da lista?"
+
+msgctxt "#30124"
+msgid "Resume from {0}"
+msgstr "Retomar de {0}"
+
+msgctxt "#30125"
+msgid "Play from the beginning"
+msgstr "Assistir do início"
+
+msgctxt "#30126"
+msgid "Stopped at {0}"
+msgstr "Parou em {0}"
+
+msgctxt "#30127"
+msgid "{0} episodes"
+msgstr "{0} episódios"
+
+msgctxt "#30129"
+msgid "Open Easy Movie from the TV shows menu"
+msgstr "Abrir o Easy Movie pelo menu Seriados"
+
+msgctxt "#30130"
+msgid "Nothing in progress yet. Movies and series you start watching appear here."
+msgstr "Nada em andamento ainda. Os filmes e séries que você começar a assistir aparecem aqui."
+
+msgctxt "#30132"
+msgid "{0} titles"
+msgstr "{0} títulos"
+
+msgctxt "#30133"
+msgid "S{0} E{1}"
+msgstr "T{0} E{1}"
+
+msgctxt "#30134"
+msgid "1 episode"
+msgstr "1 episódio"
+
+msgctxt "#30135"
+msgid "1 title"
+msgstr "1 título"

@@ -8,6 +8,11 @@
           <default>true</default>
           <control type="toggle" />
         </setting>
+        <setting id="series_menu" type="boolean" label="30129">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle" />
+        </setting>
         <setting id="offer_remove" type="boolean" label="30103">
           <level>0</level>
           <default>true</default>

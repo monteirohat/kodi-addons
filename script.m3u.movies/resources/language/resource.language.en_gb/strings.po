@@ -211,7 +211,7 @@ msgid "Easy Movie"
 msgstr ""
 
 msgctxt "#30051"
-msgid "OK: movie details  ·  Menu: options  ·  Back: groups"
+msgid "OK: details  ·  Menu: options  ·  Back: groups"
 msgstr ""
 
 msgctxt "#30052"
@@ -400,4 +400,76 @@ msgstr ""
 
 msgctxt "#30115"
 msgid "Unfavorite"
+msgstr ""
+
+msgctxt "#30116"
+msgid "Continue watching"
+msgstr ""
+
+msgctxt "#30117"
+msgid "Series"
+msgstr ""
+
+msgctxt "#30118"
+msgid "Continue: S{0} E{1}"
+msgstr ""
+
+msgctxt "#30119"
+msgid "Play: S{0} E{1}"
+msgstr ""
+
+msgctxt "#30120"
+msgid "Season {0}"
+msgstr ""
+
+msgctxt "#30121"
+msgid "Seasons: {0}  ·  Episodes: {1}"
+msgstr ""
+
+msgctxt "#30122"
+msgid "Remove series"
+msgstr ""
+
+msgctxt "#30123"
+msgid "Remove the series \"{0}\" and its {1} episodes from the list?"
+msgstr ""
+
+msgctxt "#30124"
+msgid "Resume from {0}"
+msgstr ""
+
+msgctxt "#30125"
+msgid "Play from the beginning"
+msgstr ""
+
+msgctxt "#30126"
+msgid "Stopped at {0}"
+msgstr ""
+
+msgctxt "#30127"
+msgid "{0} episodes"
+msgstr ""
+
+msgctxt "#30129"
+msgid "Open Easy Movie from the TV shows menu"
+msgstr ""
+
+msgctxt "#30130"
+msgid "Nothing in progress yet. Movies and series you start watching appear here."
+msgstr ""
+
+msgctxt "#30132"
+msgid "{0} titles"
+msgstr ""
+
+msgctxt "#30133"
+msgid "S{0} E{1}"
+msgstr ""
+
+msgctxt "#30134"
+msgid "1 episode"
+msgstr ""
+
+msgctxt "#30135"
+msgid "1 title"
 msgstr ""

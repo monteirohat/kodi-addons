@@ -1,4 +1,4 @@
-"""Background service that opens Easy Movie when the Movies entry of the main menu is selected."""
+"""Background service that opens Easy Movie from the Movies and TV shows entries of the main menu."""
 
 import time
 
@@ -9,10 +9,13 @@ import xbmcgui
 
 ADDON_ID = "script.m3u.movies"
 RUNNING_PROPERTY = ADDON_ID + ".running"
-# Estuary's main menu is container 9000, and its Movies entry has the id movies.
+# Estuary's main menu is container 9000. Its Movies and TV shows entries have the ids movies and tvshows.
 MENU_ENTRY = "Container(9000).ListItem.Property(id)"
-# With an empty movie library, the Movies entry opens the video sources. Kodi's own library is left alone.
-MOVIES_SCREEN = "Window.IsActive(videos) + !Library.HasContent(movies)"
+# With an empty library, these entries open the video sources. Kodi's own library is left alone.
+ENTRIES = {
+    "movies": ("movies_menu", "Window.IsActive(videos) + !Library.HasContent(movies)", "RunAddon(" + ADDON_ID + ")"),
+    "tvshows": ("series_menu", "Window.IsActive(videos) + !Library.HasContent(tvshows)", "RunScript(" + ADDON_ID + ",series)"),
+}
 POLL_SECONDS = 0.2
 # The videos screen counts as opened from the menu only when it appears this soon after leaving it.
 MENU_SECONDS = 3
@@ -27,7 +30,8 @@ class Monitor(xbmc.Monitor):
         self.read_settings()
 
     def read_settings(self):
-        self.enabled = xbmcaddon.Addon(ADDON_ID).getSettingBool("movies_menu")
+        addon = xbmcaddon.Addon(ADDON_ID)
+        self.enabled = {setting: addon.getSettingBool(setting) for setting, _, _ in ENTRIES.values()}
 
 
 def run():
@@ -35,19 +39,20 @@ def run():
     home = xbmcgui.Window(10000)
     menu_entry, seen = "", 0
     while not monitor.waitForAbort(POLL_SECONDS):
-        if not monitor.enabled or home.getProperty(RUNNING_PROPERTY):
+        if home.getProperty(RUNNING_PROPERTY):
             continue
         if xbmc.getCondVisibility("Window.IsActive(home) + !System.HasActiveModalDialog"):
             menu_entry, seen = xbmc.getInfoLabel(MENU_ENTRY), time.time()
             continue
-        if menu_entry != "movies" or time.time() - seen > MENU_SECONDS:
+        if menu_entry not in ENTRIES or time.time() - seen > MENU_SECONDS:
             continue
-        if not xbmc.getCondVisibility(MOVIES_SCREEN):
+        setting, screen, command = ENTRIES[menu_entry]
+        if not monitor.enabled[setting] or not xbmc.getCondVisibility(screen):
             continue
         menu_entry = ""
         xbmc.executebuiltin("ActivateWindow(home)")
         home.setProperty(RUNNING_PROPERTY, "starting")
-        xbmc.executebuiltin("RunAddon(" + ADDON_ID + ")")
+        xbmc.executebuiltin(command)
         # Wait until the add-on has taken over, so the same screen is not handled twice.
         for _ in range(50):
             if monitor.waitForAbort(0.2) or home.getProperty(RUNNING_PROPERTY) == "open":

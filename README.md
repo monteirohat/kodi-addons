@@ -35,7 +35,7 @@
     <td align="center" width="33%">
       <a href="script.m3u.movies/README.md"><img src="script.m3u.movies/resources/icon.png" alt="Easy Movie" width="120"></a>
       <h3>Easy Movie</h3>
-      The movies of your M3U lists as a poster catalog, with details, favorites and genres.
+      The movies and series of your M3U lists as a poster catalog, with seasons and Continue watching.
       <br><br>
       <a href="#easy-movie">Overview</a> · <a href="script.m3u.movies/README.md">Guide</a>
     </td>
@@ -71,15 +71,16 @@ Install from **Monteiro > Video add-ons > Easy Channel**. Read the [Easy Channel
 
 <img src="script.m3u.movies/resources/icon.png" alt="Easy Movie" width="72" align="left">
 
-**Turn the movies of your M3U lists into a poster catalog.** Open a movie to see its details, play it, add it to your favorites, or remove it.
+**Turn the movies and series of your M3U lists into a poster catalog.** Open a movie to see its details, or a series to pick a season and continue where you stopped.
 
 <br clear="left">
 
 - Genres on the left and six posters per row, with title and running time.
-- Movie details with a large poster and **Play**, **Favorite** and **Remove movie** buttons.
+- Episodes grouped into series automatically, with seasons, episodes, watched marks and a **Continue** button.
+- A **Continue watching** group, and resume of movies and episodes where you stopped.
 - Lists from a web address, a file, or GitHub, with a suggested repository of public domain movies.
 - The same list manager, checks, favorites and failure detection as Easy Channel, in the same design.
-- With an empty movie library, selecting **Movies** in Kodi's main menu opens Easy Movie.
+- With an empty library, selecting **Movies** or **TV shows** in Kodi's main menu opens Easy Movie.
 
 ![Easy Movie](script.m3u.movies/resources/screenshots/screenshot-01.jpg)
 
