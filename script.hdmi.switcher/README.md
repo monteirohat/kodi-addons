@@ -9,7 +9,7 @@ A Kodi program add-on for selecting the active HDMI display on LibreELEC for Ras
 | Small display (7-inch) — HDMI 1 | `HDMI-A-1` | `HDMI0`, nearest the USB-C power connector |
 | External monitor — HDMI 2 | `HDMI-A-2` | `HDMI1`, nearest the audio jack |
 
-The labels match the MonteiroMedia installation. Change `DISPLAYS` in `default.py` if your screens use a different arrangement.
+The labels match the confirmed Raspberry Pi installation. Change `DISPLAYS` in `default.py` if your screens use a different arrangement.
 
 ## Requirements
 
@@ -51,9 +51,9 @@ The image may return to the first display after this reboot.
 
 ## Installation
 
-Install the **MonteiroMedia Add-ons** repository once, following the [repository instructions](../README.md#register-the-repository-in-kodi).
+Install the **Monteiro** repository once, following the [repository instructions](../README.md#register-the-repository-in-kodi).
 
-Then open **Add-ons > Install from repository > MonteiroMedia Add-ons > Program add-ons > HDMI Switcher** and select **Install**. Updates are delivered through the same repository after a new version is published.
+Then open **Add-ons > Install from repository > Monteiro > Program add-ons > HDMI Switcher** and select **Install**. Updates are delivered through the same repository after a new version is published.
 
 If the legacy `script.trocar.tela` add-on is installed, uninstall it before using HDMI Switcher. It has a separate add-on ID.
 
@@ -103,7 +103,7 @@ Increment this add-on's version in `addon.xml` and push the changes. The reposit
 
 ## Validation
 
-Local checks cover XML preservation, repeated switches, invalid configuration rejection, backup creation, cancellation, disconnected displays, and rollback when restart submission fails. Hardware validation on the target Raspberry Pi is still required.
+Local checks cover XML preservation, repeated switches, invalid configuration rejection, backup creation, cancellation, disconnected displays, and rollback when restart submission fails. The user confirmed successful HDMI display switching on the target Raspberry Pi.
 
 ## References
 

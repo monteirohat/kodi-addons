@@ -1,4 +1,4 @@
-# koid-addons
+# Monteiro
 
 Custom Kodi add-ons and an installable Kodi repository for LibreELEC and Raspberry Pi.
 
@@ -7,25 +7,33 @@ Custom Kodi add-ons and an installable Kodi repository for LibreELEC and Raspber
 | Add-on | ID | Purpose |
 | --- | --- | --- |
 | [HDMI Switcher](script.hdmi.switcher/README.md) | `script.hdmi.switcher` | Select the active HDMI display and restart Kodi. |
-| MonteiroMedia Add-ons | `repository.monteiromedia` | Register this repository in Kodi for installation and updates. |
+| Monteiro | `repository.monteiromedia` | Register this repository in Kodi for installation and updates. |
+
+## Repository identity
+
+The name shown in Kodi is **Monteiro**. The technical ID remains `repository.monteiromedia` so existing installations can receive this rename through a normal repository update. Version 1.0.2 applies the new display name. HDMI Switcher keeps its `script.hdmi.switcher` ID and is also versioned 1.0.2 for the publisher metadata update.
 
 ## Publish on GitHub
 
 1. Upload the contents of this folder to a public GitHub repository using the `main` or `master` branch, including `.github`, `.gitignore`, and the generated `repository` directory.
 2. Open **Actions** and wait for **Publish Kodi repository** to complete. The workflow generates package URLs from the actual GitHub owner, repository name, and branch.
 3. If the workflow reports a permissions error, enable **Read and write permissions** under **Settings > Actions > General > Workflow permissions**. Branch protection must allow the workflow to push its generated commit.
-4. Download the generated `repository/repository.monteiromedia/repository.monteiromedia-1.0.0.zip` after the workflow succeeds.
+4. In GitHub, open the **Code** tab and download the generated `repository/repository.monteiromedia/repository.monteiromedia-1.0.2.zip` after the workflow succeeds. The ZIP is committed to the repository; it is listed under **Code**, rather than as an Actions artifact.
 
 The initial generated files use `monteirohat/koid-addons` and the `main` branch. The first workflow run adjusts these values to the actual repository location before installation. GitHub Pages is optional; Kodi downloads files directly from GitHub Raw.
 
 ## Register the repository in Kodi
 
-1. Enable **Settings > System > Add-ons > Unknown sources**.
-2. Install `repository.monteiromedia-1.0.0.zip` through **Add-ons > Install from zip file** once.
-3. Open **Install from repository > MonteiroMedia Add-ons > Program add-ons > HDMI Switcher**.
-4. Select **Install**.
+1. On GitHub, open this repository's **Code** tab and select the branch where **Publish Kodi repository** completed successfully.
+2. Open **repository > repository.monteiromedia** and select **repository.monteiromedia-1.0.2.zip**. You can also open the [repository installation ZIP](repository/repository.monteiromedia/repository.monteiromedia-1.0.2.zip) directly from this README.
+3. On the file page, click **Download raw file** to download the ZIP. The full path from the repository root is `repository/repository.monteiromedia/repository.monteiromedia-1.0.2.zip`.
+4. Copy the downloaded ZIP to a USB drive or a folder accessible from your Kodi device.
+5. In Kodi, enable **Settings > System > Add-ons > Unknown sources**.
+6. Open **Add-ons > Install from zip file**, browse to the location used in step 4, and select **repository.monteiromedia-1.0.2.zip**. Wait for the **Monteiro** repository installation notification. Registering the repository is a one-time step.
+7. Open **Add-ons > Install from repository > Monteiro > Program add-ons > HDMI Switcher**.
+8. Select **Install** and wait for installation to finish.
 
-Further add-ons and updates are installed through **MonteiroMedia Add-ons**. Enable automatic updates for the add-on if desired. If an update is not visible yet, open the repository context menu and select **Check for updates**.
+Further add-ons and updates are installed through **Monteiro**. Enable automatic updates for the add-on if desired. If an update is not visible yet, open the repository context menu and select **Check for updates**.
 
 ## Publish an add-on update
 
@@ -76,7 +84,7 @@ Complete the [one-time setup](script.hdmi.switcher/README.md#one-time-setup) to 
 
 ## Validation
 
-Local checks cover metadata, package structure, checksums, deterministic builds, and the previously tested HDMI configuration logic. Deployment to GitHub and end-to-end installation in Kodi remain pending. Display switching still requires hardware validation on the target Raspberry Pi.
+Local checks cover metadata, package structure, checksums, deterministic builds, and the previously tested HDMI configuration logic. The user confirmed installation and HDMI display switching on the target Raspberry Pi. The repository display-name update still requires confirmation in Kodi.
 
 ## License
 

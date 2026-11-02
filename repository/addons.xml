@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <addons>
-  <addon id="repository.monteiromedia" name="MonteiroMedia Add-ons" version="1.0.0" provider-name="MonteiroMedia">
-    <extension point="xbmc.addon.repository" name="MonteiroMedia Add-ons">
+  <addon id="repository.monteiromedia" name="Monteiro" version="1.0.2" provider-name="Monteiro">
+    <extension point="xbmc.addon.repository" name="Monteiro">
       <dir minversion="21.0.0">
         <info compressed="false">https://raw.githubusercontent.com/monteirohat/kodi-addons/main/repository/addons.xml</info>
         <checksum>https://raw.githubusercontent.com/monteirohat/kodi-addons/main/repository/addons.xml.md5</checksum>
@@ -10,13 +10,13 @@
       </dir>
     </extension>
     <extension point="xbmc.addon.metadata">
-      <summary lang="en_GB">Custom Kodi add-ons by MonteiroMedia</summary>
-      <description lang="en_GB">Install and update HDMI Switcher and other MonteiroMedia add-ons through Kodi.</description>
+      <summary lang="en_GB">Custom Kodi add-ons by Monteiro</summary>
+      <description lang="en_GB">Install and update HDMI Switcher and other Monteiro add-ons through Kodi.</description>
       <platform>all</platform>
       <license>MIT</license>
     </extension>
   </addon>
-  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.0.0" provider-name="MonteiroMedia">
+  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.0.2" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
     </requires>
