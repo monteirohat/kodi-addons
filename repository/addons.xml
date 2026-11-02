@@ -23,7 +23,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.1.1" provider-name="Monteiro">
+  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.1.2" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
     </requires>
@@ -39,10 +39,10 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.hdmi.switcher</source>
-      <news>1.1.1 - The display picker opens on the active display, which now has a blue outline and check mark. 1.1.0 - New dark display picker matching Easy Channel and Easy Movie, new icon, and Brazilian Portuguese translation.</news>
+      <news>1.1.2 - The icon and fanart have new file names, so Kodi shows the new artwork instead of a cached copy of the previous icon. 1.1.1 - The display picker opens on the active display, which now has a blue outline and check mark. 1.1.0 - New dark display picker matching Easy Channel and Easy Movie, new icon, and Brazilian Portuguese translation.</news>
       <assets>
-        <icon>resources/icon.png</icon>
-        <fanart>resources/fanart.jpg</fanart>
+        <icon>resources/hdmi-switcher-icon.png</icon>
+        <fanart>resources/hdmi-switcher-fanart.jpg</fanart>
         <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
       </assets>
     </extension>
