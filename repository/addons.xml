@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <addons>
-  <addon id="repository.monteiromedia" name="Monteiro" version="1.0.2" provider-name="Monteiro">
+  <addon id="repository.monteiromedia" name="Monteiro" version="1.0.3" provider-name="Monteiro">
     <extension point="xbmc.addon.repository" name="Monteiro">
       <dir minversion="21.0.0">
         <info compressed="false">https://raw.githubusercontent.com/monteirohat/kodi-addons/main/repository/addons.xml</info>
@@ -10,13 +10,20 @@
       </dir>
     </extension>
     <extension point="xbmc.addon.metadata">
-      <summary lang="en_GB">Custom Kodi add-ons by Monteiro</summary>
-      <description lang="en_GB">Install and update HDMI Switcher and other Monteiro add-ons through Kodi.</description>
+      <summary lang="en_GB">Practical Kodi add-ons for LibreELEC and Raspberry Pi</summary>
+      <description lang="en_GB">Monteiro is a collection of practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi. It provides a single place to install and update utilities that simplify your media-center setup. The collection currently includes HDMI Switcher, which lets you choose the active HDMI display directly from Kodi. New tools and updates are published through this repository.</description>
       <platform>all</platform>
       <license>MIT</license>
+      <website>https://github.com/monteirohat/kodi-addons</website>
+      <source>https://github.com/monteirohat/kodi-addons/tree/main/repository.monteiromedia</source>
+      <news>1.0.3 - Added repository artwork, a detailed description, and project links.</news>
+      <assets>
+        <icon>resources/icon.png</icon>
+        <fanart>resources/fanart.jpg</fanart>
+      </assets>
     </extension>
   </addon>
-  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.0.2" provider-name="Monteiro">
+  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.0.3" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
     </requires>
@@ -24,10 +31,17 @@
       <provides>executable</provides>
     </extension>
     <extension point="xbmc.addon.metadata">
-      <summary lang="en_GB">Switch between two HDMI displays on LibreELEC</summary>
-      <description lang="en_GB">Choose the small display or external monitor, save the HDMI connector preference, and restart Kodi to apply it. Designed for LibreELEC on Raspberry Pi 4.</description>
+      <summary lang="en_GB">Choose your active HDMI display directly from Kodi</summary>
+      <description lang="en_GB">Switch between a small HDMI display and an external monitor on LibreELEC for Raspberry Pi 4. Select a display from a simple menu, confirm your choice, and Kodi restarts to apply it. Your display preference is saved for future starts. Existing advanced settings are preserved, and a backup is created before the first change to an existing configuration file. Switching stops current playback and uses one display at a time.</description>
       <platform>linux</platform>
       <license>MIT</license>
+      <website>https://github.com/monteirohat/kodi-addons</website>
+      <source>https://github.com/monteirohat/kodi-addons/tree/main/script.hdmi.switcher</source>
+      <news>1.0.3 - Added Monteiro artwork, a detailed description, and project links.</news>
+      <assets>
+        <icon>resources/icon.png</icon>
+        <fanart>resources/fanart.jpg</fanart>
+      </assets>
     </extension>
   </addon>
 </addons>

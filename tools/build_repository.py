@@ -33,6 +33,7 @@ def build(base_url):
 
     catalog = ET.Element("addons")
     packages = []
+    asset_files = []
     for manifest_path in sorted(ROOT.glob("*/addon.xml")):
         addon_directory = manifest_path.parent
         manifest_bytes = repository_bytes if addon_directory.name == REPOSITORY_ID else manifest_path.read_bytes()
@@ -42,6 +43,14 @@ def build(base_url):
             raise ValueError("The folder must match the add-on ID and its version must be set.")
         if any(character in version for character in "/\\"):
             raise ValueError("Invalid add-on version.")
+        for asset in addon.findall("extension[@point='xbmc.addon.metadata']/assets/*"):
+            relative_path = Path(asset.text or "")
+            source = addon_directory / relative_path
+            if relative_path.is_absolute() or not source.resolve().is_relative_to(addon_directory.resolve()):
+                raise ValueError("Artwork must be located inside the add-on directory.")
+            if not source.is_file():
+                raise ValueError("Missing artwork for " + addon_id + ": " + str(relative_path))
+            asset_files.append((addon_id, relative_path, source.read_bytes()))
         catalog.append(copy.deepcopy(addon))
         buffer = io.BytesIO()
         with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as archive:
@@ -63,6 +72,11 @@ def build(base_url):
     # Stage a complete build before replacing the catalog. Keep previous releases.
     with tempfile.TemporaryDirectory(prefix="kodi-repository-") as temporary:
         staging = Path(temporary)
+        # Kodi downloads artwork before installing add-ons, using the catalog paths.
+        for addon_id, relative_path, data in asset_files:
+            asset_path = staging / addon_id / relative_path
+            asset_path.parent.mkdir(parents=True, exist_ok=True)
+            asset_path.write_bytes(data)
         for addon_id, version, package in packages:
             destination = staging / addon_id / (addon_id + "-" + version + ".zip")
             destination.parent.mkdir(parents=True, exist_ok=True)
