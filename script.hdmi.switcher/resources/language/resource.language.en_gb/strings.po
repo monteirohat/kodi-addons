@@ -1,0 +1,83 @@
+# Kodi Media Center language file
+# Addon Name: HDMI Switcher
+# Addon id: script.hdmi.switcher
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "HDMI Switcher"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Choose the display for Kodi. Kodi restarts on the display you select."
+msgstr ""
+
+msgctxt "#30002"
+msgid "OK: switch display  ·  Back: close"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Small display"
+msgstr ""
+
+msgctxt "#30011"
+msgid "External monitor"
+msgstr ""
+
+msgctxt "#30012"
+msgid "HDMI 1  ·  next to the USB-C power"
+msgstr ""
+
+msgctxt "#30013"
+msgid "HDMI 2  ·  next to the audio jack"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Active now"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Connected"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Not connected"
+msgstr ""
+
+msgctxt "#30030"
+msgid "This add-on requires LibreELEC."
+msgstr ""
+
+msgctxt "#30031"
+msgid "An HDMI output is disabled at boot. Remove the HDMI video overrides from /flash/cmdline.txt and reboot once. See the README for instructions."
+msgstr ""
+
+msgctxt "#30032"
+msgid "The selected display was not detected. Turn it on and check its HDMI cable."
+msgstr ""
+
+msgctxt "#30033"
+msgid "Switch to {0}? Kodi will restart and stop any current playback."
+msgstr ""
+
+msgctxt "#30034"
+msgid "{0} is already the active display."
+msgstr ""
+
+msgctxt "#30035"
+msgid "Another display switch is already in progress."
+msgstr ""
+
+msgctxt "#30036"
+msgid "Unable to switch displays. {0}"
+msgstr ""
+
+msgctxt "#30037"
+msgid "Switch"
+msgstr ""
+
+msgctxt "#30038"
+msgid "Cancel"
+msgstr ""

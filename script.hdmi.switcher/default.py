@@ -7,15 +7,27 @@ import tempfile
 import xml.etree.ElementTree as ET
 
 import xbmc
+import xbmcaddon
 import xbmcgui
 import xbmcvfs
 
 
-TITLE = "HDMI Switcher"
+ADDON = xbmcaddon.Addon()
+PATH = ADDON.getAddonInfo("path")
+CARDS = 100
+ACTION_BACK = (10, 92)
+# Name and port description string IDs, and the connector of each display card.
 DISPLAYS = [
-    ("Small display (7-inch) — HDMI 1", "HDMI-A-1"),
-    ("External monitor — HDMI 2", "HDMI-A-2"),
+    (30010, 30012, "HDMI-A-1"),
+    (30011, 30013, "HDMI-A-2"),
 ]
+
+
+def text(string_id, *arguments):
+    return ADDON.getLocalizedString(string_id).format(*arguments)
+
+
+TITLE = text(30000)
 
 
 def atomic_write(path, data):
@@ -55,42 +67,95 @@ def configure_monitor(original, connector):
     return ET.tostring(root, encoding="utf-8", xml_declaration=True)
 
 
+def is_connected(connector):
+    status_files = glob.glob("/sys/class/drm/*-" + connector + "/status")
+    return any(Path(status_file).read_text().strip() == "connected" for status_file in status_files)
+
+
+def active_connector(original):
+    """Connector configured in advancedsettings.xml, or None when Kodi uses its default display."""
+    if original is None:
+        return None
+    try:
+        root = ET.fromstring(original)
+    except ET.ParseError:
+        return None
+    monitor = root.find("videoscreen/monitor")
+    return monitor.text.strip() if monitor is not None and monitor.text else None
+
+
+class DisplayPicker(xbmcgui.WindowXMLDialog):
+    """One card for each display. Sets choice to the selected index, or None when closed."""
+
+    def onInit(self):
+        cards = self.getControl(CARDS)
+        cards.reset()
+        start = None
+        for index, (name_id, port_id, connector) in enumerate(DISPLAYS):
+            item = xbmcgui.ListItem(text(name_id), text(port_id))
+            if connector == self.active:
+                state, status = "active", text(30020)
+            elif is_connected(connector):
+                state, status = "connected", text(30021)
+            else:
+                state, status = "missing", text(30022)
+            item.setProperty("state", state)
+            item.setProperty("status", status)
+            cards.addItem(item)
+            # Start on the first display that is not active, the likely choice.
+            if connector != self.active and start is None:
+                start = index
+        cards.selectItem(start or 0)
+        self.setFocusId(CARDS)
+
+    def onAction(self, action):
+        if action.getId() in ACTION_BACK:
+            self.close()
+
+    def onClick(self, control_id):
+        if control_id == CARDS:
+            self.choice = self.getControl(CARDS).getSelectedPosition()
+            self.close()
+
+
+def choose_display(active):
+    picker = DisplayPicker("script-hdmi-switcher-main.xml", PATH, "default", "1080i")
+    picker.active, picker.choice = active, None
+    picker.doModal()
+    choice = picker.choice
+    del picker
+    return choice
+
+
 def switch_display(dialog, profile_directory):
     os_release = Path("/etc/os-release")
     if not os_release.is_file() or 'ID="libreelec"' not in os_release.read_text():
-        dialog.ok(TITLE, "This add-on requires LibreELEC.")
+        dialog.ok(TITLE, text(30030))
         return
 
     boot_options = Path("/proc/cmdline").read_text().split()
     disabled_outputs = {"video=HDMI-A-1:d", "video=HDMI-A-2:d"}
     if disabled_outputs.intersection(boot_options):
-        dialog.ok(
-            TITLE,
-            "An HDMI output is disabled at boot. Remove the HDMI video overrides "
-            "from /flash/cmdline.txt and reboot once. See the README for instructions.",
-        )
-        return
-
-    selected_index = dialog.select(TITLE, [display[0] for display in DISPLAYS])
-    if selected_index < 0:
-        return
-    label, connector = DISPLAYS[selected_index]
-    status_files = glob.glob("/sys/class/drm/*-" + connector + "/status")
-    connected = any(
-        Path(status_file).read_text().strip() == "connected"
-        for status_file in status_files
-    )
-    if not connected:
-        dialog.ok(TITLE, "The selected display was not detected. Turn it on and check its HDMI cable.")
-        return
-    if not dialog.yesno(
-        TITLE,
-        "Switch to " + label + "? Kodi will restart and stop any current playback.",
-    ):
+        dialog.ok(TITLE, text(30031))
         return
 
     settings_path = profile_directory / "advancedsettings.xml"
     original = settings_path.read_bytes() if settings_path.exists() else None
+    active = active_connector(original)
+    selected_index = choose_display(active)
+    if selected_index is None or selected_index < 0:
+        return
+    name_id, _, connector = DISPLAYS[selected_index]
+    label = text(name_id)
+    if connector == active:
+        dialog.ok(TITLE, text(30034, label))
+        return
+    if not is_connected(connector):
+        dialog.ok(TITLE, text(30032))
+        return
+    if not dialog.yesno(TITLE, text(30033, label), nolabel=text(30038), yeslabel=text(30037)):
+        return
+
     updated = configure_monitor(original, connector)
     if original is not None:
         backup_path = profile_directory / "advancedsettings.xml.hdmi-switcher.bak"
@@ -126,13 +191,13 @@ def main():
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
-            dialog.ok(TITLE, "Another display switch is already in progress.")
+            dialog.ok(TITLE, text(30035))
             return
         try:
             switch_display(dialog, profile_directory)
         except Exception as error:
             xbmc.log("HDMI Switcher: " + str(error), xbmc.LOGERROR)
-            dialog.ok(TITLE, "Unable to switch displays. " + str(error))
+            dialog.ok(TITLE, text(30036, error))
 
 
 if __name__ == "__main__":

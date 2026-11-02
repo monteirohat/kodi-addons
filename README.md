@@ -89,13 +89,16 @@ Install from **Monteiro > Video add-ons > Easy Movie**. Read the [Easy Movie gui
 
 <img src="script.hdmi.switcher/resources/icon.png" alt="HDMI Switcher" width="72" align="left">
 
-**Switch between a small HDMI display and an external monitor without touching the command line.** Pick a display from a simple menu, and Kodi restarts on it.
+**Switch between a small HDMI display and an external monitor without touching the command line.** Pick a display, and Kodi restarts on it.
 
 <br clear="left">
 
+- Two display cards that show which display is active and which ones are connected, in the same dark design as Easy Channel and Easy Movie.
 - Built for LibreELEC on Raspberry Pi 4, mapping the small display to `HDMI-A-1` and the external monitor to `HDMI-A-2`.
 - Keeps your existing advanced settings and backs up the configuration file before the first change.
 - Remembers the chosen display for future starts.
+
+![HDMI Switcher](script.hdmi.switcher/resources/screenshots/screenshot-01.jpg)
 
 HDMI Switcher needs a [one-time setup](script.hdmi.switcher/README.md#one-time-setup) that removes previous HDMI boot overrides. Install from **Monteiro > Program add-ons > HDMI Switcher**, and read the [HDMI Switcher guide](script.hdmi.switcher/README.md) for details.
 
@@ -154,7 +157,7 @@ Add another self-contained top-level directory with its own `addon.xml` to publi
 
 ### Repository identity
 
-The name shown in Kodi is **Monteiro**. The technical ID remains `repository.monteiromedia` so existing installations can receive this rename through a normal repository update. Version 1.0.3 added repository artwork and detailed metadata, version 1.0.4 added Easy Channel to its description, and version 1.0.5 adds Easy Movie. HDMI Switcher keeps its `script.hdmi.switcher` ID and uses version 1.0.4 for its dedicated display-switching icon.
+The name shown in Kodi is **Monteiro**. The technical ID remains `repository.monteiromedia` so existing installations can receive this rename through a normal repository update. Version 1.0.3 added repository artwork and detailed metadata, version 1.0.4 added Easy Channel to its description, and version 1.0.5 adds Easy Movie. HDMI Switcher keeps its `script.hdmi.switcher` ID, and version 1.1.0 brings its display picker and icon in line with the other add-ons.
 
 ### Repository layout
 
@@ -172,6 +175,8 @@ The name shown in Kodi is **Monteiro**. The technical ID remains `repository.mon
 | `tools/generate_m3u_movies_skin.py` | Generator of the Easy Movie window layouts. |
 | `tools/generate_easy_channel_art.py` | Generator of the Easy Channel icon, fanart, and header symbol. |
 | `tools/generate_easy_movie_art.py` | Generator of the Easy Movie icon, fanart, header symbol, and poster placeholder. |
+| `tools/generate_hdmi_switcher_skin.py` | Generator of the HDMI Switcher window layout. |
+| `tools/generate_hdmi_switcher_art.py` | Generator of the HDMI Switcher icon, fanart, header symbol, and display icon. |
 | `.github/workflows/publish-repository.yml` | Build and publish workflow. |
 
 Package hash headers are disabled in the Kodi repository definition because GitHub Raw does not provide Kodi's `content-sha256` headers. SHA-256 sidecars are provided for manual verification. Downloads use HTTPS.
@@ -190,9 +195,9 @@ Replace the owner, repository name, and branch when building for another locatio
 
 Every add-on declares an opaque 512 by 512 PNG icon and a 1280 by 720 JPEG fanart in its `addon.xml`. The builder publishes them at their catalog paths so Kodi can display them before installation. If old artwork remains after an update, restart Kodi.
 
-The repository icon is an M monogram with a subtle play-shaped cutout, and its fanart shows quiet angular ribbons. HDMI Switcher's icon shows two monitors linked by switching arrows. Both use a navy, cyan, and blue palette and were created with OpenAI image generation.
+The repository icon is an M monogram with a subtle play-shaped cutout, and its fanart shows quiet angular ribbons. Both use a navy, cyan, and blue palette and were created with OpenAI image generation.
 
-Easy Channel's icon shows a blue TV screen with a white playlist symbol on a dark background, matching its interface. Easy Movie uses the same colors and shapes with a clapperboard. Their icons and fanart are drawn by scripts in `tools`, as described in the [Easy Channel](script.m3u.channels/README.md#development) and [Easy Movie](script.m3u.movies/README.md#development) READMEs.
+The add-on icons share one identity: blue rounded displays with white symbols on a dark background, matching the add-on interfaces. Easy Channel shows a TV with a playlist, Easy Movie a clapperboard, and HDMI Switcher two displays with switching arrows. Their icons and fanart are drawn by scripts in `tools`, as described in the [Easy Channel](script.m3u.channels/README.md#development), [Easy Movie](script.m3u.movies/README.md#development) and [HDMI Switcher](script.hdmi.switcher/README.md#artwork-and-layout) READMEs.
 
 ### Development conventions
 
@@ -204,7 +209,7 @@ Easy Channel's icon shows a blue TV screen with a white playlist symbol on a dar
 
 ### Validation
 
-Local checks cover metadata, package structure, checksums, deterministic builds, and the previously tested HDMI configuration logic. The user confirmed installation and HDMI display switching on the target Raspberry Pi.
+Local checks cover metadata, package structure, checksums, deterministic builds, and the previously tested HDMI configuration logic. The user confirmed installation and HDMI display switching on the target Raspberry Pi with HDMI Switcher 1.0.4. Version 1.1.0 was tested on the device up to the switch confirmation, as described in its [README](script.hdmi.switcher/README.md#validation).
 
 Easy Channel was tested on LibreELEC 12.2.1 with Kodi 21.3 on a Raspberry Pi 4 by driving the interface with remote control commands and screenshots. The tests covered adding lists from a file and from GitHub, browsing groups, favorites, removing and restoring channels, failure detection for missing streams and unreachable servers, group checks, the list and repository managers, and the TV menu. Adding a repository by typing its name was only tested outside Kodi.
 
