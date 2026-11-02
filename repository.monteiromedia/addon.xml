@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addon id="repository.monteiromedia" name="MonteiroMedia Add-ons" version="1.0.0" provider-name="MonteiroMedia">
+  <extension point="xbmc.addon.repository" name="MonteiroMedia Add-ons">
+    <dir minversion="21.0.0">
+      <info compressed="false">https://raw.githubusercontent.com/monteirohat/koid-addons/main/repository/addons.xml</info>
+      <checksum>https://raw.githubusercontent.com/monteirohat/koid-addons/main/repository/addons.xml.md5</checksum>
+      <datadir zip="true">https://raw.githubusercontent.com/monteirohat/koid-addons/main/repository/</datadir>
+      <hashes>false</hashes>
+    </dir>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Custom Kodi add-ons by MonteiroMedia</summary>
+    <description lang="en_GB">Install and update HDMI Switcher and other MonteiroMedia add-ons through Kodi.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+  </extension>
+</addon>

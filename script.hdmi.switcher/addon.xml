@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.0.0" provider-name="MonteiroMedia">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Switch between two HDMI displays on LibreELEC</summary>
+    <description lang="en_GB">Choose the small display or external monitor, save the HDMI connector preference, and restart Kodi to apply it. Designed for LibreELEC on Raspberry Pi 4.</description>
+    <platform>linux</platform>
+    <license>MIT</license>
+  </extension>
+</addon>
