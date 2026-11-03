@@ -311,6 +311,7 @@ def main():
         spaces=0)
 
     files = {
+        "script-m3u-channels-player.xml": window("TV player: full screen video with the channel bar of a TV box.", 100, player_screen()),
         "script-m3u-channels-main.xml": window("Main screen: toolbar and groups on the left, channels in the middle, preview on the right.", 200, main),
         "script-m3u-channels-manager.xml": manager("Modal list manager opened from the gear icon.", "gear.png", 30060, "tv.png",
             [button(201, 440, 248, 203, 204, 30000), button(204, 704, 248, 201, 202, 30093),
@@ -321,6 +322,54 @@ def main():
     for name, content in files.items():
         with open(os.path.join(skin_folder(ADDON_ID), name), "w") as output:
             output.write(content)
+
+
+def player_screen():
+    """Full screen video and the channel bar, shown while Window.Property(bar) is true. Set from TvPlayer in gui.py."""
+    status = lambda name: "String.IsEqual(Window.Property(status),%s)" % name
+    bar = join(
+        panel(48, 792, 1824, 248, "F217181B"),
+        panel(80, 824, 248, 184, RAISED),
+        image(96, 836, 216, 160, "$INFO[Window.Property(logo)]", keep=True, fallback="tv.png"),
+        label(360, 820, 1180, 64, f"[COLOR {ACCENT}]$INFO[Window.Property(number)][/COLOR]   $INFO[Window.Property(name)]",
+              "font32_title", TEXT),
+        label(1540, 820, 300, 64, "$INFO[System.Time]", "font32_title", TEXT2, align="right"),
+        label(360, 884, 1480, 40, "$INFO[Window.Property(group)]", "font13", TEXT2),
+        label(360, 928, 1480, 40, f"$ADDON[{ADDON_ID} 30110]", "font13", ACCENT, status("connecting")),
+        label(360, 928, 1480, 40, f"$ADDON[{ADDON_ID} 30111]", "font13", DANGER, status("failed")),
+        label(360, 928, 1480, 40, "$INFO[VideoPlayer.VideoResolution,,p]$INFO[VideoPlayer.VideoCodec,  ·  ]"
+              "$INFO[VideoPlayer.AudioCodec,  ·  ]", "font13", TEXT3, "String.IsEmpty(Window.Property(status)) + Player.HasVideo"),
+        image(360, 980, 1480, 2, "white.png", RAISED),
+        label(360, 990, 700, 40, "$INFO[Window.Property(around)]", "font12", TEXT2),
+        label(1060, 990, 780, 40, f"$ADDON[{ADDON_ID} 30109]", "font12", TEXT3, align="right"),
+        spaces=2)
+    return join(
+        image(0, 0, 1920, 1080, "white.png", "FF000000"),
+        """<control type="videowindow">
+  <left>0</left>
+  <top>0</top>
+  <width>1920</width>
+  <height>1080</height>
+</control>""",
+        "<!-- Receives the remote keys. TvPlayer handles them in onAction. -->",
+        """<control type="button" id="100">
+  <left>0</left>
+  <top>0</top>
+  <width>1</width>
+  <height>1</height>
+  <onup>noop</onup>
+  <ondown>noop</ondown>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <texturefocus>-</texturefocus>
+  <texturenofocus>-</texturenofocus>
+</control>""",
+        f"""<control type="group">
+  <visible>String.IsEqual(Window.Property(bar),true)</visible>
+  <animation effect="fade" time="200">VisibleChange</animation>
+{bar}
+</control>""",
+        spaces=0)
 
 
 if __name__ == "__main__":

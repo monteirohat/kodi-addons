@@ -385,3 +385,19 @@ msgstr "Abrir o Easy Channel pelo menu TV"
 msgctxt "#30107"
 msgid "OK: full screen  ·  Left or Back: channels"
 msgstr "OK: tela cheia  ·  Esquerda ou Voltar: canais"
+
+msgctxt "#30108"
+msgid "Up: {0}  ·  Down: {1}"
+msgstr "Cima: {0}  ·  Baixo: {1}"
+
+msgctxt "#30109"
+msgid "OK: channel info  ·  Menu: Kodi player  ·  Back: channel list"
+msgstr "OK: informações  ·  Menu: player do Kodi  ·  Voltar: lista de canais"
+
+msgctxt "#30110"
+msgid "Connecting..."
+msgstr "Conectando..."
+
+msgctxt "#30111"
+msgid "Not responding. Use Up or Down to change channel."
+msgstr "Não está respondendo. Use Cima ou Baixo para trocar de canal."

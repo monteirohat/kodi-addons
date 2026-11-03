@@ -45,9 +45,23 @@ Easy Channel requires Kodi 21 (Omega) or later. It was developed and tested on L
 | **Up / Down** | Move between groups. The channel column follows the highlighted group. | Move between channels. |
 | **Right** | Move to the channels of the group. | Move to the star, then to the trash can, then to the preview of the playing channel. |
 | **Left** | Move to the toolbar, keeping the highlighted group. | Move back from the buttons, then to the groups. |
-| **OK** | Move to the channels of the group. | Play the channel, or use the selected star or trash can. The channel already playing opens in full screen instead of starting again. On the preview, open full screen. |
+| **OK** | Move to the channels of the group. | Play the channel, or use the selected star or trash can. The channel already playing opens in the TV player instead of starting again. On the preview, open the TV player. |
 | **Back** | Close Easy Channel. | Return to the groups. |
 | **Menu** (**C** on a keyboard) | | Favorite, remove or check the channel. |
+
+### TV player
+
+Channels play in full screen with a channel bar at the bottom, as on a TV box. The bar shows the channel logo, number, name, group and list, the time, whether the channel is connecting or not responding, the video resolution and codecs, and the channels above and below. It hides after a few seconds.
+
+| Key | Action |
+| --- | --- |
+| **Up / Down** | Previous or next channel of the group, wrapping around at the ends. The bar changes at once, and the channel opens when you stop on it, so holding the key skims through channels. **Channel +/-** on a remote work the same way. |
+| **OK**, **Left / Right** | Show the bar. |
+| **Menu** (**C** on a keyboard) | Open Kodi's own player, for audio, subtitles and video settings. **Back** there returns to the TV player. |
+| **Back** | Return to the channel list, with the last channel watched selected. The channel keeps playing in the preview. |
+| **Stop** | Stop the channel and return to the list. |
+
+A channel that does not respond is reported on the bar instead of a dialog, so you can move on to the next one. Channels can be removed from the list.
 
 ### Toolbar
 

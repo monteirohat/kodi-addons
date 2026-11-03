@@ -18,9 +18,14 @@ ADDON = storage.ADDON
 TITLE = ADDON.getAddonInfo("name")
 PATH = ADDON.getAddonInfo("path")
 MEDIA = os.path.join(PATH, "resources", "skins", "default", "media")
-ACTION_LEFT, ACTION_RIGHT = 1, 2
+ACTION_LEFT, ACTION_RIGHT, ACTION_UP, ACTION_DOWN = 1, 2, 3, 4
 ACTION_BACK = (10, 92)
+ACTION_STOP = 13
 ACTION_CONTEXT_MENU = 117
+ACTION_CHANNEL_UP, ACTION_CHANNEL_DOWN = 184, 185
+# Keys that show the channel bar of the TV player: OK, Info, Left and Right. Other actions, such as the ones
+# Kodi sends for built-in commands, leave it as it is.
+BAR_ACTIONS = (7, 11, ACTION_LEFT, ACTION_RIGHT)
 # Buttons reached with Right on a channel row. An empty value means the row itself.
 ROW_ACTIONS = ["", "favorite", "remove"]
 TOOLBAR, GROUPS, CHANNELS, PREVIEW = 100, 200, 300, 500
@@ -31,6 +36,10 @@ MANAGER_ADD, MANAGER_SETTINGS, MANAGER_CLOSE, MANAGER_GITHUB = 201, 202, 203, 20
 FILTER_ABOVE = 30
 # Delay before the channel column follows the highlighted group, so fast scrolling stays smooth.
 FOLLOW_DELAY = 0.3
+# TV player: seconds the channel bar stays on screen, and the pause after Up or Down before the channel opens,
+# so holding the key skims through channels without opening each one.
+BAR_SECONDS = 5
+ZAP_DELAY = 0.8
 
 # Toolbar above the groups: icon, label and the MainWindow method it runs. Add new tools here.
 TOOLS = [
@@ -125,7 +134,9 @@ class MainWindow(xbmcgui.WindowXML):
         self.show_lock = threading.Lock()
         self.follow_requests = itertools.count()
         self.follow_request = 0
-        self.watcher = Watcher(self.on_failure)
+        self.watcher = Watcher(self.on_failure, self.on_started)
+        # TV player window while it is open.
+        self.player = None
 
     def onInit(self):
         # Also called when returning from full screen video. Keep the current state then.
@@ -299,7 +310,11 @@ class MainWindow(xbmcgui.WindowXML):
 
     def onClick(self, control_id):
         if control_id == PREVIEW:
-            xbmc.executebuiltin("ActivateWindow(fullscreenvideo)")
+            current = self.watcher.current
+            if current and self.watcher.is_playing(current):
+                self.open_player(current)
+            else:
+                xbmc.executebuiltin("ActivateWindow(fullscreenvideo)")
         elif control_id == TOOLBAR:
             getattr(self, TOOLS[self.toolbar.getSelectedPosition()][2])()
         elif control_id == GROUPS:
@@ -330,9 +345,9 @@ class MainWindow(xbmcgui.WindowXML):
     def play(self, entry):
         if entry is None:
             return
-        # The channel already playing is shown in full screen instead of opening it again.
+        # The channel already playing is shown in the TV player instead of opening it again.
         if self.watcher.is_playing(entry):
-            xbmc.executebuiltin("ActivateWindow(fullscreenvideo)")
+            self.open_player(entry)
             return
         channel = entry["channel"]
         if ADDON.getSettingBool("check_before_play"):
@@ -347,10 +362,34 @@ class MainWindow(xbmcgui.WindowXML):
                     self.remove([entry])
                 if answer != 2:
                     return
-        self.watcher.play_channel(entry)
+        self.open_player(entry)
+
+    def open_player(self, entry):
+        """Show a channel in the TV player. Up and Down there move through the shown group."""
+        entries = self.entries
+        index = next((number for number, shown in enumerate(entries) if shown is entry), None)
+        if index is None:
+            entries, index = [entry], 0
+        player = TvPlayer("script-m3u-channels-player.xml", PATH, "default", "1080i")
+        player.setup(self, entries, index)
+        self.player = player
+        player.doModal()
+        self.player = None
+        # Back on the list, the channel last watched is selected.
+        if entries is self.entries:
+            self.channel_list.selectItem(player.index)
+        del player
+
+    def on_started(self, entry):
+        if self.player:
+            self.player.on_started(entry)
 
     def on_failure(self, entry):
         """Called by the watcher when a channel did not play."""
+        # In the TV player the channel bar reports it, so changing channel is not interrupted by a dialog.
+        if self.player:
+            self.player.on_failure(entry)
+            return
         if not ADDON.getSettingBool("offer_remove"):
             return
         answer = xbmcgui.Dialog().yesnocustom(
@@ -469,6 +508,116 @@ class MainWindow(xbmcgui.WindowXML):
             storage.restore_channels([channel_ids[index] for index in selected])
             notify(text(30031, len(selected)))
             self.reload()
+
+
+class TvPlayer(xbmcgui.WindowXML):
+    """Full screen video with a TV box style channel bar. Up and Down change channel, Back returns to the list."""
+
+    def setup(self, main, entries, index):
+        self.main, self.entries, self.index = main, entries, index
+        self.ready = False
+        self.tuned = None
+        self.zap_timer = self.bar_timer = None
+
+    def onInit(self):
+        # Also called when returning from Kodi's own full screen player, opened with Menu.
+        if self.ready:
+            self.show_bar()
+            return
+        self.ready = True
+        threading.Thread(target=self.tune, daemon=True).start()
+
+    def onAction(self, action):
+        action_id = action.getId()
+        if action_id in ACTION_BACK or action_id == ACTION_STOP:
+            self.leave(action_id == ACTION_STOP)
+        elif action_id in (ACTION_UP, ACTION_CHANNEL_DOWN):
+            self.zap(-1)
+        elif action_id in (ACTION_DOWN, ACTION_CHANNEL_UP):
+            self.zap(1)
+        elif action_id == ACTION_CONTEXT_MENU:
+            xbmc.executebuiltin("ActivateWindow(fullscreenvideo)")
+        elif action_id in BAR_ACTIONS:
+            self.show_bar()
+
+    # Channel bar
+
+    def show_channel(self, status):
+        entry = self.entries[self.index]
+        channel = entry["channel"]
+        self.setProperty("number", str(self.index + 1))
+        self.setProperty("name", channel["name"])
+        self.setProperty("logo", channel["logo"])
+        self.setProperty("group", "  ·  ".join([name for name in m3u.groups_of(channel) if name] + [entry["list_name"]]))
+        if len(self.entries) > 1:
+            around = [(self.index + step) % len(self.entries) for step in (-1, 1)]
+            self.setProperty("around", text(30108, *["%d  %s" % (number + 1, self.entries[number]["channel"]["name"])
+                                                     for number in around]))
+        self.set_status(status)
+
+    def set_status(self, status):
+        """connecting, failed, or empty while the channel plays."""
+        self.setProperty("status", status)
+        self.show_bar()
+
+    def show_bar(self):
+        self.setProperty("bar", "true")
+        if self.bar_timer:
+            self.bar_timer.cancel()
+        # The bar stays while a channel is opening or failed, so its state is not missed.
+        if not self.getProperty("status"):
+            self.bar_timer = threading.Timer(BAR_SECONDS, self.setProperty, ("bar", "false"))
+            self.bar_timer.start()
+
+    # Channels
+
+    def zap(self, step):
+        if len(self.entries) < 2:
+            self.show_bar()
+            return
+        self.index = (self.index + step) % len(self.entries)
+        self.show_channel("connecting")
+        if self.zap_timer:
+            self.zap_timer.cancel()
+        self.zap_timer = threading.Timer(ZAP_DELAY, self.tune)
+        self.zap_timer.start()
+
+    def tune(self):
+        """Open the channel shown on the bar. Runs on a thread, so the remote keeps working meanwhile."""
+        entry = self.entries[self.index]
+        channel_id = self.tuned = entry["channel"]["id"]
+        watcher = self.main.watcher
+        if watcher.is_playing(entry):
+            self.show_channel("")
+            return
+        self.show_channel("connecting")
+        if watcher.isPlaying():
+            watcher.stop()
+        # Kodi ignores the remote while it opens a stream, which takes long on a slow or dead server. Checking
+        # the server first keeps that time short, and a dead one never reaches Kodi.
+        reason = probe.check(entry["channel"]["url"], ADDON.getSettingInt("check_timeout"))
+        if self.tuned != channel_id:
+            return
+        if reason:
+            self.set_status("failed")
+        else:
+            watcher.play_channel(entry, windowed=True)
+
+    def on_started(self, entry):
+        if entry["channel"]["id"] == self.tuned:
+            self.set_status("")
+
+    def on_failure(self, entry):
+        if entry["channel"]["id"] == self.tuned:
+            self.set_status("failed")
+
+    def leave(self, stop):
+        for timer in (self.zap_timer, self.bar_timer):
+            if timer:
+                timer.cancel()
+        if stop:
+            self.main.watcher.stop()
+        self.close()
 
 
 class ListManager(xbmcgui.WindowXMLDialog):

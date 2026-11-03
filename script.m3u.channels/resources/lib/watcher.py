@@ -27,9 +27,12 @@ def playable_url(url):
 
 
 class Watcher(xbmc.Player):
-    def __init__(self, on_failure):
+    def __init__(self, on_failure, on_started=None):
         super().__init__()
         self.on_failure = on_failure
+        # Called with the entry when its video starts, used by the TV player to update its channel bar.
+        self.on_started = on_started
+        self.current = None
         self.monitor = xbmc.Monitor()
         self.lock = threading.Lock()
         self.events = []
@@ -58,8 +61,10 @@ class Watcher(xbmc.Player):
         with self.lock:
             self.events.append(event)
 
-    def play_channel(self, entry):
+    def play_channel(self, entry, windowed=False):
+        """Play a channel. windowed keeps Kodi from switching to its own full screen player."""
         channel = entry["channel"]
+        self.current = entry
         # A channel replaced while still opening did not fail, so it is no longer watched.
         with self.lock:
             self.watched = None
@@ -74,7 +79,7 @@ class Watcher(xbmc.Player):
             self.monitor.waitForAbort(0.2)
         with self.lock:
             self.events = []
-            self.watched = dict(entry, opened=time.time(), started=None)
+            self.watched = dict(entry, opened=time.time(), started=None, windowed=windowed)
         url = playable_url(channel["url"])
         item = xbmcgui.ListItem(channel["name"], path=url)
         item.getVideoInfoTag().setTitle(channel["name"])
@@ -86,7 +91,7 @@ class Watcher(xbmc.Player):
         item.setContentLookup(False)
         if ".m3u8" in m3u.base_url(channel["url"]).lower():
             item.setMimeType("application/vnd.apple.mpegurl")
-        self.play(url, item)
+        self.play(url, item, windowed)
 
     def is_playing(self, entry):
         """Whether this channel is the one playing now, or still opening."""
@@ -103,10 +108,11 @@ class Watcher(xbmc.Player):
                 watched = self.watched
             if watched is None:
                 continue
-            failed = finished = False
+            failed = finished = started = False
             for event in events:
                 if event == "started":
                     watched["started"] = time.time()
+                    started = True
                 elif event == "stopped":
                     # Stopping a channel that never started usually means it was not working.
                     failed = watched["started"] is None
@@ -117,6 +123,8 @@ class Watcher(xbmc.Player):
                     failed = watched["started"] is None or time.time() - watched["started"] < EARLY_END
                 if failed or finished:
                     break
+            if started and self.on_started:
+                self.on_started(watched)
             if watched["started"]:
                 finished = finished or time.time() - watched["started"] > EARLY_END
             elif not (failed or finished):
@@ -133,13 +141,22 @@ class Watcher(xbmc.Player):
             if failed and not self.closed:
                 if self.isPlaying() and watched["started"] is None:
                     self.stop()
-                # Ask only after Kodi gave up opening the channel and closed its own error notice.
                 self.monitor.waitForAbort(1)
-                for _ in range(240):
-                    if self.closed or self.monitor.waitForAbort(0.5):
-                        return
-                    if not self.isPlaying() and not xbmc.getCondVisibility("System.HasActiveModalDialog"):
-                        break
+                if watched["windowed"]:
+                    # The TV player reports the failure on its channel bar, so Kodi's own error notice is closed.
+                    for _ in range(10):
+                        if xbmc.getCondVisibility("Window.IsActive(okdialog)"):
+                            xbmc.executebuiltin("Dialog.Close(okdialog,true)")
+                            break
+                        if self.closed or self.monitor.waitForAbort(0.3):
+                            return
+                else:
+                    # Ask only after Kodi gave up opening the channel and closed its own error notice.
+                    for _ in range(240):
+                        if self.closed or self.monitor.waitForAbort(0.5):
+                            return
+                        if not self.isPlaying() and not xbmc.getCondVisibility("System.HasActiveModalDialog"):
+                            break
                 self.on_failure(watched)
 
     def shutdown(self):

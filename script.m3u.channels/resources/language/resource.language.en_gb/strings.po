@@ -385,3 +385,19 @@ msgstr ""
 msgctxt "#30107"
 msgid "OK: full screen  ·  Left or Back: channels"
 msgstr ""
+
+msgctxt "#30108"
+msgid "Up: {0}  ·  Down: {1}"
+msgstr ""
+
+msgctxt "#30109"
+msgid "OK: channel info  ·  Menu: Kodi player  ·  Back: channel list"
+msgstr ""
+
+msgctxt "#30110"
+msgid "Connecting..."
+msgstr ""
+
+msgctxt "#30111"
+msgid "Not responding. Use Up or Down to change channel."
+msgstr ""
