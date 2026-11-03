@@ -93,6 +93,9 @@ The toolbar above the genres shows the name of the focused tool.
 
 ### Movies that do not work
 
+Before playing, Easy Movie checks that the stream answers, with a **Connecting** dialog that can be cancelled. The details window stays open meanwhile, so another episode can be picked right away. Kodi itself waits for an unresponsive server on its interface thread, which froze the screen for half a minute, so streams that do not answer are reported before Kodi tries them. A stream that answers is checked in about two seconds, and most open without the dialog appearing. A stream that does not answer is reported within 8 seconds, the **Check timeout** setting, with **Remove**, **Cancel** or **Play anyway**.
+
+
 When a movie fails to open, stops before it starts, or ends within a minute of starting, Easy Movie asks whether to **Remove** it, **Keep** it, or **Try again**. Kodi stops waiting for an unreachable server after 8 seconds, and a movie still opening after 15 seconds is checked, so a dead link is reported in about 20 seconds. Stopping a movie after it started is never treated as a failure.
 
 The original M3U is never changed. Removed movies are recorded by stream address and hidden from every list, so a removal keeps working when a web list is downloaded again. Restore a movie from **Removed movies** if it works again later. **Export clean M3U** in the list manager saves a list without its removed movies.
@@ -133,7 +136,6 @@ Turn off **Open Easy Movie from the Movies menu** or **Open Easy Movie from the 
 | Open Easy Movie from the Movies menu | On | Open Easy Movie when **Movies** is selected in Kodi's main menu and the movie library is empty. |
 | Open Easy Movie from the TV shows menu | On | Open Easy Movie on the series when **TV shows** is selected and the TV show library is empty. |
 | Offer to remove movies that fail to play | On | Show the removal dialog after a failed playback. |
-| Check the movie before playing | Off | Test each stream before opening it. Adds a short delay to every movie. |
 | Update lists every (hours) | 12 | Web lists are downloaded again after this interval. The saved copy is used when the provider is offline. |
 | Check timeout (seconds) | 8 | Advanced. Time to wait for each stream during a check. |
 | Movies checked at the same time | 10 | Advanced. Parallel requests during **Check movies**. |

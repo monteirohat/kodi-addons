@@ -159,8 +159,8 @@ msgid "No removed movies"
 msgstr "Nenhum filme removido"
 
 msgctxt "#30038"
-msgid "The movie \"{0}\" is not responding ({1}). Do you want to remove it from the list?"
-msgstr "O filme \"{0}\" não está respondendo ({1}). Deseja remover da lista?"
+msgid "\"{0}\" is not responding ({1}). Do you want to remove it from the list?"
+msgstr "\"{0}\" não está respondendo ({1}). Deseja remover da lista?"
 
 msgctxt "#30039"
 msgid "Play anyway"
@@ -473,3 +473,11 @@ msgstr "1 episódio"
 msgctxt "#30135"
 msgid "1 title"
 msgstr "1 título"
+
+msgctxt "#30136"
+msgid "Connecting to {0}..."
+msgstr "Conectando a {0}..."
+
+msgctxt "#30137"
+msgid "no answer from the server"
+msgstr "o servidor não respondeu"

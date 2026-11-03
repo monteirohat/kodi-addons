@@ -84,7 +84,7 @@ def build(entries):
             movies.append(entry)
             continue
         show, season, number, title = parsed
-        entry["episode"] = {"season": season, "number": number, "title": title}
+        entry["episode"] = {"season": season, "number": number, "title": title, "show": show}
         key = show_key(show)
         item = series.setdefault(key, {"series": True, "key": key, "name": show, "logo": "", "groups": [],
                                        "episodes": [], "list_name": entry["list_name"]})

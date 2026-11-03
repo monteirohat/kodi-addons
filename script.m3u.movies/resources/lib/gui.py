@@ -133,6 +133,42 @@ def next_episode(show, progress):
     return episodes[0], True
 
 
+CANCELLED = object()
+
+
+def display_name(entry):
+    """Name shown in messages: the movie name, or the series and episode code for an episode."""
+    if "episode" in entry:
+        return entry["episode"]["show"] + " " + episode_code(entry)
+    return entry["channel"]["name"]
+
+
+def reason_text(reason):
+    """Short reason in the interface language. Network errors are reported as no answer."""
+    return reason if reason.startswith("HTTP") else text(30137)
+
+
+def check_with_progress(channel, name):
+    """Check a stream while showing a dialog that can be cancelled. Returns None, a reason, or CANCELLED."""
+    result = []
+    worker = threading.Thread(target=lambda: result.append(probe.check(channel["url"], ADDON.getSettingInt("check_timeout"))),
+                              daemon=True)
+    worker.start()
+    # Most streams answer at once, so the dialog only appears for slow ones.
+    worker.join(0.7)
+    if result:
+        return result[0]
+    progress = xbmcgui.DialogProgress()
+    progress.create(TITLE, text(30136, name))
+    monitor = xbmc.Monitor()
+    while worker.is_alive():
+        if progress.iscanceled() or monitor.waitForAbort(0.1):
+            progress.close()
+            return CANCELLED
+    progress.close()
+    return result[0] if result else None
+
+
 def episode_code(entry):
     return text(30133, entry["episode"]["season"], entry["episode"]["number"])
 
@@ -387,12 +423,12 @@ class MainWindow(xbmcgui.WindowXML):
             details = SeriesDetails("script-m3u-movies-series.xml", PATH, "default", "1080i")
         else:
             details = MovieDetails("script-m3u-movies-details.xml", PATH, "default", "1080i")
-        details.window, details.entry, details.choice, details.episode = self, entry, None, None
+        details.window, details.entry, details.choice, details.episode, details.start = self, entry, None, None, 0
         details.doModal()
-        choice, episode = details.choice, details.episode
+        choice, episode, start = details.choice, details.episode, details.start
         del details
         if choice == "play":
-            self.play(episode or entry)
+            self.watcher.play_channel(episode or entry, start)
         elif choice == "remove":
             self.remove([entry])
 
@@ -404,30 +440,33 @@ class MainWindow(xbmcgui.WindowXML):
 
     # Movies
 
-    def play(self, entry):
-        if entry is None:
-            return
+    def prepare(self, entry):
+        """Ask where to start and check the stream. Returns the start position, or None to stay.
+
+        Kodi waits for an unreachable server on its interface thread before it plays, which freezes the
+        screen. Checking the stream first, with a dialog that can be cancelled, avoids that.
+        """
         channel = entry["channel"]
         start = 0
         state = storage.get_progress().get(channel["id"])
         if resumable(state):
             choice = xbmcgui.Dialog().contextmenu([text(30124, time_text(state["position"])), text(30125)])
             if choice < 0:
-                return
+                return None
             start = state["position"] if choice == 0 else 0
-        if ADDON.getSettingBool("check_before_play"):
-            busy(True)
-            reason = probe.check(channel["url"], ADDON.getSettingInt("check_timeout"))
-            busy(False)
-            if reason:
-                answer = xbmcgui.Dialog().yesnocustom(
-                    TITLE, text(30038, channel["name"], reason), customlabel=text(30039),
-                    nolabel=text(30040), yeslabel=text(30022))
-                if answer == 1:
-                    self.remove([entry])
-                if answer != 2:
-                    return
-        self.watcher.play_channel(entry, start)
+        name = display_name(entry)
+        reason = check_with_progress(channel, name)
+        if reason is CANCELLED:
+            return None
+        if reason:
+            answer = xbmcgui.Dialog().yesnocustom(
+                TITLE, text(30038, name, reason_text(reason)), customlabel=text(30039),
+                nolabel=text(30040), yeslabel=text(30022))
+            if answer == 1:
+                self.remove([entry])
+            if answer != 2:
+                return None
+        return start
 
     def on_progress(self, entry, position, total, finished):
         """Called by the watcher while a movie plays and when it stops."""
@@ -442,7 +481,7 @@ class MainWindow(xbmcgui.WindowXML):
         if not ADDON.getSettingBool("offer_remove"):
             return
         answer = xbmcgui.Dialog().yesnocustom(
-            TITLE, text(30021, entry["channel"]["name"]), customlabel=text(30024),
+            TITLE, text(30021, display_name(entry)), customlabel=text(30024),
             nolabel=text(30023), yeslabel=text(30022))
         if answer == 1:
             self.remove([entry])
@@ -592,8 +631,12 @@ class MovieDetails(xbmcgui.WindowXMLDialog):
 
     def onClick(self, control_id):
         if control_id == DETAILS_PLAY:
-            self.choice = "play"
-            self.close()
+            start = self.window.prepare(self.entry)
+            if start is not None:
+                self.choice, self.start = "play", start
+                self.close()
+            elif self.entry["channel"]["id"] in storage.get_removed():
+                self.close()
         elif control_id == DETAILS_FAVORITE:
             self.window.toggle_favorite(self.entry)
             self.update_favorite()
@@ -665,8 +708,7 @@ class SeriesDetails(xbmcgui.WindowXMLDialog):
 
     def onClick(self, control_id):
         if control_id == DETAILS_PLAY:
-            self.choice, self.episode = "play", self.next
-            self.close()
+            self.play(self.next)
         elif control_id == DETAILS_FAVORITE:
             self.window.toggle_favorite(self.entry)
             self.update_favorite()
@@ -680,8 +722,23 @@ class SeriesDetails(xbmcgui.WindowXMLDialog):
         elif control_id == SERIES_EPISODES:
             position = self.getControl(SERIES_EPISODES).getSelectedPosition()
             if 0 <= position < len(self.episodes):
-                self.choice, self.episode = "play", self.episodes[position]
+                self.play(self.episodes[position])
+
+    def play(self, episode):
+        """Close and play the episode once its stream answers. Otherwise stay, to pick another episode."""
+        start = self.window.prepare(episode)
+        if start is not None:
+            self.choice, self.episode, self.start = "play", episode, start
+            self.close()
+            return
+        if episode["channel"]["id"] in storage.get_removed():
+            self.entry["episodes"] = [entry for entry in self.entry["episodes"] if entry is not episode]
+            if not self.entry["episodes"]:
                 self.close()
+                return
+            self.entry["seasons"] = sorted({entry["episode"]["season"] for entry in self.entry["episodes"]})
+            self.season = min(self.season, len(self.entry["seasons"]) - 1)
+            self.show_season()
 
 
 class ListManager(xbmcgui.WindowXMLDialog):
