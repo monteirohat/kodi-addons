@@ -66,7 +66,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.channels</source>
-      <news>1.1.0 - New TV player: channels open in full screen with a channel bar showing the logo, number, name, group and connection state. Up and Down change channel, OK shows the bar, Menu opens the Kodi player and Back returns to the list. 1.0.1 - Moving quickly between groups no longer shows the channels of a group you already left. Changing channels no longer reports the new channel as not working. Opening the channel that is already playing shows it in full screen instead of starting it again. Right after the remove button moves to the preview, and OK there opens full screen. 1.0.0 - First release.</news>
+      <news>1.1.0 - New TV player: channels open in full screen with a channel bar showing the logo, number, name, group and connection state, with a star for adding the channel to Favorites. Up and Down change channel, Right reaches the favorite star, OK shows the bar, Menu opens the Kodi player and Back returns to the list. 1.0.1 - Moving quickly between groups no longer shows the channels of a group you already left. Changing channels no longer reports the new channel as not working. Opening the channel that is already playing shows it in full screen instead of starting it again. Right after the remove button moves to the preview, and OK there opens full screen. 1.0.0 - First release.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
