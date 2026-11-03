@@ -1,5 +1,6 @@
 """TV guide style screen and the modal list manager."""
 
+import itertools
 import os
 import re
 import threading
@@ -120,6 +121,10 @@ class MainWindow(xbmcgui.WindowXML):
         self.shown_index = -1
         self.shown_name = None
         self.follow_timer = None
+        # A group is built by one call at a time. A newer request stops an older one, see follow_group.
+        self.show_lock = threading.Lock()
+        self.follow_requests = itertools.count()
+        self.follow_request = 0
         self.watcher = Watcher(self.on_failure)
 
     def onInit(self):
@@ -182,7 +187,8 @@ class MainWindow(xbmcgui.WindowXML):
         else:
             index = 0 if self.groups[0][1] else 1
         self.group_list.selectItem(index)
-        self.show_group(index, max(position, 0))
+        with self.show_lock:
+            self.show_group(index, max(position, 0))
 
     def favorite_entries(self):
         by_id = {}
@@ -190,21 +196,19 @@ class MainWindow(xbmcgui.WindowXML):
             by_id.setdefault(entry["channel"]["id"], entry)
         return [by_id[channel_id] for channel_id in storage.get_favorites() if channel_id in by_id]
 
-    def show_group(self, index, position=0):
+    def show_group(self, index, position=0, stale=None):
         name, members = self.groups[index]
-        self.shown_index, self.shown_name = index, name
-        self.show_entries(name, members, position)
+        if self.show_entries(name, members, position, stale):
+            self.shown_index, self.shown_name = index, name
 
-    def show_entries(self, title, entries, position=0):
-        self.entries = entries
-        self.getControl(GROUP_TITLE).setLabel(title)
-        # Name the group on the check tool, so it is clear which channels it will test.
-        check_tool = [method for _, _, method in TOOLS].index("check_group")
-        self.toolbar.getListItem(check_tool).setLabel(text(30095, title))
-        self.getControl(GROUP_COUNT).setLabel(text(30036, len(entries)))
+    def show_entries(self, title, entries, position=0, stale=None):
+        """Show channels in the middle column. Returns False when stale() stopped it before anything changed."""
         favorites = set(storage.get_favorites())
         items = []
         for number, entry in enumerate(entries, 1):
+            # Building thousands of rows takes a while, so a newer group can stop it.
+            if stale and number % 200 == 0 and stale():
+                return False
             channel = entry["channel"]
             item = xbmcgui.ListItem(channel["name"], entry["list_name"])
             if channel["logo"]:
@@ -213,6 +217,14 @@ class MainWindow(xbmcgui.WindowXML):
             item.setProperty("favorite", "true" if channel["id"] in favorites else "false")
             item.setProperty("group", "  ·  ".join(name for name in m3u.groups_of(channel) if name) or text(30043))
             items.append(item)
+        if stale and stale():
+            return False
+        self.entries = entries
+        self.getControl(GROUP_TITLE).setLabel(title)
+        # Name the group on the check tool, so it is clear which channels it will test.
+        check_tool = [method for _, _, method in TOOLS].index("check_group")
+        self.toolbar.getListItem(check_tool).setLabel(text(30095, title))
+        self.getControl(GROUP_COUNT).setLabel(text(30036, len(entries)))
         self.channel_list.reset()
         self.channel_list.addItems(items)
         if entries:
@@ -222,6 +234,7 @@ class MainWindow(xbmcgui.WindowXML):
             self.getControl(CHANNELS_EMPTY).setLabel(text(30048))
         else:
             self.getControl(CHANNELS_EMPTY).setLabel(text(30066 if entries is self.groups[0][1] else 30046))
+        return True
 
     def selected_entry(self):
         position = self.channel_list.getSelectedPosition()
@@ -276,9 +289,13 @@ class MainWindow(xbmcgui.WindowXML):
             self.follow_timer.start()
 
     def follow_group(self):
-        index = self.group_list.getSelectedPosition()
-        if 0 <= index < len(self.groups) and index != self.shown_index:
-            self.show_group(index)
+        """Show the highlighted group. Runs on timer threads too, so a group still being built is stopped by
+        a newer request instead of replacing the group shown after it."""
+        request = self.follow_request = next(self.follow_requests)
+        with self.show_lock:
+            index = self.group_list.getSelectedPosition()
+            if 0 <= index < len(self.groups) and index != self.shown_index:
+                self.show_group(index, stale=lambda: self.follow_request != request)
 
     def onClick(self, control_id):
         if control_id == PREVIEW:

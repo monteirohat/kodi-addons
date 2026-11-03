@@ -18,7 +18,7 @@
     <license>MIT</license>
     <website>https://github.com/monteirohat/kodi-addons</website>
     <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.channels</source>
-    <news>1.0.1 - Changing channels no longer reports the new channel as not working. Opening the channel that is already playing shows it in full screen instead of starting it again. Right after the remove button moves to the preview, and OK there opens full screen. 1.0.0 - First release.</news>
+    <news>1.0.1 - Moving quickly between groups no longer shows the channels of a group you already left. Changing channels no longer reports the new channel as not working. Opening the channel that is already playing shows it in full screen instead of starting it again. Right after the remove button moves to the preview, and OK there opens full screen. 1.0.0 - First release.</news>
     <assets>
       <icon>resources/icon.png</icon>
       <fanart>resources/fanart.jpg</fanart>
