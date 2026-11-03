@@ -327,6 +327,8 @@ def main():
 def player_screen():
     """Full screen video and the channel bar, shown while Window.Property(bar) is true. Set from TvPlayer in gui.py."""
     status = lambda name: "String.IsEqual(Window.Property(status),%s)" % name
+    star_focus = has(101)
+    favorite = "String.IsEqual(Window.Property(favorite),true)"
     bar = join(
         panel(48, 792, 1824, 248, "F217181B"),
         panel(80, 824, 248, 184, RAISED),
@@ -334,14 +336,20 @@ def player_screen():
         label(360, 820, 1180, 64, f"[COLOR {ACCENT}]$INFO[Window.Property(number)][/COLOR]   $INFO[Window.Property(name)]",
               "font32_title", TEXT),
         label(1540, 820, 300, 64, "$INFO[System.Time]", "font32_title", TEXT2, align="right"),
-        label(360, 884, 1480, 40, "$INFO[Window.Property(group)]", "font13", TEXT2),
-        label(360, 928, 1480, 40, f"$ADDON[{ADDON_ID} 30110]", "font13", ACCENT, status("connecting")),
-        label(360, 928, 1480, 40, f"$ADDON[{ADDON_ID} 30111]", "font13", DANGER, status("failed")),
-        label(360, 928, 1480, 40, "$INFO[VideoPlayer.VideoResolution,,p]$INFO[VideoPlayer.VideoCodec,  ·  ]"
+        label(360, 884, 1360, 40, "$INFO[Window.Property(group)]", "font13", TEXT2),
+        label(360, 928, 1360, 40, f"$ADDON[{ADDON_ID} 30110]", "font13", ACCENT, status("connecting")),
+        label(360, 928, 1360, 40, f"$ADDON[{ADDON_ID} 30111]", "font13", DANGER, status("failed")),
+        label(360, 928, 1360, 40, "$INFO[VideoPlayer.VideoResolution,,p]$INFO[VideoPlayer.VideoCodec,  ·  ]"
               "$INFO[VideoPlayer.AudioCodec,  ·  ]", "font13", TEXT3, "String.IsEmpty(Window.Property(status)) + Player.HasVideo"),
         image(360, 980, 1480, 2, "white.png", RAISED),
         label(360, 990, 700, 40, "$INFO[Window.Property(around)]", "font12", TEXT2),
         label(1060, 990, 780, 40, f"$ADDON[{ADDON_ID} 30109]", "font12", TEXT3, align="right"),
+        spaces=2)
+    stars = join(
+        image(1774, 910, 40, 40, "star.png", ON_FOCUS, star_focus + " + " + favorite),
+        image(1774, 910, 40, 40, "star-outline.png", ON_FOCUS, star_focus + " + !" + favorite),
+        image(1774, 910, 40, 40, "star.png", STAR, "!" + star_focus + " + " + favorite),
+        image(1774, 910, 40, 40, "star-outline.png", TEXT2, "!" + star_focus + " + !" + favorite),
         spaces=2)
     return join(
         image(0, 0, 1920, 1080, "white.png", "FF000000"),
@@ -365,9 +373,30 @@ def player_screen():
   <texturenofocus>-</texturenofocus>
 </control>""",
         f"""<control type="group">
-  <visible>String.IsEqual(Window.Property(bar),true)</visible>
+  <visible>String.IsEqual(Window.Property(bar),true) | Control.HasFocus(101)</visible>
   <animation effect="fade" time="200">VisibleChange</animation>
 {bar}
+</control>""",
+        "<!-- Favorite button, reached with Right. Outside the bar group, so it can take the focus while the bar is hidden. -->",
+        f"""<control type="button" id="101">
+  <left>1756</left>
+  <top>892</top>
+  <width>76</width>
+  <height>76</height>
+  <onup>noop</onup>
+  <ondown>noop</ondown>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <texturefocus border="16" colordiffuse="{FOCUS}">panel.png</texturefocus>
+  <texturenofocus border="16" colordiffuse="{RAISED}">panel.png</texturenofocus>
+  <visible allowhiddenfocus="true">String.IsEqual(Window.Property(bar),true) | Control.HasFocus(101)</visible>
+  <animation effect="fade" time="200">VisibleChange</animation>
+</control>""",
+        "<!-- Star on the favorite button -->",
+        f"""<control type="group">
+  <visible>String.IsEqual(Window.Property(bar),true) | Control.HasFocus(101)</visible>
+  <animation effect="fade" time="200">VisibleChange</animation>
+{stars}
 </control>""",
         spaces=0)
 

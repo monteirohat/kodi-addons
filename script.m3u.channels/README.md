@@ -51,12 +51,13 @@ Easy Channel requires Kodi 21 (Omega) or later. It was developed and tested on L
 
 ### TV player
 
-Channels play in full screen with a channel bar at the bottom, as on a TV box. The bar shows the channel logo, number, name, group and list, the time, whether the channel is connecting or not responding, the video resolution and codecs, and the channels above and below. It hides after a few seconds.
+Channels play in full screen with a channel bar at the bottom, as on a TV box. The bar shows the channel logo, number, name, group and list, a favorite star, the time, whether the channel is connecting or not responding, the video resolution and codecs, and the channels above and below. It hides after a few seconds.
 
 | Key | Action |
 | --- | --- |
 | **Up / Down** | Previous or next channel of the group, wrapping around at the ends. The bar changes at once, and the channel opens when you stop on it, so holding the key skims through channels. **Channel +/-** on a remote work the same way. |
-| **OK**, **Left / Right** | Show the bar. |
+| **OK** | Show the bar. |
+| **Right** | Move to the star at the right of the bar. **OK** there adds the channel to **Favorites** or removes it, and **Left** or **Back** leaves the star. The bar stays on screen meanwhile. |
 | **Menu** (**C** on a keyboard) | Open Kodi's own player, for audio, subtitles and video settings. **Back** there returns to the TV player. |
 | **Back** | Return to the channel list, with the last channel watched selected. The channel keeps playing in the preview. |
 | **Stop** | Stop the channel and return to the list. |

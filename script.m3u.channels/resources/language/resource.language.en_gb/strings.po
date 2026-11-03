@@ -391,7 +391,7 @@ msgid "Up: {0}  ·  Down: {1}"
 msgstr ""
 
 msgctxt "#30109"
-msgid "OK: channel info  ·  Menu: Kodi player  ·  Back: channel list"
+msgid "Right: favorite  ·  Menu: Kodi player  ·  Back: channel list"
 msgstr ""
 
 msgctxt "#30110"

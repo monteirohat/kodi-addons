@@ -30,7 +30,7 @@
       <texturenofocus>-</texturenofocus>
     </control>
     <control type="group">
-      <visible>String.IsEqual(Window.Property(bar),true)</visible>
+      <visible>String.IsEqual(Window.Property(bar),true) | Control.HasFocus(101)</visible>
       <animation effect="fade" time="200">VisibleChange</animation>
       <control type="image">
         <left>48</left>
@@ -78,7 +78,7 @@
       <control type="label">
         <left>360</left>
         <top>884</top>
-        <width>1480</width>
+        <width>1360</width>
         <height>40</height>
         <aligny>center</aligny>
         <font>font13</font>
@@ -88,7 +88,7 @@
       <control type="label">
         <left>360</left>
         <top>928</top>
-        <width>1480</width>
+        <width>1360</width>
         <height>40</height>
         <aligny>center</aligny>
         <font>font13</font>
@@ -99,7 +99,7 @@
       <control type="label">
         <left>360</left>
         <top>928</top>
-        <width>1480</width>
+        <width>1360</width>
         <height>40</height>
         <aligny>center</aligny>
         <font>font13</font>
@@ -110,7 +110,7 @@
       <control type="label">
         <left>360</left>
         <top>928</top>
-        <width>1480</width>
+        <width>1360</width>
         <height>40</height>
         <aligny>center</aligny>
         <font>font13</font>
@@ -145,6 +145,58 @@
         <font>font12</font>
         <textcolor>FF62656D</textcolor>
         <label>$ADDON[script.m3u.channels 30109]</label>
+      </control>
+    </control>
+    <!-- Favorite button, reached with Right. Outside the bar group, so it can take the focus while the bar is hidden. -->
+    <control type="button" id="101">
+      <left>1756</left>
+      <top>892</top>
+      <width>76</width>
+      <height>76</height>
+      <onup>noop</onup>
+      <ondown>noop</ondown>
+      <onleft>noop</onleft>
+      <onright>noop</onright>
+      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
+      <visible allowhiddenfocus="true">String.IsEqual(Window.Property(bar),true) | Control.HasFocus(101)</visible>
+      <animation effect="fade" time="200">VisibleChange</animation>
+    </control>
+    <!-- Star on the favorite button -->
+    <control type="group">
+      <visible>String.IsEqual(Window.Property(bar),true) | Control.HasFocus(101)</visible>
+      <animation effect="fade" time="200">VisibleChange</animation>
+      <control type="image">
+        <left>1774</left>
+        <top>910</top>
+        <width>40</width>
+        <height>40</height>
+        <texture colordiffuse="FF0E0F11">star.png</texture>
+        <visible>Control.HasFocus(101) + String.IsEqual(Window.Property(favorite),true)</visible>
+      </control>
+      <control type="image">
+        <left>1774</left>
+        <top>910</top>
+        <width>40</width>
+        <height>40</height>
+        <texture colordiffuse="FF0E0F11">star-outline.png</texture>
+        <visible>Control.HasFocus(101) + !String.IsEqual(Window.Property(favorite),true)</visible>
+      </control>
+      <control type="image">
+        <left>1774</left>
+        <top>910</top>
+        <width>40</width>
+        <height>40</height>
+        <texture colordiffuse="FFFFC53D">star.png</texture>
+        <visible>!Control.HasFocus(101) + String.IsEqual(Window.Property(favorite),true)</visible>
+      </control>
+      <control type="image">
+        <left>1774</left>
+        <top>910</top>
+        <width>40</width>
+        <height>40</height>
+        <texture colordiffuse="FF9C9EA6">star-outline.png</texture>
+        <visible>!Control.HasFocus(101) + !String.IsEqual(Window.Property(favorite),true)</visible>
       </control>
     </control>
   </controls>

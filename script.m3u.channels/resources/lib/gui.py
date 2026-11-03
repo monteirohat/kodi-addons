@@ -23,12 +23,13 @@ ACTION_BACK = (10, 92)
 ACTION_STOP = 13
 ACTION_CONTEXT_MENU = 117
 ACTION_CHANNEL_UP, ACTION_CHANNEL_DOWN = 184, 185
-# Keys that show the channel bar of the TV player: OK, Info, Left and Right. Other actions, such as the ones
-# Kodi sends for built-in commands, leave it as it is.
-BAR_ACTIONS = (7, 11, ACTION_LEFT, ACTION_RIGHT)
+# Keys that show the channel bar of the TV player: OK and Info. Right also moves to its favorite button.
+# Other actions, such as the ones Kodi sends for built-in commands, leave the bar as it is.
+BAR_ACTIONS = (7, 11)
 # Buttons reached with Right on a channel row. An empty value means the row itself.
 ROW_ACTIONS = ["", "favorite", "remove"]
 TOOLBAR, GROUPS, CHANNELS, PREVIEW = 100, 200, 300, 500
+PLAYER_KEYS, PLAYER_FAVORITE = 100, 101
 GROUP_TITLE, GROUP_COUNT, CHANNELS_EMPTY = 401, 402, 403
 MANAGER_LISTS, MANAGER_EMPTY = 100, 300
 MANAGER_ADD, MANAGER_SETTINGS, MANAGER_CLOSE, MANAGER_GITHUB = 201, 202, 203, 204
@@ -401,18 +402,22 @@ class MainWindow(xbmcgui.WindowXML):
             self.watcher.play_channel(entry)
 
     def toggle_favorite(self, entry):
+        """Add or remove a favorite, also from the TV player. Returns True when the channel is now a favorite."""
         added = storage.toggle_favorite(entry["channel"]["id"])
         notify(text(30068 if added else 30069))
         favorites = self.favorite_entries()
         self.groups[0] = (self.groups[0][0], favorites)
         self.group_list.getListItem(0).setLabel2(str(len(favorites)))
-        position = self.channel_list.getSelectedPosition()
         if self.shown_index == 0:
-            self.show_entries(self.groups[0][0], favorites, position)
-            if not favorites:
+            self.show_entries(self.groups[0][0], favorites, self.channel_list.getSelectedPosition())
+            if not favorites and not self.player:
                 self.setFocusId(GROUPS)
         else:
-            self.channel_list.getListItem(position).setProperty("favorite", "true" if added else "false")
+            # The TV player may show another channel than the selected row.
+            row = next((number for number, shown in enumerate(self.entries) if shown is entry), None)
+            if row is not None:
+                self.channel_list.getListItem(row).setProperty("favorite", "true" if added else "false")
+        return added
 
     def remove(self, entries):
         by_list = {}
@@ -529,8 +534,17 @@ class TvPlayer(xbmcgui.WindowXML):
 
     def onAction(self, action):
         action_id = action.getId()
-        if action_id in ACTION_BACK or action_id == ACTION_STOP:
+        on_favorite = self.getFocusId() == PLAYER_FAVORITE
+        if on_favorite and (action_id in ACTION_BACK or action_id == ACTION_LEFT):
+            self.setFocusId(PLAYER_KEYS)
+            self.show_bar()
+        elif action_id in ACTION_BACK or action_id == ACTION_STOP:
             self.leave(action_id == ACTION_STOP)
+        elif action_id == ACTION_RIGHT:
+            self.show_bar()
+            self.setFocusId(PLAYER_FAVORITE)
+        elif action_id == ACTION_LEFT:
+            self.show_bar()
         elif action_id in (ACTION_UP, ACTION_CHANNEL_DOWN):
             self.zap(-1)
         elif action_id in (ACTION_DOWN, ACTION_CHANNEL_UP):
@@ -538,6 +552,12 @@ class TvPlayer(xbmcgui.WindowXML):
         elif action_id == ACTION_CONTEXT_MENU:
             xbmc.executebuiltin("ActivateWindow(fullscreenvideo)")
         elif action_id in BAR_ACTIONS:
+            self.show_bar()
+
+    def onClick(self, control_id):
+        if control_id == PLAYER_FAVORITE:
+            added = self.main.toggle_favorite(self.entries[self.index])
+            self.setProperty("favorite", "true" if added else "false")
             self.show_bar()
 
     # Channel bar
@@ -548,6 +568,7 @@ class TvPlayer(xbmcgui.WindowXML):
         self.setProperty("number", str(self.index + 1))
         self.setProperty("name", channel["name"])
         self.setProperty("logo", channel["logo"])
+        self.setProperty("favorite", "true" if channel["id"] in storage.get_favorites() else "false")
         self.setProperty("group", "  ·  ".join([name for name in m3u.groups_of(channel) if name] + [entry["list_name"]]))
         if len(self.entries) > 1:
             around = [(self.index + step) % len(self.entries) for step in (-1, 1)]
@@ -564,8 +585,9 @@ class TvPlayer(xbmcgui.WindowXML):
         self.setProperty("bar", "true")
         if self.bar_timer:
             self.bar_timer.cancel()
-        # The bar stays while a channel is opening or failed, so its state is not missed.
-        if not self.getProperty("status"):
+        # The bar stays while a channel is opening or failed, so its state is not missed, and while its
+        # favorite button has the focus. The skin also keeps it visible then.
+        if not self.getProperty("status") and self.getFocusId() != PLAYER_FAVORITE:
             self.bar_timer = threading.Timer(BAR_SECONDS, self.setProperty, ("bar", "false"))
             self.bar_timer.start()
 
