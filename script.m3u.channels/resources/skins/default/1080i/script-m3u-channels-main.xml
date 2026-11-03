@@ -576,7 +576,15 @@
         </control>
       </focusedlayout>
     </control>
-    <!-- Preview and details of the focused channel -->
+    <!-- Preview and details of the focused channel. Right after the remove button focuses the preview (500). -->
+    <control type="image">
+      <left>1312</left>
+      <top>102</top>
+      <width>576</width>
+      <height>331</height>
+      <texture border="16" colordiffuse="FF3B8BFF">panel.png</texture>
+      <visible>Control.HasFocus(500)</visible>
+    </control>
     <control type="image">
       <left>1320</left>
       <top>110</top>
@@ -589,6 +597,19 @@
       <top>110</top>
       <width>560</width>
       <height>315</height>
+      <visible>Player.HasVideo</visible>
+    </control>
+    <control type="button" id="500">
+      <left>1320</left>
+      <top>110</top>
+      <width>560</width>
+      <height>315</height>
+      <onup>noop</onup>
+      <ondown>noop</ondown>
+      <onleft>noop</onleft>
+      <onright>noop</onright>
+      <texturefocus>-</texturefocus>
+      <texturenofocus>-</texturenofocus>
       <visible>Player.HasVideo</visible>
     </control>
     <control type="image">
@@ -648,14 +669,27 @@
       <textcolor>FF9C9EA6</textcolor>
       <label>$INFO[Container(300).ListItem.Label2]</label>
     </control>
-    <control type="textbox">
+    <control type="label">
       <left>1320</left>
       <top>924</top>
       <width>560</width>
       <height>116</height>
+      <wrapmultiline>true</wrapmultiline>
       <font>font12</font>
       <textcolor>FF62656D</textcolor>
       <label>$ADDON[script.m3u.channels 30051]</label>
+      <visible>!Control.HasFocus(500)</visible>
+    </control>
+    <control type="label">
+      <left>1320</left>
+      <top>924</top>
+      <width>560</width>
+      <height>116</height>
+      <wrapmultiline>true</wrapmultiline>
+      <font>font12</font>
+      <textcolor>FF62656D</textcolor>
+      <label>$ADDON[script.m3u.channels 30107]</label>
+      <visible>Control.HasFocus(500)</visible>
     </control>
   </controls>
 </window>

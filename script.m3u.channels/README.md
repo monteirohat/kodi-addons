@@ -43,9 +43,9 @@ Easy Channel requires Kodi 21 (Omega) or later. It was developed and tested on L
 | Key | On the groups | On a channel |
 | --- | --- | --- |
 | **Up / Down** | Move between groups. The channel column follows the highlighted group. | Move between channels. |
-| **Right** | Move to the channels of the group. | Move to the star, then to the trash can. |
+| **Right** | Move to the channels of the group. | Move to the star, then to the trash can, then to the preview of the playing channel. |
 | **Left** | Move to the toolbar, keeping the highlighted group. | Move back from the buttons, then to the groups. |
-| **OK** | Move to the channels of the group. | Play the channel, or use the selected star or trash can. |
+| **OK** | Move to the channels of the group. | Play the channel, or use the selected star or trash can. The channel already playing opens in full screen instead of starting again. On the preview, open full screen. |
 | **Back** | Close Easy Channel. | Return to the groups. |
 | **Menu** (**C** on a keyboard) | | Favorite, remove or check the channel. |
 

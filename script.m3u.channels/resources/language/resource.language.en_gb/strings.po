@@ -211,7 +211,7 @@ msgid "Easy Channel"
 msgstr ""
 
 msgctxt "#30051"
-msgid "Right: favorite and remove  ·  Left on the groups: tools  ·  Back: groups"
+msgid "Right: favorite, remove and preview  ·  Left on the groups: tools  ·  Back: groups"
 msgstr ""
 
 msgctxt "#30052"
@@ -380,4 +380,8 @@ msgstr ""
 
 msgctxt "#30106"
 msgid "Open Easy Channel from the TV menu"
+msgstr ""
+
+msgctxt "#30107"
+msgid "OK: full screen  ·  Left or Back: channels"
 msgstr ""

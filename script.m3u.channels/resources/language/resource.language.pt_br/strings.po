@@ -211,8 +211,8 @@ msgid "Easy Channel"
 msgstr "Easy Channel"
 
 msgctxt "#30051"
-msgid "Right: favorite and remove  ·  Left on the groups: tools  ·  Back: groups"
-msgstr "Direita: favorito e remover  ·  Esquerda nos grupos: ferramentas  ·  Voltar: grupos"
+msgid "Right: favorite, remove and preview  ·  Left on the groups: tools  ·  Back: groups"
+msgstr "Direita: favorito, remover e prévia  ·  Esquerda nos grupos: ferramentas  ·  Voltar: grupos"
 
 msgctxt "#30052"
 msgid "Now playing"
@@ -381,3 +381,7 @@ msgstr "Verificar canais: {0}"
 msgctxt "#30106"
 msgid "Open Easy Channel from the TV menu"
 msgstr "Abrir o Easy Channel pelo menu TV"
+
+msgctxt "#30107"
+msgid "OK: full screen  ·  Left or Back: channels"
+msgstr "OK: tela cheia  ·  Esquerda ou Voltar: canais"

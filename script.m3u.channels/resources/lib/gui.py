@@ -22,7 +22,7 @@ ACTION_BACK = (10, 92)
 ACTION_CONTEXT_MENU = 117
 # Buttons reached with Right on a channel row. An empty value means the row itself.
 ROW_ACTIONS = ["", "favorite", "remove"]
-TOOLBAR, GROUPS, CHANNELS = 100, 200, 300
+TOOLBAR, GROUPS, CHANNELS, PREVIEW = 100, 200, 300, 500
 GROUP_TITLE, GROUP_COUNT, CHANNELS_EMPTY = 401, 402, 403
 MANAGER_LISTS, MANAGER_EMPTY = 100, 300
 MANAGER_ADD, MANAGER_SETTINGS, MANAGER_CLOSE, MANAGER_GITHUB = 201, 202, 203, 204
@@ -238,13 +238,20 @@ class MainWindow(xbmcgui.WindowXML):
         action_id = action.getId()
         focus = self.getFocusId()
         row_action = ROW_ACTIONS.index(self.getProperty("row_action"))
-        if action_id in ACTION_BACK:
+        if focus == PREVIEW:
+            # The preview is reached with Right after the last row button, and only while a channel plays.
+            if action_id in ACTION_BACK or action_id == ACTION_LEFT or not xbmc.getCondVisibility("Player.HasVideo"):
+                self.focus_channels()
+        elif action_id in ACTION_BACK:
             if focus == CHANNELS:
                 self.setFocusId(GROUPS)
             else:
                 self.shutdown()
         elif focus == CHANNELS and action_id == ACTION_RIGHT:
-            self.setProperty("row_action", ROW_ACTIONS[min(row_action + 1, len(ROW_ACTIONS) - 1)])
+            if row_action < len(ROW_ACTIONS) - 1:
+                self.setProperty("row_action", ROW_ACTIONS[row_action + 1])
+            elif xbmc.getCondVisibility("Player.HasVideo"):
+                self.setFocusId(PREVIEW)
         elif focus == CHANNELS and action_id == ACTION_LEFT:
             if row_action:
                 self.setProperty("row_action", ROW_ACTIONS[row_action - 1])
@@ -274,7 +281,9 @@ class MainWindow(xbmcgui.WindowXML):
             self.show_group(index)
 
     def onClick(self, control_id):
-        if control_id == TOOLBAR:
+        if control_id == PREVIEW:
+            xbmc.executebuiltin("ActivateWindow(fullscreenvideo)")
+        elif control_id == TOOLBAR:
             getattr(self, TOOLS[self.toolbar.getSelectedPosition()][2])()
         elif control_id == GROUPS:
             self.follow_group()
@@ -303,6 +312,10 @@ class MainWindow(xbmcgui.WindowXML):
 
     def play(self, entry):
         if entry is None:
+            return
+        # The channel already playing is shown in full screen instead of opening it again.
+        if self.watcher.is_playing(entry):
+            xbmc.executebuiltin("ActivateWindow(fullscreenvideo)")
             return
         channel = entry["channel"]
         if ADDON.getSettingBool("check_before_play"):

@@ -276,13 +276,27 @@ def main():
         image(604, 198, 672, 2, "white.png", RAISED),
         label(620, 260, 640, 300, "", "font13", TEXT2, align="center", center=False, control_id=403, wrap=True),
         channels,
-        "<!-- Preview and details of the focused channel -->",
+        "<!-- Preview and details of the focused channel. Right after the remove button focuses the preview (500). -->",
+        panel(1312, 102, 576, 331, ACCENT, has(500)),
         panel(1320, 110, 560, 315, SURFACE),
         f"""<control type="videowindow">
   <left>1320</left>
   <top>110</top>
   <width>560</width>
   <height>315</height>
+  <visible>Player.HasVideo</visible>
+</control>""",
+        f"""<control type="button" id="500">
+  <left>1320</left>
+  <top>110</top>
+  <width>560</width>
+  <height>315</height>
+  <onup>noop</onup>
+  <ondown>noop</ondown>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <texturefocus>-</texturefocus>
+  <texturenofocus>-</texturenofocus>
   <visible>Player.HasVideo</visible>
 </control>""",
         image(1400, 150, 400, 235, "$INFO[Container(300).ListItem.Icon]", keep=True, fallback="tv.png",
@@ -292,7 +306,8 @@ def main():
         textbox(1320, 490, 560, 120, "$INFO[Container(300).ListItem.Label]", "font32_title", TEXT),
         label(1320, 620, 560, 40, "$INFO[Container(300).ListItem.Property(group)]", "font13", ACCENT),
         label(1320, 664, 560, 36, "$INFO[Container(300).ListItem.Label2]", "font12", TEXT2),
-        textbox(1320, 924, 560, 116, f"$ADDON[{ADDON_ID} 30051]", "font12", TEXT3),
+        label(1320, 924, 560, 116, f"$ADDON[{ADDON_ID} 30051]", "font12", TEXT3, "!" + has(500), center=False, wrap=True),
+        label(1320, 924, 560, 116, f"$ADDON[{ADDON_ID} 30107]", "font12", TEXT3, has(500), center=False, wrap=True),
         spaces=0)
 
     files = {

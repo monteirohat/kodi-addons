@@ -78,6 +78,14 @@ class Watcher(xbmc.Player):
             item.setMimeType("application/vnd.apple.mpegurl")
         self.play(url, item)
 
+    def is_playing(self, entry):
+        """Whether this channel is the one playing now, or still opening."""
+        try:
+            playing = self.isPlaying() and m3u.base_url(self.getPlayingFile())
+        except RuntimeError:
+            return False
+        return playing == m3u.base_url(entry["channel"]["url"])
+
     def loop(self):
         while not self.closed and not self.monitor.waitForAbort(0.5):
             with self.lock:
