@@ -38,6 +38,8 @@ class Watcher(xbmc.Player):
         self.lock = threading.Lock()
         self.events = []
         self.watched = None
+        # Set when Kodi reports that playback stopped, ended or failed.
+        self.stop_seen = threading.Event()
         self.closed = False
         self.thread = threading.Thread(target=self.loop, daemon=True)
         self.thread.start()
@@ -55,6 +57,8 @@ class Watcher(xbmc.Player):
         self.push("stopped")
 
     def push(self, event):
+        if event != "started":
+            self.stop_seen.set()
         with self.lock:
             self.events.append(event)
 
@@ -66,12 +70,15 @@ class Watcher(xbmc.Player):
         # Keep how far the movie being replaced was watched.
         if previous and previous["started"]:
             self.on_progress(previous, previous["position"], previous["total"], True)
-        # Stop the current movie first so its events are not mistaken for the new one.
+        # Stop the current movie first so its events are not mistaken for the new one. Kodi reports the stop
+        # a moment after the player closes, so wait for that report. Taken for the new movie, it stopped it.
         if self.isPlaying():
+            self.stop_seen.clear()
             self.stop()
             for _ in range(30):
-                if not self.isPlaying() or self.monitor.waitForAbort(0.1):
+                if self.stop_seen.is_set() or self.monitor.waitForAbort(0.1):
                     break
+            self.monitor.waitForAbort(0.2)
         with self.lock:
             self.events = []
             self.watched = dict(entry, opened=time.time(), started=None, start=start, position=0, total=0, reported=0)
