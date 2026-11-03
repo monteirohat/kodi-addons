@@ -47,7 +47,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.m3u.channels" name="Easy Channel" version="1.0.0" provider-name="Monteiro">
+  <addon id="script.m3u.channels" name="Easy Channel" version="1.0.1" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.1" />
     </requires>
@@ -66,7 +66,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.channels</source>
-      <news>1.0.0 - First release.</news>
+      <news>1.0.1 - Opening the channel that is already playing shows it in full screen instead of starting it again. Right after the remove button moves to the preview, and OK there opens full screen. 1.0.0 - First release.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
