@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<addon id="script.m3u.movies" name="Easy Movie" version="1.1.0" provider-name="Monteiro">
+<addon id="script.m3u.movies" name="Easy Movie" version="1.1.1" provider-name="Monteiro">
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
   </requires>
@@ -18,7 +18,7 @@
     <license>MIT</license>
     <website>https://github.com/monteirohat/kodi-addons</website>
     <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.movies</source>
-    <news>1.1.0 - Series: episodes are grouped into series with seasons and a Continue button. Watched marks, resume, a Continue watching group, the TV shows menu, and a blue focus on posters. 1.0.0 - First release.</news>
+    <news>1.1.1 - Series from lists that keep the show name in pltv-subgroup, codes such as T01|EP01, 01|EP01 and EP001, and episodes that share a code. pltv-subgroup is also used as the genre of movies. 1.1.0 - Series: episodes are grouped into series with seasons and a Continue button. Watched marks, resume, a Continue watching group, the TV shows menu, and a blue focus on posters. 1.0.0 - First release.</news>
     <assets>
       <icon>resources/icon.png</icon>
       <fanart>resources/fanart.jpg</fanart>

@@ -85,6 +85,8 @@ def parse(text):
                 "id": base_url(url),
                 "group": values.get("group-title") or group,
                 "logo": values.get("tvg-logo", ""),
+                # Name of the show of an episode, in lists that keep it apart from the episode name.
+                "subgroup": values.get("pltv-subgroup", ""),
                 "duration": int(duration) if duration.isdigit() else 0,
                 "properties": properties,
                 "raw": raw + [line],

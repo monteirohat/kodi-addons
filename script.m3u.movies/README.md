@@ -66,6 +66,11 @@ Episodes are recognized by their name and grouped into series. The text before t
 | `TxxEyy` | `Show T01E02`, `Show T1 E2` |
 | `NxNN` | `Show 1x02` |
 | Words | `Show Temporada 1 Episódio 2`, `Show Season 1 Episode 2` |
+| Season and episode with a bar | `T01\|EP02`, `01\|EP02`, `3\|EP02 Title`, `T01\|02` |
+
+Some lists keep the series name in a `pltv-subgroup` attribute and name episodes only with a code, as in `pltv-subgroup="30 Rock",T01|EP01`. Easy Movie then uses `pltv-subgroup` as the series name, which also replaces abbreviations such as `BBAT T1|EP01`. With `pltv-subgroup`, names made only of an episode number, as `EP001`, become episodes of season 1, and `T03|ESPECIAL` becomes a special of season 3. For movies, the same attribute usually holds the genre, so it is added to the movie genres.
+
+The same stream in several lists is shown once. Episodes with the same code but different streams are all kept, in the order of the list, because some lists give several episodes the same number.
 
 Opening a series shows its poster, seasons and episodes. **Continue** plays the next episode: the one stopped midway, or the first unwatched episode after the last one watched. Select a season and an episode to play any other episode. **Remove series** removes all its episodes.
 

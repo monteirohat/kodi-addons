@@ -234,7 +234,7 @@ class MainWindow(xbmcgui.WindowXML):
             position = self.channel_list.getSelectedPosition()
         groups = {}
         for movie in self.movies:
-            for name in m3u.groups_of(movie["channel"]):
+            for name in series.movie_groups(movie["channel"]):
                 groups.setdefault(name, []).append(movie)
         for show in self.shows:
             for name in show["groups"]:
@@ -572,7 +572,7 @@ class MovieDetails(xbmcgui.WindowXMLDialog):
 
     def onInit(self):
         movie = self.entry["channel"]
-        groups = "  ·  ".join(name for name in m3u.groups_of(movie) if name) or text(30043)
+        groups = "  ·  ".join(name for name in series.movie_groups(movie) if name) or text(30043)
         self.setProperty("title", movie["name"])
         self.setProperty("poster", movie["logo"])
         self.setProperty("group", groups)
@@ -632,7 +632,10 @@ class SeriesDetails(xbmcgui.WindowXMLDialog):
         items = []
         for entry in self.episodes:
             title = entry["episode"]["title"]
-            item = xbmcgui.ListItem("E%02d" % entry["episode"]["number"] + ("  ·  " + title if title else ""))
+            number = entry["episode"]["number"]
+            # Specials have no episode number, only their title.
+            label = title if number == 0 and title else "E%02d" % number + ("  ·  " + title if title else "")
+            item = xbmcgui.ListItem(label)
             state = self.progress.get(entry["channel"]["id"], {})
             if resumable(state):
                 item.setLabel2(text(30126, time_text(state["position"])))
