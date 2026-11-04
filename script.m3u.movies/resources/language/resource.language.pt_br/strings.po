@@ -561,3 +561,131 @@ msgstr "Arquivo apagado"
 msgctxt "#30157"
 msgid "{0} files deleted"
 msgstr "{0} arquivos apagados"
+
+msgctxt "#30160"
+msgid "Downloads"
+msgstr "Downloads"
+
+msgctxt "#30161"
+msgid "Add magnet link"
+msgstr "Adicionar magnet"
+
+msgctxt "#30162"
+msgid "Add .torrent file"
+msgstr "Adicionar .torrent"
+
+msgctxt "#30163"
+msgid "Change folder"
+msgstr "Trocar pasta"
+
+msgctxt "#30165"
+msgid "Folder: {0}"
+msgstr "Pasta: {0}"
+
+msgctxt "#30166"
+msgid "Paste or type the magnet link or torrent address"
+msgstr "Cole ou digite o link magnet ou o endereço do torrent"
+
+msgctxt "#30167"
+msgid "Choose the .torrent file"
+msgstr "Escolha o arquivo .torrent"
+
+msgctxt "#30168"
+msgid "Choose the download folder"
+msgstr "Escolha a pasta dos downloads"
+
+msgctxt "#30169"
+msgid "No downloads yet. Select Add magnet link to start."
+msgstr "Nenhum download ainda. Selecione Adicionar magnet para começar."
+
+msgctxt "#30170"
+msgid "This is not a magnet link or a torrent address."
+msgstr "Isso não é um link magnet nem o endereço de um torrent."
+
+msgctxt "#30171"
+msgid "Download added"
+msgstr "Download adicionado"
+
+msgctxt "#30172"
+msgid "Could not start the torrent engine: {0}"
+msgstr "Não foi possível iniciar o motor de torrent: {0}"
+
+msgctxt "#30173"
+msgid "Could not add the torrent: {0}"
+msgstr "Não foi possível adicionar o torrent: {0}"
+
+msgctxt "#30174"
+msgid "Pause"
+msgstr "Pausar"
+
+msgctxt "#30175"
+msgid "Resume"
+msgstr "Continuar"
+
+msgctxt "#30176"
+msgid "Remove from the list"
+msgstr "Remover da lista"
+
+msgctxt "#30177"
+msgid "Remove and delete files"
+msgstr "Remover e apagar os arquivos"
+
+msgctxt "#30178"
+msgid "Remove {0} and delete its downloaded files?"
+msgstr "Remover {0} e apagar os arquivos baixados?"
+
+msgctxt "#30179"
+msgid "Getting torrent info"
+msgstr "Buscando informações do torrent"
+
+msgctxt "#30180"
+msgid "Checking files"
+msgstr "Verificando arquivos"
+
+msgctxt "#30181"
+msgid "Paused"
+msgstr "Pausado"
+
+msgctxt "#30182"
+msgid "Finished"
+msgstr "Concluído"
+
+msgctxt "#30183"
+msgid "Downloading"
+msgstr "Baixando"
+
+msgctxt "#30184"
+msgid "{0} connections"
+msgstr "{0} conexões"
+
+msgctxt "#30185"
+msgid "{0} of {1}"
+msgstr "{0} de {1}"
+
+msgctxt "#30186"
+msgid "{0} left"
+msgstr "faltam {0}"
+
+msgctxt "#30187"
+msgid "This folder is on the SD card of the system. Downloads write a lot and can wear the card out. Use it anyway?"
+msgstr "Essa pasta fica no cartão SD do sistema. Downloads gravam muito e podem desgastar o cartão. Usar mesmo assim?"
+
+msgctxt "#30188"
+msgid "Downloads"
+msgstr "Downloads"
+
+msgctxt "#30189"
+msgid "Download folder"
+msgstr "Pasta dos downloads"
+
+msgctxt "#30190"
+msgid "Upload limit (KB/s, 0 for no limit)"
+msgstr "Limite de envio (KB/s, 0 para sem limite)"
+
+msgctxt "#30191"
+msgid "Resume downloads when Kodi starts"
+msgstr "Continuar os downloads quando o Kodi iniciar"
+
+msgctxt "#30193"
+msgid "{0} down  ·  {1} up"
+msgstr "{0} baixando  ·  {1} enviando"

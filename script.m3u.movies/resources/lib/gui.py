@@ -12,7 +12,7 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 
-from resources.lib import cinemeta, folders, github, m3u, movies_menu, probe, series, storage
+from resources.lib import cinemeta, folders, github, m3u, movies_menu, probe, series, storage, torrents
 from resources.lib.watcher import Watcher
 
 
@@ -33,6 +33,10 @@ RESUME_AFTER = 60
 GROUP_TITLE, GROUP_COUNT, CHANNELS_EMPTY = 401, 402, 403
 MANAGER_LISTS, MANAGER_EMPTY = 100, 300
 MANAGER_ADD, MANAGER_SETTINGS, MANAGER_CLOSE, MANAGER_GITHUB = 201, 202, 203, 204
+DOWNLOADS_LIST, DOWNLOADS_EMPTY = 100, 300
+DOWNLOADS_MAGNET, DOWNLOADS_FILE, DOWNLOADS_FOLDER, DOWNLOADS_CLOSE = 201, 202, 203, 204
+# Seconds between updates of the download list.
+DOWNLOADS_REFRESH = 2
 # Above this many lists, a repository search first asks for a filter such as a country code.
 FILTER_ABOVE = 30
 # Delay before the catalog follows the highlighted group, so fast scrolling stays smooth.
@@ -46,6 +50,7 @@ TOOLS = [
     ("search.png", 30002, "search"),
     ("check.png", 30016, "check_group"),
     ("trash.png", 30001, "show_removed"),
+    ("download.png", 30160, "open_downloads"),
 ]
 
 
@@ -754,6 +759,11 @@ class MainWindow(xbmcgui.WindowXML):
 
     # Tools
 
+    def open_downloads(self):
+        downloads = DownloadsWindow("script-m3u-movies-downloads.xml", PATH, "default", "1080i")
+        downloads.doModal()
+        del downloads
+
     def open_manager(self):
         manager = ListManager("script-m3u-movies-manager.xml", PATH, "default", "1080i")
         manager.on_change = self.reload
@@ -1040,6 +1050,212 @@ class ListManager(xbmcgui.WindowXMLDialog):
         elif choice == 3 and dialog.yesno(TITLE, text(30015, item["name"])):
             storage.delete_list(item["id"])
             self.changed()
+
+
+def size_text(size):
+    for unit, factor in (("GB", 1 << 30), ("MB", 1 << 20), ("KB", 1 << 10)):
+        if size >= factor:
+            return "%.1f %s" % (size / factor, unit)
+    return "%d B" % size
+
+
+def rate_text(rate):
+    return size_text(rate) + "/s"
+
+
+def engine():
+    return torrents.Engine(PATH, os.path.join(storage.PROFILE, "torrest"),
+                           android=xbmc.getCondVisibility("System.Platform.Android"))
+
+
+def engine_settings():
+    """Torrest settings from the add-on settings."""
+    return {"max_upload_rate": max(ADDON.getSettingInt("upload_limit"), 0) * 1024}
+
+
+def on_sd_card(path):
+    """Whether a folder is on the card that holds the system of LibreELEC, which heavy writes wear out."""
+    return xbmc.getCondVisibility("System.HasAddon(service.libreelec.settings)") and path.startswith("/storage")
+
+
+def download_status(torrent):
+    """Detail line, progress and state of a download for the list."""
+    status = torrent.get("status") or {}
+    state = torrents.state_of(status)
+    parts = [text({"metadata": 30179, "checking": 30180, "paused": 30181, "finished": 30182,
+                   "downloading": 30183}[state])]
+    total = status.get("total_wanted") or torrent.get("size", 0)
+    if state == "downloading":
+        parts.append(rate_text(status.get("download_rate", 0)))
+        parts.append(text(30184, status.get("peers", 0)))
+    if total:
+        done = status.get("total_wanted_done", 0)
+        parts.append(size_text(total) if state == "finished" else text(30185, size_text(done), size_text(total)))
+    left = torrents.remaining_seconds(status) if state == "downloading" else 0
+    if left >= 60:
+        parts.append(text(30186, duration_text(left)))
+    return "  ·  ".join(parts), int(status.get("progress", 0)), state
+
+
+class DownloadsWindow(xbmcgui.WindowXMLDialog):
+    """Torrent downloads: add a magnet link or a .torrent file, choose the folder, and follow the list."""
+
+    def onInit(self):
+        self.closed = False
+        self.hashes = []
+        self.list_control = self.getControl(DOWNLOADS_LIST)
+        self.engine = engine()
+        self.folder = ADDON.getSetting("download_folder")
+        if not self.folder and not self.choose_folder():
+            self.close()
+            return
+        self.show_folder()
+        busy(True)
+        try:
+            self.engine.start(self.folder, engine_settings())
+        except torrents.EngineError as error:
+            busy(False)
+            xbmcgui.Dialog().ok(TITLE, text(30172, error))
+            self.close()
+            return
+        busy(False)
+        self.update()
+        self.setFocusId(DOWNLOADS_LIST if self.hashes else DOWNLOADS_MAGNET)
+        threading.Thread(target=self.follow, daemon=True).start()
+
+    def show_folder(self):
+        self.setProperty("folder", text(30165, self.folder))
+
+    def follow(self):
+        monitor = xbmc.Monitor()
+        while not self.closed and not monitor.waitForAbort(DOWNLOADS_REFRESH):
+            if not self.closed:
+                self.update()
+
+    def update(self):
+        """Show the downloads. Rows are updated in place, so the selection stays while they change."""
+        try:
+            items = self.engine.torrents()
+        except torrents.EngineError:
+            return
+        hashes = [torrent["info_hash"] for torrent in items]
+        if hashes != self.hashes:
+            position = self.list_control.getSelectedPosition()
+            self.list_control.reset()
+            self.list_control.addItems([xbmcgui.ListItem() for _ in items])
+            if items:
+                self.list_control.selectItem(min(max(position, 0), len(items) - 1))
+            self.hashes = hashes
+            if not items and self.getFocusId() == DOWNLOADS_LIST:
+                self.setFocusId(DOWNLOADS_MAGNET)
+        down = up = 0
+        for number, torrent in enumerate(items):
+            detail, progress, state = download_status(torrent)
+            row = self.list_control.getListItem(number)
+            row.setLabel(torrent.get("name") or torrent["info_hash"])
+            row.setLabel2(detail)
+            row.setProperty("progress", str(progress))
+            row.setProperty("percent", "%d%%" % progress)
+            row.setProperty("state", state)
+            # Torrest takes a few seconds to report no speed for a paused torrent.
+            if state != "paused":
+                down += (torrent.get("status") or {}).get("download_rate", 0)
+                up += (torrent.get("status") or {}).get("upload_rate", 0)
+        self.setProperty("summary", text(30193, rate_text(down), rate_text(up)) if items else "")
+        self.getControl(DOWNLOADS_EMPTY).setLabel("" if items else text(30169))
+
+    def onAction(self, action):
+        if action.getId() in ACTION_BACK:
+            self.closed = True
+            self.close()
+        elif action.getId() == ACTION_CONTEXT_MENU and self.getFocusId() == DOWNLOADS_LIST:
+            self.download_menu()
+
+    def onClick(self, control_id):
+        if control_id == DOWNLOADS_MAGNET:
+            self.add_link()
+        elif control_id == DOWNLOADS_FILE:
+            self.add_file()
+        elif control_id == DOWNLOADS_FOLDER:
+            if self.choose_folder():
+                self.show_folder()
+        elif control_id == DOWNLOADS_CLOSE:
+            self.closed = True
+            self.close()
+        elif control_id == DOWNLOADS_LIST:
+            self.download_menu()
+
+    def choose_folder(self):
+        """Ask for the download folder and save it. Returns True when a folder was chosen."""
+        folder = xbmcgui.Dialog().browseSingle(3, text(30168), "files", defaultt=self.folder or "")
+        if not folder:
+            return False
+        folder = folder.rstrip("/\\") or folder
+        if on_sd_card(folder) and not xbmcgui.Dialog().yesno(TITLE, text(30187)):
+            return False
+        self.folder = folder
+        ADDON.setSetting("download_folder", folder)
+        return True
+
+    def add(self, adder, source):
+        busy(True)
+        try:
+            adder(source, self.folder)
+        except torrents.EngineError as error:
+            busy(False)
+            xbmcgui.Dialog().ok(TITLE, text(30173, error))
+            return
+        busy(False)
+        notify(text(30171))
+        self.update()
+        self.setFocusId(DOWNLOADS_LIST)
+
+    def add_link(self):
+        link = xbmcgui.Dialog().input(text(30166)).strip()
+        if not link:
+            return
+        if link.lower().startswith("magnet:"):
+            self.add(self.engine.add_magnet, link)
+        elif link.lower().startswith(("http://", "https://")):
+            try:
+                data = storage.download_bytes(link)
+            except Exception as error:
+                xbmcgui.Dialog().ok(TITLE, text(30173, error))
+                return
+            self.add(self.engine.add_torrent_file, data)
+        else:
+            xbmcgui.Dialog().ok(TITLE, text(30170))
+
+    def add_file(self):
+        path = xbmcgui.Dialog().browseSingle(1, text(30167), "files", ".torrent")
+        if not path:
+            return
+        source = xbmcvfs.File(path)
+        try:
+            data = bytes(source.readBytes())
+        finally:
+            source.close()
+        self.add(self.engine.add_torrent_file, data)
+
+    def download_menu(self):
+        position = self.list_control.getSelectedPosition()
+        if not 0 <= position < len(self.hashes):
+            return
+        info_hash = self.hashes[position]
+        row = self.list_control.getListItem(position)
+        paused = row.getProperty("state") == "paused"
+        choice = xbmcgui.Dialog().contextmenu([text(30175 if paused else 30174), text(30176), text(30177)])
+        try:
+            if choice == 0:
+                (self.engine.resume if paused else self.engine.pause)(info_hash)
+            elif choice == 1:
+                self.engine.remove(info_hash, False)
+            elif choice == 2 and xbmcgui.Dialog().yesno(TITLE, text(30178, row.getLabel()), nolabel=text(30040),
+                                                       yeslabel=text(30142)):
+                self.engine.remove(info_hash, True)
+        except torrents.EngineError as error:
+            xbmcgui.Dialog().ok(TITLE, text(30173, error))
+        self.update()
 
 
 class RepoManager(xbmcgui.WindowXMLDialog):

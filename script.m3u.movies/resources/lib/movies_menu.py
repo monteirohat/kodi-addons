@@ -1,10 +1,18 @@
-"""Background service that opens Easy Movie from the Movies and TV shows entries of the main menu."""
+"""Background service that opens Easy Movie from the Movies and TV shows entries of the main menu.
 
+It also runs the torrent engine: unfinished downloads resume when Kodi starts, and the engine stops with Kodi.
+"""
+
+import os
+import threading
 import time
 
 import xbmc
 import xbmcaddon
 import xbmcgui
+import xbmcvfs
+
+from resources.lib import torrents
 
 
 ADDON_ID = "script.m3u.movies"
@@ -34,7 +42,43 @@ class Monitor(xbmc.Monitor):
         self.enabled = {setting: addon.getSettingBool(setting) for setting, _, _ in ENTRIES.values()}
 
 
+def downloads_engine():
+    """The torrent engine when there are saved downloads to resume, or None."""
+    addon = xbmcaddon.Addon(ADDON_ID)
+    data_path = os.path.join(xbmcvfs.translatePath(addon.getAddonInfo("profile")), "torrest")
+    folder = addon.getSetting("download_folder")
+    saved = os.path.join(data_path, "torrents")
+    if not folder or not os.path.isdir(saved) or not os.listdir(saved):
+        return None
+    return torrents.Engine(addon.getAddonInfo("path"), data_path, android=xbmc.getCondVisibility("System.Platform.Android"))
+
+
+def resume_downloads():
+    addon = xbmcaddon.Addon(ADDON_ID)
+    engine = downloads_engine()
+    if engine and addon.getSettingBool("resume_downloads"):
+        try:
+            engine.start(addon.getSetting("download_folder"), {"max_upload_rate": max(addon.getSettingInt("upload_limit"), 0) * 1024})
+        except torrents.EngineError as error:
+            xbmc.log("Easy Movie: could not resume downloads: %s" % error, xbmc.LOGWARNING)
+
+
+def stop_downloads():
+    """Stop the engine, whoever started it, so the downloads are saved before Kodi quits."""
+    addon = xbmcaddon.Addon(ADDON_ID)
+    data_path = os.path.join(xbmcvfs.translatePath(addon.getAddonInfo("profile")), "torrest")
+    torrents.Engine(addon.getAddonInfo("path"), data_path).stop()
+
+
 def run():
+    threading.Thread(target=resume_downloads, daemon=True).start()
+    try:
+        watch_menu()
+    finally:
+        stop_downloads()
+
+
+def watch_menu():
     monitor = Monitor()
     home = xbmcgui.Window(10000)
     menu_entry, seen = "", 0

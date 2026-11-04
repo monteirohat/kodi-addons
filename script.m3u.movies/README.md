@@ -11,6 +11,7 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 - Watched movies and episodes get a check mark, movies and episodes stopped midway resume where you stopped, and a **Continue watching** group lists what is in progress.
 - Movie details with a large poster, genre, running time and source list, and **Play**, **Favorite** and **Remove movie** buttons.
 - Add lists from a web address, a file on the device or network, or the M3U files of a GitHub repository. No playlist configuration is required.
+- Download torrents from magnet links or `.torrent` files into a folder you choose, with a download list that shows progress, speed and time left.
 - Add folders with your own video files, on the SD card, a USB drive or a network share. Posters and details come from Cinemeta, and files can be renamed or deleted from the catalog.
 - When a movie fails to open, or stops right after starting, Easy Movie offers to remove it.
 - **Check movies** tests a whole genre at once and removes the movies that do not respond.
@@ -91,6 +92,7 @@ The toolbar above the genres shows the name of the focused tool.
 | Magnifier | **Search movies** by title across all lists. |
 | Check mark | **Check movies** tests every movie of the shown genre. The tool shows the genre name. Movies that do not respond can be removed all at once or one by one. |
 | Trash can | **Removed movies** lists what you removed. Select movies to restore them. |
+| Download arrow | **Downloads** opens the torrent download manager. See [Downloads](#downloads). |
 
 ### Movies that do not work
 
@@ -133,6 +135,24 @@ The menu of a video of a folder also offers:
 
 Renaming and deleting need a drive that can be written. A drive formatted as NTFS that was not removed safely may be mounted read only. Easy Movie then reports that the files could not be changed.
 
+## Downloads
+
+The download icon at the end of the toolbar opens **Downloads**, a torrent download manager.
+
+- **Add magnet link** asks for a magnet link or the web address of a `.torrent` file. Typing a long link with the remote is impractical, so paste it from a phone with a remote app such as Kore or Yatse while the keyboard is open.
+- **Add .torrent file** picks a `.torrent` file, for example one copied to a USB drive.
+- **Change folder** chooses where downloads are saved. On LibreELEC, a folder on the SD card asks for confirmation first, since downloads write a lot and wear cards out. Use a USB drive or hard disk instead.
+- The list shows each download with its progress, state, speed, connections, size and time left, and updates every two seconds. The header shows the total download and upload speeds.
+- Select a download, or press **Menu**, to **Pause** or **Resume** it, **Remove from the list**, or **Remove and delete files**.
+
+Downloads keep going after the screen is closed, while Kodi runs. When Kodi starts, unfinished downloads resume. Add the download folder as a video folder to see what you downloaded in the catalog.
+
+Torrent downloads also upload to other people while they run. The upload speed is limited in the settings. You are responsible for what you download.
+
+### Torrent engine
+
+Easy Movie downloads with [Torrest](https://github.com/i96751414/torrest-cpp) 0.0.8, a torrent engine built on libtorrent with a REST API, released under the MIT license. Its executables for Linux (arm64, armv7, x64, x86), Android (arm64, arm, x64, x86), Windows (x64, x86) and macOS (x64, which Apple silicon Macs run with Rosetta) are in `resources/bin`, with its license and their SHA-256 checksums. Easy Movie copies the one of the device into its data folder, starts it as a separate process on port 61235 when **Downloads** opens or when Kodi starts with unfinished downloads, and stops it when Kodi quits. A failure of the engine does not stop Kodi.
+
 ## Managing lists
 
 The list manager opens over the catalog, and the genres behind it are reloaded after every change.
@@ -168,6 +188,9 @@ Turn off **Open Easy Movie from the Movies menu** or **Open Easy Movie from the 
 | Open Easy Movie from the TV shows menu | On | Open Easy Movie on the series when **TV shows** is selected and the TV show library is empty. |
 | Offer to remove movies that fail to play | On | Show the removal dialog after a failed playback. |
 | Look up posters and details of folder videos on Cinemeta | On | Fetch posters and details of the movies and series of video folders. |
+| Download folder | Not set | Folder for torrent downloads. **Downloads** asks for it the first time. |
+| Upload limit (KB/s, 0 for no limit) | 200 | Maximum upload speed of torrent downloads. |
+| Resume downloads when Kodi starts | On | Start the torrent engine with Kodi when there are unfinished downloads. |
 | Update lists every (hours) | 12 | Web lists are downloaded again after this interval. The saved copy is used when the provider is offline. |
 | Check timeout (seconds) | 8 | Advanced. Time to wait for each stream during a check. |
 | Movies checked at the same time | 10 | Advanced. Parallel requests during **Check movies**. |
@@ -192,9 +215,10 @@ Easy Movie stores its data in Kodi's add-on data folder, `userdata/addon_data/sc
 | `favorites.json` | Favorite movies and series. |
 | `progress.json` | Playback position and watched state of movies and episodes. |
 | `metadata.json` | Cinemeta details of the movies and series of video folders. |
+| `torrest/` | The torrent engine, its settings, log and saved downloads. |
 | `repositories.json` | GitHub repositories, once the suggested one is changed. |
 
-Easy Movie connects only to the addresses of your lists, streams and posters, to `api.github.com` and `raw.githubusercontent.com` when you search a repository, and to `v3-cinemeta.strem.io` to look up the videos of folders, sending their titles. The lookups can be turned off in the settings. It sends no usage data.
+Easy Movie connects only to the addresses of your lists, streams and posters, to `api.github.com` and `raw.githubusercontent.com` when you search a repository, to `v3-cinemeta.strem.io` to look up the videos of folders, sending their titles, and, for torrent downloads, to the trackers and peers of the torrents you add. The lookups can be turned off in the settings. It sends no usage data.
 
 ## Known limitations
 
@@ -208,7 +232,7 @@ Easy Movie does not provide any content. It plays the lists you add, and you are
 
 ## Development
 
-Easy Movie shares its design and most of its code with Easy Channel. Each add-on keeps its own copy, as the repository conventions ask for self-contained add-ons. `m3u.py`, `probe.py`, `github.py` and `storage.py` are the same modules, with the defaults and the `#EXTINF` duration that movies need. `watcher.py` also records progress, and `series.py` is specific to Easy Movie. `series.py`, `folders.py` and `cinemeta.py` do not import Kodi modules and can be tested with a regular Python 3 interpreter.
+Easy Movie shares its design and most of its code with Easy Channel. Each add-on keeps its own copy, as the repository conventions ask for self-contained add-ons. `m3u.py`, `probe.py`, `github.py` and `storage.py` are the same modules, with the defaults and the `#EXTINF` duration that movies need. `watcher.py` also records progress, and `series.py` is specific to Easy Movie. `series.py`, `folders.py`, `cinemeta.py` and `torrents.py` do not import Kodi modules and can be tested with a regular Python 3 interpreter.
 
 | Path | Purpose |
 | --- | --- |
@@ -218,6 +242,8 @@ Easy Movie shares its design and most of its code with Easy Channel. Each add-on
 | `resources/lib/series.py` | Episode recognition and grouping into series. |
 | `resources/lib/folders.py` | Video folders: finds the videos and describes them as an M3U list. |
 | `resources/lib/cinemeta.py` | Cinemeta search and details. |
+| `resources/lib/torrents.py` | Torrent engine: starts Torrest and uses its API. |
+| `resources/bin/` | Torrest executables for each platform, with their license and checksums. |
 | `resources/lib/watcher.py` | Playback, progress and failure detection. |
 | `resources/lib/m3u.py` | M3U parsing and writing. |
 | `resources/lib/probe.py` | Stream checks. |

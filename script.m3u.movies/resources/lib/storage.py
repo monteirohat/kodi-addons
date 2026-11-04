@@ -66,6 +66,12 @@ def save_lists(lists):
     write_json(LISTS_FILE, lists)
 
 
+def download_bytes(url):
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with urllib.request.urlopen(request, timeout=30) as response:
+        return response.read()
+
+
 def download(source):
     if source.lower().startswith(("http://", "https://")):
         request = urllib.request.Request(source, headers={"User-Agent": USER_AGENT, "Accept-Encoding": "gzip"})

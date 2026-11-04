@@ -55,5 +55,35 @@
         </setting>
       </group>
     </category>
+    <category id="downloads" label="30188">
+      <group id="1">
+        <setting id="download_folder" type="path" label="30189">
+          <level>0</level>
+          <default></default>
+          <constraints>
+            <allowempty>true</allowempty>
+            <writable>true</writable>
+          </constraints>
+          <control type="button" format="path">
+            <heading>30168</heading>
+          </control>
+        </setting>
+        <setting id="upload_limit" type="integer" label="30190">
+          <level>0</level>
+          <default>200</default>
+          <constraints>
+            <minimum>0</minimum>
+            <step>50</step>
+            <maximum>10000</maximum>
+          </constraints>
+          <control type="edit" format="integer" />
+        </setting>
+        <setting id="resume_downloads" type="boolean" label="30191">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle" />
+        </setting>
+      </group>
+    </category>
   </section>
 </settings>

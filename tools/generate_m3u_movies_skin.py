@@ -56,7 +56,7 @@ def main_screen():
         label(128, 28, 900, 60, f"$ADDON[{ADDON_ID} 30050]", "font32_title", TEXT),
         label(1360, 28, 500, 60, "$INFO[System.Time]", "font32_title", TEXT2, align="right"),
         "<!-- Toolbar. Tools are added from Python, see TOOLS in gui.py. -->",
-        skin.toolbar,
+        skin.make_toolbar(104),
         label(44, 212, 516, 36, "$INFO[Container(100).ListItem.Label]", "font12", ACCENT, has(100)),
         "<!-- Groups -->",
         panel(40, 256, 520, 784, SURFACE),
@@ -175,6 +175,61 @@ def series_screen():
         spaces=0)
 
 
+def progress_bar(top, background, condition=None):
+    """Progress of a download, from ListItem.Property(progress), drawn over a background track."""
+    return f"""<control type="progress">
+  <left>24</left>
+  <top>{top}</top>
+  <width>1312</width>
+  <height>8</height>
+  <texturebg colordiffuse="{background}">white.png</texturebg>
+  <midtexture colordiffuse="{ACCENT}">white.png</midtexture>
+  <info>ListItem.Property(progress)</info>{skin.visible(condition)}
+</control>"""
+
+
+def downloads_screen():
+    focus = has(100)
+    item = lambda name, detail, track, condition=None, scroll=False: [
+        label(24, 8, 1100, 44, "$INFO[ListItem.Label]", "font13", name, condition, scroll=scroll),
+        label(1136, 8, 200, 44, "$INFO[ListItem.Property(percent)]", "font13", name, condition, align="right"),
+        progress_bar(58, track, condition),
+        label(24, 70, 1312, 34, "$INFO[ListItem.Label2]", "font12", detail, condition)]
+    downloads = f"""<control type="list" id="100">
+  <left>290</left>
+  <top>350</top>
+  <width>1360</width>
+  <height>600</height>
+  <onup>201</onup>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <scrolltime>120</scrolltime>
+  <itemlayout height="120">
+{join(panel(0, 2, 1360, 112, RAISED), *item(TEXT, TEXT2, SURFACE), spaces=4)}
+  </itemlayout>
+  <focusedlayout height="120">
+{join(panel(0, 2, 1360, 112, FOCUS, focus), panel(0, 2, 1360, 112, RAISED, "!" + focus),
+      *item(ON_FOCUS, ON_FOCUS2, TEXT2, focus, True), *item(TEXT, TEXT2, SURFACE, "!" + focus), spaces=4)}
+  </focusedlayout>
+</control>"""
+    button = lambda control_id, left, width, onleft, onright, string_id: details_button(
+        control_id, left, onleft, onright, string_id, FOCUS, ON_FOCUS, top=250, width=width, ondown="100")
+    return join(
+        image(0, 0, 1920, 1080, "white.png", "D9000000"),
+        panel(250, 80, 1420, 920, SURFACE),
+        image(290, 116, 56, 56, "download.png", ACCENT),
+        label(368, 114, 900, 60, f"$ADDON[{ADDON_ID} 30160]", "font32_title", TEXT),
+        label(1100, 114, 550, 60, "$INFO[Window.Property(summary)]", "font12", TEXT2, align="right"),
+        label(290, 190, 1360, 40, "$INFO[Window.Property(folder)]", "font12", TEXT2),
+        button(201, 290, 400, 204, 202, 30161),
+        button(202, 706, 360, 201, 203, 30162),
+        button(203, 1082, 300, 202, 204, 30163),
+        button(204, 1398, 252, 203, 201, 30063),
+        label(330, 440, 1280, 200, "", "font13", TEXT2, align="center", center=False, control_id=300, wrap=True),
+        downloads,
+        spaces=0)
+
+
 def main():
     skin.ADDON_ID, skin.GENERATOR = ADDON_ID, "generate_m3u_movies_skin.py"
     files = {
@@ -182,6 +237,7 @@ def main():
         "script-m3u-movies-details.xml": window("Modal movie details opened from a poster.", 201, details_screen(), always=True),
         "script-m3u-movies-series.xml": window("Modal series details with seasons and episodes, opened from a series poster.", 201,
                                                series_screen(), always=True),
+        "script-m3u-movies-downloads.xml": window("Modal torrent downloads opened from the download icon.", 201, downloads_screen(), always=True),
         "script-m3u-movies-manager.xml": skin.manager("Modal list manager opened from the gear icon.", "gear.png", 30060, "film.png",
             [skin.button(201, 440, 248, 203, 204, 30000), skin.button(204, 704, 248, 201, 202, 30093),
              skin.button(202, 968, 248, 204, 203, 30062), skin.button(203, 1232, 248, 202, 201, 30063)]),

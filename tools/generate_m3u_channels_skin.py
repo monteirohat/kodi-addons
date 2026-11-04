@@ -118,14 +118,16 @@ def window(comment, default, controls, always=False):
 
 has = lambda control: f"Control.HasFocus({control})"
 tool_focus = has(100)
-toolbar_item = f"""<itemlayout width="108" height="96">
+def make_toolbar(tile=108):
+    """Toolbar above the groups. Tiles of 96 with a gap of 8, a tile of 104, fit five tools in the column."""
+    item = f"""<itemlayout width="{tile}" height="96">
 {join(panel(0, 0, 96, 96, SURFACE), image(22, 22, 52, 52, "$INFO[ListItem.Icon]", TEXT2), spaces=2)}
 </itemlayout>
-<focusedlayout width="108" height="96">
+<focusedlayout width="{tile}" height="96">
 {join(panel(0, 0, 96, 96, FOCUS, tool_focus), panel(0, 0, 96, 96, SURFACE, "!" + tool_focus),
       image(22, 22, 52, 52, "$INFO[ListItem.Icon]", ON_FOCUS, tool_focus), image(22, 22, 52, 52, "$INFO[ListItem.Icon]", TEXT2, "!" + tool_focus), spaces=2)}
 </focusedlayout>"""
-toolbar = f"""<control type="list" id="100">
+    return f"""<control type="list" id="100">
   <left>40</left>
   <top>110</top>
   <width>520</width>
@@ -135,8 +137,10 @@ toolbar = f"""<control type="list" id="100">
   <onright>noop</onright>
   <ondown>200</ondown>
   <scrolltime>150</scrolltime>
-{indent(toolbar_item, 2)}
+{indent(item, 2)}
 </control>"""
+
+toolbar = make_toolbar()
 
 group_focus = has(200)
 group_name = lambda color, condition=None, scroll=False: label(28, 0, 352, 68, "$INFO[ListItem.Label]", "font13", color, condition, scroll=scroll)

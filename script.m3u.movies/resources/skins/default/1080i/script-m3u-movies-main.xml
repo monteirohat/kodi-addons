@@ -49,7 +49,7 @@
       <onright>noop</onright>
       <ondown>200</ondown>
       <scrolltime>150</scrolltime>
-      <itemlayout width="108" height="96">
+      <itemlayout width="104" height="96">
         <control type="image">
           <left>0</left>
           <top>0</top>
@@ -65,7 +65,7 @@
           <texture colordiffuse="FF9C9EA6">$INFO[ListItem.Icon]</texture>
         </control>
       </itemlayout>
-      <focusedlayout width="108" height="96">
+      <focusedlayout width="104" height="96">
         <control type="image">
           <left>0</left>
           <top>0</top>
