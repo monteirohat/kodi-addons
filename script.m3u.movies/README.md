@@ -15,6 +15,7 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 - Add Stremio addons by their address, as in Stremio. Their catalogs join the catalog, and their sources open in a side panel: a torrent goes to Downloads, and a direct link plays at once.
 - Download torrents from magnet links, `.torrent` files or the catalog into a folder you choose, with a download list that shows progress, speed, time left and the free space of the folder.
 - Add folders with your own video files, on the SD card, a USB drive or a network share. Posters and details come from Cinemeta, and files can be renamed or deleted from the catalog.
+- Playback controls in the style of streaming apps: play and pause between back and forward 10 seconds, and the subtitle and audio tracks in a side panel.
 - When a movie fails to open, or stops right after starting, Easy Movie offers to remove it.
 - **Check movies** tests a whole genre at once and removes the movies that do not respond.
 - **Favorites** genre at the top, kept across list updates.
@@ -87,6 +88,21 @@ Opening a series shows its poster, seasons and episodes. **Continue** plays the 
 Easy Movie remembers how far each movie and episode was watched. Playing past 90% marks it as watched, shown with a check mark. A movie or episode stopped after the first minute offers **Resume** or **Play from the beginning** the next time.
 
 The groups start with **Continue watching**, with movies stopped midway and series with episodes left, most recent first, followed by **Favorites**, **All movies** and **Series**. **All movies** and the genres show the newest movies first, such as a finished download. Movies that arrived together keep the order of their lists. Easy Movie opens on **Continue watching** when it has items.
+
+### Playback controls
+
+Movies and episodes play with the controls of Easy Movie, in the style of streaming apps. They show the title, a time bar, **Subtitles** and **Audio** on the sides, and play and pause between back and forward 10 seconds. The controls hide after 5 seconds without a key, and stay while the movie is paused.
+
+| Key | Controls hidden | Controls shown |
+| --- | --- | --- |
+| **OK**, **Up**, **Down**, **Info** or **Menu** | Show the controls. | Use the highlighted button. |
+| **Left / Right** | Go back or forward 10 seconds, showing the time bar. Presses add up, so three presses skip 30 seconds. | Move between the buttons. |
+| **Back** | Stop the movie. Its progress is kept. | Hide the controls. |
+| **Play / Pause**, **Stop**, volume | Work as usual in Kodi. | Work as usual in Kodi. |
+
+**Subtitles** lists the subtitles of the video and subtitle files next to it, such as `Movie.pt-BR.srt`, with **Off** first. **Audio** lists the audio tracks, such as the Portuguese and English tracks of a dual audio release. The current track has a check mark. Select a track with **OK**, or close the panel with **Back**.
+
+Turn off **Easy Movie player controls** in the settings to use the controls of the Kodi skin instead.
 
 ### Toolbar
 
@@ -245,6 +261,7 @@ Turn off **Open Easy Movie from the Movies menu** or **Open Easy Movie from the 
 | --- | --- | --- |
 | Open Easy Movie from the Movies menu | On | Open Easy Movie when **Movies** is selected in Kodi's main menu and the movie library is empty. |
 | Open Easy Movie from the TV shows menu | On | Open Easy Movie on the series when **TV shows** is selected and the TV show library is empty. |
+| Easy Movie player controls | On | Show the controls of Easy Movie over movies and episodes. Off uses the controls of the Kodi skin. |
 | Offer to remove movies that fail to play | On | Show the removal dialog after a failed playback. |
 | Look up posters and details of folder videos on Cinemeta | On | Fetch posters and details of the movies and series of video folders. |
 | Download folder | Not set | Folder for torrent downloads. **Downloads** asks for it the first time. |
@@ -288,7 +305,8 @@ Easy Movie connects only to the addresses of your lists, streams and posters, to
 - Series are recognized by episode codes in the names. Episodes without a code are shown as movies.
 - Kodi's own dialogs, such as confirmations, selection lists and the keyboard, use the style of the current skin.
 - The catalog shows catalogs of movies, series and anime. Catalogs of live TV and catalogs that need a search or a genre are left out. Addon searches are not used yet: **Search** searches Cinemeta.
-- Direct links from addons play without saving progress, and their titles are not marked as watched.
+- Direct links from addons play without saving progress, and their titles are not marked as watched. They also play with the controls of the Kodi skin.
+- While a movie is paused, the Kodi skin also shows its own time bar at the top of the screen. Subtitles are drawn behind the playback controls while these are shown.
 - Downloading only one file of a pack needs Easy Movie to stay open until the torrent details arrive, usually a few seconds. When it is closed before, the whole pack downloads. Remove it in **Downloads** and choose the source again.
 
 ## Disclaimer
@@ -313,6 +331,7 @@ Easy Movie shares its design and most of its code with Easy Channel. Each add-on
 | `resources/lib/torrents.py` | Torrent engine: starts Torrest and uses its API. |
 | `resources/bin/` | Torrest executables for each platform, with their license and checksums. |
 | `resources/lib/watcher.py` | Playback, progress and failure detection. |
+| `resources/lib/controls.py` | Playback controls over the video, with the subtitle and audio tracks. |
 | `resources/lib/m3u.py` | M3U parsing and writing. |
 | `resources/lib/probe.py` | Stream checks. |
 | `resources/lib/github.py` | GitHub repository search. |

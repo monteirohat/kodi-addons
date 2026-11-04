@@ -335,6 +335,142 @@ def sources_screen():
         spaces=0)
 
 
+def player_screen():
+    """Playback controls over the video: the time bar, play and pause between back and forward 10 seconds, and
+    subtitles and audio, which open their tracks in a panel from the right. gui.py sets Window.Property(mode) to
+    bar, for the time bar alone while seeking, or full."""
+    shown = "!String.IsEmpty(Window.Property(mode))"
+    full = "String.IsEqual(Window.Property(mode),full)"
+    tracks_open = "!String.IsEmpty(Window.Property(panel))"
+    fade = """<animation effect="fade" start="0" end="100" time="200">Visible</animation>
+<animation effect="fade" start="100" end="0" time="300">Hidden</animation>"""
+
+    def group(condition, *controls):
+        return f"""<control type="group">
+  <visible>{condition}</visible>
+{skin.indent(fade, 2)}
+{join(*controls, spaces=2)}
+</control>"""
+
+    def round_button(control_id, left, top, size, icons, onleft, onright):
+        """A round button: a light disc with a dark icon when focused, a faint disc with a white icon otherwise."""
+        focus = has(control_id)
+        inset = size // 4
+        drawn = []
+        for texture, condition in icons:
+            drawn += [image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, texture, ON_FOCUS, skin.both(focus, condition)),
+                      image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, texture, TEXT, skin.both("!" + focus, condition))]
+        return join(f"""<control type="button" id="{control_id}">
+  <left>{left}</left>
+  <top>{top}</top>
+  <width>{size}</width>
+  <height>{size}</height>
+  <onup>noop</onup>
+  <ondown>noop</ondown>
+  <onleft>{onleft}</onleft>
+  <onright>{onright}</onright>
+  <texturefocus colordiffuse="{FOCUS}">circle.png</texturefocus>
+  <texturenofocus colordiffuse="33FFFFFF">circle.png</texturenofocus>
+  <label></label>
+</control>""", *drawn, spaces=0)
+
+    def text_button(control_id, left, string_id, icon, onleft, onright):
+        focus = has(control_id)
+        return join(f"""<control type="button" id="{control_id}">
+  <left>{left}</left>
+  <top>920</top>
+  <width>340</width>
+  <height>84</height>
+  <onup>noop</onup>
+  <ondown>noop</ondown>
+  <onleft>{onleft}</onleft>
+  <onright>{onright}</onright>
+  <font>font13</font>
+  <align>left</align>
+  <aligny>center</aligny>
+  <textoffsetx>84</textoffsetx>
+  <textcolor>{TEXT}</textcolor>
+  <focusedcolor>{ON_FOCUS}</focusedcolor>
+  <texturefocus border="16" colordiffuse="{FOCUS}">panel.png</texturefocus>
+  <texturenofocus border="16" colordiffuse="33FFFFFF">panel.png</texturenofocus>
+  <label>$ADDON[{ADDON_ID} {string_id}]</label>
+</control>""", image(left + 28, 942, 40, 40, icon, ON_FOCUS, focus), image(left + 28, 942, 40, 40, icon, TEXT, "!" + focus), spaces=0)
+
+    paused = "Player.Paused"
+    bar = [
+        f"""<control type="image">
+  <left>0</left>
+  <top>600</top>
+  <width>1920</width>
+  <height>480</height>
+  <texture colordiffuse="F2000000">shade.png</texture>
+</control>""",
+        f"""<control type="progress" id="300">
+  <left>120</left>
+  <top>864</top>
+  <width>1680</width>
+  <height>8</height>
+  <texturebg colordiffuse="4DFFFFFF">white.png</texturebg>
+  <midtexture colordiffuse="{ACCENT}">white.png</midtexture>
+</control>""",
+        label(120, 816, 600, 40, "$INFO[Window.Property(elapsed)]", "font12", TEXT),
+        label(1200, 816, 600, 40, "$INFO[Window.Property(duration)]", "font12", TEXT2, align="right")]
+    controls = [
+        f"""<control type="image">
+  <left>0</left>
+  <top>0</top>
+  <width>1920</width>
+  <height>300</height>
+  <texture flipy="true" colordiffuse="CC000000">shade.png</texture>
+</control>""",
+        "<!-- Below the time bar that the Kodi skin shows at the top while paused -->",
+        label(120, 100, 1680, 64, "$INFO[Window.Property(title)]", "font32_title", TEXT),
+        label(120, 166, 1680, 40, "$INFO[Window.Property(detail)]", "font13", TEXT2),
+        text_button(201, 120, 30320, "subtitles.png", "noop", 202),
+        round_button(202, 744, 914, 96, [("back10.png", None)], 201, 203),
+        round_button(203, 900, 902, 120, [("pause.png", "!" + paused), ("player_play.png", paused)], 202, 204),
+        round_button(204, 1080, 914, 96, [("forward10.png", None)], 203, 205),
+        text_button(205, 1460, 30321, "audio.png", 204, "noop")]
+    width = 820
+    left = 1920 - width
+    focus = has(400)
+    track = lambda name, detail, condition=None: [
+        image(24, 30, 40, 40, "check.png", name, skin.both(condition, "String.IsEqual(ListItem.Property(current),true)")),
+        label(84, 12, width - 140, 44, "$INFO[ListItem.Label]", "font13", name, condition),
+        label(84, 56, width - 140, 34, "$INFO[ListItem.Label2]", "font12", detail, condition)]
+    tracks = f"""<control type="list" id="400">
+  <left>{left + 20}</left>
+  <top>196</top>
+  <width>{width - 40}</width>
+  <height>798</height>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <scrolltime>120</scrolltime>
+  <itemlayout height="104">
+{join(*track(TEXT, TEXT2), spaces=4)}
+  </itemlayout>
+  <focusedlayout height="104">
+{join(panel(0, 2, width - 40, 98, FOCUS, focus), panel(0, 2, width - 40, 98, RAISED, "!" + focus),
+      *track(ON_FOCUS, ON_FOCUS2, focus), *track(TEXT, TEXT2, "!" + focus), spaces=4)}
+  </focusedlayout>
+</control>"""
+    tracks_panel = f"""<control type="group">
+  <visible>{tracks_open}</visible>
+  <animation effect="slide" start="{width},0" end="0,0" time="260" tween="cubic" easing="out">Visible</animation>
+  <animation effect="slide" start="0,0" end="{width},0" time="200" tween="cubic" easing="in">Hidden</animation>
+{join(image(left, 0, width, 1080, "white.png", SURFACE),
+      label(left + 40, 56, width - 80, 64, "$INFO[Window.Property(panel_title)]", "font32_title", TEXT),
+      image(left + 20, 184, width - 40, 2, "white.png", RAISED),
+      tracks,
+      label(left + 40, 1012, width - 80, 40, f"$ADDON[{ADDON_ID} 30327]", "font12", TEXT3), spaces=2)}
+</control>"""
+    return join(
+        group(shown, *bar),
+        group(full, *controls),
+        tracks_panel,
+        spaces=0)
+
+
 def progress_bar(top, background, condition=None):
     """Progress of a download, from ListItem.Property(progress), drawn over a background track."""
     return f"""<control type="progress">
@@ -402,6 +538,7 @@ def main():
         "script-m3u-movies-catalog-details.xml": window("Modal details of a catalog title, with seasons and episodes for a series.", 202,
                                                         catalog_details_screen(), always=True),
         "script-m3u-movies-sources.xml": window("Modal sources of a catalog title, sliding in from the right.", 100, sources_screen(), always=True),
+        "script-m3u-movies-player.xml": window("Modal playback controls over the video of a movie or an episode.", 203, player_screen()),
         "script-m3u-movies-downloads.xml": window("Modal torrent downloads opened from the download icon.", 201, downloads_screen(), always=True),
         "script-m3u-movies-manager.xml": skin.manager("Modal list manager opened from the gear icon.", "gear.png", 30060, "film.png",
             [skin.button(201, 290, 256, 203, 204, 30000), skin.button(204, 561, 256, 201, 205, 30093),

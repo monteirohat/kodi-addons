@@ -1037,3 +1037,79 @@ msgstr ""
 msgctxt "#30314"
 msgid "There is not enough space in the download folder.[CR]Folder: {0}[CR]Free: {1}  ·  This torrent: {2}"
 msgstr ""
+
+msgctxt "#30320"
+msgid "Subtitles"
+msgstr ""
+
+msgctxt "#30321"
+msgid "Audio"
+msgstr ""
+
+msgctxt "#30322"
+msgid "Off"
+msgstr ""
+
+msgctxt "#30323"
+msgid "Track {0}"
+msgstr ""
+
+msgctxt "#30324"
+msgid "Forced"
+msgstr ""
+
+msgctxt "#30325"
+msgid "This video has no subtitles"
+msgstr ""
+
+msgctxt "#30326"
+msgid "Easy Movie player controls"
+msgstr ""
+
+msgctxt "#30327"
+msgid "OK: choose  ·  Back: close"
+msgstr ""
+
+msgctxt "#30330"
+msgid "Portuguese"
+msgstr ""
+
+msgctxt "#30331"
+msgid "Portuguese (Brazil)"
+msgstr ""
+
+msgctxt "#30332"
+msgid "English"
+msgstr ""
+
+msgctxt "#30333"
+msgid "Spanish"
+msgstr ""
+
+msgctxt "#30334"
+msgid "French"
+msgstr ""
+
+msgctxt "#30335"
+msgid "Italian"
+msgstr ""
+
+msgctxt "#30336"
+msgid "German"
+msgstr ""
+
+msgctxt "#30337"
+msgid "Japanese"
+msgstr ""
+
+msgctxt "#30338"
+msgid "Korean"
+msgstr ""
+
+msgctxt "#30339"
+msgid "Chinese"
+msgstr ""
+
+msgctxt "#30340"
+msgid "Russian"
+msgstr ""

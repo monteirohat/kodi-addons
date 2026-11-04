@@ -6,7 +6,7 @@ import time
 import xbmc
 import xbmcgui
 
-from resources.lib import m3u, probe
+from resources.lib import controls, m3u, probe
 
 
 OPEN_TIMEOUT = 120
@@ -41,6 +41,7 @@ class Watcher(xbmc.Player):
         # Set when Kodi reports that playback stopped, ended or failed.
         self.stop_seen = threading.Event()
         self.closed = False
+        self.controls = None
         self.thread = threading.Thread(target=self.loop, daemon=True)
         self.thread.start()
 
@@ -67,6 +68,7 @@ class Watcher(xbmc.Player):
         channel = entry["channel"]
         with self.lock:
             previous, self.watched = self.watched, None
+        self.close_controls()
         # Keep how far the movie being replaced was watched.
         if previous and previous["started"]:
             self.on_progress(previous, previous["position"], previous["total"], True)
@@ -108,6 +110,8 @@ class Watcher(xbmc.Player):
                     watched["started"] = time.time()
                     if watched["start"]:
                         self.seekTime(watched["start"])
+                    if controls.enabled() and self.controls is None and self.isPlayingVideo():
+                        self.open_controls(watched)
                 elif event == "stopped":
                     # Stopping a movie that never started usually means it was not working.
                     failed = watched["started"] is None
@@ -127,6 +131,7 @@ class Watcher(xbmc.Player):
                     watched["checked"] = True
                     failed = probe.check(watched["channel"]["url"], CHECK_TIMEOUT) is not None
             if failed or finished:
+                self.close_controls()
                 with self.lock:
                     # A movie requested meanwhile replaces this one.
                     if self.watched is not watched:
@@ -160,6 +165,21 @@ class Watcher(xbmc.Player):
             watched["reported"] = time.time()
             self.on_progress(watched, watched["position"], watched["total"], False)
 
+    def open_controls(self, watched):
+        episode = watched.get("episode")
+        if episode:
+            title = episode["show"]
+            detail = "S%02dE%02d" % (episode["season"], episode["number"]) + ("  ·  " + episode["title"] if episode["title"] else "")
+        else:
+            title, detail = watched["channel"]["name"], ""
+        self.controls = controls.open_controls(self, title, detail)
+
+    def close_controls(self):
+        window, self.controls = self.controls, None
+        if window is not None:
+            window.shutdown()
+
     def shutdown(self):
+        self.close_controls()
         self.closed = True
         self.thread.join(2)

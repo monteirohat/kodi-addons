@@ -1037,3 +1037,79 @@ msgstr "{0} livres"
 msgctxt "#30314"
 msgid "There is not enough space in the download folder.[CR]Folder: {0}[CR]Free: {1}  ·  This torrent: {2}"
 msgstr "Não há espaço suficiente na pasta dos downloads.[CR]Pasta: {0}[CR]Livre: {1}  ·  Este torrent: {2}"
+
+msgctxt "#30320"
+msgid "Subtitles"
+msgstr "Legendas"
+
+msgctxt "#30321"
+msgid "Audio"
+msgstr "Áudio"
+
+msgctxt "#30322"
+msgid "Off"
+msgstr "Desligadas"
+
+msgctxt "#30323"
+msgid "Track {0}"
+msgstr "Faixa {0}"
+
+msgctxt "#30324"
+msgid "Forced"
+msgstr "Forçada"
+
+msgctxt "#30325"
+msgid "This video has no subtitles"
+msgstr "Este vídeo não tem legendas"
+
+msgctxt "#30326"
+msgid "Easy Movie player controls"
+msgstr "Controles do player do Easy Movie"
+
+msgctxt "#30327"
+msgid "OK: choose  ·  Back: close"
+msgstr "OK: escolher  ·  Voltar: fechar"
+
+msgctxt "#30330"
+msgid "Portuguese"
+msgstr "Português"
+
+msgctxt "#30331"
+msgid "Portuguese (Brazil)"
+msgstr "Português (Brasil)"
+
+msgctxt "#30332"
+msgid "English"
+msgstr "Inglês"
+
+msgctxt "#30333"
+msgid "Spanish"
+msgstr "Espanhol"
+
+msgctxt "#30334"
+msgid "French"
+msgstr "Francês"
+
+msgctxt "#30335"
+msgid "Italian"
+msgstr "Italiano"
+
+msgctxt "#30336"
+msgid "German"
+msgstr "Alemão"
+
+msgctxt "#30337"
+msgid "Japanese"
+msgstr "Japonês"
+
+msgctxt "#30338"
+msgid "Korean"
+msgstr "Coreano"
+
+msgctxt "#30339"
+msgid "Chinese"
+msgstr "Chinês"
+
+msgctxt "#30340"
+msgid "Russian"
+msgstr "Russo"
