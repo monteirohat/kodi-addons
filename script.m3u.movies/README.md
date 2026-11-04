@@ -11,6 +11,7 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 - Watched movies and episodes get a check mark, movies and episodes stopped midway resume where you stopped, and a **Continue watching** group lists what is in progress.
 - Movie details with a large poster, genre, running time and source list, and **Play**, **Favorite** and **Remove movie** buttons.
 - Add lists from a web address, a file on the device or network, or the M3U files of a GitHub repository. No playlist configuration is required.
+- Add folders with your own video files, on the SD card, a USB drive or a network share. Posters and details come from Cinemeta, and files can be renamed or deleted from the catalog.
 - When a movie fails to open, or stops right after starting, Easy Movie offers to remove it.
 - **Check movies** tests a whole genre at once and removes the movies that do not respond.
 - **Favorites** genre at the top, kept across list updates.
@@ -102,11 +103,41 @@ The original M3U is never changed. Removed movies are recorded by stream address
 
 Genres are taken from `group-title`. Movies without a genre, or with a placeholder such as `Undefined`, are listed together under **Other** at the end of the genres. Posters come from `tvg-logo`. Movies without a poster show a clapperboard.
 
+## Video folders
+
+Select **Add list** > **Folder with videos** to add a folder with your own video files, such as `/storage/videos`, a USB drive under `/var/media`, or a network share such as `smb://`. The folder becomes a list like the others, and **Update list** reads it again after you add or remove files.
+
+- Each first level subfolder becomes a genre, such as `Movies` or `Cartoons`.
+- File names are cleaned for display: `O.Senhor.dos.Aneis.2001.1080p.BluRay.mkv` appears as **O Senhor dos Aneis (2001)**.
+- Episodes are recognized by their codes, such as `Show.S01E02.mkv`, and take the name of their series from their folder. A folder where most files start with a number, such as `Pica Pau/196 - Adeus As Aulas.mp4`, is a series whose episodes are those numbers. Folders named `Season 2` or `Temporada 2` give the season.
+- A poster is taken from an image next to the video with the same name, from `poster.jpg`, `folder.jpg` or `cover.jpg` in the folder of a series or of a movie alone in its folder, or else from Cinemeta. Without any, Kodi shows a frame of the video.
+- Subtitles with the same name as the video, such as `Movie.srt` or `Movie.pt-BR.srt`, are loaded by Kodi.
+- Files of macOS (`._*` and `.DS_Store`) and sample videos are ignored.
+- While the drive of a folder is disconnected, its videos are hidden. Their progress and favorites are kept for when it comes back.
+
+### Cinemeta details
+
+Easy Movie looks up each movie and series of a folder on [Cinemeta](https://v3-cinemeta.strem.io), the metadata service of Stremio, and shows its poster, year, IMDb rating, genres, running time and description. Titles in Portuguese are found, and descriptions are in English. Lookups run in the background the first time a video appears, and the results are saved.
+
+When a video gets the wrong details, open its menu (**Menu** or **C**) and select **Choose info**. Edit the search if needed, then pick the right result or **No info**.
+
+### Renaming and deleting files
+
+The menu of a video of a folder also offers:
+
+| Option | What it does |
+| --- | --- |
+| **Rename file** | Renames the video and the files with its name next to it, such as subtitles and posters. Progress and favorites follow the new name. |
+| **Delete file** / **Delete series files** | Deletes the video, or all episodes of a series, with the files that have their names, after a confirmation. |
+| **Remove movie** / **Remove series** | Hides the video from the catalog without deleting it. **Removed movies** in the toolbar restores it. |
+
+Renaming and deleting need a drive that can be written. A drive formatted as NTFS that was not removed safely may be mounted read only. Easy Movie then reports that the files could not be changed.
+
 ## Managing lists
 
 The list manager opens over the catalog, and the genres behind it are reloaded after every change.
 
-- **Add list** adds a list from a web address or a file and suggests a name.
+- **Add list** adds a list from a web address or a file, or a folder with videos, and suggests a name.
 - Select a list to **Update list**, **Rename list**, **Export clean M3U** or **Delete list**.
 - **GitHub** opens the repository manager.
 - **Settings** opens the add-on settings.
@@ -136,6 +167,7 @@ Turn off **Open Easy Movie from the Movies menu** or **Open Easy Movie from the 
 | Open Easy Movie from the Movies menu | On | Open Easy Movie when **Movies** is selected in Kodi's main menu and the movie library is empty. |
 | Open Easy Movie from the TV shows menu | On | Open Easy Movie on the series when **TV shows** is selected and the TV show library is empty. |
 | Offer to remove movies that fail to play | On | Show the removal dialog after a failed playback. |
+| Look up posters and details of folder videos on Cinemeta | On | Fetch posters and details of the movies and series of video folders. |
 | Update lists every (hours) | 12 | Web lists are downloaded again after this interval. The saved copy is used when the provider is offline. |
 | Check timeout (seconds) | 8 | Advanced. Time to wait for each stream during a check. |
 | Movies checked at the same time | 10 | Advanced. Parallel requests during **Check movies**. |
@@ -159,9 +191,10 @@ Easy Movie stores its data in Kodi's add-on data folder, `userdata/addon_data/sc
 | `removed.json` | Removed movies. |
 | `favorites.json` | Favorite movies and series. |
 | `progress.json` | Playback position and watched state of movies and episodes. |
+| `metadata.json` | Cinemeta details of the movies and series of video folders. |
 | `repositories.json` | GitHub repositories, once the suggested one is changed. |
 
-Easy Movie connects only to the addresses of your lists, streams and posters, and to `api.github.com` and `raw.githubusercontent.com` when you search a repository. It sends no usage data.
+Easy Movie connects only to the addresses of your lists, streams and posters, to `api.github.com` and `raw.githubusercontent.com` when you search a repository, and to `v3-cinemeta.strem.io` to look up the videos of folders, sending their titles. The lookups can be turned off in the settings. It sends no usage data.
 
 ## Known limitations
 
@@ -175,7 +208,7 @@ Easy Movie does not provide any content. It plays the lists you add, and you are
 
 ## Development
 
-Easy Movie shares its design and most of its code with Easy Channel. Each add-on keeps its own copy, as the repository conventions ask for self-contained add-ons. `m3u.py`, `probe.py`, `github.py` and `storage.py` are the same modules, with the defaults and the `#EXTINF` duration that movies need. `watcher.py` also records progress, and `series.py` is specific to Easy Movie. `series.py` does not import Kodi modules and can be tested with a regular Python 3 interpreter.
+Easy Movie shares its design and most of its code with Easy Channel. Each add-on keeps its own copy, as the repository conventions ask for self-contained add-ons. `m3u.py`, `probe.py`, `github.py` and `storage.py` are the same modules, with the defaults and the `#EXTINF` duration that movies need. `watcher.py` also records progress, and `series.py` is specific to Easy Movie. `series.py`, `folders.py` and `cinemeta.py` do not import Kodi modules and can be tested with a regular Python 3 interpreter.
 
 | Path | Purpose |
 | --- | --- |
@@ -183,6 +216,8 @@ Easy Movie shares its design and most of its code with Easy Channel. Each add-on
 | `service.py` | Background service for the Movies and TV shows menus. |
 | `resources/lib/gui.py` | Catalog, movie and series details, list manager and repository manager. |
 | `resources/lib/series.py` | Episode recognition and grouping into series. |
+| `resources/lib/folders.py` | Video folders: finds the videos and describes them as an M3U list. |
+| `resources/lib/cinemeta.py` | Cinemeta search and details. |
 | `resources/lib/watcher.py` | Playback, progress and failure detection. |
 | `resources/lib/m3u.py` | M3U parsing and writing. |
 | `resources/lib/probe.py` | Stream checks. |

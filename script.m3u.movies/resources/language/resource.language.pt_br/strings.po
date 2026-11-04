@@ -481,3 +481,83 @@ msgstr "Conectando a {0}..."
 msgctxt "#30137"
 msgid "no answer from the server"
 msgstr "o servidor não respondeu"
+
+msgctxt "#30138"
+msgid "Folder with videos"
+msgstr "Pasta com vídeos"
+
+msgctxt "#30139"
+msgid "Choose the folder with your videos"
+msgstr "Escolha a pasta com os seus vídeos"
+
+msgctxt "#30140"
+msgid "Choose info"
+msgstr "Escolher informações"
+
+msgctxt "#30141"
+msgid "Rename file"
+msgstr "Renomear arquivo"
+
+msgctxt "#30142"
+msgid "Delete file"
+msgstr "Apagar arquivo"
+
+msgctxt "#30143"
+msgid "Delete series files"
+msgstr "Apagar arquivos da série"
+
+msgctxt "#30144"
+msgid "Delete {0} from the disk? This cannot be undone."
+msgstr "Apagar {0} do disco? Não dá para desfazer."
+
+msgctxt "#30145"
+msgid "Delete the {0} files of {1} from the disk? This cannot be undone."
+msgstr "Apagar os {0} arquivos de {1} do disco? Não dá para desfazer."
+
+msgctxt "#30146"
+msgid "{0} was not found. Its drive may be disconnected."
+msgstr "{0} não foi encontrado. O disco pode estar desconectado."
+
+msgctxt "#30147"
+msgid "Folder"
+msgstr "Pasta"
+
+msgctxt "#30148"
+msgid "Look up posters and details of folder videos on Cinemeta"
+msgstr "Buscar pôster e detalhes dos vídeos das pastas no Cinemeta"
+
+msgctxt "#30149"
+msgid "Search Cinemeta for"
+msgstr "Buscar no Cinemeta"
+
+msgctxt "#30150"
+msgid "No info"
+msgstr "Sem informações"
+
+msgctxt "#30151"
+msgid "Nothing found for {0}"
+msgstr "Nada encontrado para {0}"
+
+msgctxt "#30152"
+msgid "Could not rename {0}. The drive may be read-only."
+msgstr "Não foi possível renomear {0}. O disco pode estar somente leitura."
+
+msgctxt "#30153"
+msgid "New file name"
+msgstr "Novo nome do arquivo"
+
+msgctxt "#30154"
+msgid "Some files could not be deleted. The drive may be read-only."
+msgstr "Alguns arquivos não foram apagados. O disco pode estar somente leitura."
+
+msgctxt "#30155"
+msgid "IMDb {0}"
+msgstr "IMDb {0}"
+
+msgctxt "#30156"
+msgid "File deleted"
+msgstr "Arquivo apagado"
+
+msgctxt "#30157"
+msgid "{0} files deleted"
+msgstr "{0} arquivos apagados"

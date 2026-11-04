@@ -69,6 +69,16 @@
       <textcolor>FF3B8BFF</textcolor>
       <label>$INFO[Window.Property(group)]</label>
     </control>
+    <!-- Description from Cinemeta, below the poster -->
+    <control type="textbox">
+      <left>210</left>
+      <top>696</top>
+      <width>360</width>
+      <height>280</height>
+      <font>font12</font>
+      <textcolor>FF9C9EA6</textcolor>
+      <label>$INFO[Window.Property(plot)]</label>
+    </control>
     <control type="button" id="201">
       <left>620</left>
       <top>340</top>

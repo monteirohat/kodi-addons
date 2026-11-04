@@ -1,4 +1,4 @@
-"""Lists, cached playlists and removed channels, kept in the add-on profile folder."""
+"""Lists, video folders, cached playlists, removed channels and metadata, kept in the add-on profile folder."""
 
 import gzip
 import json
@@ -11,7 +11,7 @@ import uuid
 import xbmcaddon
 import xbmcvfs
 
-from resources.lib import github, m3u
+from resources.lib import folders, github, m3u
 
 
 ADDON = xbmcaddon.Addon()
@@ -22,6 +22,7 @@ REMOVED_FILE = os.path.join(PROFILE, "removed.json")
 FAVORITES_FILE = os.path.join(PROFILE, "favorites.json")
 REPOS_FILE = os.path.join(PROFILE, "repositories.json")
 PROGRESS_FILE = os.path.join(PROFILE, "progress.json")
+METADATA_FILE = os.path.join(PROFILE, "metadata.json")
 # Share of a movie or episode after which it counts as watched.
 WATCHED_AT = 0.9
 # Tags found only in the playlist of a single stream, not in a list of channels.
@@ -88,18 +89,51 @@ def download(source):
     return text
 
 
+class FolderUnavailable(OSError):
+    """A video folder that cannot be reached, such as a disconnected drive. Its items stay hidden meanwhile."""
+
+
+def is_folder(item):
+    return item.get("kind") == "folder"
+
+
+def folder_exists(path):
+    return os.path.isdir(path) if path.startswith("/") else xbmcvfs.exists(path.rstrip("/") + "/")
+
+
+def vfs_walk(root):
+    """os.walk for paths that only Kodi can read, such as smb:// shares."""
+    folders_to_visit = [root.rstrip("/")]
+    while folders_to_visit:
+        folder = folders_to_visit.pop(0)
+        subfolders, files = xbmcvfs.listdir(folder + "/")
+        yield folder, subfolders, files
+        folders_to_visit[0:0] = [folder + "/" + name for name in subfolders]
+
+
+def scan_folder(source):
+    if not folder_exists(source):
+        raise FolderUnavailable("folder not found: " + source)
+    text = folders.scan(source, os.walk if source.startswith("/") else vfs_walk)
+    if not m3u.parse(text):
+        raise ValueError("no videos found")
+    return text
+
+
 def cache_path(list_id):
     return os.path.join(CACHE, list_id + ".m3u")
 
 
 def refresh(item):
-    text = download(item["source"])
+    text = scan_folder(item["source"]) if is_folder(item) else download(item["source"])
     write_bytes(cache_path(item["id"]), text.encode("utf-8"))
     return m3u.parse(text)
 
 
-def add_list(name, source):
+def add_list(name, source, kind="m3u"):
     item = {"id": uuid.uuid4().hex[:8], "name": name, "source": source}
+    if kind == "folder":
+        item["kind"] = "folder"
     channels = refresh(item)
     save_lists(get_lists() + [item])
     return item, channels
@@ -120,7 +154,13 @@ def delete_list(list_id):
 
 
 def load_channels(item, max_age_hours):
-    """Channels of a list, from cache while fresh. Falls back to the cache when offline."""
+    """Channels of a list, from cache while fresh. Falls back to the cache when offline.
+
+    A video folder that cannot be reached raises FolderUnavailable instead, so its files are not shown while
+    their drive is disconnected. Their progress and favorites stay for when it comes back.
+    """
+    if is_folder(item) and not folder_exists(item["source"]):
+        raise FolderUnavailable("folder not found: " + item["source"])
     path = cache_path(item["id"])
     fresh = os.path.exists(path) and time.time() - os.path.getmtime(path) < max_age_hours * 3600
     if not fresh:
@@ -189,3 +229,35 @@ def save_progress(item_id, position, total):
                          "watched": watched or progress.get(item_id, {}).get("watched", False), "time": int(time.time())}
     write_json(PROGRESS_FILE, progress)
     return progress[item_id]
+
+
+def get_metadata():
+    """Cinemeta details by catalog item identity. An empty dict marks an item that had no match."""
+    return read_json(METADATA_FILE, {})
+
+
+def save_metadata(changes):
+    """Merge details into the metadata file. A value of None removes an item, so it is looked up again."""
+    metadata = get_metadata()
+    for key, value in changes.items():
+        if value is None:
+            metadata.pop(key, None)
+        else:
+            metadata[key] = value
+    write_json(METADATA_FILE, metadata)
+
+
+def move_item(old_id, new_id):
+    """Keep progress, favorites and metadata of a file that was renamed."""
+    progress = get_progress()
+    if old_id in progress:
+        progress[new_id] = progress.pop(old_id)
+        write_json(PROGRESS_FILE, progress)
+    favorites = get_favorites()
+    if old_id in favorites:
+        favorites[favorites.index(old_id)] = new_id
+        write_json(FAVORITES_FILE, favorites)
+    metadata = get_metadata()
+    if old_id in metadata:
+        metadata[new_id] = metadata.pop(old_id)
+        write_json(METADATA_FILE, metadata)

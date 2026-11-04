@@ -18,6 +18,11 @@
           <default>true</default>
           <control type="toggle" />
         </setting>
+        <setting id="folder_metadata" type="boolean" label="30148">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle" />
+        </setting>
         <setting id="refresh_hours" type="integer" label="30101">
           <level>0</level>
           <default>12</default>

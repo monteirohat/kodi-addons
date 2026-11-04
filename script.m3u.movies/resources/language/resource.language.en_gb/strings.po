@@ -481,3 +481,83 @@ msgstr ""
 msgctxt "#30137"
 msgid "no answer from the server"
 msgstr ""
+
+msgctxt "#30138"
+msgid "Folder with videos"
+msgstr ""
+
+msgctxt "#30139"
+msgid "Choose the folder with your videos"
+msgstr ""
+
+msgctxt "#30140"
+msgid "Choose info"
+msgstr ""
+
+msgctxt "#30141"
+msgid "Rename file"
+msgstr ""
+
+msgctxt "#30142"
+msgid "Delete file"
+msgstr ""
+
+msgctxt "#30143"
+msgid "Delete series files"
+msgstr ""
+
+msgctxt "#30144"
+msgid "Delete {0} from the disk? This cannot be undone."
+msgstr ""
+
+msgctxt "#30145"
+msgid "Delete the {0} files of {1} from the disk? This cannot be undone."
+msgstr ""
+
+msgctxt "#30146"
+msgid "{0} was not found. Its drive may be disconnected."
+msgstr ""
+
+msgctxt "#30147"
+msgid "Folder"
+msgstr ""
+
+msgctxt "#30148"
+msgid "Look up posters and details of folder videos on Cinemeta"
+msgstr ""
+
+msgctxt "#30149"
+msgid "Search Cinemeta for"
+msgstr ""
+
+msgctxt "#30150"
+msgid "No info"
+msgstr ""
+
+msgctxt "#30151"
+msgid "Nothing found for {0}"
+msgstr ""
+
+msgctxt "#30152"
+msgid "Could not rename {0}. The drive may be read-only."
+msgstr ""
+
+msgctxt "#30153"
+msgid "New file name"
+msgstr ""
+
+msgctxt "#30154"
+msgid "Some files could not be deleted. The drive may be read-only."
+msgstr ""
+
+msgctxt "#30155"
+msgid "IMDb {0}"
+msgstr ""
+
+msgctxt "#30156"
+msgid "File deleted"
+msgstr ""
+
+msgctxt "#30157"
+msgid "{0} files deleted"
+msgstr ""

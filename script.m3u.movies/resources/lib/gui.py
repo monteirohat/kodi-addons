@@ -1,16 +1,18 @@
 """Movie and series catalog, movie and series details, and the modal list and repository managers."""
 
+from concurrent.futures import ThreadPoolExecutor
 import itertools
 import os
+import posixpath
 import re
 import threading
-from urllib.parse import urlsplit
+from urllib.parse import quote, urlsplit
 
 import xbmc
 import xbmcgui
 import xbmcvfs
 
-from resources.lib import github, m3u, movies_menu, probe, series, storage
+from resources.lib import cinemeta, folders, github, m3u, movies_menu, probe, series, storage
 from resources.lib.watcher import Watcher
 
 
@@ -35,6 +37,8 @@ MANAGER_ADD, MANAGER_SETTINGS, MANAGER_CLOSE, MANAGER_GITHUB = 201, 202, 203, 20
 FILTER_ABOVE = 30
 # Delay before the catalog follows the highlighted group, so fast scrolling stays smooth.
 FOLLOW_DELAY = 0.3
+# Cinemeta lookups made at the same time for the videos of folders.
+LOOKUP_WORKERS = 4
 
 # Toolbar above the groups: icon, label and the MainWindow method it runs. Add new tools here.
 TOOLS = [
@@ -68,7 +72,8 @@ def suggested_name(source):
 def add_list():
     """Ask for a list and add it. Returns True when a list was added."""
     dialog = xbmcgui.Dialog()
-    choice = dialog.select(text(30006), [text(30004), text(30005)])
+    choice = dialog.select(text(30006), [text(30004), text(30005), text(30138)])
+    kind = "m3u"
     if choice == 0:
         source = dialog.input(text(30007), "http://").strip()
         if not source.lower().startswith(("http://", "https://")) or len(source) < 12:
@@ -77,13 +82,18 @@ def add_list():
         source = dialog.browseSingle(1, text(30008), "files", ".m3u|.m3u8|.txt")
         if not source:
             return False
+    elif choice == 2:
+        source = dialog.browseSingle(0, text(30139), "files").rstrip("/")
+        if not source:
+            return False
+        kind = "folder"
     else:
         return False
     default_name = suggested_name(source)
     name = dialog.input(text(30009), default_name).strip() or default_name
     busy(True)
     try:
-        item, channels = storage.add_list(name, source)
+        item, channels = storage.add_list(name, source, kind)
     except Exception as error:
         busy(False)
         dialog.ok(TITLE, text(30011, error))
@@ -142,6 +152,32 @@ def display_name(entry):
     if "episode" in entry:
         return entry["episode"]["show"] + " " + episode_code(entry)
     return entry["channel"]["name"]
+
+
+def is_local(entry):
+    """Whether an entry is a video file of a folder list, which can be renamed and deleted."""
+    return entry.get("folder", False)
+
+
+def local_paths(item):
+    return [m3u.base_url(entry["channel"]["url"]) for entry in item_entries(item)]
+
+
+def video_thumbnail(path):
+    """A frame of the video, extracted by Kodi the first time it is shown."""
+    return "image://video@" + quote(path, safe="") + "/"
+
+
+def meta_line(meta, duration=""):
+    """Year, IMDb rating, genres and duration of a movie or series, as one line."""
+    parts = [duration] if duration else []
+    if meta.get("year"):
+        parts.append(str(meta["year"]))
+    if meta.get("rating"):
+        parts.append(text(30155, meta["rating"]))
+    if meta.get("genres"):
+        parts.append(", ".join(meta["genres"][:3]))
+    return "  ·  ".join(parts)
 
 
 def reason_text(reason):
@@ -251,6 +287,7 @@ class MainWindow(xbmcgui.WindowXML):
         busy(True)
         try:
             for item in storage.get_lists():
+                folder = storage.is_folder(item)
                 try:
                     channels = storage.load_channels(item, hours)
                 except Exception:
@@ -259,15 +296,71 @@ class MainWindow(xbmcgui.WindowXML):
                 visible = [channel for channel in channels if channel["id"] not in removed]
                 if item.get("count") != len(visible):
                     storage.update_list(item["id"], count=len(visible))
-                entries += [{"channel": channel, "list": item["id"], "list_name": item["name"]} for channel in visible]
+                entries += [{"channel": channel, "list": item["id"], "list_name": item["name"], "folder": folder}
+                            for channel in visible]
         finally:
             busy(False)
         if failed:
             notify(text(30064, ", ".join(failed)))
         self.all_entries = entries
         self.movies, self.shows = series.build(entries)
+        for show in self.shows:
+            show["folder"] = show["episodes"][0]["folder"]
+            show["list"] = show["episodes"][0]["list"]
         self.catalog = self.movies + self.shows
+        self.apply_metadata()
         self.build_groups(position)
+        self.start_lookup()
+
+    # Details of the videos of folders, from Cinemeta
+
+    def apply_metadata(self):
+        """Give the videos of folders their Cinemeta details, and a poster when the folder has none."""
+        metadata = storage.get_metadata()
+        for item in self.catalog:
+            if not is_local(item):
+                continue
+            meta = item["meta"] = metadata.get(item_id(item)) or {}
+            art = item if item.get("series") else item["channel"]
+            local = art.setdefault("local_logo", art["logo"])
+            art["logo"] = local or meta.get("poster") or ("" if item.get("series") else video_thumbnail(local_paths(item)[0]))
+
+    def lookup_query(self, item):
+        if item.get("series"):
+            return "series", item["name"], 0
+        title, year = folders.movie_query(item["channel"])
+        return "movie", title, year
+
+    def start_lookup(self):
+        """Look up the folder videos that have no details yet, then show them. Runs on a thread."""
+        if not ADDON.getSettingBool("folder_metadata"):
+            return
+        known = storage.get_metadata()
+        pending = [item for item in self.catalog if is_local(item) and item_id(item) not in known]
+        if not pending or getattr(self, "lookup_running", False):
+            return
+        self.lookup_running = True
+
+        def lookup(item):
+            try:
+                # An empty result marks a video with no match, so it is not looked up every time.
+                return item_id(item), cinemeta.lookup(*self.lookup_query(item)) or {}
+            except Exception:
+                return item_id(item), None
+
+        def run():
+            try:
+                with ThreadPoolExecutor(max_workers=LOOKUP_WORKERS) as executor:
+                    found = dict(executor.map(lookup, pending))
+                found = {key: value for key, value in found.items() if value is not None}
+                if found:
+                    storage.save_metadata(found)
+                    self.apply_metadata()
+                    self.build_groups()
+            finally:
+                self.lookup_running = False
+
+        threading.Thread(target=run, daemon=True).start()
 
     def build_groups(self, position=None):
         """Rebuild the groups from the loaded catalog, for example after playback changed the progress."""
@@ -469,6 +562,9 @@ class MainWindow(xbmcgui.WindowXML):
         screen. Checking the stream first, with a dialog that can be cancelled, avoids that.
         """
         channel = entry["channel"]
+        if entry.get("folder") and not xbmcvfs.exists(m3u.base_url(channel["url"])):
+            xbmcgui.Dialog().ok(TITLE, text(30146, display_name(entry)))
+            return None
         start = 0
         state = storage.get_progress().get(channel["id"])
         if resumable(state):
@@ -540,18 +636,121 @@ class MainWindow(xbmcgui.WindowXML):
             return
         favorite = item_id(entry) in storage.get_favorites()
         remove_label = text(30122 if entry.get("series") else 30018)
-        choice = xbmcgui.Dialog().contextmenu([text(30071 if favorite else 30070), remove_label, text(30019)])
-        if choice == 0:
-            self.toggle_favorite(entry)
-        elif choice == 1:
-            self.remove([entry])
-        elif choice == 2 and entry.get("series"):
+        options = [(text(30071 if favorite else 30070), self.toggle_favorite), (remove_label, lambda item: self.remove([item]))]
+        if is_local(entry):
+            options.append((text(30140), self.choose_info))
+            if not entry.get("series"):
+                options.append((text(30141), self.rename_file))
+            options.append((text(30143 if entry.get("series") else 30142), self.delete_files))
+        else:
+            options.append((text(30019), self.check_item))
+        choice = xbmcgui.Dialog().contextmenu([label for label, _ in options])
+        if choice >= 0:
+            options[choice][1](entry)
+
+    def check_item(self, entry):
+        if entry.get("series"):
             self.check_entries(entry["episodes"])
-        elif choice == 2:
-            busy(True)
-            reason = probe.check(entry["channel"]["url"], ADDON.getSettingInt("check_timeout"))
+            return
+        busy(True)
+        reason = probe.check(entry["channel"]["url"], ADDON.getSettingInt("check_timeout"))
+        busy(False)
+        notify(text(30033, reason) if reason else text(30032))
+
+    # Files of folders
+
+    def choose_info(self, entry):
+        """Search Cinemeta with a title the user can correct, and keep the chosen result."""
+        kind, title, year = self.lookup_query(entry)
+        query = xbmcgui.Dialog().input(text(30149), title).strip()
+        if not query:
+            return
+        busy(True)
+        try:
+            candidates = cinemeta.search(kind, query)
+        except Exception as error:
             busy(False)
-            notify(text(30033, reason) if reason else text(30032))
+            xbmcgui.Dialog().ok(TITLE, text(30011, error))
+            return
+        busy(False)
+        if not candidates:
+            notify(text(30151, query))
+            return
+        items = []
+        for meta in candidates[:25]:
+            item = xbmcgui.ListItem(meta.get("name", ""), meta.get("releaseInfo", ""))
+            item.setArt({"icon": meta.get("poster", ""), "thumb": meta.get("poster", "")})
+            items.append(item)
+        items.append(xbmcgui.ListItem(text(30150)))
+        choice = xbmcgui.Dialog().select(text(30140), items, useDetails=True)
+        if choice < 0:
+            return
+        if choice == len(items) - 1:
+            storage.save_metadata({item_id(entry): {}})
+        else:
+            busy(True)
+            try:
+                storage.save_metadata({item_id(entry): cinemeta.details(kind, candidates[choice]["id"])})
+            except Exception as error:
+                busy(False)
+                xbmcgui.Dialog().ok(TITLE, text(30011, error))
+                return
+            busy(False)
+        self.apply_metadata()
+        self.build_groups()
+
+    def refresh_list(self, list_id):
+        item = storage.get_list(list_id)
+        if item:
+            try:
+                storage.refresh(item)
+            except Exception:
+                pass
+        self.reload()
+
+    def rename_file(self, entry):
+        old = m3u.base_url(entry["channel"]["url"])
+        folder, name = posixpath.split(old)
+        stem, extension = posixpath.splitext(name)
+        new_stem = xbmcgui.Dialog().input(text(30153), stem).strip()
+        if not new_stem or new_stem == stem or "/" in new_stem:
+            return
+        _, files = xbmcvfs.listdir(folder + "/")
+        moves = [(name, new_stem + extension)]
+        moves += [(other, new_stem + other[len(stem):]) for other in folders.sidecars(files, stem)]
+        # The hidden "._" file the Mac writes next to each file follows it.
+        moves += [("._" + source, "._" + target) for source, target in list(moves) if "._" + source in files]
+        for source, target in moves:
+            if not xbmcvfs.rename(folder + "/" + source, folder + "/" + target):
+                xbmcgui.Dialog().ok(TITLE, text(30152, source))
+                break
+        else:
+            storage.move_item(old, folder + "/" + new_stem + extension)
+        self.refresh_list(entry["list"])
+
+    def delete_files(self, entry):
+        paths = local_paths(entry)
+        name = item_name(entry)
+        question = text(30145, len(paths), name) if entry.get("series") else text(30144, name)
+        if not xbmcgui.Dialog().yesno(TITLE, question, nolabel=text(30040), yeslabel=text(30142)):
+            return
+        failed = 0
+        listings = {}
+        for path in paths:
+            folder, file_name = posixpath.split(path)
+            if folder not in listings:
+                listings[folder] = xbmcvfs.listdir(folder + "/")[1]
+            stem = posixpath.splitext(file_name)[0]
+            targets = [file_name] + folders.sidecars(listings[folder], stem)
+            targets += ["._" + target for target in targets if "._" + target in listings[folder]]
+            for target in targets:
+                if not xbmcvfs.delete(folder + "/" + target) and target == file_name:
+                    failed += 1
+        if failed:
+            xbmcgui.Dialog().ok(TITLE, text(30154))
+        else:
+            notify(text(30156) if len(paths) == 1 else text(30157, len(paths)))
+        self.refresh_list(entry["list"])
 
     # Tools
 
@@ -638,7 +837,9 @@ class MovieDetails(xbmcgui.WindowXMLDialog):
         self.setProperty("poster", movie["logo"])
         self.setProperty("group", groups)
         self.setProperty("list", self.entry["list_name"])
-        self.setProperty("duration", duration_text(movie["duration"]))
+        meta = self.entry.get("meta") or {}
+        self.setProperty("duration", meta_line(meta, duration_text(movie["duration"]) or meta.get("runtime", "")))
+        self.setProperty("plot", meta.get("plot", ""))
         self.update_favorite()
         self.setFocusId(DETAILS_PLAY)
 
@@ -678,7 +879,10 @@ class SeriesDetails(xbmcgui.WindowXMLDialog):
         self.next, started = next_episode(show, self.progress)
         self.setProperty("title", show["name"])
         self.setProperty("poster", show["logo"])
-        self.setProperty("info", text(30121, len(show["seasons"]), len(show["episodes"])))
+        meta = show.get("meta") or {}
+        info = text(30121, len(show["seasons"]), len(show["episodes"]))
+        self.setProperty("info", info + ("  ·  " + meta_line(meta) if meta_line(meta) else ""))
+        self.setProperty("plot", meta.get("plot", ""))
         self.setProperty("group", "  ·  ".join(show["groups"]) or show["list_name"])
         self.getControl(DETAILS_PLAY).setLabel(text(30118 if started else 30119, self.next["episode"]["season"],
                                                     self.next["episode"]["number"]))
@@ -776,6 +980,8 @@ class ListManager(xbmcgui.WindowXMLDialog):
         self.list_control.reset()
         for item in self.lists:
             detail = text(30036, item["count"]) + "  ·  " if "count" in item else ""
+            if storage.is_folder(item):
+                detail = text(30147) + "  ·  " + detail
             self.list_control.addItem(xbmcgui.ListItem(item["name"], detail + item["source"]))
         self.getControl(MANAGER_EMPTY).setLabel("" if self.lists else text(30049))
         if self.lists:
