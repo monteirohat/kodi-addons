@@ -25,6 +25,7 @@ PROGRESS_FILE = os.path.join(PROFILE, "progress.json")
 METADATA_FILE = os.path.join(PROFILE, "metadata.json")
 WATCHLIST_FILE = os.path.join(PROFILE, "watchlist.json")
 ADDONS_FILE = os.path.join(PROFILE, "addons.json")
+ADDED_FILE = os.path.join(PROFILE, "added.json")
 # Share of a movie or episode after which it counts as watched.
 WATCHED_AT = 0.9
 # Tags found only in the playlist of a single stream, not in a list of channels.
@@ -166,11 +167,14 @@ def load_channels(item, max_age_hours):
 
     A video folder that cannot be reached raises FolderUnavailable instead, so its files are not shown while
     their drive is disconnected. Their progress and favorites stay for when it comes back.
+
+    A folder on this device is scanned every time, which is quick, so new videos such as downloads show at once.
     """
     if is_folder(item) and not folder_exists(item["source"]):
         raise FolderUnavailable("folder not found: " + item["source"])
     path = cache_path(item["id"])
-    fresh = os.path.exists(path) and time.time() - os.path.getmtime(path) < max_age_hours * 3600
+    local_folder = is_folder(item) and item["source"].startswith("/")
+    fresh = not local_folder and os.path.exists(path) and time.time() - os.path.getmtime(path) < max_age_hours * 3600
     if not fresh:
         try:
             return refresh(item)
@@ -289,8 +293,33 @@ def save_metadata(changes):
     write_json(METADATA_FILE, metadata)
 
 
+def added_times(movies):
+    """When each movie first appeared in the lists, by id, for showing the newest first. movies are pairs of id
+    and whether it is a video of a folder.
+
+    The first time, videos of folders on this device take the date of their file and the others 0, so the lists
+    keep their order. Movies that appear later take the time they appeared."""
+    added = read_json(ADDED_FILE, None)
+    first, added = added is None, added or {}
+    now, changed = int(time.time()), False
+    for movie_id, folder in movies:
+        if movie_id in added:
+            continue
+        added[movie_id], changed = now, True
+        if first:
+            added[movie_id] = 0
+            if folder and movie_id.startswith("/"):
+                try:
+                    added[movie_id] = int(os.path.getmtime(movie_id))
+                except OSError:
+                    pass
+    if changed:
+        write_json(ADDED_FILE, added)
+    return added
+
+
 def move_item(old_id, new_id):
-    """Keep progress, favorites and metadata of a file that was renamed."""
+    """Keep progress, favorites, metadata and the time added of a file that was renamed."""
     progress = get_progress()
     if old_id in progress:
         progress[new_id] = progress.pop(old_id)
@@ -303,3 +332,7 @@ def move_item(old_id, new_id):
     if old_id in metadata:
         metadata[new_id] = metadata.pop(old_id)
         write_json(METADATA_FILE, metadata)
+    added = read_json(ADDED_FILE, {})
+    if old_id in added:
+        added[new_id] = added.pop(old_id)
+        write_json(ADDED_FILE, added)

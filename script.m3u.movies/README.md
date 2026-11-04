@@ -86,7 +86,7 @@ Opening a series shows its poster, seasons and episodes. **Continue** plays the 
 
 Easy Movie remembers how far each movie and episode was watched. Playing past 90% marks it as watched, shown with a check mark. A movie or episode stopped after the first minute offers **Resume** or **Play from the beginning** the next time.
 
-The groups start with **Continue watching**, with movies stopped midway and series with episodes left, most recent first, followed by **Favorites**, **All movies** and **Series**. Easy Movie opens on **Continue watching** when it has items.
+The groups start with **Continue watching**, with movies stopped midway and series with episodes left, most recent first, followed by **Favorites**, **All movies** and **Series**. **All movies** and the genres show the newest movies first, such as a finished download. Movies that arrived together keep the order of their lists. Easy Movie opens on **Continue watching** when it has items.
 
 ### Toolbar
 
@@ -113,9 +113,9 @@ Genres are taken from `group-title`. Movies without a genre, or with a placehold
 
 ## Video folders
 
-Select **Add list** > **Folder with videos** to add a folder with your own video files, such as `/storage/videos`, a USB drive under `/var/media`, or a network share such as `smb://`. The folder becomes a list like the others, and **Update list** reads it again after you add or remove files.
+Select **Add list** > **Folder with videos** to add a folder with your own video files, such as `/storage/videos`, a USB drive under `/var/media`, or a network share such as `smb://`. The folder becomes a list like the others. A folder on this device, such as a USB drive, is read again each time Easy Movie opens and when the Catalog or Downloads closes, so new videos and finished downloads show at once. A network share is read again with the web lists, or with **Update list** after you add or remove files.
 
-- Each first level subfolder becomes a genre, such as `Movies` or `Cartoons`.
+- Each first level subfolder with more than one movie or series becomes a genre, such as `Movies` or `Cartoons`. The folder of a single movie or series, as a torrent download makes, is not a genre.
 - File names are cleaned for display: `O.Senhor.dos.Aneis.2001.1080p.BluRay.mkv` appears as **O Senhor dos Aneis (2001)**.
 - Episodes are recognized by their codes, such as `Show.S01E02.mkv`, and take the name of their series from their folder. A folder where most files start with a number, such as `Pica Pau/196 - Adeus As Aulas.mp4`, is a series whose episodes are those numbers. Folders named `Season 2` or `Temporada 2` give the season.
 - A poster is taken from an image next to the video with the same name, from `poster.jpg`, `folder.jpg` or `cover.jpg` in the folder of a series or of a movie alone in its folder, or else from Cinemeta. Without any, Kodi shows a frame of the video.
@@ -273,6 +273,7 @@ Easy Movie stores its data in Kodi's add-on data folder, `userdata/addon_data/sc
 | `removed.json` | Removed movies. |
 | `favorites.json` | Favorite movies and series. |
 | `progress.json` | Playback position and watched state of movies and episodes. |
+| `added.json` | When each movie first appeared in the lists, for showing the newest first. |
 | `metadata.json` | Cinemeta details of the movies and series of video folders. |
 | `watchlist.json` | Titles saved to **My list** in the catalog. |
 | `addons.json` | Stremio addons added in the catalog, with their addresses and manifests. |

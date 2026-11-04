@@ -339,6 +339,9 @@ class MainWindow(xbmcgui.WindowXML):
             notify(text(30064, ", ".join(failed)))
         self.all_entries = entries
         self.movies, self.shows = series.build(entries)
+        # Newest movies first, such as a finished download. Movies added together keep the order of their lists.
+        added = storage.added_times([(movie["channel"]["id"], movie["folder"]) for movie in self.movies])
+        self.movies.sort(key=lambda movie: -added.get(movie["channel"]["id"], 0))
         for show in self.shows:
             show["folder"] = show["episodes"][0]["folder"]
             show["list"] = show["episodes"][0]["list"]
@@ -793,12 +796,16 @@ class MainWindow(xbmcgui.WindowXML):
         downloads = DownloadsWindow("script-m3u-movies-downloads.xml", PATH, "default", "1080i")
         downloads.doModal()
         del downloads
+        # Finished downloads may be in a video folder.
+        self.reload()
 
     def open_catalog(self):
         catalog = CatalogWindow("script-m3u-movies-catalog.xml", PATH, "default", "1080i")
         catalog.main = self
         catalog.doModal()
         del catalog
+        # Downloads started in the catalog may be in a video folder.
+        self.reload()
 
     def library_entry(self, kind, meta):
         """The movie or series of the lists that is a catalog title, found by its IMDb id or its name."""

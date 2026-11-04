@@ -6,8 +6,9 @@ or one built on xbmcvfs for network folders.
 
 import posixpath
 import re
+import unicodedata
 
-from resources.lib import m3u
+from resources.lib import m3u, series
 
 
 VIDEO_EXTENSIONS = {".mkv", ".mp4", ".m4v", ".avi", ".mov", ".wmv", ".mpg", ".mpeg", ".ts", ".m2ts", ".webm", ".flv", ".3gp"}
@@ -74,8 +75,9 @@ def image_for(names, stem):
 def scan(root, walk):
     """Videos under root as catalog channels in an M3U text.
 
-    The first level of subfolders gives the groups. Episodes take the name of their series from their folder,
-    skipping season folders, and the season from a season folder.
+    The first level of subfolders gives the groups, when they hold more than one title. The folder of a single
+    movie or series, as a torrent download makes, is not a group. Episodes take the name of their series from
+    their folder, skipping season folders, and the season from a season folder.
     """
     root = root.rstrip("/") or "/"
     channels = []
@@ -132,7 +134,24 @@ def scan(root, walk):
             if logo:
                 attributes["tvg-logo"] = logo
             channels.append((attributes, display, path))
+    # A group needs more than one title: movies, or series by their name.
+    titles = {}
+    for attributes, display, path in channels:
+        titles.setdefault(attributes["group-title"], set()).add(title_key(attributes, display, path))
+    for attributes, _, _ in channels:
+        if len(titles[attributes["group-title"]]) < 2:
+            attributes["group-title"] = ""
     return to_m3u(channels)
+
+
+def title_key(attributes, display, path):
+    """What a video is part of: its series, by a name without accents, or the movie itself."""
+    episode = series.parse_episode({"name": display, "subgroup": attributes.get("pltv-subgroup", ""),
+                                    "group": attributes["group-title"]})
+    if episode is None:
+        return path
+    name = unicodedata.normalize("NFKD", episode[0])
+    return "show:" + series.show_key("".join(char for char in name if not unicodedata.combining(char)))
 
 
 def to_m3u(channels):
