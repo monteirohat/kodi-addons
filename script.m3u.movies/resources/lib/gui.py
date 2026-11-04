@@ -1230,7 +1230,10 @@ class CatalogWindow(xbmcgui.WindowXML):
                 page["items"] += new
                 if self.page is page and new:
                     watchlist = {item["id"] for item in storage.get_watchlist()}
+                    # Kodi selects the first poster when items are added, so the selection is put back.
+                    position = self.poster_list.getSelectedPosition()
                     self.poster_list.addItems([self.card(item, watchlist) for item in new])
+                    self.poster_list.selectItem(position)
                     self.getControl(GROUP_COUNT).setLabel(self.count_text())
 
         threading.Thread(target=run, daemon=True).start()
