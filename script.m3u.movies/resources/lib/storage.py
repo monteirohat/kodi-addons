@@ -23,6 +23,8 @@ FAVORITES_FILE = os.path.join(PROFILE, "favorites.json")
 REPOS_FILE = os.path.join(PROFILE, "repositories.json")
 PROGRESS_FILE = os.path.join(PROFILE, "progress.json")
 METADATA_FILE = os.path.join(PROFILE, "metadata.json")
+WATCHLIST_FILE = os.path.join(PROFILE, "watchlist.json")
+ADDONS_FILE = os.path.join(PROFILE, "addons.json")
 # Share of a movie or episode after which it counts as watched.
 WATCHED_AT = 0.9
 # Tags found only in the playlist of a single stream, not in a list of channels.
@@ -212,6 +214,40 @@ def toggle_favorite(channel_id):
         favorites.remove(channel_id)
     write_json(FAVORITES_FILE, favorites)
     return added
+
+
+def get_watchlist():
+    """Movies and series saved from the Cinemeta catalog, newest first, with their kind and details."""
+    return read_json(WATCHLIST_FILE, [])
+
+
+def toggle_watchlist(kind, meta):
+    """Add a catalog title to My list, or remove it. Returns True when it is now in the list."""
+    watchlist = get_watchlist()
+    kept = [item for item in watchlist if item["id"] != meta["id"]]
+    added = len(kept) == len(watchlist)
+    if added:
+        kept.insert(0, dict(meta, kind=kind))
+    write_json(WATCHLIST_FILE, kept)
+    return added
+
+
+def get_addons():
+    """Stremio addons added by the user, in the order added, with their manifest address and manifest."""
+    return read_json(ADDONS_FILE, [])
+
+
+def save_addon(url, manifest):
+    """Add an addon, or replace the one with the same id, as when it is configured again with other options."""
+    addons = [addon for addon in get_addons() if addon["manifest"]["id"] != manifest["id"] and addon["url"] != url]
+    position = next((index for index, addon in enumerate(get_addons()) if addon["manifest"]["id"] == manifest["id"]),
+                    len(addons))
+    addons.insert(position, {"url": url, "manifest": manifest})
+    write_json(ADDONS_FILE, addons)
+
+
+def remove_addon(url):
+    write_json(ADDONS_FILE, [addon for addon in get_addons() if addon["url"] != url])
 
 
 def get_repos():

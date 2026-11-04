@@ -66,7 +66,7 @@ def label(left, top, width, height, text, font, color, condition=None, align=Non
   <textcolor>{color}</textcolor>{body}{visible(condition)}
 </control>"""
 
-def textbox(left, top, width, height, text, font, color):
+def textbox(left, top, width, height, text, font, color, condition=None):
     return f"""<control type="textbox">
   <left>{left}</left>
   <top>{top}</top>
@@ -74,7 +74,7 @@ def textbox(left, top, width, height, text, font, color):
   <height>{height}</height>
   <font>{font}</font>
   <textcolor>{color}</textcolor>
-  <label>{text}</label>
+  <label>{text}</label>{visible(condition)}
 </control>"""
 
 def indent(text, spaces):
@@ -167,16 +167,27 @@ groups = f"""<control type="list" id="200">
 
 # Modal managers --------------------------------------------------------------
 
-def manager(comment, icon, title_id, item_icon, buttons):
+def both(*conditions):
+    return " + ".join(condition for condition in conditions if condition) or None
+
+def manager(comment, icon, title_id, item_icon, buttons, width=1100, logos=False):
+    """A modal list with a title and a row of buttons. The buttons are placed by the caller, from left + 30.
+
+    With logos, an item shows the image in ListItem.Property(logo) when it has one, in its own colors."""
     focus = has(100)
+    left = (1920 - width) // 2
+    inner = width - 60
+    has_logo = "!String.IsEmpty(ListItem.Property(logo))"
+    icons = lambda icon_color, condition: [image(18, 20, 52, 52, item_icon, icon_color, both(condition, "!" + has_logo if logos else None))] + (
+        [image(18, 20, 52, 52, "$INFO[ListItem.Property(logo)]", None, both(condition, has_logo), keep=True)] if logos else [])
     item = lambda name, detail, icon_color, condition=None, scroll=False: [
-        image(18, 20, 52, 52, item_icon, icon_color, condition),
-        label(90, 8, 930, 44, "$INFO[ListItem.Label]", "font13", name, condition),
-        label(90, 48, 930, 34, "$INFO[ListItem.Label2]", "font12", detail, condition, scroll=scroll)]
+        *icons(icon_color, condition),
+        label(90, 8, inner - 110, 44, "$INFO[ListItem.Label]", "font13", name, condition),
+        label(90, 48, inner - 110, 34, "$INFO[ListItem.Label2]", "font12", detail, condition, scroll=scroll)]
     lists = f"""<control type="list" id="100">
-  <left>440</left>
+  <left>{left + 30}</left>
   <top>250</top>
-  <width>1040</width>
+  <width>{inner}</width>
   <height>560</height>
   <ondown>201</ondown>
   <onleft>noop</onleft>
@@ -186,15 +197,15 @@ def manager(comment, icon, title_id, item_icon, buttons):
 {join(*item(TEXT, TEXT2, TEXT2), spaces=4)}
   </itemlayout>
   <focusedlayout height="92">
-{join(panel(0, 2, 1040, 88, FOCUS, focus), *item(ON_FOCUS, ON_FOCUS2, ON_FOCUS, focus, True), *item(TEXT, TEXT2, TEXT2, "!" + focus), spaces=4)}
+{join(panel(0, 2, inner, 88, FOCUS, focus), *item(ON_FOCUS, ON_FOCUS2, ON_FOCUS, focus, True), *item(TEXT, TEXT2, TEXT2, "!" + focus), spaces=4)}
   </focusedlayout>
 </control>"""
     controls = join(
         image(0, 0, 1920, 1080, "white.png", "D9000000"),
-        panel(410, 130, 1100, 820, SURFACE),
-        image(446, 166, 56, 56, icon, ACCENT),
-        label(524, 164, 950, 60, f"$ADDON[{ADDON_ID} {title_id}]", "font32_title", TEXT),
-        label(460, 330, 1000, 200, "", "font13", TEXT2, align="center", center=False, control_id=300, wrap=True),
+        panel(left, 130, width, 820, SURFACE),
+        image(left + 36, 166, 56, 56, icon, ACCENT),
+        label(left + 114, 164, width - 150, 60, f"$ADDON[{ADDON_ID} {title_id}]", "font32_title", TEXT),
+        label(left + 50, 330, width - 100, 200, "", "font13", TEXT2, align="center", center=False, control_id=300, wrap=True),
         lists, *buttons, spaces=0)
     return window(comment, 201, controls, always=True)
 

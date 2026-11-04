@@ -74,24 +74,25 @@ def main_screen():
         spaces=0)
 
 
-def details_button(control_id, left, onleft, onright, string_id, focus_color, focus_text, top=840, width=270, ondown="noop"):
+def details_button(control_id, left, onleft, onright, string_id, focus_color, focus_text, top=840, width=270, ondown="noop",
+                   condition=None):
+    """A button of a details window. Without onleft and onright, a grouplist places it and moves between its buttons."""
     label_text = f"\n  <label>$ADDON[{ADDON_ID} {string_id}]</label>" if string_id else ""
+    sides = f"\n  <onleft>{onleft}</onleft>\n  <onright>{onright}</onright>" if onleft else ""
     return f"""<control type="button" id="{control_id}">
   <left>{left}</left>
   <top>{top}</top>
   <width>{width}</width>
   <height>76</height>
   <onup>noop</onup>
-  <ondown>{ondown}</ondown>
-  <onleft>{onleft}</onleft>
-  <onright>{onright}</onright>
+  <ondown>{ondown}</ondown>{sides}
   <font>font13</font>
   <align>center</align>
   <aligny>center</aligny>
   <textcolor>{TEXT}</textcolor>
   <focusedcolor>{focus_text}</focusedcolor>
   <texturefocus border="16" colordiffuse="{focus_color}">panel.png</texturefocus>
-  <texturenofocus border="16" colordiffuse="{RAISED}">panel.png</texturenofocus>{label_text}
+  <texturenofocus border="16" colordiffuse="{RAISED}">panel.png</texturenofocus>{label_text}{skin.visible(condition)}
 </control>"""
 
 
@@ -115,16 +116,17 @@ def details_screen():
         spaces=0)
 
 
-def series_screen():
+def seasons_and_episodes(onup=201, top=444, height=420, condition=None):
+    """Seasons as a row of tabs, and the episodes of the selected season below."""
     seasons_focus, episodes_focus = has(300), has(400)
     season_label = lambda color, condition=None: label(0, 0, 208, 64, "$INFO[ListItem.Label]", "font13", color, condition, align="center")
     seasons = f"""<control type="list" id="300">
   <left>620</left>
-  <top>444</top>
+  <top>{top}</top>
   <width>1100</width>
   <height>64</height>
   <orientation>horizontal</orientation>
-  <onup>201</onup>
+  <onup>{onup}</onup>
   <ondown>400</ondown>
   <scrolltime>120</scrolltime>
   <itemlayout width="222" height="64">
@@ -133,7 +135,7 @@ def series_screen():
   <focusedlayout width="222" height="64">
 {join(panel(0, 0, 208, 64, FOCUS, seasons_focus), panel(0, 0, 208, 64, RAISED2, "!" + seasons_focus),
       season_label(ON_FOCUS, seasons_focus), season_label(ACCENT, "!" + seasons_focus), spaces=4)}
-  </focusedlayout>
+  </focusedlayout>{skin.visible(condition)}
 </control>"""
     episode = lambda name, detail, condition=None, scroll=False: [
         image(22, 19, 32, 32, "check.png", ACCENT, watched + (" + " + condition if condition else "")),
@@ -141,9 +143,9 @@ def series_screen():
         label(860, 0, 216, 70, "$INFO[ListItem.Label2]", "font12", detail, condition, align="right")]
     episodes = f"""<control type="list" id="400">
   <left>620</left>
-  <top>528</top>
+  <top>{top + 84}</top>
   <width>1100</width>
-  <height>420</height>
+  <height>{height}</height>
   <onup>300</onup>
   <onleft>noop</onleft>
   <onright>noop</onright>
@@ -154,8 +156,13 @@ def series_screen():
   <focusedlayout height="70">
 {join(panel(0, 2, 1100, 66, FOCUS, episodes_focus), panel(0, 2, 1100, 66, RAISED, "!" + episodes_focus),
       *episode(ON_FOCUS, ON_FOCUS2, episodes_focus, True), *episode(TEXT, TEXT2, "!" + episodes_focus), spaces=4)}
-  </focusedlayout>
+  </focusedlayout>{skin.visible(condition)}
 </control>"""
+    return seasons, episodes
+
+
+def series_screen():
+    seasons, episodes = seasons_and_episodes()
     return join(
         image(0, 0, 1920, 1080, "white.png", "D9000000"),
         panel(160, 80, 1600, 920, SURFACE),
@@ -172,6 +179,159 @@ def series_screen():
         details_button(203, 1360, 202, 201, 30122, DANGER, TEXT, top=340, width=360, ondown="300"),
         seasons,
         episodes,
+        spaces=0)
+
+
+def catalog_screen():
+    """The Cinemeta catalog: Movies and Series tabs, categories on the left and posters on the right."""
+    tab_focus = has(100)
+    tab_label = lambda color, condition=None: label(0, 0, 200, 96, "$INFO[ListItem.Label]", "font13", color, condition, align="center")
+    tabs = f"""<control type="list" id="100">
+  <left>40</left>
+  <top>110</top>
+  <width>416</width>
+  <height>96</height>
+  <orientation>horizontal</orientation>
+  <onleft>noop</onleft>
+  <onright>101</onright>
+  <ondown>200</ondown>
+  <scrolltime>120</scrolltime>
+  <itemlayout width="208" height="96">
+{join(panel(0, 0, 200, 96, SURFACE), tab_label(TEXT2), spaces=4)}
+  </itemlayout>
+  <focusedlayout width="208" height="96">
+{join(panel(0, 0, 200, 96, FOCUS, tab_focus), panel(0, 0, 200, 96, RAISED, "!" + tab_focus),
+      tab_label(ON_FOCUS, tab_focus), tab_label(ACCENT, "!" + tab_focus), spaces=4)}
+  </focusedlayout>
+</control>"""
+    addons_button = f"""<control type="button" id="101">
+  <left>456</left>
+  <top>110</top>
+  <width>104</width>
+  <height>96</height>
+  <onup>noop</onup>
+  <ondown>200</ondown>
+  <onleft>100</onleft>
+  <onright>300</onright>
+  <texturefocus border="16" colordiffuse="{FOCUS}">panel.png</texturefocus>
+  <texturenofocus border="16" colordiffuse="{SURFACE}">panel.png</texturenofocus>
+</control>"""
+    return join(
+        image(0, 0, 1920, 1080, "white.png", BG),
+        image(56, 30, 56, 56, "catalog.png", ACCENT),
+        label(128, 28, 900, 60, f"$ADDON[{ADDON_ID} 30200]", "font32_title", TEXT),
+        label(1360, 28, 500, 60, "$INFO[System.Time]", "font32_title", TEXT2, align="right"),
+        "<!-- Movies and Series, and the addons button -->",
+        tabs,
+        addons_button,
+        image(482, 132, 52, 52, "puzzle.png", ON_FOCUS, has(101)),
+        image(482, 132, 52, 52, "puzzle.png", TEXT2, "!" + has(101)),
+        label(44, 212, 516, 36, f"$ADDON[{ADDON_ID} 30213]", "font12", TEXT3, "!" + has(101)),
+        label(44, 212, 516, 36, f"$ADDON[{ADDON_ID} 30270]", "font12", ACCENT, has(101)),
+        "<!-- Categories, filled from gui.py -->",
+        panel(40, 256, 520, 784, SURFACE),
+        skin.groups,
+        "<!-- Posters, with the category name, title count and hints in the header -->",
+        panel(580, 110, 1300, 930, SURFACE),
+        label(612, 114, 940, 56, "", "font32_title", TEXT, control_id=401),
+        label(1560, 114, 290, 56, "", "font12", TEXT2, align="right", control_id=402),
+        label(612, 166, 1240, 32, f"$ADDON[{ADDON_ID} 30212]", "font12", TEXT3),
+        image(604, 206, 1252, 2, "white.png", RAISED),
+        label(620, 300, 1220, 300, "", "font13", TEXT2, align="center", center=False, control_id=403, wrap=True),
+        catalog(),
+        spaces=0)
+
+
+def catalog_details_screen():
+    """Details of a catalog title. Series show their seasons and episodes, movies a longer description."""
+    is_series = "String.IsEqual(Window.Property(series),true)"
+    buttons = f"""<control type="grouplist" id="250">
+  <left>620</left>
+  <top>380</top>
+  <width>1100</width>
+  <height>76</height>
+  <orientation>horizontal</orientation>
+  <itemgap>20</itemgap>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+{join(details_button(203, 0, None, None, 30300, FOCUS, ON_FOCUS, top=0, width=300, ondown="300",
+                     condition="String.IsEqual(Window.Property(sources),true)"),
+      details_button(201, 0, None, None, 30110, FOCUS, ON_FOCUS, top=0, width=300, ondown="300",
+                     condition="String.IsEqual(Window.Property(playable),true)"),
+      details_button(202, 0, None, None, None, FOCUS, ON_FOCUS, top=0, width=440, ondown="300"), spaces=2)}
+</control>"""
+    seasons, episodes = seasons_and_episodes(onup=250, top=480, height=386, condition=is_series)
+    return join(
+        image(0, 0, 1920, 1080, "white.png", "D9000000"),
+        panel(160, 80, 1600, 920, SURFACE),
+        panel(210, 130, 360, 540, RAISED),
+        image(210, 130, 360, 540, "$INFO[Window.Property(poster)]", keep=True, fallback="film.png"),
+        image(522, 146, 34, 34, "star.png", STAR, "String.IsEqual(Window.Property(favorite),true)"),
+        textbox(620, 126, 1100, 110, "$INFO[Window.Property(title)]", "font36_title", TEXT),
+        label(620, 240, 1100, 40, "$INFO[Window.Property(info)]", "font12", TEXT2),
+        label(620, 282, 1100, 40, "$INFO[Window.Property(people)]", "font12", TEXT2),
+        label(620, 324, 1100, 40, "$INFO[Window.Property(library)]", "font13", ACCENT),
+        buttons,
+        "<!-- Description: below the poster for a series, where it follows the highlighted episode, and below the buttons for a movie -->",
+        textbox(210, 696, 360, 280, "$INFO[Window.Property(plot)]", "font12", TEXT2, is_series + " + !" + has(400)),
+        textbox(210, 696, 360, 280, "$INFO[Container(400).ListItem.Property(plot)]", "font12", TEXT2, is_series + " + " + has(400)),
+        textbox(620, 490, 1100, 460, "$INFO[Window.Property(plot)]", "font13", TEXT2, "!" + is_series),
+        seasons,
+        episodes,
+        spaces=0)
+
+
+def sources_screen():
+    """Sources of a movie or an episode, in a panel that slides in from the right over the details."""
+    width = 820
+    left = 1920 - width
+    focus = has(100)
+    kind_icon = lambda color, condition=None: [
+        image(24, 31, 48, 48, "download.png", color, skin.both(condition, "String.IsEqual(ListItem.Property(kind),torrent)")),
+        image(24, 31, 48, 48, "play.png", color, skin.both(condition, "!String.IsEqual(ListItem.Property(kind),torrent)"))]
+    item = lambda name, detail, icon, condition=None, scroll=False: [
+        *kind_icon(icon, condition),
+        label(92, 12, 664, 44, "$INFO[ListItem.Label]", "font13", name, condition, scroll=scroll),
+        label(92, 58, 664, 36, "$INFO[ListItem.Label2]", "font12", detail, condition, scroll=scroll)]
+    sources = f"""<control type="list" id="100">
+  <left>{left + 20}</left>
+  <top>196</top>
+  <width>{width - 40}</width>
+  <height>798</height>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <scrolltime>120</scrolltime>
+  <itemlayout height="114">
+{join(*item(TEXT, TEXT2, TEXT2), spaces=4)}
+  </itemlayout>
+  <focusedlayout height="114">
+{join(panel(0, 2, width - 40, 108, FOCUS, focus), panel(0, 2, width - 40, 108, RAISED, "!" + focus),
+      *item(ON_FOCUS, ON_FOCUS2, ON_FOCUS, focus, True), *item(TEXT, TEXT2, TEXT2, "!" + focus), spaces=4)}
+  </focusedlayout>
+</control>"""
+    slide = f"""<animation effect="slide" start="{width},0" end="0,0" time="260" tween="cubic" easing="out">WindowOpen</animation>
+<animation effect="slide" start="0,0" end="{width},0" time="200" tween="cubic" easing="in">WindowClose</animation>"""
+    panel_group = f"""<control type="group">
+{skin.indent(slide, 2)}
+{join(image(left, 0, width, 1080, "white.png", SURFACE),
+      textbox(left + 40, 36, width - 80, 100, "$INFO[Window.Property(title)]", "font32_title", TEXT),
+      label(left + 40, 136, width - 80, 36, "$INFO[Window.Property(status)]", "font12", TEXT2),
+      image(left + 20, 184, width - 40, 2, "white.png", RAISED),
+      label(left + 60, 420, width - 120, 200, "", "font13", TEXT2, align="center", center=False, control_id=300, wrap=True),
+      sources,
+      label(left + 40, 1012, width - 80, 40, f"$ADDON[{ADDON_ID} 30311]", "font12", TEXT3), spaces=2)}
+</control>"""
+    return join(
+        f"""<control type="image">
+  <left>0</left>
+  <top>0</top>
+  <width>1920</width>
+  <height>1080</height>
+  <texture colordiffuse="99000000">white.png</texture>
+  <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
+  <animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
+</control>""",
+        panel_group,
         spaces=0)
 
 
@@ -237,10 +397,18 @@ def main():
         "script-m3u-movies-details.xml": window("Modal movie details opened from a poster.", 201, details_screen(), always=True),
         "script-m3u-movies-series.xml": window("Modal series details with seasons and episodes, opened from a series poster.", 201,
                                                series_screen(), always=True),
+        "script-m3u-movies-catalog.xml": window("Cinemeta catalog opened from the catalog icon: tabs and categories on the left, posters on the right.",
+                                                200, catalog_screen()),
+        "script-m3u-movies-catalog-details.xml": window("Modal details of a catalog title, with seasons and episodes for a series.", 202,
+                                                        catalog_details_screen(), always=True),
+        "script-m3u-movies-sources.xml": window("Modal sources of a catalog title, sliding in from the right.", 100, sources_screen(), always=True),
         "script-m3u-movies-downloads.xml": window("Modal torrent downloads opened from the download icon.", 201, downloads_screen(), always=True),
         "script-m3u-movies-manager.xml": skin.manager("Modal list manager opened from the gear icon.", "gear.png", 30060, "film.png",
-            [skin.button(201, 440, 248, 203, 204, 30000), skin.button(204, 704, 248, 201, 202, 30093),
-             skin.button(202, 968, 248, 204, 203, 30062), skin.button(203, 1232, 248, 202, 201, 30063)]),
+            [skin.button(201, 290, 256, 203, 204, 30000), skin.button(204, 561, 256, 201, 205, 30093),
+             skin.button(205, 832, 256, 204, 202, 30001), skin.button(202, 1103, 256, 205, 203, 30062),
+             skin.button(203, 1374, 256, 202, 201, 30063)], width=1400),
+        "script-m3u-movies-addons.xml": skin.manager("Modal Stremio addons opened from the catalog.", "puzzle.png", 30270, "puzzle.png",
+            [skin.button(201, 440, 512, 203, 203, 30272), skin.button(203, 968, 512, 201, 201, 30063)], logos=True),
         "script-m3u-movies-repos.xml": skin.manager("Modal GitHub repository manager opened from the list manager.", "search.png", 30075, "search.png",
             [skin.button(201, 440, 512, 203, 203, 30076), skin.button(203, 968, 512, 201, 201, 30063)]),
     }

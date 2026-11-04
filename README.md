@@ -80,6 +80,8 @@ Install from **Monteiro > Video add-ons > Easy Channel**. Read the [Easy Channel
 - A **Continue watching** group, and resume of movies and episodes where you stopped.
 - Lists from a web address, a file, or GitHub, with a suggested repository of public domain movies.
 - The same list manager, checks, favorites and failure detection as Easy Channel, in the same design.
+- Folders with your own videos, on the SD card, USB drives or network shares, with posters and details from Cinemeta.
+- A catalog of the movies and series of Cinemeta, with **My list**, and Stremio addons added by their address, whose sources go to a torrent download manager or play at once.
 - With an empty library, selecting **Movies** or **TV shows** in Kodi's main menu opens Easy Movie.
 
 ![Easy Movie](script.m3u.movies/resources/screenshots/screenshot-01.jpg)
@@ -134,7 +136,7 @@ Further add-ons and updates are installed through **Monteiro**. Enable automatic
 | Add-on | ID | Purpose |
 | --- | --- | --- |
 | [Easy Channel](script.m3u.channels/README.md) | `script.m3u.channels` | Add M3U lists in one step and remove channels that do not work. |
-| [Easy Movie](script.m3u.movies/README.md) | `script.m3u.movies` | Browse the movies of M3U lists as a poster catalog and remove movies that do not work. |
+| [Easy Movie](script.m3u.movies/README.md) | `script.m3u.movies` | Browse the movies of M3U lists and video folders as a poster catalog, explore the Cinemeta catalog with Stremio addons, and download torrents. |
 | [HDMI Switcher](script.hdmi.switcher/README.md) | `script.hdmi.switcher` | Select the active HDMI display and restart Kodi. |
 | Monteiro | `repository.monteiromedia` | Register this repository in Kodi for installation and updates. |
 
@@ -214,7 +216,7 @@ Local checks cover metadata, package structure, checksums, deterministic builds,
 
 Easy Channel was tested on LibreELEC 12.2.1 with Kodi 21.3 on a Raspberry Pi 4 by driving the interface with remote control commands and screenshots. The tests covered adding lists from a file and from GitHub, browsing groups, favorites, removing and restoring channels, failure detection for missing streams and unreachable servers, group checks, the list and repository managers, and the TV menu. Adding a repository by typing its name was only tested outside Kodi.
 
-Easy Movie was tested on the same device with the public domain list from GitHub. The tests covered the first-use list manager, adding lists from GitHub, the poster catalog and its navigation, movie details, playback, favorites, removal after a failed playback, genre checks, and the Movies menu.
+Easy Movie was tested on the same device with the public domain list from GitHub. The tests covered the first-use list manager, adding lists from GitHub, the poster catalog and its navigation, movie details, playback, favorites, removal after a failed playback, genre checks, and the Movies menu. Later versions were tested with a video folder on a USB drive (posters from Cinemeta, renaming), torrent downloads of a Creative Commons film (pause, removal, upload limit), the Cinemeta catalog (categories, search, pages, My list, titles found in the lists), adding and removing Stremio addons, and the sources panel, including downloading one file of a pack and the warning for a full folder. Playing a direct link from an addon was not tested.
 
 ## License
 

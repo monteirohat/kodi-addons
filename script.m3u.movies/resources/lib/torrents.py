@@ -186,6 +186,30 @@ class Engine:
         return self.request("POST", "/add/torrent", {"download": "true", "ignore_duplicate": "true"}, body,
                             content_type="multipart/form-data; boundary=" + boundary)["info_hash"]
 
+    def files(self, info_hash):
+        """Files of a torrent, once its metadata arrived. Before that, Torrest answers with an error."""
+        return self.request("GET", "/torrents/%s/files" % info_hash) or []
+
+    def only_file(self, info_hash, file_index, timeout=600):
+        """Download only one file of a torrent, as an episode of a season pack. Waits for the metadata, then stops
+        the other files. Before the metadata nothing is downloaded, so no other file gets data."""
+        deadline = time.time() + timeout
+        while time.time() < deadline:
+            try:
+                files = self.files(info_hash)
+            except EngineError:
+                files = []
+            if files:
+                for item in files:
+                    if item.get("id") != file_index:
+                        try:
+                            self.request("PUT", "/torrents/%s/files/%s/stop" % (info_hash, item["id"]))
+                        except EngineError:
+                            pass
+                return True
+            time.sleep(2)
+        return False
+
     def torrents(self):
         """Torrents with their status, newest first as Torrest lists them."""
         return self.request("GET", "/torrents", {"status": "true"}) or []

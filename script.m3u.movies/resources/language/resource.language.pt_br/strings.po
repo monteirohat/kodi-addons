@@ -689,3 +689,351 @@ msgstr "Continuar os downloads quando o Kodi iniciar"
 msgctxt "#30193"
 msgid "{0} down  ·  {1} up"
 msgstr "{0} baixando  ·  {1} enviando"
+
+msgctxt "#30200"
+msgid "Catalog"
+msgstr "Catálogo"
+
+msgctxt "#30201"
+msgid "Movies"
+msgstr "Filmes"
+
+msgctxt "#30202"
+msgid "My list"
+msgstr "Minha lista"
+
+msgctxt "#30203"
+msgid "Search"
+msgstr "Buscar"
+
+msgctxt "#30204"
+msgid "Popular"
+msgstr "Populares"
+
+msgctxt "#30205"
+msgid "Featured"
+msgstr "Destaques"
+
+msgctxt "#30206"
+msgid "New in {0}"
+msgstr "Lançamentos de {0}"
+
+msgctxt "#30207"
+msgid "Loading…"
+msgstr "Carregando…"
+
+msgctxt "#30208"
+msgid "Could not load the catalog: {0}"
+msgstr "Não foi possível carregar o catálogo: {0}"
+
+msgctxt "#30209"
+msgid "Nothing found"
+msgstr "Nada encontrado"
+
+msgctxt "#30210"
+msgid "Your list is empty. Add movies and series from their details or with the Menu button."
+msgstr "Sua lista está vazia. Adicione filmes e séries pelos detalhes ou com o botão Menu."
+
+msgctxt "#30211"
+msgid "Search the catalog"
+msgstr "Buscar no catálogo"
+
+msgctxt "#30212"
+msgid "OK: details  ·  Menu: My list  ·  Back: categories"
+msgstr "OK: detalhes  ·  Menu: minha lista  ·  Voltar: categorias"
+
+msgctxt "#30213"
+msgid "From Cinemeta  ·  descriptions in English"
+msgstr "Do Cinemeta  ·  descrições em inglês"
+
+msgctxt "#30214"
+msgid "Add to My list"
+msgstr "Adicionar à minha lista"
+
+msgctxt "#30215"
+msgid "Remove from My list"
+msgstr "Remover da minha lista"
+
+msgctxt "#30216"
+msgid "Added to My list"
+msgstr "Adicionado à minha lista"
+
+msgctxt "#30217"
+msgid "Removed from My list"
+msgstr "Removido da minha lista"
+
+msgctxt "#30218"
+msgid "Specials"
+msgstr "Especiais"
+
+msgctxt "#30219"
+msgid "Directed by {0}"
+msgstr "Direção: {0}"
+
+msgctxt "#30220"
+msgid "Cast: {0}"
+msgstr "Elenco: {0}"
+
+msgctxt "#30222"
+msgid "In your lists: {0}"
+msgstr "Nas suas listas: {0}"
+
+msgctxt "#30230"
+msgid "Action"
+msgstr "Ação"
+
+msgctxt "#30231"
+msgid "Adventure"
+msgstr "Aventura"
+
+msgctxt "#30232"
+msgid "Animation"
+msgstr "Animação"
+
+msgctxt "#30233"
+msgid "Biography"
+msgstr "Biografia"
+
+msgctxt "#30234"
+msgid "Comedy"
+msgstr "Comédia"
+
+msgctxt "#30235"
+msgid "Crime"
+msgstr "Crime"
+
+msgctxt "#30236"
+msgid "Documentary"
+msgstr "Documentário"
+
+msgctxt "#30237"
+msgid "Drama"
+msgstr "Drama"
+
+msgctxt "#30238"
+msgid "Family"
+msgstr "Família"
+
+msgctxt "#30239"
+msgid "Fantasy"
+msgstr "Fantasia"
+
+msgctxt "#30240"
+msgid "History"
+msgstr "História"
+
+msgctxt "#30241"
+msgid "Horror"
+msgstr "Terror"
+
+msgctxt "#30242"
+msgid "Mystery"
+msgstr "Mistério"
+
+msgctxt "#30243"
+msgid "Romance"
+msgstr "Romance"
+
+msgctxt "#30244"
+msgid "Sci-Fi"
+msgstr "Ficção científica"
+
+msgctxt "#30245"
+msgid "Sport"
+msgstr "Esporte"
+
+msgctxt "#30246"
+msgid "Thriller"
+msgstr "Suspense"
+
+msgctxt "#30247"
+msgid "War"
+msgstr "Guerra"
+
+msgctxt "#30248"
+msgid "Western"
+msgstr "Faroeste"
+
+msgctxt "#30249"
+msgid "Reality-TV"
+msgstr "Reality show"
+
+msgctxt "#30250"
+msgid "Talk-Show"
+msgstr "Talk show"
+
+msgctxt "#30251"
+msgid "Game-Show"
+msgstr "Game show"
+
+msgctxt "#30252"
+msgid "Short"
+msgstr "Curta-metragem"
+
+msgctxt "#30253"
+msgid "Music"
+msgstr "Música"
+
+msgctxt "#30254"
+msgid "Musical"
+msgstr "Musical"
+
+msgctxt "#30255"
+msgid "News"
+msgstr "Notícias"
+
+msgctxt "#30256"
+msgid "TV Movie"
+msgstr "Filme para TV"
+
+msgctxt "#30257"
+msgid "Action & Adventure"
+msgstr "Ação e aventura"
+
+msgctxt "#30258"
+msgid "Sci-Fi & Fantasy"
+msgstr "Ficção científica e fantasia"
+
+msgctxt "#30259"
+msgid "Talk"
+msgstr "Talk show"
+
+msgctxt "#30260"
+msgid "Film-Noir"
+msgstr "Noir"
+
+msgctxt "#30270"
+msgid "Addons"
+msgstr "Addons"
+
+msgctxt "#30272"
+msgid "Add addon"
+msgstr "Adicionar addon"
+
+msgctxt "#30273"
+msgid "Addon address (manifest.json)"
+msgstr "Endereço do addon (manifest.json)"
+
+msgctxt "#30274"
+msgid "Addon added: {0}"
+msgstr "Addon adicionado: {0}"
+
+msgctxt "#30275"
+msgid "Could not add the addon: {0}"
+msgstr "Não foi possível adicionar o addon: {0}"
+
+msgctxt "#30276"
+msgid "This address is not a Stremio addon."
+msgstr "Este endereço não é de um addon do Stremio."
+
+msgctxt "#30277"
+msgid "{0} must be configured first. Open {1} on a phone or computer, choose its options, and paste the address it gives."
+msgstr "O {0} precisa ser configurado antes. Abra {1} no celular ou no computador, escolha as opções e cole o endereço que ele gerar."
+
+msgctxt "#30278"
+msgid "Built in  ·  Catalogs and details of movies and series"
+msgstr "Integrado  ·  Catálogos e detalhes de filmes e séries"
+
+msgctxt "#30279"
+msgid "Update addon"
+msgstr "Atualizar addon"
+
+msgctxt "#30280"
+msgid "Remove addon"
+msgstr "Remover addon"
+
+msgctxt "#30281"
+msgid "Remove the addon \"{0}\"?"
+msgstr "Remover o addon \"{0}\"?"
+
+msgctxt "#30282"
+msgid "Addon updated"
+msgstr "Addon atualizado"
+
+msgctxt "#30283"
+msgid "Cinemeta is built in and cannot be removed."
+msgstr "O Cinemeta é integrado e não pode ser removido."
+
+msgctxt "#30284"
+msgid "Catalogs"
+msgstr "Catálogos"
+
+msgctxt "#30285"
+msgid "Sources"
+msgstr "Fontes"
+
+msgctxt "#30286"
+msgid "Subtitles"
+msgstr "Legendas"
+
+msgctxt "#30287"
+msgid "Details"
+msgstr "Detalhes"
+
+msgctxt "#30288"
+msgid "Channels"
+msgstr "Canais"
+
+msgctxt "#30289"
+msgid "Addon removed"
+msgstr "Addon removido"
+
+msgctxt "#30300"
+msgid "Sources"
+msgstr "Fontes"
+
+msgctxt "#30301"
+msgid "Looking for sources…"
+msgstr "Buscando fontes…"
+
+msgctxt "#30302"
+msgid "{0} sources"
+msgstr "{0} fontes"
+
+msgctxt "#30303"
+msgid "1 source"
+msgstr "1 fonte"
+
+msgctxt "#30304"
+msgid "No sources found for this title."
+msgstr "Nenhuma fonte encontrada para este título."
+
+msgctxt "#30305"
+msgid "Torrent"
+msgstr "Torrent"
+
+msgctxt "#30306"
+msgid "Direct link"
+msgstr "Link direto"
+
+msgctxt "#30307"
+msgid "{0} seeds"
+msgstr "{0} seeds"
+
+msgctxt "#30308"
+msgid "Download started: {0}"
+msgstr "Download iniciado: {0}"
+
+msgctxt "#30309"
+msgid "No answer: {0}"
+msgstr "Sem resposta: {0}"
+
+msgctxt "#30310"
+msgid "No addon with sources is installed for this title. Add one in Addons, next to the Movies and Series tabs."
+msgstr "Nenhum addon com fontes para este título. Adicione um em Addons, ao lado das abas Filmes e Séries."
+
+msgctxt "#30311"
+msgid "OK: download the torrent or play the link  ·  Left: back"
+msgstr "OK: baixar o torrent ou assistir o link  ·  Esquerda: voltar"
+
+msgctxt "#30312"
+msgid "No space left in the folder"
+msgstr "Sem espaço na pasta"
+
+msgctxt "#30313"
+msgid "{0} free"
+msgstr "{0} livres"
+
+msgctxt "#30314"
+msgid "There is not enough space in the download folder.[CR]Folder: {0}[CR]Free: {1}  ·  This torrent: {2}"
+msgstr "Não há espaço suficiente na pasta dos downloads.[CR]Pasta: {0}[CR]Livre: {1}  ·  Este torrent: {2}"

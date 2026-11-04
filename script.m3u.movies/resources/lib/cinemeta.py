@@ -3,6 +3,7 @@
 Searches accept titles in Portuguese as well as in English. Descriptions are in English.
 """
 
+import html
 import json
 import re
 import unicodedata
@@ -67,20 +68,66 @@ def best(candidates, title, year):
     return (exact or [meta for meta in candidates if similar(title, meta.get("name", ""))] or [None])[0]
 
 
-def details(kind, imdb_id):
-    """Fields kept for a catalog item: poster, background, description, rating, year, genres and runtime."""
-    meta = fetch("/meta/%s/%s.json" % (kind, imdb_id)).get("meta") or {}
+def catalog(kind, catalog_id="top", genre=None, skip=0):
+    """A page of a Cinemeta catalog: "top" for popular titles, "imdbRating" for featured ones and "year" for the
+    titles of the year given as genre. Pages have about 50 titles, and an empty page is the end."""
+    extra = [("genre", genre)] if genre else []
+    if skip:
+        extra.append(("skip", str(skip)))
+    path = "/catalog/%s/%s" % (kind, catalog_id)
+    if extra:
+        path += "/" + "&".join("%s=%s" % (name, urllib.parse.quote(value)) for name, value in extra)
+    return fetch(path + ".json").get("metas", [])
+
+
+def unescaped(value):
+    """Text without the HTML entities some names and descriptions have, as in "O&apos;Dea"."""
+    if isinstance(value, list):
+        return [unescaped(item) for item in value]
+    return html.unescape(value) if isinstance(value, str) else value
+
+
+def summary(meta):
+    """Fields kept for a catalog item: poster, background, description, rating, year, genres, runtime, director
+    and cast."""
     return {
-        "id": imdb_id,
-        "name": meta.get("name", ""),
-        "poster": meta.get("poster", ""),
+        "id": meta.get("imdb_id") or meta.get("id", ""),
+        "name": unescaped(meta.get("name", "")),
+        # Small posters look blurred on a TV.
+        "poster": (meta.get("poster") or "").replace("/poster/small/", "/poster/medium/"),
         "fanart": meta.get("background", ""),
-        "plot": meta.get("description", ""),
+        "plot": unescaped(meta.get("description", "")),
         "rating": meta.get("imdbRating", ""),
         "year": first_year(meta.get("releaseInfo") or meta.get("year")),
         "genres": meta.get("genres") or [],
         "runtime": meta.get("runtime", ""),
+        "director": unescaped((meta.get("director") or [])[:2]),
+        "cast": unescaped((meta.get("cast") or [])[:4]),
     }
+
+
+def meta(kind, imdb_id):
+    """Everything Cinemeta has on a title. Catalog pages shorten the descriptions, this does not."""
+    return fetch("/meta/%s/%s.json" % (kind, imdb_id)).get("meta") or {}
+
+
+def details(kind, imdb_id):
+    return dict(summary(meta(kind, imdb_id)), id=imdb_id)
+
+
+def episodes(meta):
+    """Episodes of a series meta as (season, number, title, aired date, description, video id), in order. Season
+    0 holds the specials. The video id, as in "tt0903747:1:4", asks addons for the sources of the episode."""
+    found = []
+    for video in meta.get("videos") or []:
+        number = video.get("episode", video.get("number"))
+        if video.get("season") is None or number is None:
+            continue
+        found.append((int(video["season"]), int(number), unescaped(video.get("name") or video.get("title") or ""),
+                      (video.get("released") or video.get("firstAired") or "")[:10],
+                      unescaped(video.get("overview") or video.get("description") or ""),
+                      video.get("id") or "%s:%s:%s" % (meta.get("id", ""), video["season"], number)))
+    return sorted(found)
 
 
 def lookup(kind, title, year=0):
