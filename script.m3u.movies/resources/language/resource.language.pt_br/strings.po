@@ -1113,3 +1113,31 @@ msgstr "Chinês"
 msgctxt "#30340"
 msgid "Russian"
 msgstr "Russo"
+
+msgctxt "#30342"
+msgid "Searching subtitles online..."
+msgstr "Buscando legendas online..."
+
+msgctxt "#30343"
+msgid "No subtitles found online"
+msgstr "Nenhuma legenda encontrada online"
+
+msgctxt "#30344"
+msgid "Made for this file"
+msgstr "Feita para este arquivo"
+
+msgctxt "#30345"
+msgid "Subtitle in {0}"
+msgstr "Legenda em {0}"
+
+msgctxt "#30346"
+msgid "Could not download the subtitle"
+msgstr "Não foi possível baixar a legenda"
+
+msgctxt "#30347"
+msgid "Download subtitles automatically"
+msgstr "Baixar legendas automaticamente"
+
+msgctxt "#30348"
+msgid "Subtitle language"
+msgstr "Idioma das legendas"

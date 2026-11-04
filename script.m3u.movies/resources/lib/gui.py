@@ -189,6 +189,21 @@ def is_local(entry):
     return entry.get("folder", False)
 
 
+def subtitle_target(entry, show=None):
+    """What a movie or an episode of show is, to look up its subtitles online: its IMDb id when Cinemeta gave one,
+    or its name and year, and the path of a video file."""
+    channel = entry["channel"]
+    path = m3u.base_url(channel["url"]) if is_local(entry) else ""
+    episode = entry.get("episode")
+    if episode:
+        meta = (show or {}).get("meta") or {}
+        return {"kind": "series", "imdb": meta.get("id") or "", "title": episode["show"], "year": meta.get("year") or 0,
+                "season": episode["season"], "episode": episode["number"], "path": path}
+    meta = entry.get("meta") or {}
+    title, year = (meta["name"], meta.get("year") or 0) if meta.get("name") else folders.title_and_year(channel["name"])
+    return {"kind": "movie", "imdb": meta.get("id") or "", "title": title, "year": year, "path": path}
+
+
 def local_paths(item):
     return [m3u.base_url(entry["channel"]["url"]) for entry in item_entries(item)]
 
@@ -581,7 +596,7 @@ class MainWindow(xbmcgui.WindowXML):
         choice, episode, start = details.choice, details.episode, details.start
         del details
         if choice == "play":
-            self.watcher.play_channel(episode or entry, start)
+            self.watcher.play_channel(episode or entry, start, subtitle_target(episode, entry) if episode else subtitle_target(entry))
         elif choice == "remove":
             self.remove([entry])
 

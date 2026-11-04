@@ -78,7 +78,7 @@ Install from **Monteiro > Video add-ons > Easy Channel**. Read the [Easy Channel
 - Genres on the left and six posters per row, with title and running time.
 - Episodes grouped into series automatically, with seasons, episodes, watched marks and a **Continue** button.
 - A **Continue watching** group, and resume of movies and episodes where you stopped.
-- Playback controls in the style of streaming apps, with 10 second skips, subtitles and audio tracks.
+- Playback controls in the style of streaming apps, with 10 second skips, subtitles and audio tracks, and subtitles from OpenSubtitles turned on automatically in your language.
 - Lists from a web address, a file, or GitHub, with a suggested repository of public domain movies.
 - The same list manager, checks, favorites and failure detection as Easy Channel, in the same design.
 - Folders with your own videos, on the SD card, USB drives or network shares, with posters and details from Cinemeta.
@@ -217,7 +217,7 @@ Local checks cover metadata, package structure, checksums, deterministic builds,
 
 Easy Channel was tested on LibreELEC 12.2.1 with Kodi 21.3 on a Raspberry Pi 4 by driving the interface with remote control commands and screenshots. The tests covered adding lists from a file and from GitHub, browsing groups, favorites, removing and restoring channels, failure detection for missing streams and unreachable servers, group checks, the list and repository managers, and the TV menu. Adding a repository by typing its name was only tested outside Kodi.
 
-Easy Movie was tested on the same device with the public domain list from GitHub. The tests covered the first-use list manager, adding lists from GitHub, the poster catalog and its navigation, movie details, playback, favorites, removal after a failed playback, genre checks, and the Movies menu. Later versions were tested with a video folder on a USB drive (posters from Cinemeta, renaming), torrent downloads of a Creative Commons film (pause, removal, upload limit), the Cinemeta catalog (categories, search, pages, My list, titles found in the lists), adding and removing Stremio addons, and the sources panel, including downloading one file of a pack and the warning for a full folder. The playback controls were tested with a movie from a USB hard drive: showing and hiding, 10 second skips, pause, and choosing subtitle and audio tracks. Playing a direct link from an addon was not tested.
+Easy Movie was tested on the same device with the public domain list from GitHub. The tests covered the first-use list manager, adding lists from GitHub, the poster catalog and its navigation, movie details, playback, favorites, removal after a failed playback, genre checks, and the Movies menu. Later versions were tested with a video folder on a USB drive (posters from Cinemeta, renaming), torrent downloads of a Creative Commons film (pause, removal, upload limit), the Cinemeta catalog (categories, search, pages, My list, titles found in the lists), adding and removing Stremio addons, and the sources panel, including downloading one file of a pack and the warning for a full folder. The playback controls were tested with a movie from a USB hard drive: showing and hiding, 10 second skips, pause, choosing subtitle and audio tracks, and OpenSubtitles subtitles, turned on automatically and picked in the panel. Playing a direct link from an addon was not tested.
 
 ## License
 

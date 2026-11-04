@@ -1113,3 +1113,31 @@ msgstr ""
 msgctxt "#30340"
 msgid "Russian"
 msgstr ""
+
+msgctxt "#30342"
+msgid "Searching subtitles online..."
+msgstr ""
+
+msgctxt "#30343"
+msgid "No subtitles found online"
+msgstr ""
+
+msgctxt "#30344"
+msgid "Made for this file"
+msgstr ""
+
+msgctxt "#30345"
+msgid "Subtitle in {0}"
+msgstr ""
+
+msgctxt "#30346"
+msgid "Could not download the subtitle"
+msgstr ""
+
+msgctxt "#30347"
+msgid "Download subtitles automatically"
+msgstr ""
+
+msgctxt "#30348"
+msgid "Subtitle language"
+msgstr ""

@@ -42,6 +42,7 @@ class Watcher(xbmc.Player):
         self.stop_seen = threading.Event()
         self.closed = False
         self.controls = None
+        self.online = None
         self.thread = threading.Thread(target=self.loop, daemon=True)
         self.thread.start()
 
@@ -63,8 +64,10 @@ class Watcher(xbmc.Player):
         with self.lock:
             self.events.append(event)
 
-    def play_channel(self, entry, start=0):
-        """Play an entry, from start seconds when resuming."""
+    def play_channel(self, entry, start=0, subtitles=None):
+        """Play an entry, from start seconds when resuming. subtitles tells which movie or episode it is, to look up
+        its subtitles online, see controls.OnlineSubtitles."""
+        subtitles = subtitles or entry.get("subtitles")
         channel = entry["channel"]
         with self.lock:
             previous, self.watched = self.watched, None
@@ -83,7 +86,8 @@ class Watcher(xbmc.Player):
             self.monitor.waitForAbort(0.2)
         with self.lock:
             self.events = []
-            self.watched = dict(entry, opened=time.time(), started=None, start=start, position=0, total=0, reported=0)
+            self.watched = dict(entry, opened=time.time(), started=None, start=start, position=0, total=0, reported=0,
+                                subtitles=subtitles)
         url = playable_url(channel["url"])
         item = xbmcgui.ListItem(channel["name"], path=url)
         item.getVideoInfoTag().setTitle(channel["name"])
@@ -110,6 +114,9 @@ class Watcher(xbmc.Player):
                     watched["started"] = time.time()
                     if watched["start"]:
                         self.seekTime(watched["start"])
+                    if watched["subtitles"] and self.online is None and self.isPlayingVideo():
+                        self.online = controls.OnlineSubtitles(self, watched["subtitles"])
+                        self.online.start()
                     if controls.enabled() and self.controls is None and self.isPlayingVideo():
                         self.open_controls(watched)
                 elif event == "stopped":
@@ -172,12 +179,15 @@ class Watcher(xbmc.Player):
             detail = "S%02dE%02d" % (episode["season"], episode["number"]) + ("  ·  " + episode["title"] if episode["title"] else "")
         else:
             title, detail = watched["channel"]["name"], ""
-        self.controls = controls.open_controls(self, title, detail)
+        self.controls = controls.open_controls(self, title, detail, self.online)
 
     def close_controls(self):
         window, self.controls = self.controls, None
         if window is not None:
             window.shutdown()
+        online, self.online = self.online, None
+        if online is not None:
+            online.closed = True
 
     def shutdown(self):
         self.close_controls()

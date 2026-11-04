@@ -16,6 +16,7 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 - Download torrents from magnet links, `.torrent` files or the catalog into a folder you choose, with a download list that shows progress, speed, time left and the free space of the folder.
 - Add folders with your own video files, on the SD card, a USB drive or a network share. Posters and details come from Cinemeta, and files can be renamed or deleted from the catalog.
 - Playback controls in the style of streaming apps: play and pause between back and forward 10 seconds, and the subtitle and audio tracks in a side panel.
+- Subtitles from [OpenSubtitles](https://www.opensubtitles.org), turned on automatically in your language when a movie has none, with no account needed.
 - When a movie fails to open, or stops right after starting, Easy Movie offers to remove it.
 - **Check movies** tests a whole genre at once and removes the movies that do not respond.
 - **Favorites** genre at the top, kept across list updates.
@@ -103,6 +104,20 @@ Movies and episodes play with the controls of Easy Movie, in the style of stream
 **Subtitles** lists the subtitles of the video and subtitle files next to it, such as `Movie.pt-BR.srt`, with **Off** first. **Audio** lists the audio tracks, such as the Portuguese and English tracks of a dual audio release. The current track has a check mark. Select a track with **OK**, or close the panel with **Back**.
 
 Turn off **Easy Movie player controls** in the settings to use the controls of the Kodi skin instead.
+
+### Online subtitles
+
+Subtitles come from [OpenSubtitles](https://www.opensubtitles.org), the largest collection of subtitles made by its community, through OpenSubtitles v3, the subtitles addon of Stremio. No account is needed.
+
+When a movie or an episode starts, Easy Movie looks up its subtitles in the background. When the audio is in another language than the **Subtitle language** setting, Brazilian Portuguese at first, it turns on a subtitle in that language and shows **Subtitle in Portuguese (Brazil)**:
+
+1. A subtitle of the video itself, or a subtitle file next to it, comes first.
+2. Otherwise the best subtitle online is downloaded. For a video file on the device, its OpenSubtitles hash finds the subtitles made for that very file, shown as **Made for this file**. The others come by the likeness of their release name to the file name.
+3. Languages are tried in order: Brazilian Portuguese, then Portuguese, then English. Choosing Portuguese, English or Spanish in the setting changes the order.
+
+A movie with Portuguese audio, such as a dubbed release, gets no subtitle. The subtitles online are also listed in **Subtitles**, after the tracks of the video, with their release name. When a subtitle is out of sync, pick another one there. Turn off **Download subtitles automatically** to only list them.
+
+The movie is found by its IMDb id, which Cinemeta gives for the videos of folders and the catalog. Movies of web lists are first looked up on Cinemeta by their name and year. Downloaded subtitles are kept in the `subtitles` folder of the add-on data only while their movie plays.
 
 ### Toolbar
 
@@ -262,6 +277,8 @@ Turn off **Open Easy Movie from the Movies menu** or **Open Easy Movie from the 
 | Open Easy Movie from the Movies menu | On | Open Easy Movie when **Movies** is selected in Kodi's main menu and the movie library is empty. |
 | Open Easy Movie from the TV shows menu | On | Open Easy Movie on the series when **TV shows** is selected and the TV show library is empty. |
 | Easy Movie player controls | On | Show the controls of Easy Movie over movies and episodes. Off uses the controls of the Kodi skin. |
+| Download subtitles automatically | On | Turn on a subtitle from OpenSubtitles when a movie has none in the subtitle language. |
+| Subtitle language | Portuguese (Brazil) | Language of the online subtitles: Portuguese (Brazil), Portuguese, English or Spanish. English is also tried after the other languages. |
 | Offer to remove movies that fail to play | On | Show the removal dialog after a failed playback. |
 | Look up posters and details of folder videos on Cinemeta | On | Fetch posters and details of the movies and series of video folders. |
 | Download folder | Not set | Folder for torrent downloads. **Downloads** asks for it the first time. |
@@ -295,9 +312,10 @@ Easy Movie stores its data in Kodi's add-on data folder, `userdata/addon_data/sc
 | `watchlist.json` | Titles saved to **My list** in the catalog. |
 | `addons.json` | Stremio addons added in the catalog, with their addresses and manifests. |
 | `torrest/` | The torrent engine, its settings, log and saved downloads. |
+| `subtitles/` | Subtitles downloaded from OpenSubtitles for the movie playing. |
 | `repositories.json` | GitHub repositories, once the suggested one is changed. |
 
-Easy Movie connects only to the addresses of your lists, streams and posters, to `api.github.com` and `raw.githubusercontent.com` when you search a repository, to `v3-cinemeta.strem.io` and `cinemeta-catalogs.strem.io` to look up the videos of folders, sending their titles, and to show the catalog and its searches, to the addresses of the Stremio addons you add, and, for torrent downloads, to the trackers and peers of the torrents you add. The lookups can be turned off in the settings. It sends no usage data.
+Easy Movie connects only to the addresses of your lists, streams and posters, to `api.github.com` and `raw.githubusercontent.com` when you search a repository, to `v3-cinemeta.strem.io` and `cinemeta-catalogs.strem.io` to look up the videos of folders, sending their titles, and to show the catalog and its searches, to `opensubtitles-v3.strem.io` and the `strem.io` servers of its files for subtitles, sending the IMDb id of the movie or episode, the name of its file and the OpenSubtitles hash of the file, which is computed from its size and its first and last 64 KB, to the addresses of the Stremio addons you add, and, for torrent downloads, to the trackers and peers of the torrents you add. The Cinemeta lookups of folders and the automatic subtitles can be turned off in the settings. It sends no usage data.
 
 ## Known limitations
 
@@ -306,6 +324,7 @@ Easy Movie connects only to the addresses of your lists, streams and posters, to
 - Kodi's own dialogs, such as confirmations, selection lists and the keyboard, use the style of the current skin.
 - The catalog shows catalogs of movies, series and anime. Catalogs of live TV and catalogs that need a search or a genre are left out. Addon searches are not used yet: **Search** searches Cinemeta.
 - Direct links from addons play without saving progress, and their titles are not marked as watched. They also play with the controls of the Kodi skin.
+- Online subtitles depend on the OpenSubtitles v3 service of Stremio, which may change. A subtitle of another release of the movie can be out of sync. Rare and very new titles may have none in Portuguese.
 - While a movie is paused, the Kodi skin also shows its own time bar at the top of the screen. Subtitles are drawn behind the playback controls while these are shown.
 - Downloading only one file of a pack needs Easy Movie to stay open until the torrent details arrive, usually a few seconds. When it is closed before, the whole pack downloads. Remove it in **Downloads** and choose the source again.
 
@@ -317,7 +336,7 @@ The catalog comes with Cinemeta only, which gives posters and details, not video
 
 ## Development
 
-Easy Movie shares its design and most of its code with Easy Channel. Each add-on keeps its own copy, as the repository conventions ask for self-contained add-ons. `m3u.py`, `probe.py`, `github.py` and `storage.py` are the same modules, with the defaults and the `#EXTINF` duration that movies need. `watcher.py` also records progress, and `series.py` is specific to Easy Movie. `series.py`, `folders.py`, `cinemeta.py`, `stremio.py` and `torrents.py` do not import Kodi modules and can be tested with a regular Python 3 interpreter.
+Easy Movie shares its design and most of its code with Easy Channel. Each add-on keeps its own copy, as the repository conventions ask for self-contained add-ons. `m3u.py`, `probe.py`, `github.py` and `storage.py` are the same modules, with the defaults and the `#EXTINF` duration that movies need. `watcher.py` also records progress, and `series.py` is specific to Easy Movie. `series.py`, `folders.py`, `cinemeta.py`, `stremio.py`, `subtitles.py` and `torrents.py` do not import Kodi modules and can be tested with a regular Python 3 interpreter.
 
 | Path | Purpose |
 | --- | --- |
@@ -331,7 +350,8 @@ Easy Movie shares its design and most of its code with Easy Channel. Each add-on
 | `resources/lib/torrents.py` | Torrent engine: starts Torrest and uses its API. |
 | `resources/bin/` | Torrest executables for each platform, with their license and checksums. |
 | `resources/lib/watcher.py` | Playback, progress and failure detection. |
-| `resources/lib/controls.py` | Playback controls over the video, with the subtitle and audio tracks. |
+| `resources/lib/controls.py` | Playback controls over the video, with the subtitle and audio tracks and the online subtitles. |
+| `resources/lib/subtitles.py` | OpenSubtitles search, ranking, file hash and download. |
 | `resources/lib/m3u.py` | M3U parsing and writing. |
 | `resources/lib/probe.py` | Stream checks. |
 | `resources/lib/github.py` | GitHub repository search. |
