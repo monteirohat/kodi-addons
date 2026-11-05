@@ -133,6 +133,10 @@ HDMI Switcher needs a [one-time setup](script.hdmi.switcher/README.md#one-time-s
 > [!NOTE]
 > Easy Channel and Easy Movie do not provide any content. They play the M3U lists you add, and you are responsible for using only lists you are allowed to watch. The suggested GitHub repositories collect free, public channels and public domain movies, and are maintained by third parties.
 
+## Monteiro skin
+
+A preview of a Kodi skin in the design of the add-ons, under the MIT license. **TV**, **Movies** and **Series** on its home screen open Easy Channel and Easy Movie directly. Install it from **Monteiro > Look and feel > Skin**, and read the [skin guide](skin.monteiro/README.md).
+
 ## Help and feedback
 
 - Found a problem? Open a [bug report](https://github.com/monteirohat/kodi-addons/issues/new?template=bug_report.yml).

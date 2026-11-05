@@ -32,6 +32,7 @@
       <aligny>center</aligny>
       <font>font32_title</font>
       <textcolor>FFF4F4F5</textcolor>
+      <selectedcolor>FFF4F4F5</selectedcolor>
       <label></label>
     </control>
     <control type="image">

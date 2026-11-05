@@ -25,6 +25,7 @@
       <aligny>center</aligny>
       <font>font45_title</font>
       <textcolor>FFF4F4F5</textcolor>
+      <selectedcolor>FFF4F4F5</selectedcolor>
       <label>$LOCALIZE[5]</label>
     </control>
     <control type="label">
@@ -36,6 +37,7 @@
       <aligny>center</aligny>
       <font>font45</font>
       <textcolor>FF9C9EA6</textcolor>
+      <selectedcolor>FF9C9EA6</selectedcolor>
       <label>$INFO[System.Time]</label>
     </control>
     <control type="panel" id="9000">
@@ -61,6 +63,7 @@
           <aligny>center</aligny>
           <font>font30_title</font>
           <textcolor>FFF4F4F5</textcolor>
+          <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </itemlayout>
@@ -80,6 +83,7 @@
           <aligny>center</aligny>
           <font>font30_title</font>
           <textcolor>FF0E0F11</textcolor>
+          <selectedcolor>FF0E0F11</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
@@ -111,6 +115,23 @@
         <item>
           <label>$LOCALIZE[14204]</label>
           <onclick>ActivateWindow(PVRSettings)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[7]</label>
+          <onclick>ActivateWindow(filemanager)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[130]</label>
+          <onclick>ActivateWindow(systeminfo)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[13200]</label>
+          <onclick>ActivateWindow(Profiles)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[14111]</label>
+          <onclick>ActivateWindow(eventlog)</onclick>
+          <visible>!System.HasAddon(service.libreelec.settings)</visible>
         </item>
         <item>
           <label>LibreELEC</label>

@@ -32,6 +32,7 @@
       <aligny>center</aligny>
       <font>font32_title</font>
       <textcolor>FFF4F4F5</textcolor>
+      <selectedcolor>FFF4F4F5</selectedcolor>
       <label>$LOCALIZE[31005]</label>
     </control>
     <control type="image">
@@ -63,6 +64,7 @@
           <aligny>center</aligny>
           <font>font13</font>
           <textcolor>FFF4F4F5</textcolor>
+          <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </itemlayout>
@@ -82,6 +84,7 @@
           <aligny>center</aligny>
           <font>font13</font>
           <textcolor>FF0E0F11</textcolor>
+          <selectedcolor>FF0E0F11</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>

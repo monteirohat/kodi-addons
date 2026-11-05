@@ -41,6 +41,7 @@
       <aligny>center</aligny>
       <font>font45_title</font>
       <textcolor>FFF4F4F5</textcolor>
+      <selectedcolor>FFF4F4F5</selectedcolor>
       <label>Monteiro</label>
     </control>
     <control type="label">
@@ -52,17 +53,18 @@
       <aligny>center</aligny>
       <font>font45</font>
       <textcolor>FF9C9EA6</textcolor>
+      <selectedcolor>FF9C9EA6</selectedcolor>
       <label>$INFO[System.Time]</label>
     </control>
     <control type="list" id="9000">
       <left>146</left>
-      <top>390</top>
+      <top>300</top>
       <width>1660</width>
       <height>300</height>
       <orientation>horizontal</orientation>
       <scrolltime>0</scrolltime>
       <onup>9100</onup>
-      <ondown>noop</ondown>
+      <ondown>9200</ondown>
       <onleft>noop</onleft>
       <onright>noop</onright>
       <itemlayout width="332" height="300">
@@ -89,6 +91,7 @@
           <aligny>center</aligny>
           <font>font_menu</font>
           <textcolor>FFF4F4F5</textcolor>
+          <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </itemlayout>
@@ -118,6 +121,7 @@
           <aligny>center</aligny>
           <font>font_menu</font>
           <textcolor>FF0E0F11</textcolor>
+          <selectedcolor>FF0E0F11</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
           <visible>Control.HasFocus(9000)</visible>
         </control>
@@ -146,6 +150,7 @@
           <aligny>center</aligny>
           <font>font_menu</font>
           <textcolor>FFF4F4F5</textcolor>
+          <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
           <visible>!Control.HasFocus(9000)</visible>
         </control>
@@ -188,14 +193,129 @@
     </control>
     <control type="label">
       <left>146</left>
-      <top>760</top>
+      <top>640</top>
       <width>1628</width>
       <height>50</height>
       <align>center</align>
       <aligny>center</aligny>
       <font>font14</font>
       <textcolor>FF9C9EA6</textcolor>
+      <selectedcolor>FF9C9EA6</selectedcolor>
       <label>$INFO[Container(9000).ListItem.Label2]</label>
+    </control>
+    <control type="list" id="9200">
+      <left>486</left>
+      <top>760</top>
+      <width>972</width>
+      <height>90</height>
+      <orientation>horizontal</orientation>
+      <scrolltime>0</scrolltime>
+      <onup>9000</onup>
+      <ondown>noop</ondown>
+      <onleft>noop</onleft>
+      <onright>noop</onright>
+      <itemlayout width="324" height="90">
+        <control type="image">
+          <left>0</left>
+          <top>0</top>
+          <width>300</width>
+          <height>90</height>
+          <texture border="16" colordiffuse="FF17181B">panel.png</texture>
+        </control>
+        <control type="image">
+          <left>28</left>
+          <top>25</top>
+          <width>40</width>
+          <height>40</height>
+          <texture colordiffuse="FF9C9EA6">$INFO[ListItem.Icon]</texture>
+        </control>
+        <control type="label">
+          <left>88</left>
+          <top>0</top>
+          <width>190</width>
+          <height>90</height>
+          <aligny>center</aligny>
+          <font>font13</font>
+          <textcolor>FFF4F4F5</textcolor>
+          <selectedcolor>FFF4F4F5</selectedcolor>
+          <label>$INFO[ListItem.Label]</label>
+        </control>
+      </itemlayout>
+      <focusedlayout width="324" height="90">
+        <control type="image">
+          <left>0</left>
+          <top>0</top>
+          <width>300</width>
+          <height>90</height>
+          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <visible>Control.HasFocus(9200)</visible>
+        </control>
+        <control type="image">
+          <left>28</left>
+          <top>25</top>
+          <width>40</width>
+          <height>40</height>
+          <texture colordiffuse="FF0E0F11">$INFO[ListItem.Icon]</texture>
+          <visible>Control.HasFocus(9200)</visible>
+        </control>
+        <control type="label">
+          <left>88</left>
+          <top>0</top>
+          <width>190</width>
+          <height>90</height>
+          <aligny>center</aligny>
+          <font>font13</font>
+          <textcolor>FF0E0F11</textcolor>
+          <selectedcolor>FF0E0F11</selectedcolor>
+          <label>$INFO[ListItem.Label]</label>
+          <visible>Control.HasFocus(9200)</visible>
+        </control>
+        <control type="image">
+          <left>0</left>
+          <top>0</top>
+          <width>300</width>
+          <height>90</height>
+          <texture border="16" colordiffuse="FF17181B">panel.png</texture>
+          <visible>!Control.HasFocus(9200)</visible>
+        </control>
+        <control type="image">
+          <left>28</left>
+          <top>25</top>
+          <width>40</width>
+          <height>40</height>
+          <texture colordiffuse="FF9C9EA6">$INFO[ListItem.Icon]</texture>
+          <visible>!Control.HasFocus(9200)</visible>
+        </control>
+        <control type="label">
+          <left>88</left>
+          <top>0</top>
+          <width>190</width>
+          <height>90</height>
+          <aligny>center</aligny>
+          <font>font13</font>
+          <textcolor>FFF4F4F5</textcolor>
+          <selectedcolor>FFF4F4F5</selectedcolor>
+          <label>$INFO[ListItem.Label]</label>
+          <visible>!Control.HasFocus(9200)</visible>
+        </control>
+      </focusedlayout>
+      <content>
+        <item>
+          <label>$LOCALIZE[31018]</label>
+          <icon>film.png</icon>
+          <onclick>ActivateWindow(Videos,sources://video/,return)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[31019]</label>
+          <icon>audio.png</icon>
+          <onclick>ActivateWindow(Music,sources://music/,return)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[31020]</label>
+          <icon>folder.png</icon>
+          <onclick>ActivateWindow(Pictures,sources://pictures/,return)</onclick>
+        </item>
+      </content>
     </control>
     <control type="label">
       <left>146</left>
@@ -206,6 +326,7 @@
       <aligny>center</aligny>
       <font>font12</font>
       <textcolor>FF62656D</textcolor>
+      <selectedcolor>FF62656D</selectedcolor>
       <label>$INFO[System.Date]</label>
     </control>
     <control type="button" id="9100">

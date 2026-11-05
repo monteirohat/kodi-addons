@@ -104,6 +104,7 @@
     <textureslidernibfocus colordiffuse="FF3B8BFF">slider-nib.png</textureslidernibfocus>
   </default>
   <default type="slider">
+    <orientation>horizontal</orientation>
     <texturesliderbar colordiffuse="FF2C2D33">slider-bar.png</texturesliderbar>
     <textureslidernib colordiffuse="FF3B8BFF">slider-nib.png</textureslidernib>
     <textureslidernibfocus colordiffuse="FF3B8BFF">slider-nib.png</textureslidernibfocus>

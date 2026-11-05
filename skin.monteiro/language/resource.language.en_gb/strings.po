@@ -47,6 +47,18 @@ msgctxt "#31010"
 msgid "Player, interface, system and more"
 msgstr ""
 
+msgctxt "#31018"
+msgid "Videos"
+msgstr ""
+
+msgctxt "#31019"
+msgid "Music"
+msgstr ""
+
+msgctxt "#31020"
+msgid "Pictures"
+msgstr ""
+
 msgctxt "#31013"
 msgid "Monteiro"
 msgstr ""
@@ -69,4 +81,36 @@ msgstr ""
 
 msgctxt "#31021"
 msgid "Show"
+msgstr ""
+
+msgctxt "#31023"
+msgid "Media source"
+msgstr ""
+
+msgctxt "#31024"
+msgid "Show the profiles when Kodi starts"
+msgstr ""
+
+msgctxt "#31025"
+msgid "Log in automatically"
+msgstr ""
+
+msgctxt "#31026"
+msgid "Channels"
+msgstr ""
+
+msgctxt "#31027"
+msgid "TV guide"
+msgstr ""
+
+msgctxt "#31028"
+msgid "Recordings"
+msgstr ""
+
+msgctxt "#31029"
+msgid "Timers"
+msgstr ""
+
+msgctxt "#31030"
+msgid "Search"
 msgstr ""

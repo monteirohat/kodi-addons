@@ -47,6 +47,7 @@
       <aligny>center</aligny>
       <font>font45_title</font>
       <textcolor>FFF4F4F5</textcolor>
+      <selectedcolor>FFF4F4F5</selectedcolor>
       <label>$INFO[ListItem.AddonName]</label>
     </control>
     <control type="label">
@@ -57,6 +58,7 @@
       <aligny>center</aligny>
       <font>font13</font>
       <textcolor>FF9C9EA6</textcolor>
+      <selectedcolor>FF9C9EA6</selectedcolor>
       <label>$INFO[ListItem.AddonVersion]  ·  $INFO[ListItem.AddonCreator]</label>
     </control>
     <control type="label">
@@ -67,6 +69,7 @@
       <aligny>center</aligny>
       <font>font13</font>
       <textcolor>FF3B8BFF</textcolor>
+      <selectedcolor>FF3B8BFF</selectedcolor>
       <label>$INFO[ListItem.AddonSummary]</label>
     </control>
     <control type="textbox">

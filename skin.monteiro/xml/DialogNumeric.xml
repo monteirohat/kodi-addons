@@ -24,7 +24,7 @@
       <height>760</height>
       <texture border="16" colordiffuse="FF17181B">panel.png</texture>
     </control>
-    <control type="label" id="4">
+    <control type="label" id="1">
       <left>650</left>
       <top>184</top>
       <width>620</width>
@@ -32,6 +32,7 @@
       <aligny>center</aligny>
       <font>font32_title</font>
       <textcolor>FFF4F4F5</textcolor>
+      <selectedcolor>FFF4F4F5</selectedcolor>
       <label></label>
     </control>
     <control type="image">
@@ -41,14 +42,17 @@
       <height>2</height>
       <texture colordiffuse="FF222328">white.png</texture>
     </control>
-    <control type="textbox" id="1">
+    <control type="label" id="4">
       <left>650</left>
       <top>280</top>
       <width>620</width>
       <height>60</height>
+      <align>center</align>
+      <aligny>center</aligny>
       <font>font36_title</font>
       <textcolor>FFF4F4F5</textcolor>
-      <align>center</align>
+      <selectedcolor>FFF4F4F5</selectedcolor>
+      <label></label>
     </control>
     <control type="button" id="11">
       <left>680</left>
@@ -58,7 +62,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>1</label>
+      <label>[B]1[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="12">
@@ -69,7 +73,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>2</label>
+      <label>[B]2[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="13">
@@ -80,7 +84,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>3</label>
+      <label>[B]3[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="14">
@@ -91,7 +95,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>4</label>
+      <label>[B]4[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="15">
@@ -102,7 +106,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>5</label>
+      <label>[B]5[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="16">
@@ -113,7 +117,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>6</label>
+      <label>[B]6[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="17">
@@ -124,7 +128,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>7</label>
+      <label>[B]7[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="18">
@@ -135,7 +139,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>8</label>
+      <label>[B]8[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="19">
@@ -146,7 +150,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>9</label>
+      <label>[B]9[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="radiobutton" id="20">
@@ -157,7 +161,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>‹</label>
+      <label>[B]‹[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <radiowidth>1</radiowidth>
       <radioheight>1</radioheight>
@@ -170,7 +174,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>0</label>
+      <label>[B]0[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="radiobutton" id="22">
@@ -181,7 +185,7 @@
       <font>font36_title</font>
       <align>center</align>
       <textoffsetx>0</textoffsetx>
-      <label>›</label>
+      <label>[B]›[/B]</label>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <radiowidth>1</radiowidth>
       <radioheight>1</radioheight>

@@ -33,6 +33,7 @@
       <aligny>center</aligny>
       <font>font32_title</font>
       <textcolor>FFF4F4F5</textcolor>
+      <selectedcolor>FFF4F4F5</selectedcolor>
       <label></label>
     </control>
     <control type="edit" id="312">
@@ -1368,6 +1369,7 @@
       <aligny>center</aligny>
       <font>font12</font>
       <textcolor>FF9C9EA6</textcolor>
+      <selectedcolor>FF9C9EA6</selectedcolor>
       <label></label>
     </control>
     <control type="label" id="314">
@@ -1378,6 +1380,7 @@
       <aligny>center</aligny>
       <font>font12</font>
       <textcolor>FF62656D</textcolor>
+      <selectedcolor>FF62656D</selectedcolor>
       <label></label>
     </control>
   </controls>

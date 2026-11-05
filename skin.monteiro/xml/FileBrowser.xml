@@ -32,6 +32,7 @@
       <aligny>center</aligny>
       <font>font32_title</font>
       <textcolor>FFF4F4F5</textcolor>
+      <selectedcolor>FFF4F4F5</selectedcolor>
       <label></label>
     </control>
     <control type="image">
@@ -49,6 +50,7 @@
       <aligny>center</aligny>
       <font>font12</font>
       <textcolor>FF9C9EA6</textcolor>
+      <selectedcolor>FF9C9EA6</selectedcolor>
       <scroll>true</scroll>
       <label></label>
     </control>
@@ -79,6 +81,7 @@
           <aligny>center</aligny>
           <font>font13</font>
           <textcolor>FFF4F4F5</textcolor>
+          <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </itemlayout>
@@ -106,6 +109,7 @@
           <aligny>center</aligny>
           <font>font13</font>
           <textcolor>FF0E0F11</textcolor>
+          <selectedcolor>FF0E0F11</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
@@ -138,6 +142,7 @@
           <aligny>center</aligny>
           <font>font13</font>
           <textcolor>FFF4F4F5</textcolor>
+          <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </itemlayout>
@@ -165,6 +170,7 @@
           <aligny>center</aligny>
           <font>font13</font>
           <textcolor>FF0E0F11</textcolor>
+          <selectedcolor>FF0E0F11</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
@@ -181,9 +187,8 @@
       <left>1390</left>
       <top>250</top>
       <width>240</width>
-      <height>600</height>
+      <height>384</height>
       <orientation>vertical</orientation>
-      <align>center</align>
       <itemgap>20</itemgap>
       <onleft>450</onleft>
       <control type="button" id="413">

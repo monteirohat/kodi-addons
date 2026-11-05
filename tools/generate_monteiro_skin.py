@@ -38,6 +38,9 @@ STRINGS = {
     31008: ("Series and episodes with Easy Movie", "Séries e episódios com o Easy Movie"),
     31009: ("Install and manage add-ons", "Instale e gerencie add-ons"),
     31010: ("Player, interface, system and more", "Player, interface, sistema e mais"),
+    31018: ("Videos", "Vídeos"),
+    31019: ("Music", "Música"),
+    31020: ("Pictures", "Imagens"),
 }
 
 
@@ -82,8 +85,9 @@ def panel(left, top, width, height, color, visible=None):
 
 def label(left, top, width, height, text, font="font13", color=TEXT, control_id=None, align=None, visible=None, scroll=None,
           wrap=None):
+    # Kodi draws a selected item with selectedcolor, white by default, which vanishes on a focused white row.
     return control("label", control_id, left=left, top=top, width=width, height=height, align=align, aligny="center", font=font,
-                   textcolor=color, scroll=scroll, wrapmultiline=wrap, label=text, visible=visible)
+                   textcolor=color, selectedcolor=color, scroll=scroll, wrapmultiline=wrap, label=text, visible=visible)
 
 
 def button(control_id, left, top, width, height, text="", font="font13", align="center", nav=None, onclick=None, visible=None,
@@ -246,6 +250,7 @@ def defaults():
     <textureslidernibfocus colordiffuse="%(accent)s">slider-nib.png</textureslidernibfocus>
   </default>
   <default type="slider">
+    <orientation>horizontal</orientation>
     <texturesliderbar colordiffuse="%(raised2)s">slider-bar.png</texturesliderbar>
     <textureslidernib colordiffuse="%(accent)s">slider-nib.png</textureslidernib>
     <textureslidernibfocus colordiffuse="%(accent)s">slider-nib.png</textureslidernibfocus>
@@ -349,13 +354,13 @@ def home():
     # A list, so the focus moves between the tiles while they stay in place.
     menu = '''<control type="list" id="9000">
   <left>%d</left>
-  <top>390</top>
+  <top>300</top>
   <width>%d</width>
   <height>%d</height>
   <orientation>horizontal</orientation>
   <scrolltime>0</scrolltime>
   <onup>9100</onup>
-  <ondown>noop</ondown>
+  <ondown>9200</ondown>
   <onleft>noop</onleft>
   <onright>noop</onright>
   <itemlayout width="%d" height="%d">
@@ -378,10 +383,51 @@ def home():
         label(148, 44, 900, 72, "Monteiro", "font45_title"),
         label(1100, 44, 520, 72, "$INFO[System.Time]", "font45", TEXT2, align="right"),
         menu,
-        label(left, 760, width, 50, "$INFO[Container(9000).ListItem.Label2]", "font14", TEXT2, align="center"),
+        label(left, 640, width, 50, "$INFO[Container(9000).ListItem.Label2]", "font14", TEXT2, align="center"),
+        shortcuts(),
         label(left, 990, width, 40, "$INFO[System.Date]", "font12", TEXT3, align="center"),
         *top_buttons,
     ], default=9000, extra="<menucontrol>9000</menucontrol>\n<backgroundcolor>%s</backgroundcolor>" % BG)
+
+
+SHORTCUTS = [(31018, "film.png", "ActivateWindow(Videos,sources://video/,return)"),
+             (31019, "audio.png", "ActivateWindow(Music,sources://music/,return)"),
+             (31020, "folder.png", "ActivateWindow(Pictures,sources://pictures/,return)")]
+
+
+def shortcuts():
+    """Videos, music and pictures of Kodi, in a smaller row under the add-ons."""
+    pill, gap = 300, 24
+    width = len(SHORTCUTS) * (pill + gap)
+    focus = "Control.HasFocus(9200)"
+    def parts(focused, condition=None):
+        return [panel(0, 0, pill, 90, FOCUS if focused else SURFACE, condition),
+                image(28, 25, 40, 40, "$INFO[ListItem.Icon]", ON_FOCUS if focused else TEXT2, condition),
+                label(88, 0, pill - 110, 90, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT, visible=condition)]
+    items = "\n".join("<item>\n  <label>$LOCALIZE[%d]</label>\n  <icon>%s</icon>\n  <onclick>%s</onclick>\n</item>" % item
+                      for item in SHORTCUTS)
+    return '''<control type="list" id="9200">
+  <left>%d</left>
+  <top>760</top>
+  <width>%d</width>
+  <height>90</height>
+  <orientation>horizontal</orientation>
+  <scrolltime>0</scrolltime>
+  <onup>9000</onup>
+  <ondown>noop</ondown>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <itemlayout width="%d" height="90">
+%s
+  </itemlayout>
+  <focusedlayout width="%d" height="90">
+%s
+  </focusedlayout>
+  <content>
+%s
+  </content>
+</control>''' % ((1920 - width + gap) // 2, width, pill + gap, indent("\n".join(parts(False)), 4), pill + gap,
+                  indent("\n".join(parts(True, focus) + parts(False, "!" + focus)), 4), indent(items, 4))
 
 
 def round_button(control_id, left, top, icon, onclick, size=72, nav=None):
@@ -409,8 +455,10 @@ def dialog_frame(left, top, width, height, heading_id=None, heading=""):
 def dialog_buttons(control_id, left, top, width, buttons, orientation="horizontal", button_width=280, nav=None):
     nav = nav or {}
     children = [button(cid, 0, 0, button_width, 76, text) for cid, text in buttons]
-    return control("grouplist", control_id, left=left, top=top, width=width, height=76 if orientation == "horizontal" else 600,
-                   orientation=orientation, align="center", itemgap=20, onup=nav.get("up"), ondown=nav.get("down"),
+    # A row of buttons is centered. A column starts at the top, so the controls under it stay clear.
+    horizontal = orientation == "horizontal"
+    return control("grouplist", control_id, left=left, top=top, width=width, height=76 if horizontal else len(buttons) * 96,
+                   orientation=orientation, align="center" if horizontal else None, itemgap=20, onup=nav.get("up"), ondown=nav.get("down"),
                    onleft=nav.get("left"), onright=nav.get("right"), children=children)
 
 
@@ -515,9 +563,12 @@ def keyboard():
 
 def numeric():
     left, top = 610, 160
-    controls = [dim(), *dialog_frame(left, top, 700, 760, heading_id=4),
-                control("textbox", 1, left=left + 40, top=top + 120, width=620, height=60, font="font36_title", textcolor=TEXT, align="center")]
+    # Kodi writes the heading in control 1 and the number being typed in control 4.
+    controls = [dim(), *dialog_frame(left, top, 700, 760, heading_id=1),
+                label(left + 40, top + 120, 620, 60, "", "font36_title", control_id=4, align="center")]
+    # A label made only of a number is read as the number of a string, so the digits are written in bold tags.
     keys = [(11, "1"), (12, "2"), (13, "3"), (14, "4"), (15, "5"), (16, "6"), (17, "7"), (18, "8"), (19, "9"), (20, "‹"), (10, "0"), (22, "›")]
+    keys = [(control_id, "[B]%s[/B]" % text) for control_id, text in keys]
     for index, (control_id, text) in enumerate(keys):
         row, column = divmod(index, 3)
         kind = "radiobutton" if control_id in (20, 22) else "button"
@@ -629,7 +680,9 @@ def settings_menu():
     entries = [("$LOCALIZE[14200]", "ActivateWindow(PlayerSettings)", None), ("$LOCALIZE[14211]", "ActivateWindow(MediaSettings)", None),
                ("$LOCALIZE[14036]", "ActivateWindow(ServiceSettings)", None), ("$LOCALIZE[14206]", "ActivateWindow(InterfaceSettings)", None),
                ("$LOCALIZE[13000]", "ActivateWindow(SystemSettings)", None), ("$LOCALIZE[24001]", "ActivateWindow(addonbrowser)", None),
-               ("$LOCALIZE[14204]", "ActivateWindow(PVRSettings)", None),
+               ("$LOCALIZE[14204]", "ActivateWindow(PVRSettings)", None), ("$LOCALIZE[7]", "ActivateWindow(filemanager)", None),
+               ("$LOCALIZE[130]", "ActivateWindow(systeminfo)", None), ("$LOCALIZE[13200]", "ActivateWindow(Profiles)", None),
+               ("$LOCALIZE[14111]", "ActivateWindow(eventlog)", "!System.HasAddon(service.libreelec.settings)"),
                ("LibreELEC", "RunAddon(service.libreelec.settings)", "System.AddonIsEnabled(service.libreelec.settings)")]
     items = "\n".join("<item>\n  <label>%s</label>\n  <onclick>%s</onclick>%s\n</item>"
                       % (text, action, "\n  <visible>%s</visible>" % condition if condition else "") for text, action, condition in entries)
@@ -813,28 +866,38 @@ def video_full_screen():
 
 
 def seek_bar():
-    shown = "[Player.Seeking | Player.DisplayAfterSeek | Player.Paused | Player.Forwarding | Player.Rewinding]"
+    # Kodi opens this window by itself while its condition holds, so the condition is on the window.
+    shown = "[Player.Seeking | Player.DisplayAfterSeek | Player.Paused | Player.Forwarding | Player.Rewinding] + !Window.IsActive(videoosd)"
     return window("Time bar while seeking or paused, for videos outside the Easy add-ons.", [
-        group(0, 0, 1920, 1080, [
-            image(0, 760, 1920, 320, "shade.png", "F2000000"),
-            label(120, 880, 1200, 50, "$INFO[Player.Title]", "font30_title"),
-            label(120, 930, 600, 40, "$INFO[Player.Time]", "font12", TEXT),
-            label(1200, 930, 600, 40, "$INFO[Player.Duration]", "font12", TEXT2, align="right"),
-            control("progress", left=120, top=980, width=1680, height=8, info="Player.Progress",
-                    texturebg=('colordiffuse="4DFFFFFF"', "white.png"), midtexture=('colordiffuse="%s"' % ACCENT, "white.png")),
-            label(120, 1000, 1680, 40, "$INFO[Player.SeekOffset]", "font12", TEXT2, control_id=40000),
-            control("slider", 401, left=-2000, top=0, width=10, height=10),
-            control("slider", 403, left=-2000, top=0, width=10, height=10),
-        ], visible=shown, animation='<animation effect="fade" time="200">VisibleChange</animation>'),
-    ], extra="<depth>DepthOSD</depth>")
+        image(0, 760, 1920, 320, "shade.png", "F2000000"),
+        label(120, 880, 1200, 50, "$INFO[Player.Title]", "font30_title"),
+        label(120, 930, 600, 40, "$INFO[Player.Time]", "font12", TEXT),
+        label(1200, 930, 600, 40, "$INFO[Player.Duration]", "font12", TEXT2, align="right"),
+        control("progress", left=120, top=980, width=1680, height=8, info="Player.Progress",
+                texturebg=('colordiffuse="4DFFFFFF"', "white.png"), midtexture=('colordiffuse="%s"' % ACCENT, "white.png")),
+        label(120, 1000, 1680, 40, "$INFO[Player.SeekOffset]", "font12", TEXT2, control_id=40000),
+        control("slider", 401, left=-2000, top=0, width=10, height=10),
+        control("slider", 403, left=-2000, top=0, width=10, height=10),
+    ], extra=fade() + "\n<visible>%s</visible>\n<depth>DepthOSD</depth>" % shown)
 
 
 def video_osd():
-    buttons = [(600, "⏮", "PlayerControl(Previous)"), (601, "⏪", "PlayerControl(Rewind)"),
-               (602, "⏯", "PlayerControl(Play)"), (603, "⏹", "PlayerControl(Stop)"),
-               (604, "⏩", "PlayerControl(Forward)"), (605, "⏭", "PlayerControl(Next)")]
-    row = control("grouplist", 6000, left=560, top=900, width=800, height=96, orientation="horizontal", align="center", itemgap=20,
-                  children=[button(cid, 0, 0, 96, 96, text, "font32_title", onclick=action, offset=0) for cid, text, action in buttons])
+    # Round icon buttons, as in the player of Easy Movie. Buttons cannot hold images, so the icons are drawn over them.
+    size, gap, top = 104, 40, 900
+    buttons = [(600, "back10.png", "Seek(-10)"), (601, None, "PlayerControl(Play)"), (602, "forward10.png", "Seek(10)"),
+               (603, "stop.png", "PlayerControl(Stop)")]
+    left = (1920 - len(buttons) * size - (len(buttons) - 1) * gap) // 2
+    controls = []
+    for index, (control_id, icon, action) in enumerate(buttons):
+        x = left + index * (size + gap)
+        nav = {"left": buttons[index - 1][0] if index else buttons[-1][0], "right": buttons[(index + 1) % len(buttons)][0]}
+        if icon:
+            controls += round_button(control_id, x, top, icon, action, size, nav)
+        else:
+            parts = round_button(control_id, x, top, "pause.png", action, size, nav)
+            controls += [parts[0]] + [part.replace("</visible>", " + !Player.Paused</visible>") for part in parts[1:]]
+            controls += [part.replace("pause.png", "player_play.png").replace("</visible>", " + Player.Paused</visible>")
+                         for part in round_button(control_id, x, top, "pause.png", action, size, nav)[1:]]
     return window("Player controls for videos outside the Easy add-ons. Easy Movie shows its own.", [
         image(0, 640, 1920, 440, "shade.png", "F2000000"),
         label(120, 680, 1680, 60, "$INFO[Player.Title]", "font36_title"),
@@ -842,8 +905,8 @@ def video_osd():
         label(1200, 760, 600, 40, "$INFO[Player.Duration]", "font12", TEXT2, align="right"),
         control("progress", left=120, top=810, width=1680, height=8, info="Player.Progress",
                 texturebg=('colordiffuse="4DFFFFFF"', "white.png"), midtexture=('colordiffuse="%s"' % ACCENT, "white.png")),
-        row,
-    ], default=602, extra=fade() + "\n<depth>DepthOSD</depth>")
+        *controls,
+    ], default=601, extra=fade() + "\n<depth>DepthOSD</depth>")
 
 
 def volume_bar():
@@ -870,6 +933,506 @@ def pointer():
 
 # Media ------------------------------------------------------------------------------------------------------------------
 
+def media_rows(control_id, left, top, width, height, onleft=None, onright=None, fallback="folder.png"):
+    """A list of files or library items: a picture, the name and details. It looks focused only while focused."""
+    focus = "Control.HasFocus(%d)" % control_id
+    def row(focused, condition=None):
+        return [panel(0, 0, width, 100, FOCUS if focused else RAISED, condition) if condition or focused else "",
+                image(16, 10, 80, 80, "$INFO[ListItem.Icon]", visible=condition, keep=True, fallback=fallback),
+                label(120, 4, width - 400, 56, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT, visible=condition),
+                label(120, 52, width - 400, 40, "$INFO[ListItem.Label2]", "font12", ON_FOCUS2 if focused else TEXT2, visible=condition),
+                image(width - 60, 32, 36, 36, "check.png", ON_FOCUS if focused else ACCENT,
+                      "ListItem.IsSelected" + (" + " + condition if condition else ""))]
+    focused_parts = row(True, focus) + row(False, "!" + focus)
+    return '''<control type="list" id="%d">
+  <left>%d</left>
+  <top>%d</top>
+  <width>%d</width>
+  <height>%d</height>
+  <onleft>%s</onleft>
+  <onright>%s</onright>
+  <pagecontrol>60</pagecontrol>
+  <scrolltime>120</scrolltime>
+  <viewtype label="535">list</viewtype>
+  <itemlayout height="108" width="%d">
+%s
+  </itemlayout>
+  <focusedlayout height="108" width="%d">
+%s
+  </focusedlayout>
+</control>''' % (control_id, left, top, width, height, onleft or "noop", onright or "noop", width,
+                  indent("\n".join(part for part in row(False) if part), 4), width,
+                  indent("\n".join(part for part in focused_parts if part), 4))
+
+
+def media_window(comment, icon):
+    """Videos, music and pictures: the folder or library section shown as a list."""
+    return window(comment, [
+        image(0, 0, 1920, 1080, "white.png", BG),
+        image(64, 48, 64, 64, icon, TEXT2),
+        # At the root of a section Kodi gives no folder name, so the name of the window shows instead.
+        label(148, 44, 1300, 72, "$INFO[Container.FolderName]", "font45_title", visible="!String.IsEmpty(Container.FolderName)"),
+        label(148, 44, 1300, 72, "$INFO[System.CurrentWindow]", "font45_title", visible="String.IsEmpty(Container.FolderName)"),
+        label(1300, 44, 560, 72, "$INFO[Container.NumItems] $LOCALIZE[31014]", "font13", TEXT2, align="right"),
+        label(64, 120, 1792, 40, "$INFO[Container.FolderPath]", "font12", TEXT3, scroll="true"),
+        panel(40, 170, 1840, 880, SURFACE),
+        media_rows(50, 60, 190, 1780, 840, onright=60),
+        control("scrollbar", 60, left=1856, top=190, width=8, height=840, onleft=50, onright=50),
+    ], default=50, extra="<views>50</views>")
+
+
+def file_manager():
+    side = lambda control_id, left, path_id, scroll_id, other: [
+        panel(left, 140, 880, 900, SURFACE),
+        label(left + 24, 150, 832, 50, "", "font12", TEXT2, control_id=path_id, scroll="true"),
+        media_rows(control_id, left + 20, 210, 820, 810, onleft=other, onright=other),
+        control("scrollbar", scroll_id, left=left + 852, top=210, width=8, height=810, onleft=control_id, onright=control_id)]
+    return window("File manager: two folders side by side, for copying and moving files.", [
+        image(0, 0, 1920, 1080, "white.png", BG),
+        label(64, 44, 1300, 72, "$LOCALIZE[7]", "font45_title"),
+        *side(20, 60, 101, 60, 21), *side(21, 980, 102, 61, 20),
+    ], default=20)
+
+
+def media_source():
+    left, top, width, height = 260, 100, 1400, 880
+    paths = '''<control type="list" id="10">
+  <left>%d</left>
+  <top>%d</top>
+  <width>980</width>
+  <height>300</height>
+  <onright>9000</onright>
+  <ondown>12</ondown>
+  <pagecontrol>60</pagecontrol>
+  <itemlayout height="76" width="980">
+%s
+  </itemlayout>
+  <focusedlayout height="76" width="980">
+%s
+  </focusedlayout>
+</control>''' % (left + 40, top + 170, indent(label(20, 0, 940, 76, "$INFO[ListItem.Label]", "font13", TEXT), 4),
+                  indent("\n".join([panel(0, 0, 980, 72, FOCUS, "Control.HasFocus(10)"), panel(0, 0, 980, 72, RAISED, "!Control.HasFocus(10)"),
+                                    label(20, 0, 940, 72, "$INFO[ListItem.Label]", "font13", ON_FOCUS, visible="Control.HasFocus(10)"),
+                                    label(20, 0, 940, 72, "$INFO[ListItem.Label]", "font13", TEXT, visible="!Control.HasFocus(10)")]), 4))
+    return window("Adding or editing a media source: its paths and its name.", [
+        dim(), *dialog_frame(left, top, width, height, heading=""),
+        label(left + 40, top + 24, width - 80, 60, "$LOCALIZE[31023]", "font32_title"),
+        image(left + 24, top + 96, width - 48, 2, "white.png", RAISED),
+        label(left + 40, top + 116, 980, 44, "$LOCALIZE[1021]", "font12", TEXT2),
+        paths,
+        control("scrollbar", 60, left=left + 1030, top=top + 170, width=8, height=300, onleft=10, onright=9000),
+        dialog_buttons(9000, left + 1080, top + 170, 280, [(11, "$LOCALIZE[1024]"), (13, "$LOCALIZE[15019]"), (14, "$LOCALIZE[1210]")],
+                       "vertical", 280, nav={"left": 10, "down": 12}),
+        label(left + 40, top + 500, 980, 44, "$LOCALIZE[1022]", "font12", TEXT2),
+        control("edit", 12, left=left + 40, top=top + 550, width=width - 80, height=80, onup=10, ondown=9001, font="font13",
+                textcolor=TEXT, focusedcolor=ON_FOCUS, textoffsetx=30, aligny="center",
+                texturefocus=('border="16" colordiffuse="%s"' % FOCUS, "panel.png"),
+                texturenofocus=('border="16" colordiffuse="%s"' % RAISED, "panel.png")),
+        dialog_buttons(9001, left, top + height - 116, width, [(18, "$LOCALIZE[186]"), (19, "$LOCALIZE[222]")], nav={"up": 12}),
+    ], default=10, extra=pop())
+
+
+def system_info():
+    buttons = [(95, 20037), (94, 13277), (96, 13279), (97, 13280), (98, 13281), (99, 19191), (100, 12389), (101, 12396)]
+    return window("System information, by category.", [
+        image(0, 0, 1920, 1080, "white.png", BG),
+        image(64, 48, 64, 64, "gear.png", TEXT2),
+        label(148, 44, 1000, 72, "$LOCALIZE[130]", "font45_title"),
+        control("grouplist", 9000, left=60, top=160, width=460, height=880, itemgap=10, onright=30,
+                children=[button(cid, 0, 0, 460, 76, "$LOCALIZE[%d]" % string_id, align="left") for cid, string_id in buttons]),
+        panel(560, 150, 1300, 890, SURFACE),
+        label(600, 170, 1220, 50, "", "font30_title", control_id=53),
+        *[label(600, 230 + index * 56, 1220, 52, "", "font13", TEXT2, control_id=control_id) for index, control_id in enumerate(range(2, 14))],
+        control("textbox", 30, left=600, top=230, width=1220, height=780, font="font13", textcolor=TEXT2, pagecontrol=60),
+        control("scrollbar", 60, left=1836, top=230, width=8, height=780, onleft=9000),
+    ], default=95)
+
+
+def slide_show():
+    # Kodi draws the pictures. The name of the picture shows while it is paused.
+    return window("Picture slide show.", [
+        group(0, 0, 1920, 1080, [image(0, 900, 1920, 180, "shade.png", "F2000000"),
+                                 label(120, 980, 1680, 60, "$INFO[Slideshow.Filename]", "font30_title")],
+              visible="Slideshow.IsPaused"),
+    ])
+
+
+def music_visualisation():
+    return window("Music playback with its visualisation.", [
+        control("visualisation", 2, left=0, top=0, width=1920, height=1080),
+        image(0, 760, 1920, 320, "shade.png", "F2000000"),
+        label(120, 860, 1680, 60, "$INFO[MusicPlayer.Title]", "font36_title"),
+        label(120, 930, 1680, 44, "$INFO[MusicPlayer.Artist]  ·  $INFO[MusicPlayer.Album]", "font13", TEXT2),
+        label(120, 990, 600, 40, "$INFO[Player.Time]", "font12"),
+        label(1200, 990, 600, 40, "$INFO[Player.Duration]", "font12", TEXT2, align="right"),
+        control("progress", left=120, top=1036, width=1680, height=8, info="Player.Progress",
+                texturebg=('colordiffuse="4DFFFFFF"', "white.png"), midtexture=('colordiffuse="%s"' % ACCENT, "white.png")),
+    ])
+
+
+# Details and other windows --------------------------------------------------------------------------------------------
+
+def info_dialog(comment, buttons, extra_rows=(), poster="$INFO[ListItem.Art(poster)]", default=8):
+    """Details of a video, a song or a TV programme: the picture, the title, details, the description and the actions.
+    Kodi hides the buttons that do not apply."""
+    left, top, width, height = 110, 80, 1700, 920
+    row = control("grouplist", 9000, left=left + 40, top=top + height - 116, width=width - 80, height=76, orientation="horizontal",
+                  itemgap=12, children=[button(cid, 0, 0, 250, 76, text, "font12", offset=10) for cid, text in buttons])
+    return window(comment, [
+        dim(), *dialog_frame(left, top, width, height),
+        panel(left + 40, top + 40, 380, 570, RAISED),
+        image(left + 40, top + 40, 380, 570, poster, keep=True, fallback="$INFO[ListItem.Icon]"),
+        label(left + 460, top + 40, width - 500, 70, "$INFO[ListItem.Label]", "font45_title"),
+        *extra_rows,
+        control("textbox", left=left + 460, top=top + 280, width=width - 500, height=480, font="font13", textcolor=TEXT2,
+                label="$INFO[ListItem.Plot]", autoscroll=('time="3000" delay="6000" repeat="6000"', "true")),
+        row,
+    ], default=9000, extra=pop())
+
+
+def details_line(top, text, color=TEXT2, font="font13"):
+    return label(110 + 460, 80 + top, 1700 - 500, 44, text, font, color)
+
+
+def video_info():
+    return info_dialog("Details of a video of the library.", [(8, ""), (11, "$LOCALIZE[20410]"), (10, "$LOCALIZE[13511]"), (6, "$LOCALIZE[184]")], [
+        details_line(120, "$INFO[ListItem.Year]$INFO[ListItem.Duration,  ·  , min]$INFO[ListItem.Rating,  ·  IMDb ]"),
+        details_line(170, "$INFO[ListItem.Genre]", ACCENT),
+        details_line(220, "$INFO[ListItem.Director]", TEXT3, "font12")])
+
+
+def music_info():
+    return info_dialog("Details of an album or an artist.", [(8, "$LOCALIZE[208]"), (6, "$LOCALIZE[184]"), (10, "$LOCALIZE[13405]"), (12, "")], [
+        details_line(120, "$INFO[ListItem.Artist]$INFO[ListItem.Year,  ·  ]"),
+        details_line(170, "$INFO[ListItem.Genre]", ACCENT)], poster="$INFO[ListItem.Art(thumb)]", default=8)
+
+
+def pvr_info():
+    return info_dialog("Details of a TV programme.", [(5, "$LOCALIZE[19165]"), (6, ""), (9, "$LOCALIZE[19061]"), (10, "$LOCALIZE[19190]"),
+                                                      (8, "$LOCALIZE[19687]"), (11, "$LOCALIZE[826]"), (4, "$LOCALIZE[19003]")], [
+        details_line(120, "$INFO[ListItem.ChannelName]  ·  $INFO[ListItem.StartTime] - $INFO[ListItem.EndTime]"),
+        details_line(170, "$INFO[ListItem.Genre]", ACCENT)], poster="$INFO[ListItem.Icon]", default=5)
+
+
+def picture_info():
+    row = lambda focused: "\n".join([
+        panel(0, 0, 1200, 64, FOCUS) if focused else "",
+        label(24, 0, 400, 64, "$INFO[ListItem.Label]", "font12", ON_FOCUS2 if focused else TEXT2),
+        label(440, 0, 740, 64, "$INFO[ListItem.Label2]", "font12", ON_FOCUS if focused else TEXT)])
+    details = '''<control type="list" id="5">
+  <left>360</left>
+  <top>230</top>
+  <width>1200</width>
+  <height>700</height>
+  <pagecontrol>60</pagecontrol>
+  <itemlayout height="66" width="1200">
+%s
+  </itemlayout>
+  <focusedlayout height="66" width="1200">
+%s
+  </focusedlayout>
+</control>''' % (indent(row(False), 4), indent(row(True), 4))
+    return window("Details of a picture.", [dim(), *dialog_frame(320, 110, 1280, 860, heading=""),
+                                             label(360, 134, 1200, 60, "$INFO[ListItem.Label]", "font32_title"),
+                                             image(344, 206, 1232, 2, "white.png", RAISED), details,
+                                             control("scrollbar", 60, left=1576, top=230, width=8, height=700, onleft=5),
+                                             control("group", 9000, left=0, top=0, width=1, height=1)], default=5, extra=pop())
+
+
+def profiles():
+    tile = 260
+    layout = lambda focused: "\n".join([panel(0, 0, tile - 20, tile + 60, FOCUS if focused else SURFACE),
+                                        image(40, 30, tile - 100, tile - 100, "$INFO[ListItem.Icon]", keep=True, fallback="logo.png"),
+                                        label(10, tile - 50, tile - 40, 60, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT,
+                                              align="center")])
+    grid = '''<control type="panel" id="2">
+  <left>160</left>
+  <top>220</top>
+  <width>1600</width>
+  <height>620</height>
+  <orientation>vertical</orientation>
+  <ondown>9001</ondown>
+  <itemlayout width="%d" height="%d">
+%s
+  </itemlayout>
+  <focusedlayout width="%d" height="%d">
+%s
+  </focusedlayout>
+</control>''' % (tile, tile + 80, indent(layout(False), 4), tile, tile + 80, indent(layout(True), 4))
+    return window("Profiles.", [
+        image(0, 0, 1920, 1080, "white.png", BG),
+        label(64, 44, 1300, 72, "$LOCALIZE[13200]", "font45_title"),
+        grid,
+        control("grouplist", 9001, left=160, top=900, width=1600, height=80, orientation="horizontal", itemgap=20, onup=2, children=[
+            control("radiobutton", 4, width=640, height=76, label="$LOCALIZE[31024]",
+                    texturenofocus=('border="16" colordiffuse="%s"' % RAISED, "panel.png")),
+            button(5, 0, 0, 860, 76, "$LOCALIZE[31025]", align="left").replace("<label>", "<label2>[B]$INFO[System.ProfileAutoLogin][/B]</label2>\n  <label>")]),
+    ], default=2)
+
+
+def login_screen():
+    tile = 300
+    layout = lambda focused: "\n".join([panel(0, 0, tile - 24, tile + 40, FOCUS if focused else SURFACE),
+                                        image(48, 36, tile - 120, tile - 120, "$INFO[ListItem.Icon]", keep=True, fallback="logo.png"),
+                                        label(10, tile - 40, tile - 44, 60, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT,
+                                              align="center")])
+    users = '''<control type="fixedlist" id="52">
+  <left>210</left>
+  <top>340</top>
+  <width>1500</width>
+  <height>%d</height>
+  <orientation>horizontal</orientation>
+  <focusposition>2</focusposition>
+  <ondown>20</ondown>
+  <itemlayout width="%d" height="%d">
+%s
+  </itemlayout>
+  <focusedlayout width="%d" height="%d">
+%s
+  </focusedlayout>
+</control>''' % (tile + 40, tile, tile + 40, indent(layout(False), 4), tile, tile + 40, indent(layout(True), 4))
+    return window("Choosing a profile when Kodi starts.", [
+        image(0, 0, 1920, 1080, "white.png", BG),
+        image(0, 0, 1920, 1080, "fanart.jpg", "40FFFFFF"),
+        image(64, 48, 64, 64, "logo.png"),
+        label(148, 44, 900, 72, "Monteiro", "font45_title"),
+        label(210, 240, 1500, 60, "$LOCALIZE[13200]", "font32_title", align="center"),
+        users,
+        *round_button(20, 924, 800, "power.png", "ActivateWindow(%d)" % POWER_WINDOW, nav={"up": 52}),
+    ], default=52)
+
+
+def slider_dialog():
+    return window("A value chosen with a slider, such as the audio delay.", [
+        group(460, 820, 1000, 200, [
+            panel(0, 0, 1000, 200, SURFACE),
+            label(40, 20, 700, 50, "", "font13", control_id=10),
+            label(740, 20, 220, 50, "", "font13", ACCENT, control_id=12, align="right"),
+            control("slider", 11, left=40, top=110, width=920, height=24, onleft=11, onright=11, orientation="horizontal",
+                    texturesliderbar=('border="4" colordiffuse="%s"' % RAISED2, "slider-bar.png"),
+                    textureslidernib=('colordiffuse="%s"' % ACCENT, "slider-nib.png"),
+                    textureslidernibfocus=('colordiffuse="%s"' % ACCENT, "slider-nib.png")),
+            control("button", 13, left=-2000, top=0, width=10, height=10),
+            control("button", 14, left=-2000, top=0, width=10, height=10),
+        ]),
+    ], default=11, extra=fade())
+
+
+def subtitle_search():
+    """Subtitle search of the subtitle add-ons of Kodi: the services on the left, the subtitles found on the right."""
+    service = lambda focused: "\n".join([panel(0, 0, 440, 72, FOCUS) if focused else "",
+                                         label(24, 0, 400, 72, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT)])
+    result = lambda focused: "\n".join([panel(0, 0, 1040, 90, FOCUS) if focused else "",
+                                        label(24, 4, 990, 46, "$INFO[ListItem.Label2]", "font13", ON_FOCUS if focused else TEXT),
+                                        label(24, 46, 990, 40, "$INFO[ListItem.Label]", "font12", ON_FOCUS2 if focused else TEXT2)])
+    def listing(control_id, left, width, height_item, layout, onleft, onright):
+        return '''<control type="list" id="%d">
+  <left>%d</left>
+  <top>230</top>
+  <width>%d</width>
+  <height>720</height>
+  <onleft>%s</onleft>
+  <onright>%s</onright>
+  <pagecontrol>73</pagecontrol>
+  <itemlayout height="%d" width="%d">
+%s
+  </itemlayout>
+  <focusedlayout height="%d" width="%d">
+%s
+  </focusedlayout>
+</control>''' % (control_id, left, width, onleft, onright, height_item, width, indent(layout(False), 4), height_item, width,
+                  indent(layout(True), 4))
+    return window("Subtitle search of the subtitle add-ons.", [
+        dim(), *dialog_frame(100, 80, 1720, 920, heading=""),
+        label(140, 104, 1100, 60, "$LOCALIZE[287]", "font32_title"),
+        image(1600, 104, 160, 60, "", keep=True).replace('<control type="image">', '<control type="image" id="110">'),
+        label(140, 104, 1620, 60, "", "font12", TEXT2, control_id=100, align="right"),
+        image(124, 176, 1672, 2, "white.png", RAISED),
+        listing(150, 140, 440, 76, service, "noop", 120),
+        listing(120, 620, 1040, 96, result, 150, 73),
+        control("scrollbar", 73, left=1680, top=230, width=8, height=720, onleft=120),
+        label(620, 230, 1040, 60, "", "font13", TEXT2, control_id=140),
+        control("grouplist", 130, left=140, top=900, width=440, height=76, children=[button(160, 0, 0, 440, 76, "$LOCALIZE[24121]")]),
+    ], default=150, extra=pop())
+
+
+def music_osd():
+    size, gap, top = 104, 40, 900
+    buttons = [(600, "back10.png", "PlayerControl(Previous)"), (601, None, "PlayerControl(Play)"), (602, "forward10.png", "PlayerControl(Next)"),
+               (603, "stop.png", "PlayerControl(Stop)")]
+    left = (1920 - len(buttons) * size - (len(buttons) - 1) * gap) // 2
+    controls = []
+    for index, (control_id, icon, action) in enumerate(buttons):
+        x = left + index * (size + gap)
+        nav = {"left": buttons[index - 1][0] if index else buttons[-1][0], "right": buttons[(index + 1) % len(buttons)][0]}
+        if icon:
+            controls += round_button(control_id, x, top, icon, action, size, nav)
+        else:
+            parts = round_button(control_id, x, top, "pause.png", action, size, nav)
+            controls += [parts[0]] + [part.replace("</visible>", " + !Player.Paused</visible>") for part in parts[1:]]
+            controls += [part.replace("pause.png", "player_play.png").replace("</visible>", " + Player.Paused</visible>") for part in parts[1:]]
+    return window("Music player controls.", [
+        image(0, 640, 1920, 440, "shade.png", "F2000000"),
+        label(120, 690, 1680, 60, "$INFO[MusicPlayer.Title]", "font36_title"),
+        label(120, 750, 1680, 44, "$INFO[MusicPlayer.Artist]", "font13", TEXT2),
+        label(120, 800, 600, 40, "$INFO[Player.Time]", "font12"),
+        label(1200, 800, 600, 40, "$INFO[Player.Duration]", "font12", TEXT2, align="right"),
+        control("progress", left=120, top=850, width=1680, height=8, info="Player.Progress",
+                texturebg=('colordiffuse="4DFFFFFF"', "white.png"), midtexture=('colordiffuse="%s"' % ACCENT, "white.png")),
+        *controls,
+    ], default=601, extra=fade() + "\n<depth>DepthOSD</depth>")
+
+
+def process_info():
+    rows = [("Video", "$INFO[Player.Process(videodecoder)]$INFO[Player.Process(pixformat),  ·  ]$INFO[Player.Process(videowidth),  ·  ]$INFO[Player.Process(videoheight),x]"),
+            ("FPS", "$INFO[Player.Process(videofps)]"), ("Audio", "$INFO[Player.Process(audiodecoder)]$INFO[Player.Process(audiochannels),  ·  ]"),
+            ("Deinterlace", "$INFO[Player.Process(deintmethod)]"), ("CPU", "$INFO[System.CpuUsage]")]
+    return window("Information on the decoders of the video playing.", [
+        group(60, 60, 900, 120 + 56 * len(rows), [panel(0, 0, 900, 120 + 56 * len(rows), "E617181B"),
+                                                  label(30, 20, 840, 60, "$INFO[Player.Title]", "font30_title")] +
+              [label(30, 90 + index * 56, 240, 50, name, "font12", TEXT3) for index, (name, _) in enumerate(rows)] +
+              [label(280, 90 + index * 56, 590, 50, value, "font12", TEXT) for index, (_, value) in enumerate(rows)]),
+        control("button", 5553, left=-2000, top=0, width=10, height=10),
+    ], default=5553, extra=fade())
+
+
+def full_screen_info():
+    return window("Details of the video playing, with the Info key.", [
+        image(0, 0, 1920, 1080, "white.png", "B3000000"),
+        group(160, 120, 1600, 840, [
+            panel(0, 0, 1600, 840, SURFACE),
+            image(40, 40, 380, 570, "$INFO[VideoPlayer.Cover]", keep=True, fallback="film.png"),
+            label(460, 40, 1100, 70, "$INFO[VideoPlayer.Title]", "font45_title"),
+            label(460, 120, 1100, 44, "$INFO[VideoPlayer.Year]$INFO[VideoPlayer.Genre,  ·  ]", "font13", TEXT2),
+            control("textbox", left=460, top=190, width=1100, height=600, font="font13", textcolor=TEXT2, label="$INFO[VideoPlayer.Plot]"),
+        ]),
+        control("button", 999, left=-2000, top=0, width=10, height=10, onclick="Action(close)"),
+    ], default=999, extra=fade())
+
+
+def simple_list_window(comment, icon, title, control_type="list"):
+    """Favourites, the playlist and the event log: a title and a list."""
+    window_xml = media_window(comment, icon)
+    window_xml = window_xml.replace("$INFO[Container.FolderName]", title)
+    if control_type != "list":
+        window_xml = window_xml.replace('<control type="list" id="50">', '<control type="%s" id="50">' % control_type)
+    return window_xml
+
+
+# Live TV ----------------------------------------------------------------------------------------------------------------
+
+def pvr_rows(control_id, left, top, width, height, onleft="noop", onright=60):
+    """Channels, recordings, timers and search results: a logo, the name and the programme."""
+    focus = "Control.HasFocus(%d)" % control_id
+    def row(focused, condition=None):
+        return [panel(0, 0, width, 96, FOCUS if focused else RAISED, condition) if condition or focused else "",
+                label(16, 0, 90, 96, "$INFO[ListItem.ChannelNumberLabel]", "font13", ON_FOCUS2 if focused else TEXT3, align="right",
+                      visible=condition),
+                image(126, 12, 120, 72, "$INFO[ListItem.Icon]", keep=True, fallback="tv.png", visible=condition),
+                label(270, 4, width - 300, 50, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT, visible=condition),
+                label(270, 50, width - 300, 40, "$INFO[ListItem.Title]$INFO[ListItem.StartTime,  ·  ]$INFO[ListItem.Date,  ·  ]", "font12",
+                      ON_FOCUS2 if focused else TEXT2, visible=condition)]
+    focused_parts = row(True, focus) + row(False, "!" + focus)
+    return '''<control type="fixedlist" id="%d">
+  <left>%d</left>
+  <top>%d</top>
+  <width>%d</width>
+  <height>%d</height>
+  <onleft>%s</onleft>
+  <onright>%s</onright>
+  <pagecontrol>%s</pagecontrol>
+  <focusposition>2</focusposition>
+  <movement>4</movement>
+  <scrolltime>120</scrolltime>
+  <viewtype label="535">list</viewtype>
+  <itemlayout height="104" width="%d">
+%s
+  </itemlayout>
+  <focusedlayout height="104" width="%d">
+%s
+  </focusedlayout>
+</control>''' % (control_id, left, top, width, height, onleft, onright, onright, width,
+                  indent("\n".join(part for part in row(False) if part), 4), width,
+                  indent("\n".join(part for part in focused_parts if part), 4))
+
+
+def pvr_window(comment, string_id):
+    return window(comment, [
+        image(0, 0, 1920, 1080, "white.png", BG),
+        image(64, 48, 64, 64, "tv.png", TEXT2),
+        label(148, 44, 1300, 72, "$LOCALIZE[%d]" % string_id, "font45_title"),
+        label(1300, 44, 560, 72, "$INFO[Container.NumItems] $LOCALIZE[31014]", "font13", TEXT2, align="right"),
+        label(64, 120, 900, 40, "", "font12", TEXT3, control_id=29),
+        label(960, 120, 900, 40, "", "font12", TEXT3, control_id=30, align="right"),
+        panel(40, 170, 1840, 880, SURFACE),
+        pvr_rows(50, 60, 190, 1780, 840, onright=73),
+        control("scrollbar", 73, left=1856, top=190, width=8, height=840, onleft=50),
+    ], default=50, extra="<views>50</views>")
+
+
+def pvr_guide():
+    channel = lambda focused: "\n".join([panel(0, 2, 300, 58, FOCUS if focused else RAISED),
+                                         label(16, 0, 268, 62, "$INFO[ListItem.ChannelNumberLabel]  $INFO[ListItem.Label]", "font12",
+                                               ON_FOCUS if focused else TEXT)])
+    # In a guide, Kodi stretches image 2 and label 1 of a programme to its length.
+    programme = lambda focused: "\n".join([
+        image(2, 2, 36, 58, "panel.png", FOCUS if focused else SURFACE, border=16).replace('<control type="image">', '<control type="image" id="2">'),
+        label(14, 0, 26, 62, "$INFO[ListItem.Label]", "font12", ON_FOCUS if focused else TEXT2, control_id=1)])
+    guide = '''<control type="epggrid" id="50">
+  <left>60</left>
+  <top>180</top>
+  <width>1800</width>
+  <height>860</height>
+  <orientation>vertical</orientation>
+  <pagecontrol>60</pagecontrol>
+  <scrolltime tween="quadratic">300</scrolltime>
+  <timeblocks>30</timeblocks>
+  <rulerunit>6</rulerunit>
+  <viewtype label="19029">list</viewtype>
+  <progresstexture border="4" colordiffuse="%s">panel.png</progresstexture>
+  <rulerlayout height="45" width="300">
+%s
+  </rulerlayout>
+  <channellayout height="62" width="300">
+%s
+  </channellayout>
+  <focusedchannellayout height="62" width="300">
+%s
+  </focusedchannellayout>
+  <itemlayout height="62" width="40">
+%s
+  </itemlayout>
+  <focusedlayout height="62" width="40">
+%s
+  </focusedlayout>
+</control>''' % (ACCENT, indent(label(10, 0, 280, 45, "$INFO[ListItem.Label]", "font12", TEXT3), 4), indent(channel(False), 4),
+                  indent(channel(True), 4), indent(programme(False), 4), indent(programme(True), 4))
+    return window("TV guide: channels and their programmes over time.", [
+        image(0, 0, 1920, 1080, "white.png", BG),
+        image(64, 48, 64, 64, "tv.png", TEXT2),
+        label(148, 44, 1300, 72, "$LOCALIZE[31027]", "font45_title"),
+        label(1300, 44, 560, 72, "$INFO[ListItem.Title]", "font13", TEXT2, align="right"),
+        label(64, 120, 900, 40, "", "font12", TEXT3, control_id=29),
+        label(960, 120, 900, 40, "", "font12", TEXT3, control_id=30, align="right"),
+        guide,
+        control("scrollbar", 60, left=1880, top=180, width=8, height=860, onleft=50),
+    ], default=50, extra="<views>50</views>")
+
+
+def pvr_channels_osd(comment):
+    return window(comment, [
+        group(1180, 0, 740, 1080, [
+            image(0, 0, 740, 1080, "white.png", SURFACE),
+            label(40, 40, 660, 60, "", "font32_title", control_id=2),
+            pvr_rows(11, 20, 130, 700, 900, onleft="noop", onright=60).replace("<pagecontrol>60</pagecontrol>", "<pagecontrol>60</pagecontrol>"),
+            control("scrollbar", 60, left=724, top=130, width=8, height=900, onleft=11),
+        ], animation='<animation effect="slide" start="740,0" end="0,0" time="240" tween="cubic" easing="out">WindowOpen</animation>\n'
+                     '<animation effect="slide" start="0,0" end="740,0" time="200" tween="cubic" easing="in">WindowClose</animation>'),
+    ], default=11)
+
+
+# Textures ---------------------------------------------------------------------------------------------------------------
+
 K = 8  # draw large, then reduce for smooth edges
 
 
@@ -889,7 +1452,8 @@ def media():
     channels = os.path.join(ROOT, "script.m3u.channels", "resources", "skins", "default", "media")
     movies = os.path.join(ROOT, "script.m3u.movies", "resources", "skins", "default", "media")
     for folder, names in ((channels, ["white.png", "panel.png", "tv.png", "gear.png", "check.png", "search.png"]),
-                          (movies, ["circle.png", "film.png", "puzzle.png", "audio.png", "shade.png"])):
+                          (movies, ["circle.png", "film.png", "puzzle.png", "audio.png", "shade.png", "back10.png", "forward10.png",
+                                    "pause.png", "player_play.png"])):
         for name in names:
             shutil.copy2(os.path.join(folder, name), os.path.join(MEDIA, name))
     shutil.copy2(os.path.join(ROOT, "repository.monteiromedia", "resources", "icon.png"), os.path.join(MEDIA, "logo.png"))
@@ -940,11 +1504,41 @@ def media():
     alpha, draw = canvas(32, 32)
     draw.ellipse((p(4), p(4), p(28), p(28)), fill=255)
     save(alpha, 32, 32, "slider-nib.png")
+    # Stop: a rounded square.
+    alpha, draw = canvas(128, 128)
+    draw.rounded_rectangle((p(30), p(30), p(98), p(98)), radius=p(12), fill=255)
+    save(alpha, 128, 128, "stop.png")
+    # Icons of notifications: information, warning and error.
+    for name, shape in (("DefaultIconInfo.png", "info"), ("DefaultIconWarning.png", "warning"), ("DefaultIconError.png", "error")):
+        alpha, draw = canvas(128, 128)
+        if shape == "warning":
+            draw.polygon([(p(64), p(10)), (p(122), p(114)), (p(6), p(114))], fill=255)
+            draw.rounded_rectangle((p(58), p(44), p(70), p(84)), radius=p(6), fill=0)
+            draw.ellipse((p(57), p(92), p(71), p(106)), fill=0)
+        else:
+            draw.ellipse((p(8), p(8), p(120), p(120)), fill=255)
+            if shape == "info":
+                draw.ellipse((p(56), p(30), p(72), p(46)), fill=0)
+                draw.rounded_rectangle((p(57), p(56), p(71), p(98)), radius=p(7), fill=0)
+            else:
+                draw.line([(p(42), p(42)), (p(86), p(86))], fill=0, width=p(14))
+                draw.line([(p(86), p(42)), (p(42), p(86))], fill=0, width=p(14))
+        save(alpha, 128, 128, name)
+        color = {"info": ACCENT, "warning": "FFFFC53D", "error": DANGER}[shape]
+        icon = Image.open(os.path.join(MEDIA, name))
+        tinted = Image.new("RGBA", icon.size, tuple(int(color[i:i + 2], 16) for i in (2, 4, 6)) + (255,))
+        tinted.putalpha(icon.getchannel("A"))
+        tinted.save(os.path.join(MEDIA, name))
     # Folder of the file browser.
     alpha, draw = canvas(128, 128)
     draw.rounded_rectangle((p(10), p(24), p(58), p(44)), radius=p(8), fill=255)
     draw.rounded_rectangle((p(10), p(34), p(118), p(104)), radius=p(10), fill=255)
     save(alpha, 128, 128, "folder.png")
+    # Grey, as lists show it without a color of their own, in place of pictures that are missing.
+    folder = Image.open(os.path.join(MEDIA, "folder.png"))
+    grey = Image.new("RGBA", folder.size, tuple(int(TEXT2[i:i + 2], 16) for i in (2, 4, 6)) + (255,))
+    grey.putalpha(folder.getchannel("A"))
+    grey.save(os.path.join(MEDIA, "folder.png"))
     # Busy spinner: three quarters of a ring.
     alpha, draw = canvas(128, 128)
     draw.arc((p(12), p(12), p(116), p(116)), start=0, end=270, fill=255, width=p(12))
@@ -965,7 +1559,10 @@ def language(code, index):
 
 
 EXTRA_STRINGS = {31013: ("Monteiro", "Monteiro"), 31014: ("items", "itens"), 31015: ("Space", "Espaço"), 31016: ("Delete", "Apagar"),
-                 31017: ("Shift", "Shift"), 31021: ("Show", "Mostrar")}
+                 31017: ("Shift", "Shift"), 31021: ("Show", "Mostrar"), 31023: ("Media source", "Fonte de mídia"),
+                 31024: ("Show the profiles when Kodi starts", "Mostrar os perfis ao iniciar o Kodi"),
+                 31025: ("Log in automatically", "Entrar automaticamente"), 31026: ("Channels", "Canais"), 31027: ("TV guide", "Guia de TV"),
+                 31028: ("Recordings", "Gravações"), 31029: ("Timers", "Agendamentos"), 31030: ("Search", "Busca")}
 
 
 def main():
@@ -1001,6 +1598,36 @@ def main():
         "DialogButtonMenu.xml": power_menu(),
         "Custom_1100_PowerMenu.xml": power_menu(own=True),
         "VideoFullScreen.xml": video_full_screen(),
+        "MyVideoNav.xml": media_window("Videos: sources, folders and the video library.", "film.png"),
+        "MyMusicNav.xml": media_window("Music: sources, folders and the music library.", "audio.png"),
+        "MyPics.xml": media_window("Pictures: sources and folders.", "folder.png"),
+        "FileManager.xml": file_manager(),
+        "DialogMediaSource.xml": media_source(),
+        "SettingsSystemInfo.xml": system_info(),
+        "SlideShow.xml": slide_show(),
+        "MusicVisualisation.xml": music_visualisation(),
+        "MusicOSD.xml": music_osd(),
+        "DialogVideoInfo.xml": video_info(),
+        "DialogMusicInfo.xml": music_info(),
+        "DialogPictureInfo.xml": picture_info(),
+        "DialogPVRInfo.xml": pvr_info(),
+        "SettingsProfile.xml": profiles(),
+        "LoginScreen.xml": login_screen(),
+        "DialogSlider.xml": slider_dialog(),
+        "DialogSubtitles.xml": subtitle_search(),
+        "DialogPlayerProcessInfo.xml": process_info(),
+        "DialogFullScreenInfo.xml": full_screen_info(),
+        "MyFavourites.xml": simple_list_window("Favourites.", "check.png", "$LOCALIZE[1036]"),
+        "MyPlaylist.xml": simple_list_window("The playlist playing.", "film.png", "$LOCALIZE[13350]"),
+        "EventLog.xml": simple_list_window("Event log.", "gear.png", "$LOCALIZE[14111]"),
+        "MyGames.xml": media_window("Games: sources and folders.", "puzzle.png"),
+        "MyPVRChannels.xml": pvr_window("Live TV channels.", 31026),
+        "MyPVRGuide.xml": pvr_guide(),
+        "MyPVRRecordings.xml": pvr_window("Recordings.", 31028),
+        "MyPVRTimers.xml": pvr_window("Timers of recordings.", 31029),
+        "MyPVRSearch.xml": pvr_window("Searching the TV guide.", 31030),
+        "DialogPVRChannelsOSD.xml": pvr_channels_osd("Channel list over the TV playing."),
+        "DialogPVRChannelGuide.xml": pvr_channels_osd("Channel guide over the TV playing."),
         "DialogSeekBar.xml": seek_bar(),
         "VideoOSD.xml": video_osd(),
         "DialogVolumeBar.xml": volume_bar(),
