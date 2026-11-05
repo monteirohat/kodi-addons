@@ -113,30 +113,31 @@
       <visible>String.IsEqual(Window.Property(rotation),270) + String.IsEqual(Window.Property(mirror),true)</visible>
     </control>
     <control type="group">
+      <animation effect="slide" start="0,40" end="0,0" time="200" tween="cubic" easing="out">Visible</animation>
       <animation effect="fade" start="0" end="100" time="200">Visible</animation>
       <animation effect="fade" start="100" end="0" time="400">Hidden</animation>
       <visible>String.IsEqual(Window.Property(details),true)</visible>
       <control type="image">
-        <left>0</left>
-        <top>0</top>
-        <width>1920</width>
-        <height>200</height>
-        <texture colordiffuse="FF000000">shade.png</texture>
+        <left>40</left>
+        <top>940</top>
+        <width>1840</width>
+        <height>112</height>
+        <texture border="16" colordiffuse="FF17181B">panel.png</texture>
       </control>
       <control type="label">
-        <left>64</left>
-        <top>40</top>
-        <width>1400</width>
-        <height>60</height>
+        <left>76</left>
+        <top>952</top>
+        <width>1200</width>
+        <height>52</height>
         <aligny>center</aligny>
-        <font>font32_title</font>
+        <font>font13</font>
         <textcolor>FFF4F4F5</textcolor>
         <label>$INFO[Window.Property(name)]</label>
       </control>
       <control type="label">
-        <left>64</left>
-        <top>100</top>
-        <width>1400</width>
+        <left>76</left>
+        <top>1000</top>
+        <width>1200</width>
         <height>40</height>
         <aligny>center</aligny>
         <font>font12</font>
@@ -144,25 +145,25 @@
         <label>$INFO[Window.Property(album)]$INFO[Window.Property(date),  ·  ]</label>
       </control>
       <control type="label">
-        <left>1460</left>
-        <top>40</top>
-        <width>400</width>
-        <height>60</height>
+        <left>1290</left>
+        <top>952</top>
+        <width>554</width>
+        <height>52</height>
         <align>right</align>
         <aligny>center</aligny>
-        <font>font32_title</font>
+        <font>font13</font>
         <textcolor>FF9C9EA6</textcolor>
         <label>$INFO[Window.Property(position)]</label>
       </control>
       <control type="label">
-        <left>64</left>
-        <top>1010</top>
-        <width>1792</width>
+        <left>1090</left>
+        <top>1000</top>
+        <width>754</width>
         <height>40</height>
-        <align>center</align>
+        <align>right</align>
         <aligny>center</aligny>
         <font>font12</font>
-        <textcolor>FF9C9EA6</textcolor>
+        <textcolor>FF62656D</textcolor>
         <label>$ADDON[script.easy.picture 30060]</label>
       </control>
     </control>

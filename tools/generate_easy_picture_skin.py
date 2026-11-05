@@ -103,7 +103,8 @@ def main_screen():
 
 
 def viewer_screen():
-    """A picture in full screen. Python sets the pictures; the details show for a moment after each change."""
+    """A picture in full screen. Python sets the pictures; a bar with the details shows at the bottom for a moment after
+    each change."""
     shown = "String.IsEqual(Window.Property(details),true)"
     picture = lambda control_id: f"""<control type="image" id="{control_id}">
   <left>0</left>
@@ -114,13 +115,14 @@ def viewer_screen():
   <texture background="true"></texture>
 </control>"""
     details = f"""<control type="group">
+  <animation effect="slide" start="0,40" end="0,0" time="200" tween="cubic" easing="out">Visible</animation>
   <animation effect="fade" start="0" end="100" time="200">Visible</animation>
   <animation effect="fade" start="100" end="0" time="400">Hidden</animation>{skin.visible(shown)}
-{join(image(0, 0, 1920, 200, "shade.png", "FF000000"),
-      label(64, 40, 1400, 60, "$INFO[Window.Property(name)]", "font32_title", TEXT),
-      label(64, 100, 1400, 40, "$INFO[Window.Property(album)]$INFO[Window.Property(date),  ·  ]", "font12", TEXT2),
-      label(1460, 40, 400, 60, "$INFO[Window.Property(position)]", "font32_title", TEXT2, align="right"),
-      label(64, 1010, 1792, 40, f"$ADDON[{ADDON_ID} 30060]", "font12", TEXT2, align="center"), spaces=2)}
+{join(panel(40, 940, 1840, 112, SURFACE),
+      label(76, 952, 1200, 52, "$INFO[Window.Property(name)]", "font13", TEXT),
+      label(76, 1000, 1200, 40, "$INFO[Window.Property(album)]$INFO[Window.Property(date),  ·  ]", "font12", TEXT2),
+      label(1290, 952, 554, 52, "$INFO[Window.Property(position)]", "font13", TEXT2, align="right"),
+      label(1090, 1000, 754, 40, f"$ADDON[{ADDON_ID} 30060]", "font12", TEXT3, align="right"), spaces=2)}
 </control>"""
     return join(
         image(0, 0, 1920, 1080, "white.png", "FF000000"),

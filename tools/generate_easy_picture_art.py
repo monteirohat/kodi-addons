@@ -97,7 +97,7 @@ def main():
     # Shared textures and icons of the Easy add-ons.
     channels = os.path.join(ROOT, "script.m3u.channels", "resources", "skins", "default", "media")
     movies = os.path.join(ROOT, "script.m3u.movies", "resources", "skins", "default", "media")
-    for folder, names in ((channels, ["white.png", "panel.png"]), (movies, ["gear.png", "star.png", "shade.png"])):
+    for folder, names in ((channels, ["white.png", "panel.png"]), (movies, ["gear.png", "star.png"])):
         for name in names:
             shutil.copy2(os.path.join(folder, name), os.path.join(MEDIA, name))
 
