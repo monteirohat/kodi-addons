@@ -40,7 +40,7 @@ Register the **Monteiro** repository in Kodi once, from its web address, and eve
 1. In Kodi, open **Settings > System > Add-ons** and turn on **Unknown sources**.
 2. Open **Settings > File manager > Add source**, select **&lt;None&gt;**, enter `https://monteirohat.github.io/kodi-addons/`, name the source **Monteiro**, and select **OK**.
 3. Open **Settings > Add-ons > Install from zip file > Monteiro** and select **repository.monteiromedia-1.0.5.zip**. Wait for the **Monteiro** repository installation notification.
-4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, and HDMI Switcher is under **Program add-ons**.
+4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, and HDMI Switcher and Easy Files are under **Program add-ons**.
 
 Updates arrive through the repository. If one is not visible yet, open the context menu of **Monteiro** and select **Check for updates**. Without internet access on the Kodi device, download the ZIP from the [latest release](https://github.com/monteirohat/kodi-addons/releases/latest), copy it to a USB drive and use **Install from zip file**.
 
@@ -129,6 +129,22 @@ Read the [Easy Movie guide](script.m3u.movies/README.md) for every feature and s
 ![HDMI Switcher](script.hdmi.switcher/resources/screenshots/screenshot-01.jpg)
 
 HDMI Switcher needs a [one-time setup](script.hdmi.switcher/README.md#one-time-setup) that removes previous HDMI boot overrides. Read the [HDMI Switcher guide](script.hdmi.switcher/README.md) for details.
+
+### Easy Files
+
+<img src="script.easy.files/resources/icon.png" alt="Easy Files" width="72" align="left">
+
+**A file manager for the remote control.** Places on the left, the folder on the right, and every option one long press away.
+
+<br clear="left">
+
+- Your home folder, USB drives, network shares and the folders of Kodi, with the free space of each drive.
+- Hold **OK** on a file or folder to open, rename, copy, move or delete it, create a folder, or see its details.
+- Copies show their progress and can be cancelled.
+
+![Easy Files](script.easy.files/resources/screenshots/screenshot-01.jpg)
+
+Read the [Easy Files guide](script.easy.files/README.md) for every feature.
 
 > [!NOTE]
 > Easy Channel and Easy Movie do not provide any content. They play the M3U lists you add, and you are responsible for using only lists you are allowed to watch. The suggested GitHub repositories collect free, public channels and public domain movies, and are maintained by third parties.

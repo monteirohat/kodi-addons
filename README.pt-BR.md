@@ -40,7 +40,7 @@ Registre o repositório **Monteiro** no Kodi uma vez, pelo endereço web, e todo
 1. No Kodi, abra **Configurações > Sistema > Add-ons** e ligue **Fontes desconhecidas**.
 2. Abra **Configurações > Gerenciador de arquivos > Adicionar fonte**, selecione **&lt;Nenhum&gt;**, digite `https://monteirohat.github.io/kodi-addons/`, dê o nome **Monteiro** à fonte e selecione **OK**.
 3. Abra **Configurações > Add-ons > Instalar via arquivo zip > Monteiro** e selecione **repository.monteiromedia-1.0.5.zip**. Espere o aviso de que o repositório **Monteiro** foi instalado.
-4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, e o HDMI Switcher em **Add-ons de programas**.
+4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, e o HDMI Switcher e o Easy Files em **Add-ons de programas**.
 
 As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o menu de contexto do **Monteiro** e selecione **Verificar atualizações**. Se o aparelho com Kodi estiver sem internet, baixe o ZIP na [última release](https://github.com/monteirohat/kodi-addons/releases/latest), copie para um pendrive e use **Instalar via arquivo zip**.
 
@@ -129,6 +129,22 @@ Leia o [guia do Easy Movie](script.m3u.movies/README.md) para conhecer cada recu
 ![HDMI Switcher](script.hdmi.switcher/resources/screenshots/screenshot-01.jpg)
 
 O HDMI Switcher precisa de uma [configuração única](script.hdmi.switcher/README.md#one-time-setup), que remove ajustes antigos de HDMI na inicialização. Leia o [guia do HDMI Switcher](script.hdmi.switcher/README.md) para os detalhes. O guia está em inglês.
+
+### Easy Files
+
+<img src="script.easy.files/resources/icon.png" alt="Easy Files" width="72" align="left">
+
+**Um gerenciador de arquivos para o controle remoto.** Os locais à esquerda, a pasta à direita e todas as opções a um toque longo.
+
+<br clear="left">
+
+- A sua pasta pessoal, pendrives, compartilhamentos de rede e as pastas do Kodi, com o espaço livre de cada disco.
+- Segure o **OK** num arquivo ou pasta para abrir, renomear, copiar, mover ou apagar, criar uma pasta ou ver os detalhes.
+- As cópias mostram o progresso e podem ser canceladas.
+
+![Easy Files](script.easy.files/resources/screenshots/screenshot-01.jpg)
+
+Leia o [guia do Easy Files](script.easy.files/README.md) para conhecer cada recurso. O guia está em inglês.
 
 > [!NOTE]
 > O Easy Channel e o Easy Movie não oferecem nenhum conteúdo. Eles tocam as listas M3U que você adiciona, e você é responsável por usar só listas que tem permissão para assistir. Os repositórios sugeridos do GitHub reúnem canais gratuitos e públicos e filmes em domínio público, e são mantidos por terceiros.

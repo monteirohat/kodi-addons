@@ -114,3 +114,7 @@ msgstr ""
 msgctxt "#31030"
 msgid "Search"
 msgstr ""
+
+msgctxt "#31031"
+msgid "Files"
+msgstr ""

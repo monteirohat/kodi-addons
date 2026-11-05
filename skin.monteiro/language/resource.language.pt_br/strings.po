@@ -114,3 +114,7 @@ msgstr "Agendamentos"
 msgctxt "#31030"
 msgid "Search"
 msgstr "Busca"
+
+msgctxt "#31031"
+msgid "Files"
+msgstr "Arquivos"

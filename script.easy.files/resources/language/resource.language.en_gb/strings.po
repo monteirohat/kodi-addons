@@ -1,0 +1,248 @@
+# Easy Files language file
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "Easy Files"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Home folder"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Kodi data"
+msgstr ""
+
+msgctxt "#30012"
+msgid "{0} free"
+msgstr ""
+
+msgctxt "#30013"
+msgid "{0} folders  ·  {1} files"
+msgstr ""
+
+msgctxt "#30014"
+msgid "This folder is empty. Hold OK for options."
+msgstr ""
+
+msgctxt "#30020"
+msgid "Open"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Information"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Rename"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Copy"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Move"
+msgstr ""
+
+msgctxt "#30025"
+msgid "Delete"
+msgstr ""
+
+msgctxt "#30026"
+msgid "New folder"
+msgstr ""
+
+msgctxt "#30027"
+msgid "Paste here"
+msgstr ""
+
+msgctxt "#30030"
+msgid "New name"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Renamed"
+msgstr ""
+
+msgctxt "#30032"
+msgid "{0} copied. Open the destination folder, hold OK and select Paste here."
+msgstr ""
+
+msgctxt "#30033"
+msgid "{0} ready to move. Open the destination folder, hold OK and select Paste here."
+msgstr ""
+
+msgctxt "#30034"
+msgid "To paste: {0}  ·  Hold OK in the destination folder"
+msgstr ""
+
+msgctxt "#30035"
+msgid "To move: {0}  ·  Hold OK in the destination folder"
+msgstr ""
+
+msgctxt "#30036"
+msgid "{0} already exists here. Replace it, or keep both?"
+msgstr ""
+
+msgctxt "#30037"
+msgid "Replace"
+msgstr ""
+
+msgctxt "#30038"
+msgid "Keep both"
+msgstr ""
+
+msgctxt "#30039"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30040"
+msgid "The folder could not be opened.[CR]{0}"
+msgstr ""
+
+msgctxt "#30041"
+msgid "The name cannot be empty or contain / or \\."
+msgstr ""
+
+msgctxt "#30042"
+msgid "{0} already exists in this folder."
+msgstr ""
+
+msgctxt "#30043"
+msgid "The change could not be made. The drive may be read only."
+msgstr ""
+
+msgctxt "#30044"
+msgid "A folder cannot be pasted inside itself."
+msgstr ""
+
+msgctxt "#30045"
+msgid "{0} copied here"
+msgstr ""
+
+msgctxt "#30046"
+msgid "{0} moved here"
+msgstr ""
+
+msgctxt "#30047"
+msgid "Copying {0}"
+msgstr ""
+
+msgctxt "#30048"
+msgid "File: {0}"
+msgstr ""
+
+msgctxt "#30049"
+msgid "The copy stopped.[CR]{0}"
+msgstr ""
+
+msgctxt "#30050"
+msgid "{0} could not be written. The drive may be full or read only."
+msgstr ""
+
+msgctxt "#30051"
+msgid "Delete the file {0}?"
+msgstr ""
+
+msgctxt "#30052"
+msgid "Delete the folder {0} and everything in it?"
+msgstr ""
+
+msgctxt "#30053"
+msgid "{0} deleted"
+msgstr ""
+
+msgctxt "#30054"
+msgid "{0} could not be deleted."
+msgstr ""
+
+msgctxt "#30055"
+msgid "Name of the new folder"
+msgstr ""
+
+msgctxt "#30056"
+msgid "The file continues. Only its beginning is shown."
+msgstr ""
+
+msgctxt "#30060"
+msgid "Folder"
+msgstr ""
+
+msgctxt "#30061"
+msgid "Video"
+msgstr ""
+
+msgctxt "#30062"
+msgid "Audio"
+msgstr ""
+
+msgctxt "#30063"
+msgid "Picture"
+msgstr ""
+
+msgctxt "#30064"
+msgid "Compressed file"
+msgstr ""
+
+msgctxt "#30065"
+msgid "Text"
+msgstr ""
+
+msgctxt "#30066"
+msgid "File"
+msgstr ""
+
+msgctxt "#30067"
+msgid "Adding up..."
+msgstr ""
+
+msgctxt "#30068"
+msgid "{0} so far..."
+msgstr ""
+
+msgctxt "#30070"
+msgid "Places"
+msgstr ""
+
+msgctxt "#30071"
+msgid "OK: open  ·  Hold OK: options  ·  Back: folder above"
+msgstr ""
+
+msgctxt "#30072"
+msgid "Type"
+msgstr ""
+
+msgctxt "#30073"
+msgid "Size"
+msgstr ""
+
+msgctxt "#30074"
+msgid "Contents"
+msgstr ""
+
+msgctxt "#30075"
+msgid "Modified"
+msgstr ""
+
+msgctxt "#30076"
+msgid "Location"
+msgstr ""
+
+msgctxt "#30077"
+msgid "Free space"
+msgstr ""
+
+msgctxt "#30078"
+msgid "Close"
+msgstr ""
+
+msgctxt "#30100"
+msgid "General"
+msgstr ""
+
+msgctxt "#30101"
+msgid "Show hidden files"
+msgstr ""

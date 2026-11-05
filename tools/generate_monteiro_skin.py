@@ -390,9 +390,10 @@ def home():
     ], default=9000, extra="<menucontrol>9000</menucontrol>\n<backgroundcolor>%s</backgroundcolor>" % BG)
 
 
-SHORTCUTS = [(31018, "film.png", "ActivateWindow(Videos,sources://video/,return)"),
-             (31019, "audio.png", "ActivateWindow(Music,sources://music/,return)"),
-             (31020, "folder.png", "ActivateWindow(Pictures,sources://pictures/,return)")]
+SHORTCUTS = [(31018, "film.png", "ActivateWindow(Videos,sources://video/,return)", None),
+             (31019, "audio.png", "ActivateWindow(Music,sources://music/,return)", None),
+             (31020, "folder.png", "ActivateWindow(Pictures,sources://pictures/,return)", None),
+             (31031, "folder.png", "RunAddon(script.easy.files)", "System.HasAddon(script.easy.files)")]
 
 
 def shortcuts():
@@ -404,8 +405,9 @@ def shortcuts():
         return [panel(0, 0, pill, 90, FOCUS if focused else SURFACE, condition),
                 image(28, 25, 40, 40, "$INFO[ListItem.Icon]", ON_FOCUS if focused else TEXT2, condition),
                 label(88, 0, pill - 110, 90, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT, visible=condition)]
-    items = "\n".join("<item>\n  <label>$LOCALIZE[%d]</label>\n  <icon>%s</icon>\n  <onclick>%s</onclick>\n</item>" % item
-                      for item in SHORTCUTS)
+    items = "\n".join("<item>\n  <label>$LOCALIZE[%d]</label>\n  <icon>%s</icon>\n  <onclick>%s</onclick>%s\n</item>"
+                      % (label_id, icon, action, "\n  <visible>%s</visible>" % condition if condition else "")
+                      for label_id, icon, action, condition in SHORTCUTS)
     return '''<control type="list" id="9200">
   <left>%d</left>
   <top>760</top>
@@ -680,7 +682,10 @@ def settings_menu():
     entries = [("$LOCALIZE[14200]", "ActivateWindow(PlayerSettings)", None), ("$LOCALIZE[14211]", "ActivateWindow(MediaSettings)", None),
                ("$LOCALIZE[14036]", "ActivateWindow(ServiceSettings)", None), ("$LOCALIZE[14206]", "ActivateWindow(InterfaceSettings)", None),
                ("$LOCALIZE[13000]", "ActivateWindow(SystemSettings)", None), ("$LOCALIZE[24001]", "ActivateWindow(addonbrowser)", None),
-               ("$LOCALIZE[14204]", "ActivateWindow(PVRSettings)", None), ("$LOCALIZE[7]", "ActivateWindow(filemanager)", None),
+               ("$LOCALIZE[14204]", "ActivateWindow(PVRSettings)", None),
+               # Easy Files replaces the file manager of Kodi when it is installed.
+               ("$LOCALIZE[7]", "RunAddon(script.easy.files)", "System.HasAddon(script.easy.files)"),
+               ("$LOCALIZE[7]", "ActivateWindow(filemanager)", "!System.HasAddon(script.easy.files)"),
                ("$LOCALIZE[130]", "ActivateWindow(systeminfo)", None), ("$LOCALIZE[13200]", "ActivateWindow(Profiles)", None),
                ("$LOCALIZE[14111]", "ActivateWindow(eventlog)", "!System.HasAddon(service.libreelec.settings)"),
                ("LibreELEC", "RunAddon(service.libreelec.settings)", "System.AddonIsEnabled(service.libreelec.settings)")]
@@ -1562,7 +1567,8 @@ EXTRA_STRINGS = {31013: ("Monteiro", "Monteiro"), 31014: ("items", "itens"), 310
                  31017: ("Shift", "Shift"), 31021: ("Show", "Mostrar"), 31023: ("Media source", "Fonte de mídia"),
                  31024: ("Show the profiles when Kodi starts", "Mostrar os perfis ao iniciar o Kodi"),
                  31025: ("Log in automatically", "Entrar automaticamente"), 31026: ("Channels", "Canais"), 31027: ("TV guide", "Guia de TV"),
-                 31028: ("Recordings", "Gravações"), 31029: ("Timers", "Agendamentos"), 31030: ("Search", "Busca")}
+                 31028: ("Recordings", "Gravações"), 31029: ("Timers", "Agendamentos"), 31030: ("Search", "Busca"),
+                 31031: ("Files", "Arquivos")}
 
 
 def main():

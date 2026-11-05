@@ -27,6 +27,8 @@ ASSETS = {
     "easy-channel.png": "script.m3u.channels/resources/icon.png",
     "easy-movie.png": "script.m3u.movies/resources/icon.png",
     "hdmi-switcher.png": "script.hdmi.switcher/resources/hdmi-switcher-icon.png",
+    "easy-files.png": "script.easy.files/resources/icon.png",
+    "easy-files.jpg": "script.easy.files/resources/screenshots/screenshot-01.jpg",
     "easy-channel.gif": ".github/assets/easy-channel.gif",
     "easy-movie.gif": ".github/assets/easy-movie.gif",
     "easy-channel-buttons.jpg": "script.m3u.channels/resources/screenshots/screenshot-02.jpg",
@@ -126,7 +128,7 @@ HOME = Template("""<!doctype html>
   section.alt { background: #121316; }
   .eyebrow { color: var(--accent); font-weight: 700; font-size: 14px; letter-spacing: .08em; text-transform: uppercase; margin: 0 0 8px; }
   h2.title { font-size: 34px; line-height: 1.2; margin: 0 0 12px; letter-spacing: -.01em; }
-  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 32px; }
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 32px; }
   .card { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; color: var(--text); }
   .card:hover { border-color: var(--accent); text-decoration: none; }
   .card img { width: 72px; height: 72px; border-radius: 18px; margin-bottom: 16px; }
@@ -200,12 +202,13 @@ HOME = Template("""<!doctype html>
 <section id="addons">
   <div class="wrap">
     <p class="eyebrow">Add-ons</p>
-    <h2 class="title">Three add-ons, one design</h2>
+    <h2 class="title">Four add-ons, one design</h2>
     <p class="lead">Made for the remote control, with the same dark interface, in English and Brazilian Portuguese.</p>
     <div class="cards">
       <a class="card" href="#easy-channel"><img src="assets/easy-channel.png" alt=""><h3>Easy Channel</h3><p>Live TV from M3U lists in a TV box style screen that keeps only the channels that work.</p><div class="version">Version ${channel_version} &middot; Video add-ons</div></a>
       <a class="card" href="#easy-movie"><img src="assets/easy-movie.png" alt=""><h3>Easy Movie</h3><p>Movies and series as a poster catalog, with Cinemeta, Stremio addons, downloads and subtitles.</p><div class="version">Version ${movie_version} &middot; Video add-ons</div></a>
       <a class="card" href="#hdmi-switcher"><img src="assets/hdmi-switcher.png" alt=""><h3>HDMI Switcher</h3><p>Pick the active HDMI display of a Raspberry Pi 4 from the couch.</p><div class="version">Version ${hdmi_version} &middot; Program add-ons</div></a>
+      <a class="card" href="#easy-files"><img src="assets/easy-files.png" alt=""><h3>Easy Files</h3><p>A file manager for the remote: copy, move, rename and delete with one long press.</p><div class="version">Version ${files_version} &middot; Program add-ons</div></a>
     </div>
   </div>
 </section>
@@ -270,7 +273,25 @@ HOME = Template("""<!doctype html>
   </div>
 </section>
 
-<section>
+<section id="easy-files">
+  <div class="wrap addon flip">
+    <div>
+      <div class="name"><img src="assets/easy-files.png" alt=""><h2>Easy Files</h2></div>
+      <p>A file manager made for the remote control. Places on the left, the folder on the right, and every option one long press away.</p>
+      <ul>
+        <li>Your home folder, USB drives, network shares and the folders of Kodi, with the free space of each drive.</li>
+        <li>Hold <b>OK</b> on a file or folder to open, rename, copy, move or delete it, or see its details.</li>
+        <li>Copies show their progress and can be cancelled.</li>
+      </ul>
+      <a class="more" href="${github}/blob/main/script.easy.files/README.md">Read the Easy Files guide &rarr;</a>
+    </div>
+    <div class="media">
+      <img class="shot" src="assets/easy-files.jpg" alt="Easy Files: places and the files of a folder" width="1280" height="720" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="alt">
   <div class="wrap">
     <p class="note">Easy Channel and Easy Movie do not provide any content. They play the lists and addons you add, and you are responsible for using only content you are allowed to watch.</p>
     <p class="lead" style="margin-top: 24px">Questions or ideas? Open an <a href="${github}/issues/new/choose">issue</a> or join the <a href="${github}/discussions">discussions</a>. Leia em <a href="${github}/blob/main/README.pt-BR.md">português</a>.</p>
@@ -302,7 +323,7 @@ def home(zip_name):
     found = versions()
     return HOME.substitute(pages=PAGES, github=GITHUB, zip=html.escape(zip_name), zip_link=link(zip_name),
                            channel_version=found.get("script.m3u.channels", ""), movie_version=found.get("script.m3u.movies", ""),
-                           hdmi_version=found.get("script.hdmi.switcher", ""))
+                           hdmi_version=found.get("script.hdmi.switcher", ""), files_version=found.get("script.easy.files", "1.0.0"))
 
 
 def build(output):

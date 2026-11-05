@@ -204,9 +204,9 @@
       <label>$INFO[Container(9000).ListItem.Label2]</label>
     </control>
     <control type="list" id="9200">
-      <left>486</left>
+      <left>324</left>
       <top>760</top>
-      <width>972</width>
+      <width>1296</width>
       <height>90</height>
       <orientation>horizontal</orientation>
       <scrolltime>0</scrolltime>
@@ -314,6 +314,12 @@
           <label>$LOCALIZE[31020]</label>
           <icon>folder.png</icon>
           <onclick>ActivateWindow(Pictures,sources://pictures/,return)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[31031]</label>
+          <icon>folder.png</icon>
+          <onclick>RunAddon(script.easy.files)</onclick>
+          <visible>System.HasAddon(script.easy.files)</visible>
         </item>
       </content>
     </control>

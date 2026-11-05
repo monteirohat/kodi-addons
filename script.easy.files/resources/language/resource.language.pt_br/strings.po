@@ -1,0 +1,248 @@
+# Easy Files language file
+msgid ""
+msgstr ""
+"Language: pt_BR\n"
+
+msgctxt "#30000"
+msgid "Easy Files"
+msgstr "Easy Files"
+
+msgctxt "#30010"
+msgid "Home folder"
+msgstr "Pasta pessoal"
+
+msgctxt "#30011"
+msgid "Kodi data"
+msgstr "Dados do Kodi"
+
+msgctxt "#30012"
+msgid "{0} free"
+msgstr "{0} livres"
+
+msgctxt "#30013"
+msgid "{0} folders  ·  {1} files"
+msgstr "{0} pastas  ·  {1} arquivos"
+
+msgctxt "#30014"
+msgid "This folder is empty. Hold OK for options."
+msgstr "Esta pasta está vazia. Segure OK para ver as opções."
+
+msgctxt "#30020"
+msgid "Open"
+msgstr "Abrir"
+
+msgctxt "#30021"
+msgid "Information"
+msgstr "Informações"
+
+msgctxt "#30022"
+msgid "Rename"
+msgstr "Renomear"
+
+msgctxt "#30023"
+msgid "Copy"
+msgstr "Copiar"
+
+msgctxt "#30024"
+msgid "Move"
+msgstr "Mover"
+
+msgctxt "#30025"
+msgid "Delete"
+msgstr "Apagar"
+
+msgctxt "#30026"
+msgid "New folder"
+msgstr "Nova pasta"
+
+msgctxt "#30027"
+msgid "Paste here"
+msgstr "Colar aqui"
+
+msgctxt "#30030"
+msgid "New name"
+msgstr "Novo nome"
+
+msgctxt "#30031"
+msgid "Renamed"
+msgstr "Renomeado"
+
+msgctxt "#30032"
+msgid "{0} copied. Open the destination folder, hold OK and select Paste here."
+msgstr "{0} copiado. Abra a pasta de destino, segure OK e escolha Colar aqui."
+
+msgctxt "#30033"
+msgid "{0} ready to move. Open the destination folder, hold OK and select Paste here."
+msgstr "{0} pronto para mover. Abra a pasta de destino, segure OK e escolha Colar aqui."
+
+msgctxt "#30034"
+msgid "To paste: {0}  ·  Hold OK in the destination folder"
+msgstr "Para colar: {0}  ·  Segure OK na pasta de destino"
+
+msgctxt "#30035"
+msgid "To move: {0}  ·  Hold OK in the destination folder"
+msgstr "Para mover: {0}  ·  Segure OK na pasta de destino"
+
+msgctxt "#30036"
+msgid "{0} already exists here. Replace it, or keep both?"
+msgstr "{0} já existe aqui. Substituir ou manter os dois?"
+
+msgctxt "#30037"
+msgid "Replace"
+msgstr "Substituir"
+
+msgctxt "#30038"
+msgid "Keep both"
+msgstr "Manter os dois"
+
+msgctxt "#30039"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt "#30040"
+msgid "The folder could not be opened.[CR]{0}"
+msgstr "Não foi possível abrir a pasta.[CR]{0}"
+
+msgctxt "#30041"
+msgid "The name cannot be empty or contain / or \\."
+msgstr "O nome não pode ficar vazio nem conter / ou \\."
+
+msgctxt "#30042"
+msgid "{0} already exists in this folder."
+msgstr "{0} já existe nesta pasta."
+
+msgctxt "#30043"
+msgid "The change could not be made. The drive may be read only."
+msgstr "Não foi possível fazer a alteração. O disco pode ser somente leitura."
+
+msgctxt "#30044"
+msgid "A folder cannot be pasted inside itself."
+msgstr "Uma pasta não pode ser colada dentro dela mesma."
+
+msgctxt "#30045"
+msgid "{0} copied here"
+msgstr "{0} copiado aqui"
+
+msgctxt "#30046"
+msgid "{0} moved here"
+msgstr "{0} movido para cá"
+
+msgctxt "#30047"
+msgid "Copying {0}"
+msgstr "Copiando {0}"
+
+msgctxt "#30048"
+msgid "File: {0}"
+msgstr "Arquivo: {0}"
+
+msgctxt "#30049"
+msgid "The copy stopped.[CR]{0}"
+msgstr "A cópia parou.[CR]{0}"
+
+msgctxt "#30050"
+msgid "{0} could not be written. The drive may be full or read only."
+msgstr "Não foi possível gravar {0}. O disco pode estar cheio ou ser somente leitura."
+
+msgctxt "#30051"
+msgid "Delete the file {0}?"
+msgstr "Apagar o arquivo {0}?"
+
+msgctxt "#30052"
+msgid "Delete the folder {0} and everything in it?"
+msgstr "Apagar a pasta {0} e tudo o que há nela?"
+
+msgctxt "#30053"
+msgid "{0} deleted"
+msgstr "{0} apagado"
+
+msgctxt "#30054"
+msgid "{0} could not be deleted."
+msgstr "Não foi possível apagar {0}."
+
+msgctxt "#30055"
+msgid "Name of the new folder"
+msgstr "Nome da nova pasta"
+
+msgctxt "#30056"
+msgid "The file continues. Only its beginning is shown."
+msgstr "O arquivo continua. Só o começo é mostrado."
+
+msgctxt "#30060"
+msgid "Folder"
+msgstr "Pasta"
+
+msgctxt "#30061"
+msgid "Video"
+msgstr "Vídeo"
+
+msgctxt "#30062"
+msgid "Audio"
+msgstr "Áudio"
+
+msgctxt "#30063"
+msgid "Picture"
+msgstr "Imagem"
+
+msgctxt "#30064"
+msgid "Compressed file"
+msgstr "Arquivo compactado"
+
+msgctxt "#30065"
+msgid "Text"
+msgstr "Texto"
+
+msgctxt "#30066"
+msgid "File"
+msgstr "Arquivo"
+
+msgctxt "#30067"
+msgid "Adding up..."
+msgstr "Calculando..."
+
+msgctxt "#30068"
+msgid "{0} so far..."
+msgstr "{0} até agora..."
+
+msgctxt "#30070"
+msgid "Places"
+msgstr "Locais"
+
+msgctxt "#30071"
+msgid "OK: open  ·  Hold OK: options  ·  Back: folder above"
+msgstr "OK: abrir  ·  Segure OK: opções  ·  Voltar: pasta acima"
+
+msgctxt "#30072"
+msgid "Type"
+msgstr "Tipo"
+
+msgctxt "#30073"
+msgid "Size"
+msgstr "Tamanho"
+
+msgctxt "#30074"
+msgid "Contents"
+msgstr "Conteúdo"
+
+msgctxt "#30075"
+msgid "Modified"
+msgstr "Modificado"
+
+msgctxt "#30076"
+msgid "Location"
+msgstr "Local"
+
+msgctxt "#30077"
+msgid "Free space"
+msgstr "Espaço livre"
+
+msgctxt "#30078"
+msgid "Close"
+msgstr "Fechar"
+
+msgctxt "#30100"
+msgid "General"
+msgstr "Geral"
+
+msgctxt "#30101"
+msgid "Show hidden files"
+msgstr "Mostrar arquivos ocultos"

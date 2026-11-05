@@ -118,7 +118,13 @@
         </item>
         <item>
           <label>$LOCALIZE[7]</label>
+          <onclick>RunAddon(script.easy.files)</onclick>
+          <visible>System.HasAddon(script.easy.files)</visible>
+        </item>
+        <item>
+          <label>$LOCALIZE[7]</label>
           <onclick>ActivateWindow(filemanager)</onclick>
+          <visible>!System.HasAddon(script.easy.files)</visible>
         </item>
         <item>
           <label>$LOCALIZE[130]</label>
