@@ -332,7 +332,7 @@ HOME_ITEMS = [
 ]
 # The smaller row under the tiles.
 SHORTCUTS = [
-    (31020, "picture.png", "ActivateWindow(Pictures,sources://pictures/,return)", None),
+    (31020, "picture.png", "RunAddon(script.easy.picture)", "System.HasAddon(script.easy.picture)"),
     (31031, "settings-files.png", "RunAddon(script.easy.files)", "System.HasAddon(script.easy.files)"),
     (31003, "puzzle.png", "ActivateWindow(addonbrowser,addons://user/all,return)", None),
 ]

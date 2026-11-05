@@ -28,7 +28,7 @@ The smaller row under the tiles:
 
 | Item | Opens |
 | --- | --- |
-| **Pictures** | The picture sources and folders of Kodi. |
+| **Pictures** | Easy Picture. Without it, Kodi offers to install it. |
 | **Files** | Easy Files. Without it, Kodi offers to install it. |
 | **Add-ons** | The installed add-ons, with a toolbar for search, updates, recently updated add-ons, repositories, installing from a ZIP file, checking for updates and the add-on settings. |
 

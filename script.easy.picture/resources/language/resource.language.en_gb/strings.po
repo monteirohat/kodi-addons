@@ -1,0 +1,152 @@
+# Easy Picture language file
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "Easy Picture"
+msgstr ""
+
+msgctxt "#30001"
+msgid "All pictures"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Favorites"
+msgstr ""
+
+msgctxt "#30003"
+msgid "{0} pictures"
+msgstr ""
+
+msgctxt "#30005"
+msgid "1 picture"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Settings"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Folders of pictures"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Look for new pictures"
+msgstr ""
+
+msgctxt "#30020"
+msgid "OK: view in full screen  ·  Hold OK: options  ·  Back: albums"
+msgstr ""
+
+msgctxt "#30021"
+msgid "No pictures yet. Add the folders with your photos with the folder button above the albums."
+msgstr ""
+
+msgctxt "#30022"
+msgid "No pictures in this album."
+msgstr ""
+
+msgctxt "#30030"
+msgid "Folders of pictures"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Add a folder"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Remove {0}"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Choose a folder with pictures"
+msgstr ""
+
+msgctxt "#30034"
+msgid "{0} added"
+msgstr ""
+
+msgctxt "#30035"
+msgid "Remove {0} from Easy Picture? The pictures stay in the folder."
+msgstr ""
+
+msgctxt "#30036"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30037"
+msgid "Remove"
+msgstr ""
+
+msgctxt "#30038"
+msgid "{0} new pictures"
+msgstr ""
+
+msgctxt "#30040"
+msgid "View in full screen"
+msgstr ""
+
+msgctxt "#30042"
+msgid "Add to favorites"
+msgstr ""
+
+msgctxt "#30043"
+msgid "Remove from favorites"
+msgstr ""
+
+msgctxt "#30044"
+msgid "Information"
+msgstr ""
+
+msgctxt "#30045"
+msgid "Added to favorites"
+msgstr ""
+
+msgctxt "#30046"
+msgid "Removed from favorites"
+msgstr ""
+
+msgctxt "#30050"
+msgid "Name"
+msgstr ""
+
+msgctxt "#30051"
+msgid "Album"
+msgstr ""
+
+msgctxt "#30052"
+msgid "Date"
+msgstr ""
+
+msgctxt "#30053"
+msgid "Size"
+msgstr ""
+
+msgctxt "#30054"
+msgid "Resolution"
+msgstr ""
+
+msgctxt "#30055"
+msgid "Location"
+msgstr ""
+
+msgctxt "#30060"
+msgid "Left and Right: pictures  ·  Hold OK: options  ·  Back: gallery"
+msgstr ""
+
+msgctxt "#30100"
+msgid "General"
+msgstr ""
+
+msgctxt "#30101"
+msgid "Order of all pictures"
+msgstr ""
+
+msgctxt "#30102"
+msgid "Newest first"
+msgstr ""
+
+msgctxt "#30103"
+msgid "By album and name"
+msgstr ""

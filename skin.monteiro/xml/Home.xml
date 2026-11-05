@@ -286,7 +286,8 @@
         <item>
           <label>$LOCALIZE[31020]</label>
           <icon>picture.png</icon>
-          <onclick>ActivateWindow(Pictures,sources://pictures/,return)</onclick>
+          <onclick condition="System.HasAddon(script.easy.picture)">RunAddon(script.easy.picture)</onclick>
+          <onclick condition="!System.HasAddon(script.easy.picture)">InstallAddon(script.easy.picture)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[31031]</label>

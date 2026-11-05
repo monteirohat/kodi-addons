@@ -29,6 +29,8 @@ ASSETS = {
     "hdmi-switcher.png": "script.hdmi.switcher/resources/hdmi-switcher-icon.png",
     "easy-files.png": "script.easy.files/resources/icon.png",
     "easy-files.jpg": "script.easy.files/resources/screenshots/screenshot-01.jpg",
+    "easy-picture.png": "script.easy.picture/resources/icon.png",
+    "easy-picture.jpg": "script.easy.picture/resources/screenshots/screenshot-01.jpg",
     "easy-channel.gif": ".github/assets/easy-channel.gif",
     "easy-movie.gif": ".github/assets/easy-movie.gif",
     "easy-channel-buttons.jpg": "script.m3u.channels/resources/screenshots/screenshot-02.jpg",
@@ -202,13 +204,14 @@ HOME = Template("""<!doctype html>
 <section id="addons">
   <div class="wrap">
     <p class="eyebrow">Add-ons</p>
-    <h2 class="title">Four add-ons, one design</h2>
+    <h2 class="title">Five add-ons, one design</h2>
     <p class="lead">Made for the remote control, with the same dark interface, in English and Brazilian Portuguese.</p>
     <div class="cards">
       <a class="card" href="#easy-channel"><img src="assets/easy-channel.png" alt=""><h3>Easy Channel</h3><p>Live TV from M3U lists in a TV box style screen that keeps only the channels that work.</p><div class="version">Version ${channel_version} &middot; Video add-ons</div></a>
       <a class="card" href="#easy-movie"><img src="assets/easy-movie.png" alt=""><h3>Easy Movie</h3><p>Movies and series as a poster catalog, with Cinemeta, Stremio addons, downloads and subtitles.</p><div class="version">Version ${movie_version} &middot; Video add-ons</div></a>
       <a class="card" href="#hdmi-switcher"><img src="assets/hdmi-switcher.png" alt=""><h3>HDMI Switcher</h3><p>Pick the active HDMI display of a Raspberry Pi 4 from the couch.</p><div class="version">Version ${hdmi_version} &middot; Program add-ons</div></a>
       <a class="card" href="#easy-files"><img src="assets/easy-files.png" alt=""><h3>Easy Files</h3><p>A file manager for the remote: copy, move, rename and delete with one long press.</p><div class="version">Version ${files_version} &middot; Program add-ons</div></a>
+      <a class="card" href="#easy-picture"><img src="assets/easy-picture.png" alt=""><h3>Easy Picture</h3><p>Your photos in a gallery, by album, and each one in full screen with one press of OK.</p><div class="version">Version ${picture_version} &middot; Picture add-ons</div></a>
     </div>
   </div>
 </section>
@@ -291,6 +294,24 @@ HOME = Template("""<!doctype html>
   </div>
 </section>
 
+<section id="easy-picture">
+  <div class="wrap addon">
+    <div>
+      <div class="name"><img src="assets/easy-picture.png" alt=""><h2>Easy Picture</h2></div>
+      <p>Your photos on the TV, in a gallery. Albums on the left, the pictures of the album on the right, and each picture in full screen with one press of OK.</p>
+      <ul>
+        <li>All pictures and your favorites first, then one album for each folder of photos.</li>
+        <li>Left and Right move through the pictures in full screen.</li>
+        <li>Hold <b>OK</b> on a picture to mark it as favorite or see its date, size, resolution and folder.</li>
+      </ul>
+      <a class="more" href="${github}/blob/main/script.easy.picture/README.md">Read the Easy Picture guide &rarr;</a>
+    </div>
+    <div class="media">
+      <img class="shot" src="assets/easy-picture.jpg" alt="Easy Picture: albums and the gallery of an album" width="1280" height="720" loading="lazy">
+    </div>
+  </div>
+</section>
+
 <section class="alt">
   <div class="wrap">
     <p class="note">Easy Channel and Easy Movie do not provide any content. They play the lists and addons you add, and you are responsible for using only content you are allowed to watch.</p>
@@ -323,7 +344,8 @@ def home(zip_name):
     found = versions()
     return HOME.substitute(pages=PAGES, github=GITHUB, zip=html.escape(zip_name), zip_link=link(zip_name),
                            channel_version=found.get("script.m3u.channels", ""), movie_version=found.get("script.m3u.movies", ""),
-                           hdmi_version=found.get("script.hdmi.switcher", ""), files_version=found.get("script.easy.files", "1.0.0"))
+                           hdmi_version=found.get("script.hdmi.switcher", ""), files_version=found.get("script.easy.files", "1.0.0"),
+                           picture_version=found.get("script.easy.picture", "1.0.0"))
 
 
 def build(output):

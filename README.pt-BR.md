@@ -40,7 +40,7 @@ Registre o repositório **Monteiro** no Kodi uma vez, pelo endereço web, e todo
 1. No Kodi, abra **Configurações > Sistema > Add-ons** e ligue **Fontes desconhecidas**.
 2. Abra **Configurações > Gerenciador de arquivos > Adicionar fonte**, selecione **&lt;Nenhum&gt;**, digite `https://monteirohat.github.io/kodi-addons/`, dê o nome **Monteiro** à fonte e selecione **OK**.
 3. Abra **Configurações > Add-ons > Instalar via arquivo zip > Monteiro** e selecione **repository.monteiromedia-1.0.5.zip**. Espere o aviso de que o repositório **Monteiro** foi instalado.
-4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, e o HDMI Switcher e o Easy Files em **Add-ons de programas**.
+4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, o HDMI Switcher e o Easy Files em **Add-ons de programas**, e o Easy Picture em **Add-ons de imagens**.
 
 As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o menu de contexto do **Monteiro** e selecione **Verificar atualizações**. Se o aparelho com Kodi estiver sem internet, baixe o ZIP na [última release](https://github.com/monteirohat/kodi-addons/releases/latest), copie para um pendrive e use **Instalar via arquivo zip**.
 
@@ -145,6 +145,22 @@ O HDMI Switcher precisa de uma [configuração única](script.hdmi.switcher/READ
 ![Easy Files](script.easy.files/resources/screenshots/screenshot-01.jpg)
 
 Leia o [guia do Easy Files](script.easy.files/README.md) para conhecer cada recurso. O guia está em inglês.
+
+### Easy Picture
+
+<img src="script.easy.picture/resources/icon.png" alt="Easy Picture" width="72" align="left">
+
+**Suas fotos na TV, em galeria.** Os álbuns à esquerda, as fotos do álbum à direita e cada foto em tela cheia com um toque no OK.
+
+<br clear="left">
+
+- Todas as imagens e as suas favoritas primeiro, e depois um álbum para cada pasta de fotos.
+- Esquerda e Direita passam as fotos em tela cheia.
+- Segure o **OK** numa foto para marcá-la como favorita ou ver a data, o tamanho, a resolução e a pasta.
+
+![Easy Picture](script.easy.picture/resources/screenshots/screenshot-01.jpg)
+
+Leia o [guia do Easy Picture](script.easy.picture/README.md) para conhecer cada recurso. O guia está em inglês.
 
 > [!NOTE]
 > O Easy Channel e o Easy Movie não oferecem nenhum conteúdo. Eles tocam as listas M3U que você adiciona, e você é responsável por usar só listas que tem permissão para assistir. Os repositórios sugeridos do GitHub reúnem canais gratuitos e públicos e filmes em domínio público, e são mantidos por terceiros.

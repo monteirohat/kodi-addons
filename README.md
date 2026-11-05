@@ -40,7 +40,7 @@ Register the **Monteiro** repository in Kodi once, from its web address, and eve
 1. In Kodi, open **Settings > System > Add-ons** and turn on **Unknown sources**.
 2. Open **Settings > File manager > Add source**, select **&lt;None&gt;**, enter `https://monteirohat.github.io/kodi-addons/`, name the source **Monteiro**, and select **OK**.
 3. Open **Settings > Add-ons > Install from zip file > Monteiro** and select **repository.monteiromedia-1.0.5.zip**. Wait for the **Monteiro** repository installation notification.
-4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, and HDMI Switcher and Easy Files are under **Program add-ons**.
+4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, HDMI Switcher and Easy Files are under **Program add-ons**, and Easy Picture is under **Picture add-ons**.
 
 Updates arrive through the repository. If one is not visible yet, open the context menu of **Monteiro** and select **Check for updates**. Without internet access on the Kodi device, download the ZIP from the [latest release](https://github.com/monteirohat/kodi-addons/releases/latest), copy it to a USB drive and use **Install from zip file**.
 
@@ -145,6 +145,22 @@ HDMI Switcher needs a [one-time setup](script.hdmi.switcher/README.md#one-time-s
 ![Easy Files](script.easy.files/resources/screenshots/screenshot-01.jpg)
 
 Read the [Easy Files guide](script.easy.files/README.md) for every feature.
+
+### Easy Picture
+
+<img src="script.easy.picture/resources/icon.png" alt="Easy Picture" width="72" align="left">
+
+**Your photos on the TV, in a gallery.** Albums on the left, the pictures of the album on the right, and each picture in full screen with one press of OK.
+
+<br clear="left">
+
+- All pictures and your favorites first, then one album for each folder of photos.
+- Left and Right move through the pictures in full screen.
+- Hold **OK** on a picture to mark it as favorite or see its date, size, resolution and folder.
+
+![Easy Picture](script.easy.picture/resources/screenshots/screenshot-01.jpg)
+
+Read the [Easy Picture guide](script.easy.picture/README.md) for every feature.
 
 > [!NOTE]
 > Easy Channel and Easy Movie do not provide any content. They play the M3U lists you add, and you are responsible for using only lists you are allowed to watch. The suggested GitHub repositories collect free, public channels and public domain movies, and are maintained by third parties.

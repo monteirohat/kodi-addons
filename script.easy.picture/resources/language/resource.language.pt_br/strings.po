@@ -1,0 +1,152 @@
+# Easy Picture language file
+msgid ""
+msgstr ""
+"Language: pt_BR\n"
+
+msgctxt "#30000"
+msgid "Easy Picture"
+msgstr "Easy Picture"
+
+msgctxt "#30001"
+msgid "All pictures"
+msgstr "Todas as imagens"
+
+msgctxt "#30002"
+msgid "Favorites"
+msgstr "Favoritas"
+
+msgctxt "#30003"
+msgid "{0} pictures"
+msgstr "{0} imagens"
+
+msgctxt "#30005"
+msgid "1 picture"
+msgstr "1 imagem"
+
+msgctxt "#30010"
+msgid "Settings"
+msgstr "Ajustes"
+
+msgctxt "#30011"
+msgid "Folders of pictures"
+msgstr "Pastas de imagens"
+
+msgctxt "#30012"
+msgid "Look for new pictures"
+msgstr "Procurar novas imagens"
+
+msgctxt "#30020"
+msgid "OK: view in full screen  ·  Hold OK: options  ·  Back: albums"
+msgstr "OK: ver em tela cheia  ·  Segure OK: opções  ·  Voltar: álbuns"
+
+msgctxt "#30021"
+msgid "No pictures yet. Add the folders with your photos with the folder button above the albums."
+msgstr "Ainda não há imagens. Adicione as pastas com suas fotos no botão de pasta, acima dos álbuns."
+
+msgctxt "#30022"
+msgid "No pictures in this album."
+msgstr "Nenhuma imagem neste álbum."
+
+msgctxt "#30030"
+msgid "Folders of pictures"
+msgstr "Pastas de imagens"
+
+msgctxt "#30031"
+msgid "Add a folder"
+msgstr "Adicionar uma pasta"
+
+msgctxt "#30032"
+msgid "Remove {0}"
+msgstr "Remover {0}"
+
+msgctxt "#30033"
+msgid "Choose a folder with pictures"
+msgstr "Escolha uma pasta com imagens"
+
+msgctxt "#30034"
+msgid "{0} added"
+msgstr "{0} adicionada"
+
+msgctxt "#30035"
+msgid "Remove {0} from Easy Picture? The pictures stay in the folder."
+msgstr "Remover {0} do Easy Picture? As imagens continuam na pasta."
+
+msgctxt "#30036"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt "#30037"
+msgid "Remove"
+msgstr "Remover"
+
+msgctxt "#30038"
+msgid "{0} new pictures"
+msgstr "{0} novas imagens"
+
+msgctxt "#30040"
+msgid "View in full screen"
+msgstr "Ver em tela cheia"
+
+msgctxt "#30042"
+msgid "Add to favorites"
+msgstr "Adicionar às favoritas"
+
+msgctxt "#30043"
+msgid "Remove from favorites"
+msgstr "Remover das favoritas"
+
+msgctxt "#30044"
+msgid "Information"
+msgstr "Informações"
+
+msgctxt "#30045"
+msgid "Added to favorites"
+msgstr "Adicionada às favoritas"
+
+msgctxt "#30046"
+msgid "Removed from favorites"
+msgstr "Removida das favoritas"
+
+msgctxt "#30050"
+msgid "Name"
+msgstr "Nome"
+
+msgctxt "#30051"
+msgid "Album"
+msgstr "Álbum"
+
+msgctxt "#30052"
+msgid "Date"
+msgstr "Data"
+
+msgctxt "#30053"
+msgid "Size"
+msgstr "Tamanho"
+
+msgctxt "#30054"
+msgid "Resolution"
+msgstr "Resolução"
+
+msgctxt "#30055"
+msgid "Location"
+msgstr "Local"
+
+msgctxt "#30060"
+msgid "Left and Right: pictures  ·  Hold OK: options  ·  Back: gallery"
+msgstr "Esquerda e Direita: fotos  ·  Segure OK: opções  ·  Voltar: galeria"
+
+msgctxt "#30100"
+msgid "General"
+msgstr "Geral"
+
+msgctxt "#30101"
+msgid "Order of all pictures"
+msgstr "Ordem de todas as imagens"
+
+msgctxt "#30102"
+msgid "Newest first"
+msgstr "Mais recentes primeiro"
+
+msgctxt "#30103"
+msgid "By album and name"
+msgstr "Por álbum e nome"
