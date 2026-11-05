@@ -781,6 +781,14 @@ def addon_browser():
     # A place opened from the toolbar takes the focus, so the remote moves in it right away.
     buttons = [tool.replace(")</onclick>", ")</onclick>\n  <onclick>SetFocus(50)</onclick>", 1) if "Container.Update" in tool else tool
                for tool in buttons]
+    # Repositories opens Monteiro Add-ons, which lists the add-ons of each repository with their categories. Without it,
+    # the categories of Kodi.
+    helper = "System.HasAddon(script.monteiro.addons)"
+    buttons = [tool.replace("<onclick>Container.Update(addons://repos/)</onclick>\n  <onclick>SetFocus(50)</onclick>",
+                            '<onclick condition="%s">RunScript(script.monteiro.addons)</onclick>\n'
+                            '  <onclick condition="!%s">Container.Update(addons://repos/)</onclick>\n'
+                            '  <onclick condition="!%s">SetFocus(50)</onclick>' % (helper, helper, helper))
+               for tool in buttons]
     toolbar = control("grouplist", 9000, left=left, top=140, width=width, height=76, orientation="horizontal", itemgap=16,
                       ondown=50, onup="noop", onleft="noop", onright="noop", children=buttons)
     installed = "String.IsEqual(Container.FolderPath,%s)" % ADDONS_HOME

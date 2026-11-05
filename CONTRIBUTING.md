@@ -27,6 +27,7 @@ To share a Kodi log, enable **Settings > System > Logging > Enable debug logging
 | [HDMI Switcher](script.hdmi.switcher/README.md) | `script.hdmi.switcher` | Select the active HDMI display and restart Kodi. |
 | [Easy Files](script.easy.files/README.md) | `script.easy.files` | Browse drives and folders, and copy, move, rename and delete files. |
 | [Easy Picture](script.easy.picture/README.md) | `script.easy.picture` | Show the photos of your folders in a gallery, by album, and each one in full screen. |
+| [Monteiro Add-ons](script.monteiro.addons/README.md) | `script.monteiro.addons` | List the add-ons of each repository with their categories. The Monteiro skin opens it from Repositories. |
 | Monteiro | `repository.monteiromedia` | Register this repository in Kodi for installation and updates. |
 
 ## Publish on GitHub
@@ -62,6 +63,7 @@ The name shown in Kodi is **Monteiro**. The technical ID remains `repository.mon
 | `script.hdmi.switcher/` | HDMI Switcher source and documentation. |
 | `script.easy.files/` | Easy Files source and documentation. |
 | `script.easy.picture/` | Easy Picture source and documentation. |
+| `script.monteiro.addons/` | Monteiro Add-ons source and documentation. |
 | `repository.monteiromedia/` | Repository registration add-on. |
 | `repository/addons.xml` | Generated Kodi add-on catalog. |
 | `repository/addons.xml.md5` | Catalog change indicator used by Kodi. |
@@ -78,6 +80,8 @@ The name shown in Kodi is **Monteiro**. The technical ID remains `repository.mon
 | `tools/generate_easy_files_art.py` | Generator of the Easy Files icon, fanart, header symbol and file icons. |
 | `tools/generate_easy_picture_skin.py` | Generator of the Easy Picture window layouts. |
 | `tools/generate_easy_picture_art.py` | Generator of the Easy Picture icon, fanart, header symbol and toolbar icons. |
+| `tools/generate_monteiro_addons_skin.py` | Generator of the Monteiro Add-ons window layout. |
+| `tools/generate_monteiro_addons_art.py` | Generator of the Monteiro Add-ons icon, fanart and header symbol. |
 | `tools/generate_hdmi_switcher_skin.py` | Generator of the HDMI Switcher window layout. |
 | `tools/generate_hdmi_switcher_art.py` | Generator of the HDMI Switcher icon, fanart, header symbol, and display icon. |
 | `.github/workflows/publish-repository.yml` | Build and publish workflow, including the GitHub Pages site. |

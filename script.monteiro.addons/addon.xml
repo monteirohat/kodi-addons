@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addon id="script.monteiro.addons" name="Monteiro Add-ons" version="1.0.0" provider-name="Monteiro">
+  <requires>
+    <import addon="xbmc.python" version="3.0.1" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Every add-on of your repositories in one list, with its category</summary>
+    <summary lang="pt_BR">Todos os add-ons dos seus repositórios numa lista, com a categoria de cada um</summary>
+    <description lang="en_GB">Monteiro Add-ons shows the add-ons of the repositories installed in Kodi in the design of the Monteiro add-ons, with the repositories on the left and their add-ons on the right, in one list instead of categories. Each add-on shows its category, such as Look and feel, Program add-ons or Video add-ons, its version, a green check when it is installed, and whether it has an update. OK shows the details of an add-on, with its description and screenshots, to install it or open it. The Monteiro skin opens it from Repositories in the add-on browser.</description>
+    <description lang="pt_BR">O Monteiro Add-ons mostra os add-ons dos repositórios instalados no Kodi no visual dos add-ons Monteiro, com os repositórios à esquerda e os add-ons à direita, numa lista só em vez de categorias. Cada add-on mostra a categoria, como Olhar e sentir, Add-ons de programas ou Add-ons de vídeo, a versão, um check verde quando está instalado, e se tem atualização. OK mostra os detalhes de um add-on, com a descrição e as capturas de tela, para instalá-lo ou abri-lo. O skin Monteiro o abre em Repositórios, na tela de add-ons.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+    <website>https://github.com/monteirohat/kodi-addons</website>
+    <source>https://github.com/monteirohat/kodi-addons/tree/main/script.monteiro.addons</source>
+    <news>1.0.0 - First release.</news>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>

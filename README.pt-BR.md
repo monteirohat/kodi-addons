@@ -195,7 +195,7 @@ Um skin para o Kodi no visual dos add-ons, sob a licença MIT. A tela inicial ab
 ![Tela inicial do skin Monteiro](.github/assets/monteiro-skin.jpg)
 
 - **TV**, **Filmes** e **Séries** abrem o Easy Channel e o Easy Movie, **Imagens** abre o Easy Picture e **Arquivos** abre o Easy Files. Sem o add-on, o item oferece a instalação.
-- **Vídeos** e **Música** abrem as fontes do Kodi, e **Add-ons** abre os add-ons instalados, com uma barra para busca, repositórios e atualizações.
+- **Vídeos** e **Música** abrem as fontes do Kodi, e **Add-ons** abre os add-ons instalados, com uma barra para busca, repositórios e atualizações. **Repositórios** lista os add-ons de cada repositório com as categorias, pelo [Monteiro Add-ons](script.monteiro.addons/README.md), que o skin instala junto.
 - Os botões no canto superior direito abrem as configurações de Wi-Fi do LibreELEC, as configurações do Kodi e o menu de energia.
 
 Leia o [guia do skin](skin.monteiro/README.md), em inglês, para conhecer cada tela.

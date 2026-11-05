@@ -322,7 +322,7 @@ HOME = Template("""<!doctype html>
       <p>A Kodi skin in the design of the add-ons. Its home screen opens the Easy add-ons directly, and its settings, menus, keyboard and player bars share their dark look and steel blue focus.</p>
       <ul>
         <li><b>TV</b>, <b>Movies</b> and <b>Series</b> open Easy Channel and Easy Movie, <b>Pictures</b> opens Easy Picture, and <b>Files</b> opens Easy Files.</li>
-        <li><b>Add-ons</b> opens the installed add-ons, with a toolbar for search, repositories and updates.</li>
+        <li><b>Add-ons</b> opens the installed add-ons, with a toolbar for search, repositories and updates. <b>Repositories</b> lists the add-ons of each repository with their categories.</li>
         <li>Buttons for the Wi-Fi settings of LibreELEC, the settings of Kodi and the power menu.</li>
       </ul>
       <a class="more" href="${github}/blob/main/skin.monteiro/README.md">Read the skin guide &rarr;</a>

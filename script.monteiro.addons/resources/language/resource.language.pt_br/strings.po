@@ -1,0 +1,92 @@
+# Monteiro Add-ons language file
+msgid ""
+msgstr ""
+"Language: pt_BR\n"
+
+msgctxt "#30000"
+msgid "Monteiro Add-ons"
+msgstr "Monteiro Add-ons"
+
+msgctxt "#30001"
+msgid "All repositories"
+msgstr "Todos os repositórios"
+
+msgctxt "#30002"
+msgid "{0} add-ons"
+msgstr "{0} add-ons"
+
+msgctxt "#30003"
+msgid "1 add-on"
+msgstr "1 add-on"
+
+msgctxt "#30004"
+msgid "Installed"
+msgstr "Instalado"
+
+msgctxt "#30005"
+msgid "Search"
+msgstr "Buscar"
+
+msgctxt "#30006"
+msgid "Update repositories"
+msgstr "Atualizar repositórios"
+
+msgctxt "#30007"
+msgid "OK: install or open  ·  Hold OK: options  ·  Back: repositories"
+msgstr "OK: instalar ou abrir  ·  Segure OK: opções  ·  Voltar: repositórios"
+
+msgctxt "#30008"
+msgid "No add-on matches \"{0}\"."
+msgstr "Nenhum add-on encontrado para \"{0}\"."
+
+msgctxt "#30009"
+msgid "The add-ons of the repositories could not be read.[CR]{0}"
+msgstr "Não foi possível ler os add-ons dos repositórios.[CR]{0}"
+
+msgctxt "#30010"
+msgid "Search add-ons"
+msgstr "Buscar add-ons"
+
+msgctxt "#30011"
+msgid "Search: {0}"
+msgstr "Busca: {0}"
+
+msgctxt "#30012"
+msgid "Open"
+msgstr "Abrir"
+
+msgctxt "#30013"
+msgid "Settings"
+msgstr "Configurações"
+
+msgctxt "#30014"
+msgid "Install"
+msgstr "Instalar"
+
+msgctxt "#30015"
+msgid "Updating the repositories..."
+msgstr "Atualizando os repositórios..."
+
+msgctxt "#30016"
+msgid "{0} installed"
+msgstr "{0} instalado"
+
+msgctxt "#30017"
+msgid "Update available"
+msgstr "Atualização disponível"
+
+msgctxt "#30018"
+msgid "See the updates"
+msgstr "Ver as atualizações"
+
+msgctxt "#30020"
+msgid "Close"
+msgstr "Fechar"
+
+msgctxt "#30021"
+msgid "Version {0}"
+msgstr "Versão {0}"
+
+msgctxt "#30022"
+msgid "Version {0}  ·  {1}"
+msgstr "Versão {0}  ·  {1}"

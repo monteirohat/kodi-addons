@@ -195,7 +195,7 @@ A Kodi skin in the design of the add-ons, under the MIT license. Its home screen
 ![Monteiro skin home screen](.github/assets/monteiro-skin.jpg)
 
 - **TV**, **Movies** and **Series** open Easy Channel and Easy Movie, **Pictures** opens Easy Picture, and **Files** opens Easy Files. Without an add-on, the item offers to install it.
-- **Videos** and **Music** open the sources of Kodi, and **Add-ons** opens the installed add-ons, with a toolbar for search, repositories and updates.
+- **Videos** and **Music** open the sources of Kodi, and **Add-ons** opens the installed add-ons, with a toolbar for search, repositories and updates. **Repositories** lists the add-ons of each repository with their categories, with [Monteiro Add-ons](script.monteiro.addons/README.md), which the skin installs with itself.
 - The buttons at the top right open the Wi-Fi settings of LibreELEC, the settings of Kodi and the power menu.
 
 Read the [skin guide](skin.monteiro/README.md) for every screen.

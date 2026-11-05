@@ -1,0 +1,92 @@
+# Monteiro Add-ons language file
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "Monteiro Add-ons"
+msgstr ""
+
+msgctxt "#30001"
+msgid "All repositories"
+msgstr ""
+
+msgctxt "#30002"
+msgid "{0} add-ons"
+msgstr ""
+
+msgctxt "#30003"
+msgid "1 add-on"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Installed"
+msgstr ""
+
+msgctxt "#30005"
+msgid "Search"
+msgstr ""
+
+msgctxt "#30006"
+msgid "Update repositories"
+msgstr ""
+
+msgctxt "#30007"
+msgid "OK: install or open  ·  Hold OK: options  ·  Back: repositories"
+msgstr ""
+
+msgctxt "#30008"
+msgid "No add-on matches \"{0}\"."
+msgstr ""
+
+msgctxt "#30009"
+msgid "The add-ons of the repositories could not be read.[CR]{0}"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Search add-ons"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Search: {0}"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Open"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Settings"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Install"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Updating the repositories..."
+msgstr ""
+
+msgctxt "#30016"
+msgid "{0} installed"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Update available"
+msgstr ""
+
+msgctxt "#30018"
+msgid "See the updates"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Close"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Version {0}"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Version {0}  ·  {1}"
+msgstr ""

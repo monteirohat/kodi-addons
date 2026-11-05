@@ -140,8 +140,9 @@
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[31047]</label>
-        <onclick>Container.Update(addons://repos/)</onclick>
-        <onclick>SetFocus(50)</onclick>
+        <onclick condition="System.HasAddon(script.monteiro.addons)">RunScript(script.monteiro.addons)</onclick>
+        <onclick condition="!System.HasAddon(script.monteiro.addons)">Container.Update(addons://repos/)</onclick>
+        <onclick condition="!System.HasAddon(script.monteiro.addons)">SetFocus(50)</onclick>
       </control>
       <control type="button" id="207">
         <left>0</left>
