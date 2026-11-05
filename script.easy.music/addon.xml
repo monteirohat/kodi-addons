@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addon id="script.easy.music" name="Easy Music" version="1.0.0" provider-name="Monteiro">
+  <requires>
+    <import addon="xbmc.python" version="3.0.1" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>audio</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Your music by playlist, with a player always at hand</summary>
+    <summary lang="pt_BR">Suas músicas por playlist, com o player sempre à mão</summary>
+    <description lang="en_GB">Easy Music plays the music of your folders in the design of the Monteiro add-ons. The playlists, one for each folder, are on the left, their songs are on the right, and the player is in a bar at the bottom, with the cover, title and artist of the song, play and pause, previous and next, shuffle, repeat, a heart for the songs you like, and the progress of the song. Hold OK on a song to play it next, add it to the queue, like it or see its details. The music goes on when Easy Music closes.</description>
+    <description lang="pt_BR">O Easy Music toca as músicas das suas pastas no visual dos add-ons Monteiro. As playlists, uma para cada pasta, ficam à esquerda, as músicas à direita, e o player fica numa barra embaixo, com a capa, o título e o artista da música, tocar e pausar, anterior e próxima, aleatório, repetir, um coração para as músicas que você curte e o progresso da música. Segure OK numa música para tocá-la em seguida, adicioná-la à fila, curti-la ou ver os detalhes. A música continua tocando quando o Easy Music fecha.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+    <website>https://github.com/monteirohat/kodi-addons</website>
+    <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.music</source>
+    <news>1.0.0 - First release.</news>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+      <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+    </assets>
+  </extension>
+</addon>

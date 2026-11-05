@@ -6,7 +6,7 @@
 
 <p align="center">
   Practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi.<br>
-  Watch M3U channels and movies, browse your photos and files, and control your media center from the couch.
+  Watch M3U channels and movies, play your music, browse your photos and files, and control your media center from the couch.
 </p>
 
 <p align="center">
@@ -40,7 +40,7 @@ Register the **Monteiro** repository in Kodi once, from its web address, and eve
 1. In Kodi, open **Settings > System > Add-ons** and turn on **Unknown sources**.
 2. Open **Settings > File manager > Add source**, select **&lt;None&gt;**, enter `https://monteirohat.github.io/kodi-addons/`, name the source **Monteiro**, and select **OK**.
 3. Open **Settings > Add-ons > Install from zip file > Monteiro** and select **repository.monteiromedia-1.0.5.zip**. Wait for the **Monteiro** repository installation notification.
-4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, HDMI Switcher and Easy Files are under **Program add-ons**, and Easy Picture is under **Picture add-ons**.
+4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, HDMI Switcher and Easy Files are under **Program add-ons**, Easy Picture is under **Picture add-ons**, and Easy Music is under **Music add-ons**.
 
 Updates arrive through the repository. If one is not visible yet, open the context menu of **Monteiro** and select **Check for updates**. Without internet access on the Kodi device, download the ZIP from the [latest release](https://github.com/monteirohat/kodi-addons/releases/latest), copy it to a USB drive and use **Install from zip file**.
 
@@ -91,6 +91,22 @@ Updates arrive through the repository. If one is not visible yet, open the conte
       A home screen and menus in the same design, with every Easy add-on one press away.
       <br><br>
       <a href="#monteiro-skin">Overview</a> · <a href="skin.monteiro/README.md">Guide</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <a href="script.easy.music/README.md"><img src="script.easy.music/resources/icon.png" alt="Easy Music" width="120"></a>
+      <h3>Easy Music</h3>
+      Your music by playlist, one for each folder, with a player bar always at hand.
+      <br><br>
+      <a href="#easy-music">Overview</a> · <a href="script.easy.music/README.md">Guide</a>
+    </td>
+    <td align="center" width="33%">
+      <a href="script.monteiro.addons/README.md"><img src="script.monteiro.addons/resources/icon.png" alt="Monteiro Add-ons" width="120"></a>
+      <h3>Monteiro Add-ons</h3>
+      Every add-on of your repositories in one list, with its category, details and screenshots.
+      <br><br>
+      <a href="#monteiro-skin">Overview</a> · <a href="script.monteiro.addons/README.md">Guide</a>
     </td>
   </tr>
 </table>
@@ -185,6 +201,22 @@ Read the [Easy Files guide](script.easy.files/README.md) for every feature.
 
 Read the [Easy Picture guide](script.easy.picture/README.md) for every feature.
 
+### Easy Music
+
+<img src="script.easy.music/resources/icon.png" alt="Easy Music" width="72" align="left">
+
+**Your music by playlist, with a player always at hand.** Playlists on the left, their songs on the right, and the player in a bar at the bottom.
+
+<br clear="left">
+
+- One playlist for each folder of music, with All songs and your liked songs first.
+- The player bar has the cover, title and artist, play and pause, previous and next, shuffle, repeat, a heart and the progress of the song.
+- Hold **OK** on a song to play it next, add it to the queue, like it or see its details. The music goes on when Easy Music closes.
+
+![Easy Music](script.easy.music/resources/screenshots/screenshot-01.jpg)
+
+Read the [Easy Music guide](script.easy.music/README.md) for every feature.
+
 > [!NOTE]
 > Easy Channel and Easy Movie do not provide any content. They play the M3U lists you add, and you are responsible for using only lists you are allowed to watch. The suggested GitHub repositories collect free, public channels and public domain movies, and are maintained by third parties.
 
@@ -194,8 +226,8 @@ A Kodi skin in the design of the add-ons, under the MIT license. Its home screen
 
 ![Monteiro skin home screen](.github/assets/monteiro-skin.jpg)
 
-- **TV**, **Movies** and **Series** open Easy Channel and Easy Movie, **Pictures** opens Easy Picture, and **Files** opens Easy Files. Without an add-on, the item offers to install it.
-- **Videos** and **Music** open the sources of Kodi, and **Add-ons** opens the installed add-ons, with a toolbar for search, repositories and updates. **Repositories** lists the add-ons of each repository with their categories, with [Monteiro Add-ons](script.monteiro.addons/README.md), which the skin installs with itself.
+- **TV**, **Movies** and **Series** open Easy Channel and Easy Movie, **Music** opens Easy Music, **Pictures** opens Easy Picture, and **Files** opens Easy Files. Without an add-on, the item offers to install it.
+- **Videos** opens the sources of Kodi, and **Add-ons** opens the installed add-ons, with a toolbar for search, repositories and updates. **Repositories** lists the add-ons of each repository with their categories, with [Monteiro Add-ons](script.monteiro.addons/README.md), which the skin installs with itself.
 - The buttons at the top right open the Wi-Fi settings of LibreELEC, the settings of Kodi and the power menu.
 
 Read the [skin guide](skin.monteiro/README.md) for every screen.

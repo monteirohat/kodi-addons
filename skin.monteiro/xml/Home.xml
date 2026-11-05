@@ -171,7 +171,8 @@
         <item>
           <label>$LOCALIZE[31019]</label>
           <icon>audio.png</icon>
-          <onclick>ActivateWindow(Music,sources://music/,return)</onclick>
+          <onclick condition="System.HasAddon(script.easy.music)">RunAddon(script.easy.music)</onclick>
+          <onclick condition="!System.HasAddon(script.easy.music)">InstallAddon(script.easy.music)</onclick>
         </item>
       </content>
     </control>

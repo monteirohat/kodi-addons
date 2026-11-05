@@ -22,7 +22,8 @@ To go back, open **Settings > Interface > Skin** and select **Estuary**.
 | **TV** | Easy Channel. Without it, Kodi offers to install it. |
 | **Movies** | Easy Movie. Without it, Kodi offers to install it. |
 | **Series** | Easy Movie on its series. |
-| **Videos**, **Music** | The video and music sources and folders of Kodi. |
+| **Videos** | The video sources and folders of Kodi. |
+| **Music** | Easy Music. Without it, Kodi offers to install it. |
 
 The smaller row under the tiles:
 

@@ -329,7 +329,7 @@ HOME_ITEMS = [
     (31001, "film.png", "RunAddon(script.m3u.movies)", "System.HasAddon(script.m3u.movies)"),
     (31002, "series.png", "RunScript(script.m3u.movies,series)", "System.HasAddon(script.m3u.movies)"),
     (31018, "video.png", "ActivateWindow(Videos,sources://video/,return)", None),
-    (31019, "audio.png", "ActivateWindow(Music,sources://music/,return)", None),
+    (31019, "audio.png", "RunAddon(script.easy.music)", "System.HasAddon(script.easy.music)"),
 ]
 # The smaller row under the tiles.
 SHORTCUTS = [
@@ -908,7 +908,9 @@ def video_full_screen():
 
 def seek_bar():
     # Kodi opens this window by itself while its condition holds, so the condition is on the window.
-    shown = "[Player.Seeking | Player.DisplayAfterSeek | Player.Paused | Player.Forwarding | Player.Rewinding] + !Window.IsActive(videoosd)"
+    # Music shows its time in its own players, such as the bar of Easy Music.
+    shown = ("[Player.Seeking | Player.DisplayAfterSeek | Player.Paused | Player.Forwarding | Player.Rewinding] + Player.HasVideo"
+             " + !Window.IsActive(videoosd)")
     return window("Time bar while seeking or paused, for videos outside the Easy add-ons.", [
         image(0, 760, 1920, 320, "shade.png", "F2000000"),
         label(120, 880, 1200, 50, "$INFO[Player.Title]", "font30_title"),

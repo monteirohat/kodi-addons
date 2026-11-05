@@ -1,0 +1,164 @@
+# Easy Music language file
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "Easy Music"
+msgstr ""
+
+msgctxt "#30001"
+msgid "All songs"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Liked songs"
+msgstr ""
+
+msgctxt "#30003"
+msgid "{0} songs"
+msgstr ""
+
+msgctxt "#30005"
+msgid "1 song"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Folders of music"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Look for new songs"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Search"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Search songs"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Search: {0}"
+msgstr ""
+
+msgctxt "#30015"
+msgid "No song matches \"{0}\"."
+msgstr ""
+
+msgctxt "#30020"
+msgid "OK: play  ·  Hold OK: options  ·  Down after the last song: the player"
+msgstr ""
+
+msgctxt "#30021"
+msgid "No songs yet. Add the folders with your music with the folder button above the playlists."
+msgstr ""
+
+msgctxt "#30022"
+msgid "No songs in this playlist."
+msgstr ""
+
+msgctxt "#30023"
+msgid "Choose a song to play it here."
+msgstr ""
+
+msgctxt "#30030"
+msgid "Folders of music"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Add a folder"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Remove {0}"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Choose a folder with music"
+msgstr ""
+
+msgctxt "#30034"
+msgid "{0} added"
+msgstr ""
+
+msgctxt "#30035"
+msgid "Remove {0} from Easy Music? The songs stay in the folder."
+msgstr ""
+
+msgctxt "#30036"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30037"
+msgid "Remove"
+msgstr ""
+
+msgctxt "#30038"
+msgid "{0} new songs"
+msgstr ""
+
+msgctxt "#30040"
+msgid "Play"
+msgstr ""
+
+msgctxt "#30041"
+msgid "Play next"
+msgstr ""
+
+msgctxt "#30042"
+msgid "Add to the queue"
+msgstr ""
+
+msgctxt "#30043"
+msgid "Like"
+msgstr ""
+
+msgctxt "#30044"
+msgid "Remove from liked songs"
+msgstr ""
+
+msgctxt "#30045"
+msgid "Information"
+msgstr ""
+
+msgctxt "#30046"
+msgid "{0} added to the queue"
+msgstr ""
+
+msgctxt "#30047"
+msgid "{0} plays next"
+msgstr ""
+
+msgctxt "#30048"
+msgid "Added to liked songs"
+msgstr ""
+
+msgctxt "#30049"
+msgid "Removed from liked songs"
+msgstr ""
+
+msgctxt "#30050"
+msgid "Title"
+msgstr ""
+
+msgctxt "#30051"
+msgid "Artist"
+msgstr ""
+
+msgctxt "#30052"
+msgid "Album"
+msgstr ""
+
+msgctxt "#30053"
+msgid "Track"
+msgstr ""
+
+msgctxt "#30054"
+msgid "Size"
+msgstr ""
+
+msgctxt "#30055"
+msgid "Location"
+msgstr ""
