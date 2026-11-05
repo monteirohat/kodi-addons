@@ -23,7 +23,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.easy.files" name="Easy Files" version="1.0.0" provider-name="Monteiro">
+  <addon id="script.easy.files" name="Easy Files" version="1.0.1" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.1" />
     </requires>
@@ -39,7 +39,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.files</source>
-      <news>1.0.0 - First release.</news>
+      <news>1.0.1 - The focus is steel blue with white text, as in the Monteiro skin. 1.0.0 - First release.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
@@ -47,7 +47,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.1.2" provider-name="Monteiro">
+  <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.1.3" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
     </requires>
@@ -63,7 +63,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.hdmi.switcher</source>
-      <news>1.1.2 - The icon and fanart have new file names, so Kodi shows the new artwork instead of a cached copy of the previous icon. 1.1.1 - The display picker opens on the active display, which now has a blue outline and check mark. 1.1.0 - New dark display picker matching Easy Channel and Easy Movie, new icon, and Brazilian Portuguese translation.</news>
+      <news>1.1.3 - The focus is steel blue with white text, as in the Monteiro skin. 1.1.2 - The icon and fanart have new file names, so Kodi shows the new artwork instead of a cached copy of the previous icon. 1.1.1 - The display picker opens on the active display, which now has a blue outline and check mark. 1.1.0 - New dark display picker matching Easy Channel and Easy Movie, new icon, and Brazilian Portuguese translation.</news>
       <assets>
         <icon>resources/hdmi-switcher-icon.png</icon>
         <fanart>resources/hdmi-switcher-fanart.jpg</fanart>
@@ -71,7 +71,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.m3u.channels" name="Easy Channel" version="1.2.0" provider-name="Monteiro">
+  <addon id="script.m3u.channels" name="Easy Channel" version="1.2.1" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.1" />
     </requires>
@@ -90,7 +90,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.channels</source>
-      <news>1.2.0 - Groups can be renamed and deleted: hold OK on a group, or press Menu. A renamed group keeps its name when the list is updated, and the channels of a deleted group can be restored from Removed channels. 1.1.0 - New TV player: channels open in full screen with a channel bar showing the logo, number, name, group and connection state, with a star for adding the channel to Favorites. Up and Down change channel, Right reaches the favorite star, OK shows the bar, Menu opens the Kodi player and Back returns to the list. 1.0.1 - Moving quickly between groups no longer shows the channels of a group you already left. Changing channels no longer reports the new channel as not working. Opening the channel that is already playing shows it in full screen instead of starting it again. Right after the remove button moves to the preview, and OK there opens full screen. 1.0.0 - First release.</news>
+      <news>1.2.1 - The focus is steel blue with white text, as in the Monteiro skin. 1.2.0 - Groups can be renamed and deleted: hold OK on a group, or press Menu. A renamed group keeps its name when the list is updated, and the channels of a deleted group can be restored from Removed channels. 1.1.0 - New TV player: channels open in full screen with a channel bar showing the logo, number, name, group and connection state, with a star for adding the channel to Favorites. Up and Down change channel, Right reaches the favorite star, OK shows the bar, Menu opens the Kodi player and Back returns to the list. 1.0.1 - Moving quickly between groups no longer shows the channels of a group you already left. Changing channels no longer reports the new channel as not working. Opening the channel that is already playing shows it in full screen instead of starting it again. Right after the remove button moves to the preview, and OK there opens full screen. 1.0.0 - First release.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
@@ -100,7 +100,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.m3u.movies" name="Easy Movie" version="1.6.0" provider-name="Monteiro">
+  <addon id="script.m3u.movies" name="Easy Movie" version="1.6.1" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.1" />
     </requires>
@@ -119,7 +119,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.m3u.movies</source>
-      <news>1.6.0 - Online subtitles: subtitles from OpenSubtitles turn on automatically in your language when a movie has none, Brazilian Portuguese first, and more can be picked in the subtitles panel. The hash of video files finds the subtitles made for them. No account is needed. 1.5.0 - Playback controls in the style of streaming apps: play and pause between back and forward 10 seconds, Left and Right skip 10 seconds, and subtitle and audio tracks in a side panel. All movies and the genres show the newest movies first. Video folders on the device are read again each time, so finished downloads show at once, and the folder of a single movie or series is no longer a genre. The catalog keeps its selection when more titles load. 1.4.0 - Catalog: a new toolbar icon opens the movies and series of Cinemeta, the catalog of Stremio, by popularity, year and genre, with search, details, seasons and episodes, and My list. Titles in your lists can be played from it. Stremio addons can be added by their address: their catalogs are shown too, and their sources open in a side panel, where a torrent goes to Downloads, only the chosen file of a pack, and a direct link plays at once. Downloads shows the free space of the folder and when it is full. Removed movies moved to the list manager. 1.3.0 - Torrent downloads: a Downloads screen in the toolbar adds magnet links and .torrent files to a folder you choose and lists the downloads with their progress, speed and time left. Downloads resume when Kodi starts. Uses the Torrest engine, included for all platforms. 1.2.0 - Video folders: add folders with your own video files from the SD card, a USB drive or a network share, with posters and details from Cinemeta, series recognized by folder, and options to rename and delete files. 1.1.3 - Moving quickly between groups no longer shows the movies of a group you already left. Opening a movie or episode while another one plays no longer reports it as not working. 1.1.2 - Streams are checked before playing while the details window stays open, so Kodi no longer freezes on servers that do not answer. 1.1.1 - Series from lists that keep the show name in pltv-subgroup, codes such as T01|EP01, 01|EP01 and EP001, and episodes that share a code. pltv-subgroup is also used as the genre of movies. 1.1.0 - Series: episodes are grouped into series with seasons and a Continue button. Watched marks, resume, a Continue watching group, the TV shows menu, and a blue focus on posters. 1.0.0 - First release.</news>
+      <news>1.6.1 - The focus is steel blue with white text, as in the Monteiro skin. 1.6.0 - Online subtitles: subtitles from OpenSubtitles turn on automatically in your language when a movie has none, Brazilian Portuguese first, and more can be picked in the subtitles panel. The hash of video files finds the subtitles made for them. No account is needed. 1.5.0 - Playback controls in the style of streaming apps: play and pause between back and forward 10 seconds, Left and Right skip 10 seconds, and subtitle and audio tracks in a side panel. All movies and the genres show the newest movies first. Video folders on the device are read again each time, so finished downloads show at once, and the folder of a single movie or series is no longer a genre. The catalog keeps its selection when more titles load. 1.4.0 - Catalog: a new toolbar icon opens the movies and series of Cinemeta, the catalog of Stremio, by popularity, year and genre, with search, details, seasons and episodes, and My list. Titles in your lists can be played from it. Stremio addons can be added by their address: their catalogs are shown too, and their sources open in a side panel, where a torrent goes to Downloads, only the chosen file of a pack, and a direct link plays at once. Downloads shows the free space of the folder and when it is full. Removed movies moved to the list manager. 1.3.0 - Torrent downloads: a Downloads screen in the toolbar adds magnet links and .torrent files to a folder you choose and lists the downloads with their progress, speed and time left. Downloads resume when Kodi starts. Uses the Torrest engine, included for all platforms. 1.2.0 - Video folders: add folders with your own video files from the SD card, a USB drive or a network share, with posters and details from Cinemeta, series recognized by folder, and options to rename and delete files. 1.1.3 - Moving quickly between groups no longer shows the movies of a group you already left. Opening a movie or episode while another one plays no longer reports it as not working. 1.1.2 - Streams are checked before playing while the details window stays open, so Kodi no longer freezes on servers that do not answer. 1.1.1 - Series from lists that keep the show name in pltv-subgroup, codes such as T01|EP01, 01|EP01 and EP001, and episodes that share a code. pltv-subgroup is also used as the genre of movies. 1.1.0 - Series: episodes are grouped into series with seasons and a Continue button. Watched marks, resume, a Continue watching group, the TV shows menu, and a blue focus on posters. 1.0.0 - First release.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
@@ -133,7 +133,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="skin.monteiro" version="0.3.1" name="Monteiro" provider-name="Monteiro">
+  <addon id="skin.monteiro" version="0.3.2" name="Monteiro" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.gui" version="5.17.0" />
     </requires>
@@ -149,7 +149,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/skin.monteiro</source>
-      <news>0.3.1 - Files on the home screen and the file manager in the settings open Easy Files when it is installed. 0.3.0 - Live TV windows: channels, guide, recordings, timers, search and the channel list over the TV. Profiles and the login screen, favourites, the playlist, the event log, games, the details of videos, music, pictures and TV programmes, the subtitle search, the music player controls, the slider, the player information and the Info key during a video. 0.2.0 - Videos, Music and Pictures on the home screen, the file manager, adding media sources, system information, the slide show and the music visualisation. Player controls with icons, the time bar while paused, notification icons, the number keys, and selected items in lists that were not shown. 0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
+      <news>0.3.2 - The focus is blue, with white text and icons. Context menus have one background and stay on the screen with all their options. The add-on browser opens on the installed add-ons, with a toolbar for search, updates, repositories, ZIP files and settings, and progress bars keep the same height. The settings sections are square tiles with an icon, as on the home screen, with the short names Files and About. The home screen has tiles for TV, Movies, Series, Videos and Music, a smaller row for Pictures, Files and Add-ons, and Wi-Fi, Settings and Power buttons at the top right. 0.3.1 - Files on the home screen and the file manager in the settings open Easy Files when it is installed. 0.3.0 - Live TV windows: channels, guide, recordings, timers, search and the channel list over the TV. Profiles and the login screen, favourites, the playlist, the event log, games, the details of videos, music, pictures and TV programmes, the subtitle search, the music player controls, the slider, the player information and the Info key during a video. 0.2.0 - Videos, Music and Pictures on the home screen, the file manager, adding media sources, system information, the slide show and the music visualisation. Player controls with icons, the time bar while paused, notification icons, the number keys, and selected items in lists that were not shown. 0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
