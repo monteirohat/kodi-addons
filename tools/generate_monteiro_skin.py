@@ -292,9 +292,10 @@ def defaults():
     <midtexture border="4" colordiffuse="%(accent)s">panel.png</midtexture>
   </default>
   <default type="scrollbar">
-    <texturesliderbackground colordiffuse="%(raised)s">slider-bar.png</texturesliderbackground>
-    <texturesliderbar colordiffuse="%(text3)s">slider-bar.png</texturesliderbar>
-    <texturesliderbarfocus colordiffuse="%(accent)s">slider-bar.png</texturesliderbarfocus>
+    <!-- A vertical pill whose rounded ends keep their shape while its middle stretches. -->
+    <texturesliderbackground border="0,4,0,4" colordiffuse="%(raised)s">scrollbar.png</texturesliderbackground>
+    <texturesliderbar border="0,4,0,4" colordiffuse="%(text3)s">scrollbar.png</texturesliderbar>
+    <texturesliderbarfocus border="0,4,0,4" colordiffuse="%(accent)s">scrollbar.png</texturesliderbarfocus>
     <orientation>vertical</orientation>
     <showonepage>false</showonepage>
   </default>
@@ -1550,6 +1551,10 @@ def media():
         for x, y in (points[0], points[2]):
             draw.ellipse((p(x) - p(3.5), p(y) - p(3.5), p(x) + p(3.5), p(y) + p(3.5)), fill=255)
         save(alpha, 64, 64, name)
+    # Scroll bar: a pill as wide as the bar, stretched in its middle only.
+    alpha, draw = canvas(8, 16)
+    draw.rounded_rectangle((0, 0, p(8) - 1, p(16) - 1), radius=p(4), fill=255)
+    save(alpha, 8, 16, "scrollbar.png")
     # Slider bar and nib.
     alpha, draw = canvas(32, 32)
     draw.rounded_rectangle((0, p(12), p(32) - 1, p(20)), radius=p(4), fill=255)

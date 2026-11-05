@@ -139,9 +139,10 @@
     <midtexture border="4" colordiffuse="FF3B8BFF">panel.png</midtexture>
   </default>
   <default type="scrollbar">
-    <texturesliderbackground colordiffuse="FF222328">slider-bar.png</texturesliderbackground>
-    <texturesliderbar colordiffuse="FF62656D">slider-bar.png</texturesliderbar>
-    <texturesliderbarfocus colordiffuse="FF3B8BFF">slider-bar.png</texturesliderbarfocus>
+    <!-- A vertical pill whose rounded ends keep their shape while its middle stretches. -->
+    <texturesliderbackground border="0,4,0,4" colordiffuse="FF222328">scrollbar.png</texturesliderbackground>
+    <texturesliderbar border="0,4,0,4" colordiffuse="FF62656D">scrollbar.png</texturesliderbar>
+    <texturesliderbarfocus border="0,4,0,4" colordiffuse="FF3B8BFF">scrollbar.png</texturesliderbarfocus>
     <orientation>vertical</orientation>
     <showonepage>false</showonepage>
   </default>
