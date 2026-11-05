@@ -84,6 +84,7 @@ As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o m
 - Listas por endereço web, por arquivo ou pelos arquivos M3U de um repositório do GitHub, com sugestões de repositórios de canais gratuitos e públicos.
 - Quando um canal não abre, o Easy Channel oferece removê-lo, e **Verificar canais** testa um grupo inteiro de uma vez.
 - Um grupo de **Favoritos** no topo, busca em todas as listas e exportação de um arquivo M3U limpo.
+- Segure o **OK** num grupo para renomeá-lo ou excluí-lo.
 - Selecionar **TV** no menu principal do Kodi abre o Easy Channel.
 
 ![Easy Channel](script.m3u.channels/resources/screenshots/screenshot-01.jpg)

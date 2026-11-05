@@ -20,6 +20,7 @@ CACHE = os.path.join(PROFILE, "cache")
 LISTS_FILE = os.path.join(PROFILE, "lists.json")
 REMOVED_FILE = os.path.join(PROFILE, "removed.json")
 FAVORITES_FILE = os.path.join(PROFILE, "favorites.json")
+GROUP_NAMES_FILE = os.path.join(PROFILE, "group_names.json")
 REPOS_FILE = os.path.join(PROFILE, "repositories.json")
 # Tags found only in the playlist of a single stream, not in a list of channels.
 STREAM_TAGS = ("#EXT-X-STREAM-INF", "#EXT-X-TARGETDURATION", "#EXT-X-MEDIA-SEQUENCE")
@@ -139,6 +140,24 @@ def remove_channels(channels, list_id):
     for channel in channels:
         removed[channel["id"]] = {"name": channel["name"], "list": list_id, "time": int(time.time())}
     write_json(REMOVED_FILE, removed)
+
+
+def get_group_names():
+    """Names given to groups, by the group name of the lists."""
+    return read_json(GROUP_NAMES_FILE, {})
+
+
+def rename_group(shown, new):
+    """Show the group named shown as new, and every group of the lists that is shown under that name.
+
+    The lists keep their own names, so a renamed group keeps its name when a list is downloaded again. A group
+    renamed to the name of another group joins it."""
+    names = get_group_names()
+    for original, name in list(names.items()):
+        if name == shown:
+            names[original] = new
+    names.setdefault(shown, new)
+    write_json(GROUP_NAMES_FILE, {original: name for original, name in names.items() if original != name})
 
 
 def restore_channels(channel_ids):

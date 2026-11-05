@@ -47,7 +47,15 @@ Easy Channel requires Kodi 21 (Omega) or later. It was developed and tested on L
 | **Left** | Move to the toolbar, keeping the highlighted group. | Move back from the buttons, then to the groups. |
 | **OK** | Move to the channels of the group. | Play the channel, or use the selected star or trash can. The channel already playing opens in the TV player instead of starting again. On the preview, open the TV player. |
 | **Back** | Close Easy Channel. | Return to the groups. |
-| **Menu** (**C** on a keyboard) | | Favorite, remove or check the channel. |
+| **Menu**, or hold **OK** (**C** on a keyboard) | Rename or delete the group. | Favorite, remove or check the channel. |
+
+### Renaming and deleting groups
+
+Hold **OK** on a group, or press **Menu**, and select **Rename group** or **Delete group**.
+
+- **Rename group** shows the group under a new name. The lists keep their own names, so the new name stays when a list is downloaded again. Renaming a group to the name of another group joins them.
+- **Delete group** removes all its channels, after a confirmation. They are listed in **Removed channels**, where they can be restored. A channel that is also in another group leaves that group too.
+- **Favorites**, **All channels** and **Other** are made by Easy Channel and cannot be renamed or deleted.
 
 ### TV player
 
@@ -146,6 +154,7 @@ Easy Channel stores its data in Kodi's add-on data folder, `userdata/addon_data/
 | `cache/` | Saved copies of the lists. |
 | `removed.json` | Removed channels. |
 | `favorites.json` | Favorite channels. |
+| `group_names.json` | Names given to groups with **Rename group**. |
 | `repositories.json` | GitHub repositories, once the suggested ones are changed. |
 
 Easy Channel connects only to the addresses of your lists and streams, and to `api.github.com` and `raw.githubusercontent.com` when you search a repository. It sends no usage data.

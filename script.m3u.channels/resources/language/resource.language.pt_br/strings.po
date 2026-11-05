@@ -401,3 +401,27 @@ msgstr "Conectando..."
 msgctxt "#30111"
 msgid "Not responding. Use Up or Down to change channel."
 msgstr "Não está respondendo. Use Cima ou Baixo para trocar de canal."
+
+msgctxt "#30112"
+msgid "Rename group"
+msgstr "Renomear grupo"
+
+msgctxt "#30113"
+msgid "Delete group"
+msgstr "Excluir grupo"
+
+msgctxt "#30114"
+msgid "New name of the group"
+msgstr "Novo nome do grupo"
+
+msgctxt "#30115"
+msgid "Delete the group {0}? Its {1} channels go to Removed channels, where they can be restored."
+msgstr "Excluir o grupo {0}? Os {1} canais dele vão para Canais removidos, onde podem ser restaurados."
+
+msgctxt "#30116"
+msgid "Group renamed"
+msgstr "Grupo renomeado"
+
+msgctxt "#30117"
+msgid "This group cannot be changed"
+msgstr "Este grupo não pode ser alterado"

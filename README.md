@@ -84,6 +84,7 @@ Updates arrive through the repository. If one is not visible yet, open the conte
 - Lists from a web address, a file, or the M3U files of a GitHub repository, with suggested repositories of free, public channels.
 - When a channel does not open, Easy Channel offers to remove it, and **Check channels** tests a whole group at once.
 - A **Favorites** group at the top, search across all lists, and export of a clean M3U file.
+- Hold **OK** on a group to rename it or delete it.
 - Selecting **TV** in Kodi's main menu opens Easy Channel.
 
 ![Easy Channel](script.m3u.channels/resources/screenshots/screenshot-01.jpg)

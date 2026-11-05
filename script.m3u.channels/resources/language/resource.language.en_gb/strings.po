@@ -401,3 +401,27 @@ msgstr ""
 msgctxt "#30111"
 msgid "Not responding. Use Up or Down to change channel."
 msgstr ""
+
+msgctxt "#30112"
+msgid "Rename group"
+msgstr ""
+
+msgctxt "#30113"
+msgid "Delete group"
+msgstr ""
+
+msgctxt "#30114"
+msgid "New name of the group"
+msgstr ""
+
+msgctxt "#30115"
+msgid "Delete the group {0}? Its {1} channels go to Removed channels, where they can be restored."
+msgstr ""
+
+msgctxt "#30116"
+msgid "Group renamed"
+msgstr ""
+
+msgctxt "#30117"
+msgid "This group cannot be changed"
+msgstr ""

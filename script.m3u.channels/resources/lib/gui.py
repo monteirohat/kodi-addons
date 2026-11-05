@@ -59,6 +59,17 @@ def notify(message):
     xbmcgui.Dialog().notification(TITLE, message, ADDON.getAddonInfo("icon"), 4000)
 
 
+def shown_groups(channel, names):
+    """Groups of a channel as shown, with the names given to them, without repeats. An empty name is the group
+    of channels without one."""
+    shown = []
+    for group in m3u.groups_of(channel):
+        name = names.get(group, group)
+        if name not in shown:
+            shown.append(name)
+    return shown
+
+
 def busy(active):
     xbmc.executebuiltin("ActivateWindow(busydialognocancel)" if active else "Dialog.Close(busydialognocancel)")
 
@@ -127,6 +138,7 @@ class MainWindow(xbmcgui.WindowXML):
         self.loaded = False
         self.all_entries = []
         self.groups = []
+        self.group_names = {}
         self.entries = []
         self.shown_index = -1
         self.shown_name = None
@@ -182,9 +194,10 @@ class MainWindow(xbmcgui.WindowXML):
             busy(False)
         if failed:
             notify(text(30064, ", ".join(failed)))
+        self.group_names = storage.get_group_names()
         groups = {}
         for entry in entries:
-            for name in m3u.groups_of(entry["channel"]):
+            for name in shown_groups(entry["channel"], self.group_names):
                 groups.setdefault(name, []).append(entry)
         self.all_entries = entries
         self.groups = [(text(30065), self.favorite_entries()), (text(30003), entries)]
@@ -227,7 +240,7 @@ class MainWindow(xbmcgui.WindowXML):
                 item.setArt({"icon": channel["logo"], "thumb": channel["logo"]})
             item.setProperty("number", str(number))
             item.setProperty("favorite", "true" if channel["id"] in favorites else "false")
-            item.setProperty("group", "  ·  ".join(name for name in m3u.groups_of(channel) if name) or text(30043))
+            item.setProperty("group", "  ·  ".join(name for name in shown_groups(channel, self.group_names) if name) or text(30043))
             items.append(item)
         if stale and stale():
             return False
@@ -284,6 +297,9 @@ class MainWindow(xbmcgui.WindowXML):
                 self.setFocusId(GROUPS)
         elif action_id == ACTION_CONTEXT_MENU and focus == CHANNELS:
             self.channel_menu()
+        elif action_id == ACTION_CONTEXT_MENU and focus == GROUPS:
+            # Holding OK on a remote, or the menu key, on a group.
+            self.group_menu()
         elif focus == GROUPS and action_id == ACTION_LEFT:
             # Reach the toolbar without scrolling through the groups above, which would change the group.
             if self.follow_timer:
@@ -444,6 +460,30 @@ class MainWindow(xbmcgui.WindowXML):
             busy(False)
             notify(text(30033, reason) if reason else text(30032))
 
+    def group_menu(self):
+        index = self.group_list.getSelectedPosition()
+        if not 0 <= index < len(self.groups):
+            return
+        name, members = self.groups[index]
+        # Favorites, All channels and Other are made by Easy Channel, not groups of the lists.
+        if index < 2 or name == text(30043):
+            notify(text(30117))
+            return
+        dialog = xbmcgui.Dialog()
+        choice = dialog.contextmenu([text(30112), text(30113)])
+        if choice == 0:
+            new = dialog.input(text(30114), name).strip()
+            if new and new != name:
+                storage.rename_group(name, new)
+                self.shown_name = new
+                notify(text(30116))
+                self.reload()
+        elif choice == 1 and dialog.yesno(TITLE, text(30115, name, len(members)), nolabel=text(30040), yeslabel=text(30113)):
+            # The group that takes its place stays selected, rather than going back to the top.
+            neighbour = index + 1 if index + 1 < len(self.groups) else index - 1
+            self.shown_name = self.groups[neighbour][0]
+            self.remove(members)
+
     # Tools
 
     def open_manager(self):
@@ -569,7 +609,7 @@ class TvPlayer(xbmcgui.WindowXML):
         self.setProperty("name", channel["name"])
         self.setProperty("logo", channel["logo"])
         self.setProperty("favorite", "true" if channel["id"] in storage.get_favorites() else "false")
-        self.setProperty("group", "  ·  ".join([name for name in m3u.groups_of(channel) if name] + [entry["list_name"]]))
+        self.setProperty("group", "  ·  ".join([name for name in shown_groups(channel, self.main.group_names) if name] + [entry["list_name"]]))
         if len(self.entries) > 1:
             around = [(self.index + step) % len(self.entries) for step in (-1, 1)]
             self.setProperty("around", text(30108, *["%d  %s" % (number + 1, self.entries[number]["channel"]["name"])
