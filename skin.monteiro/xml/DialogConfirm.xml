@@ -56,8 +56,8 @@
       <top>626</top>
       <width>1020</width>
       <height>12</height>
-      <texturebg border="4" colordiffuse="FF2C2D33">panel.png</texturebg>
-      <midtexture border="4" colordiffuse="FF3B8BFF">panel.png</midtexture>
+      <texturebg colordiffuse="FF2C2D33">white.png</texturebg>
+      <midtexture colordiffuse="FF3B8BFF">white.png</midtexture>
       <info>System.Progressbar</info>
     </control>
     <control type="grouplist" id="9000">
@@ -78,9 +78,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label></label>
@@ -95,9 +95,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label></label>
@@ -112,9 +112,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label></label>

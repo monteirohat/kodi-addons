@@ -22,11 +22,23 @@ To go back, open **Settings > Interface > Skin** and select **Estuary**.
 | **TV** | Easy Channel. Without it, Kodi offers to install it. |
 | **Movies** | Easy Movie. Without it, Kodi offers to install it. |
 | **Series** | Easy Movie on its series. |
-| **Add-ons** | The add-on browser. |
-| **Settings** | The settings sections of Kodi, the file manager and the system information. |
-| **Videos**, **Music**, **Pictures** | The sources and folders of Kodi, in the smaller row under the tiles. |
+| **Videos**, **Music** | The video and music sources and folders of Kodi. |
 
-The round button at the top right opens the power menu.
+The smaller row under the tiles:
+
+| Item | Opens |
+| --- | --- |
+| **Pictures** | The picture sources and folders of Kodi. |
+| **Files** | Easy Files. Without it, Kodi offers to install it. |
+| **Add-ons** | The installed add-ons, with a toolbar for search, updates, recently updated add-ons, repositories, installing from a ZIP file, checking for updates and the add-on settings. |
+
+The round buttons at the top right open:
+
+| Button | Opens |
+| --- | --- |
+| **Wi-Fi** | The LibreELEC settings, where **Connections** lists the networks. On other systems, the system information. |
+| **Settings** | The settings sections of Kodi, the file manager and the system information. |
+| **Power** | The power menu. |
 
 Videos played outside the Easy add-ons show round controls to go back or forward 10 seconds, play and pause, and stop, and a time bar while paused.
 

@@ -76,7 +76,7 @@
       <label></label>
       <onleft>603</onleft>
       <onright>601</onright>
-      <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
       <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
     </control>
     <control type="image">
@@ -84,7 +84,7 @@
       <top>926</top>
       <width>52</width>
       <height>52</height>
-      <texture colordiffuse="FF0E0F11">back10.png</texture>
+      <texture colordiffuse="FFFFFFFF">back10.png</texture>
       <visible>Control.HasFocus(600)</visible>
     </control>
     <control type="image">
@@ -104,7 +104,7 @@
       <label></label>
       <onleft>600</onleft>
       <onright>602</onright>
-      <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
       <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
     </control>
     <control type="image">
@@ -112,7 +112,7 @@
       <top>926</top>
       <width>52</width>
       <height>52</height>
-      <texture colordiffuse="FF0E0F11">pause.png</texture>
+      <texture colordiffuse="FFFFFFFF">pause.png</texture>
       <visible>Control.HasFocus(601) + !Player.Paused</visible>
     </control>
     <control type="image">
@@ -128,7 +128,7 @@
       <top>926</top>
       <width>52</width>
       <height>52</height>
-      <texture colordiffuse="FF0E0F11">player_play.png</texture>
+      <texture colordiffuse="FFFFFFFF">player_play.png</texture>
       <visible>Control.HasFocus(601) + Player.Paused</visible>
     </control>
     <control type="image">
@@ -148,7 +148,7 @@
       <label></label>
       <onleft>601</onleft>
       <onright>603</onright>
-      <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
       <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
     </control>
     <control type="image">
@@ -156,7 +156,7 @@
       <top>926</top>
       <width>52</width>
       <height>52</height>
-      <texture colordiffuse="FF0E0F11">forward10.png</texture>
+      <texture colordiffuse="FFFFFFFF">forward10.png</texture>
       <visible>Control.HasFocus(602)</visible>
     </control>
     <control type="image">
@@ -176,7 +176,7 @@
       <label></label>
       <onleft>602</onleft>
       <onright>600</onright>
-      <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
       <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
     </control>
     <control type="image">
@@ -184,7 +184,7 @@
       <top>926</top>
       <width>52</width>
       <height>52</height>
-      <texture colordiffuse="FF0E0F11">stop.png</texture>
+      <texture colordiffuse="FFFFFFFF">stop.png</texture>
       <visible>Control.HasFocus(603)</visible>
     </control>
     <control type="image">

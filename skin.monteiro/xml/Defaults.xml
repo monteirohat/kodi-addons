@@ -17,41 +17,41 @@
   <default type="button">
     <font>font13</font>
     <textcolor>FFF4F4F5</textcolor>
-    <focusedcolor>FF0E0F11</focusedcolor>
+    <focusedcolor>FFFFFFFF</focusedcolor>
     <disabledcolor>FF62656D</disabledcolor>
     <textoffsetx>30</textoffsetx>
     <aligny>center</aligny>
-    <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+    <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
     <pulseonselect>false</pulseonselect>
     <texturenofocus />
   </default>
   <default type="togglebutton">
     <font>font13</font>
     <textcolor>FFF4F4F5</textcolor>
-    <focusedcolor>FF0E0F11</focusedcolor>
+    <focusedcolor>FFFFFFFF</focusedcolor>
     <textoffsetx>30</textoffsetx>
     <aligny>center</aligny>
-    <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+    <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
     <pulseonselect>false</pulseonselect>
     <texturenofocus />
-    <alttexturefocus border="16" colordiffuse="FFF4F4F5">panel.png</alttexturefocus>
+    <alttexturefocus border="16" colordiffuse="FF4682B4">panel.png</alttexturefocus>
     <alttexturenofocus />
   </default>
   <default type="radiobutton">
     <font>font13</font>
     <textcolor>FFF4F4F5</textcolor>
-    <focusedcolor>FF0E0F11</focusedcolor>
+    <focusedcolor>FFFFFFFF</focusedcolor>
     <disabledcolor>FF62656D</disabledcolor>
     <textoffsetx>30</textoffsetx>
     <aligny>center</aligny>
-    <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+    <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
     <pulseonselect>false</pulseonselect>
     <texturenofocus />
     <radiowidth>72</radiowidth>
     <radioheight>40</radioheight>
-    <textureradioonfocus>toggle-on.png</textureradioonfocus>
+    <textureradioonfocus>toggle-on-focus.png</textureradioonfocus>
     <textureradioonnofocus>toggle-on.png</textureradioonnofocus>
-    <textureradioofffocus colordiffuse="FF55575E">toggle-off.png</textureradioofffocus>
+    <textureradioofffocus colordiffuse="FFD6E6FF">toggle-off.png</textureradioofffocus>
     <textureradiooffnofocus colordiffuse="FF62656D">toggle-off.png</textureradiooffnofocus>
     <textureradioondisabled colordiffuse="FF62656D">toggle-on.png</textureradioondisabled>
     <textureradiooffdisabled colordiffuse="FF62656D">toggle-off.png</textureradiooffdisabled>
@@ -59,19 +59,19 @@
   <default type="spincontrolex">
     <font>font13</font>
     <textcolor>FFF4F4F5</textcolor>
-    <focusedcolor>FF0E0F11</focusedcolor>
+    <focusedcolor>FFFFFFFF</focusedcolor>
     <disabledcolor>FF62656D</disabledcolor>
     <textoffsetx>30</textoffsetx>
     <aligny>center</aligny>
-    <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+    <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
     <pulseonselect>false</pulseonselect>
     <texturenofocus />
     <spinwidth>36</spinwidth>
     <spinheight>36</spinheight>
     <textureup colordiffuse="FF9C9EA6">chevron-right.png</textureup>
-    <textureupfocus colordiffuse="FF0E0F11">chevron-right.png</textureupfocus>
+    <textureupfocus colordiffuse="FFFFFFFF">chevron-right.png</textureupfocus>
     <texturedown colordiffuse="FF9C9EA6">chevron-left.png</texturedown>
-    <texturedownfocus colordiffuse="FF0E0F11">chevron-left.png</texturedownfocus>
+    <texturedownfocus colordiffuse="FFFFFFFF">chevron-left.png</texturedownfocus>
     <textureupdisabled colordiffuse="FF62656D">chevron-right.png</textureupdisabled>
     <texturedowndisabled colordiffuse="FF62656D">chevron-left.png</texturedowndisabled>
   </default>
@@ -90,43 +90,43 @@
   <default type="sliderex">
     <font>font13</font>
     <textcolor>FFF4F4F5</textcolor>
-    <focusedcolor>FF0E0F11</focusedcolor>
+    <focusedcolor>FFFFFFFF</focusedcolor>
     <disabledcolor>FF62656D</disabledcolor>
     <textoffsetx>30</textoffsetx>
     <aligny>center</aligny>
-    <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+    <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
     <pulseonselect>false</pulseonselect>
     <texturenofocus />
     <sliderwidth>300</sliderwidth>
     <sliderheight>32</sliderheight>
     <texturesliderbar colordiffuse="FF2C2D33">slider-bar.png</texturesliderbar>
     <textureslidernib colordiffuse="FF3B8BFF">slider-nib.png</textureslidernib>
-    <textureslidernibfocus colordiffuse="FF3B8BFF">slider-nib.png</textureslidernibfocus>
+    <textureslidernibfocus colordiffuse="FFFFFFFF">slider-nib.png</textureslidernibfocus>
   </default>
   <default type="slider">
     <orientation>horizontal</orientation>
     <texturesliderbar colordiffuse="FF2C2D33">slider-bar.png</texturesliderbar>
     <textureslidernib colordiffuse="FF3B8BFF">slider-nib.png</textureslidernib>
-    <textureslidernibfocus colordiffuse="FF3B8BFF">slider-nib.png</textureslidernibfocus>
+    <textureslidernibfocus colordiffuse="FFFFFFFF">slider-nib.png</textureslidernibfocus>
   </default>
   <default type="edit">
     <font>font13</font>
     <textcolor>FFF4F4F5</textcolor>
-    <focusedcolor>FF0E0F11</focusedcolor>
+    <focusedcolor>FFFFFFFF</focusedcolor>
     <disabledcolor>FF62656D</disabledcolor>
     <textoffsetx>30</textoffsetx>
     <aligny>center</aligny>
-    <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+    <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
     <pulseonselect>false</pulseonselect>
     <texturenofocus />
   </default>
   <default type="colorbutton">
     <font>font13</font>
     <textcolor>FFF4F4F5</textcolor>
-    <focusedcolor>FF0E0F11</focusedcolor>
+    <focusedcolor>FFFFFFFF</focusedcolor>
     <textoffsetx>30</textoffsetx>
     <aligny>center</aligny>
-    <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+    <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
     <pulseonselect>false</pulseonselect>
     <texturenofocus />
     <colorwidth>40</colorwidth>

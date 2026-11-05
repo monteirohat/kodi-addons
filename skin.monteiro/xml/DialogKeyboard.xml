@@ -43,12 +43,12 @@
       <height>90</height>
       <font>font14</font>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <textoffsetx>30</textoffsetx>
       <aligny>center</aligny>
       <ondown>100</ondown>
       <onup>300</onup>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
     </control>
     <control type="button" id="100">
@@ -65,9 +65,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -86,9 +86,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -107,9 +107,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -128,9 +128,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -149,9 +149,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -170,9 +170,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -191,9 +191,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -212,9 +212,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -233,9 +233,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -254,9 +254,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -275,9 +275,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -296,9 +296,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -317,9 +317,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -338,9 +338,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -359,9 +359,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -380,9 +380,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -401,9 +401,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -422,9 +422,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -443,9 +443,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -464,9 +464,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -485,9 +485,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -506,9 +506,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -527,9 +527,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -548,9 +548,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -569,9 +569,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -590,9 +590,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -611,9 +611,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -632,9 +632,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -653,9 +653,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -674,9 +674,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -695,9 +695,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -716,9 +716,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -737,9 +737,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -758,9 +758,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -779,9 +779,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -800,9 +800,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -821,9 +821,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -842,9 +842,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -863,9 +863,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -884,9 +884,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -905,9 +905,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -926,9 +926,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -947,9 +947,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -968,9 +968,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -989,9 +989,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -1010,9 +1010,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -1031,9 +1031,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -1052,9 +1052,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -1073,9 +1073,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -1094,9 +1094,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -1115,9 +1115,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -1136,9 +1136,9 @@
       <aligny>center</aligny>
       <textoffsetx>0</textoffsetx>
       <textcolor>FFF4F4F5</textcolor>
-      <focusedcolor>FF0E0F11</focusedcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
       <disabledcolor>FF62656D</disabledcolor>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <pulseonselect>false</pulseonselect>
       <label></label>
@@ -1281,9 +1281,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[186]</label>
@@ -1299,9 +1299,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[222]</label>
@@ -1317,9 +1317,9 @@
         <aligny>center</aligny>
         <textoffsetx>10</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label></label>
@@ -1335,9 +1335,9 @@
         <aligny>center</aligny>
         <textoffsetx>10</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label></label>
@@ -1353,9 +1353,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>IP</label>

@@ -90,8 +90,8 @@
         <aligny>center</aligny>
         <textoffsetx>84</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <focusedcolor>FFFFFFFF</focusedcolor>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="33FFFFFF">panel.png</texturenofocus>
         <label>$ADDON[script.m3u.movies 30320]</label>
       </control>
@@ -100,7 +100,7 @@
         <top>942</top>
         <width>40</width>
         <height>40</height>
-        <texture colordiffuse="FF0E0F11">subtitles.png</texture>
+        <texture colordiffuse="FFFFFFFF">subtitles.png</texture>
         <visible>Control.HasFocus(201)</visible>
       </control>
       <control type="image">
@@ -120,7 +120,7 @@
         <ondown>noop</ondown>
         <onleft>201</onleft>
         <onright>203</onright>
-        <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+        <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
         <texturenofocus colordiffuse="33FFFFFF">circle.png</texturenofocus>
         <label></label>
       </control>
@@ -129,7 +129,7 @@
         <top>938</top>
         <width>48</width>
         <height>48</height>
-        <texture colordiffuse="FF0E0F11">back10.png</texture>
+        <texture colordiffuse="FFFFFFFF">back10.png</texture>
         <visible>Control.HasFocus(202)</visible>
       </control>
       <control type="image">
@@ -149,7 +149,7 @@
         <ondown>noop</ondown>
         <onleft>202</onleft>
         <onright>204</onright>
-        <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+        <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
         <texturenofocus colordiffuse="33FFFFFF">circle.png</texturenofocus>
         <label></label>
       </control>
@@ -158,7 +158,7 @@
         <top>932</top>
         <width>60</width>
         <height>60</height>
-        <texture colordiffuse="FF0E0F11">pause.png</texture>
+        <texture colordiffuse="FFFFFFFF">pause.png</texture>
         <visible>Control.HasFocus(203) + !Player.Paused</visible>
       </control>
       <control type="image">
@@ -174,7 +174,7 @@
         <top>932</top>
         <width>60</width>
         <height>60</height>
-        <texture colordiffuse="FF0E0F11">player_play.png</texture>
+        <texture colordiffuse="FFFFFFFF">player_play.png</texture>
         <visible>Control.HasFocus(203) + Player.Paused</visible>
       </control>
       <control type="image">
@@ -194,7 +194,7 @@
         <ondown>noop</ondown>
         <onleft>203</onleft>
         <onright>205</onright>
-        <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+        <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
         <texturenofocus colordiffuse="33FFFFFF">circle.png</texturenofocus>
         <label></label>
       </control>
@@ -203,7 +203,7 @@
         <top>938</top>
         <width>48</width>
         <height>48</height>
-        <texture colordiffuse="FF0E0F11">forward10.png</texture>
+        <texture colordiffuse="FFFFFFFF">forward10.png</texture>
         <visible>Control.HasFocus(204)</visible>
       </control>
       <control type="image">
@@ -228,8 +228,8 @@
         <aligny>center</aligny>
         <textoffsetx>84</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <focusedcolor>FFFFFFFF</focusedcolor>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="33FFFFFF">panel.png</texturenofocus>
         <label>$ADDON[script.m3u.movies 30321]</label>
       </control>
@@ -238,7 +238,7 @@
         <top>942</top>
         <width>40</width>
         <height>40</height>
-        <texture colordiffuse="FF0E0F11">audio.png</texture>
+        <texture colordiffuse="FFFFFFFF">audio.png</texture>
         <visible>Control.HasFocus(205)</visible>
       </control>
       <control type="image">
@@ -322,7 +322,7 @@
             <top>2</top>
             <width>780</width>
             <height>98</height>
-            <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+            <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
             <visible>Control.HasFocus(400)</visible>
           </control>
           <control type="image">
@@ -338,7 +338,7 @@
             <top>30</top>
             <width>40</width>
             <height>40</height>
-            <texture colordiffuse="FF0E0F11">check.png</texture>
+            <texture colordiffuse="FFFFFFFF">check.png</texture>
             <visible>Control.HasFocus(400) + String.IsEqual(ListItem.Property(current),true)</visible>
           </control>
           <control type="label">
@@ -348,7 +348,7 @@
             <height>44</height>
             <aligny>center</aligny>
             <font>font13</font>
-            <textcolor>FF0E0F11</textcolor>
+            <textcolor>FFFFFFFF</textcolor>
             <label>$INFO[ListItem.Label]</label>
             <visible>Control.HasFocus(400)</visible>
           </control>
@@ -359,7 +359,7 @@
             <height>34</height>
             <aligny>center</aligny>
             <font>font12</font>
-            <textcolor>FF55575E</textcolor>
+            <textcolor>FFD6E6FF</textcolor>
             <label>$INFO[ListItem.Label2]</label>
             <visible>Control.HasFocus(400)</visible>
           </control>

@@ -42,8 +42,8 @@
         <top>116</top>
         <width>524</width>
         <height>10</height>
-        <texturebg border="4" colordiffuse="FF2C2D33">panel.png</texturebg>
-        <midtexture border="4" colordiffuse="FF3B8BFF">panel.png</midtexture>
+        <texturebg colordiffuse="FF2C2D33">white.png</texturebg>
+        <midtexture colordiffuse="FF3B8BFF">white.png</midtexture>
       </control>
     </control>
   </controls>

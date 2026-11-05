@@ -18,9 +18,9 @@ BG = "FF0E0F11"        # window background
 SURFACE = "FF17181B"   # panels
 RAISED = "FF222328"    # selected item without focus, buttons, logo tiles
 RAISED2 = "FF2C2D33"   # channel row while one of its buttons is selected
-FOCUS = "FFF4F4F5"     # focused item
-ON_FOCUS = "FF0E0F11"  # text and icons on the focused item
-ON_FOCUS2 = "FF55575E" # secondary text on the focused item
+FOCUS = "FF4682B4"     # focused item, a steel blue softer than the accent
+ON_FOCUS = "FFFFFFFF"  # text and icons on the focused item
+ON_FOCUS2 = "FFD6E6FF" # secondary text on the focused item
 TEXT = "FFF4F4F5"
 TEXT2 = "FF9C9EA6"
 TEXT3 = "FF62656D"
@@ -292,7 +292,7 @@ def main():
         label(620, 260, 640, 300, "", "font13", TEXT2, align="center", center=False, control_id=403, wrap=True),
         channels,
         "<!-- Preview and details of the focused channel. Right after the remove button focuses the preview (500). -->",
-        panel(1312, 102, 576, 331, ACCENT, has(500)),
+        panel(1312, 102, 576, 331, FOCUS, has(500)),
         panel(1320, 110, 560, 315, SURFACE),
         f"""<control type="videowindow">
   <left>1320</left>

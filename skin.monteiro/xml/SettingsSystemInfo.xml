@@ -45,9 +45,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[20037]</label>
@@ -62,9 +62,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[13277]</label>
@@ -79,9 +79,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[13279]</label>
@@ -96,9 +96,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[13280]</label>
@@ -113,9 +113,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[13281]</label>
@@ -130,9 +130,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[19191]</label>
@@ -147,9 +147,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[12389]</label>
@@ -164,9 +164,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[12396]</label>

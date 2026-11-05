@@ -90,7 +90,7 @@
           <top>0</top>
           <width>276</width>
           <height>340</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
         </control>
         <control type="image">
           <left>48</left>
@@ -108,8 +108,8 @@
           <align>center</align>
           <aligny>center</aligny>
           <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
@@ -122,7 +122,7 @@
       <onclick>ActivateWindow(1100)</onclick>
       <label></label>
       <onup>52</onup>
-      <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
       <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
     </control>
     <control type="image">
@@ -130,7 +130,7 @@
       <top>818</top>
       <width>36</width>
       <height>36</height>
-      <texture colordiffuse="FF0E0F11">power.png</texture>
+      <texture colordiffuse="FFFFFFFF">power.png</texture>
       <visible>Control.HasFocus(20)</visible>
     </control>
     <control type="image">

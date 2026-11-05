@@ -45,7 +45,7 @@
       <label>Monteiro</label>
     </control>
     <control type="label">
-      <left>1100</left>
+      <left>1060</left>
       <top>44</top>
       <width>520</width>
       <height>72</height>
@@ -58,7 +58,7 @@
     </control>
     <control type="list" id="9000">
       <left>146</left>
-      <top>300</top>
+      <top>323</top>
       <width>1660</width>
       <height>300</height>
       <orientation>horizontal</orientation>
@@ -101,7 +101,7 @@
           <top>0</top>
           <width>300</width>
           <height>300</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
           <visible>Control.HasFocus(9000)</visible>
         </control>
         <control type="image">
@@ -109,7 +109,7 @@
           <top>64</top>
           <width>120</width>
           <height>120</height>
-          <texture colordiffuse="FF0E0F11">$INFO[ListItem.Icon]</texture>
+          <texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
           <visible>Control.HasFocus(9000)</visible>
         </control>
         <control type="label">
@@ -120,8 +120,8 @@
           <align>center</align>
           <aligny>center</aligny>
           <font>font_menu</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
           <visible>Control.HasFocus(9000)</visible>
         </control>
@@ -158,141 +158,124 @@
       <content>
         <item>
           <label>$LOCALIZE[31000]</label>
-          <label2>$LOCALIZE[31006]</label2>
           <icon>tv.png</icon>
           <onclick condition="System.HasAddon(script.m3u.channels)">RunAddon(script.m3u.channels)</onclick>
           <onclick condition="!System.HasAddon(script.m3u.channels)">InstallAddon(script.m3u.channels)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[31001]</label>
-          <label2>$LOCALIZE[31007]</label2>
           <icon>film.png</icon>
           <onclick condition="System.HasAddon(script.m3u.movies)">RunAddon(script.m3u.movies)</onclick>
           <onclick condition="!System.HasAddon(script.m3u.movies)">InstallAddon(script.m3u.movies)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[31002]</label>
-          <label2>$LOCALIZE[31008]</label2>
           <icon>series.png</icon>
           <onclick condition="System.HasAddon(script.m3u.movies)">RunScript(script.m3u.movies,series)</onclick>
           <onclick condition="!System.HasAddon(script.m3u.movies)">InstallAddon(script.m3u.movies)</onclick>
         </item>
         <item>
-          <label>$LOCALIZE[31003]</label>
-          <label2>$LOCALIZE[31009]</label2>
-          <icon>puzzle.png</icon>
-          <onclick>ActivateWindow(addonbrowser)</onclick>
+          <label>$LOCALIZE[31018]</label>
+          <icon>video.png</icon>
+          <onclick>ActivateWindow(Videos,sources://video/,return)</onclick>
         </item>
         <item>
-          <label>$LOCALIZE[31004]</label>
-          <label2>$LOCALIZE[31010]</label2>
-          <icon>gear.png</icon>
-          <onclick>ActivateWindow(settings)</onclick>
+          <label>$LOCALIZE[31019]</label>
+          <icon>audio.png</icon>
+          <onclick>ActivateWindow(Music,sources://music/,return)</onclick>
         </item>
       </content>
     </control>
-    <control type="label">
-      <left>146</left>
-      <top>640</top>
-      <width>1628</width>
-      <height>50</height>
-      <align>center</align>
-      <aligny>center</aligny>
-      <font>font14</font>
-      <textcolor>FF9C9EA6</textcolor>
-      <selectedcolor>FF9C9EA6</selectedcolor>
-      <label>$INFO[Container(9000).ListItem.Label2]</label>
-    </control>
     <control type="list" id="9200">
-      <left>324</left>
-      <top>760</top>
-      <width>1296</width>
-      <height>90</height>
+      <left>146</left>
+      <top>663</top>
+      <width>1659</width>
+      <height>100</height>
       <orientation>horizontal</orientation>
       <scrolltime>0</scrolltime>
       <onup>9000</onup>
       <ondown>noop</ondown>
       <onleft>noop</onleft>
       <onright>noop</onright>
-      <itemlayout width="324" height="90">
+      <itemlayout width="553" height="100">
         <control type="image">
           <left>0</left>
           <top>0</top>
-          <width>300</width>
-          <height>90</height>
+          <width>521</width>
+          <height>100</height>
           <texture border="16" colordiffuse="FF17181B">panel.png</texture>
         </control>
         <control type="image">
-          <left>28</left>
-          <top>25</top>
-          <width>40</width>
-          <height>40</height>
+          <left>36</left>
+          <top>28</top>
+          <width>44</width>
+          <height>44</height>
           <texture colordiffuse="FF9C9EA6">$INFO[ListItem.Icon]</texture>
         </control>
         <control type="label">
-          <left>88</left>
+          <left>104</left>
           <top>0</top>
-          <width>190</width>
-          <height>90</height>
+          <width>391</width>
+          <height>100</height>
           <aligny>center</aligny>
-          <font>font13</font>
+          <font>font14</font>
           <textcolor>FFF4F4F5</textcolor>
           <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </itemlayout>
-      <focusedlayout width="324" height="90">
+      <focusedlayout width="553" height="100">
         <control type="image">
           <left>0</left>
           <top>0</top>
-          <width>300</width>
-          <height>90</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <width>521</width>
+          <height>100</height>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
           <visible>Control.HasFocus(9200)</visible>
         </control>
         <control type="image">
-          <left>28</left>
-          <top>25</top>
-          <width>40</width>
-          <height>40</height>
-          <texture colordiffuse="FF0E0F11">$INFO[ListItem.Icon]</texture>
+          <left>36</left>
+          <top>28</top>
+          <width>44</width>
+          <height>44</height>
+          <texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
           <visible>Control.HasFocus(9200)</visible>
         </control>
         <control type="label">
-          <left>88</left>
+          <left>104</left>
           <top>0</top>
-          <width>190</width>
-          <height>90</height>
+          <width>391</width>
+          <height>100</height>
           <aligny>center</aligny>
-          <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <font>font14</font>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
           <visible>Control.HasFocus(9200)</visible>
         </control>
         <control type="image">
           <left>0</left>
           <top>0</top>
-          <width>300</width>
-          <height>90</height>
+          <width>521</width>
+          <height>100</height>
           <texture border="16" colordiffuse="FF17181B">panel.png</texture>
           <visible>!Control.HasFocus(9200)</visible>
         </control>
         <control type="image">
-          <left>28</left>
-          <top>25</top>
-          <width>40</width>
-          <height>40</height>
+          <left>36</left>
+          <top>28</top>
+          <width>44</width>
+          <height>44</height>
           <texture colordiffuse="FF9C9EA6">$INFO[ListItem.Icon]</texture>
           <visible>!Control.HasFocus(9200)</visible>
         </control>
         <control type="label">
-          <left>88</left>
+          <left>104</left>
           <top>0</top>
-          <width>190</width>
-          <height>90</height>
+          <width>391</width>
+          <height>100</height>
           <aligny>center</aligny>
-          <font>font13</font>
+          <font>font14</font>
           <textcolor>FFF4F4F5</textcolor>
           <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
@@ -301,25 +284,20 @@
       </focusedlayout>
       <content>
         <item>
-          <label>$LOCALIZE[31018]</label>
-          <icon>film.png</icon>
-          <onclick>ActivateWindow(Videos,sources://video/,return)</onclick>
-        </item>
-        <item>
-          <label>$LOCALIZE[31019]</label>
-          <icon>audio.png</icon>
-          <onclick>ActivateWindow(Music,sources://music/,return)</onclick>
-        </item>
-        <item>
           <label>$LOCALIZE[31020]</label>
-          <icon>folder.png</icon>
+          <icon>picture.png</icon>
           <onclick>ActivateWindow(Pictures,sources://pictures/,return)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[31031]</label>
-          <icon>folder.png</icon>
-          <onclick>RunAddon(script.easy.files)</onclick>
-          <visible>System.HasAddon(script.easy.files)</visible>
+          <icon>settings-files.png</icon>
+          <onclick condition="System.HasAddon(script.easy.files)">RunAddon(script.easy.files)</onclick>
+          <onclick condition="!System.HasAddon(script.easy.files)">InstallAddon(script.easy.files)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[31003]</label>
+          <icon>puzzle.png</icon>
+          <onclick>ActivateWindow(addonbrowser,addons://user/all,return)</onclick>
         </item>
       </content>
     </control>
@@ -335,6 +313,65 @@
       <selectedcolor>FF62656D</selectedcolor>
       <label>$INFO[System.Date]</label>
     </control>
+    <control type="button" id="9102">
+      <left>1616</left>
+      <top>44</top>
+      <width>72</width>
+      <height>72</height>
+      <label></label>
+      <ondown>9000</ondown>
+      <onleft>noop</onleft>
+      <onright>9101</onright>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
+      <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
+      <onclick condition="System.HasAddon(service.libreelec.settings)">RunAddon(service.libreelec.settings)</onclick>
+      <onclick condition="!System.HasAddon(service.libreelec.settings)">ActivateWindow(systeminfo)</onclick>
+    </control>
+    <control type="image">
+      <left>1634</left>
+      <top>62</top>
+      <width>36</width>
+      <height>36</height>
+      <texture colordiffuse="FFFFFFFF">wifi.png</texture>
+      <visible>Control.HasFocus(9102)</visible>
+    </control>
+    <control type="image">
+      <left>1634</left>
+      <top>62</top>
+      <width>36</width>
+      <height>36</height>
+      <texture colordiffuse="FF9C9EA6">wifi.png</texture>
+      <visible>!Control.HasFocus(9102)</visible>
+    </control>
+    <control type="button" id="9101">
+      <left>1712</left>
+      <top>44</top>
+      <width>72</width>
+      <height>72</height>
+      <onclick>ActivateWindow(settings)</onclick>
+      <label></label>
+      <ondown>9000</ondown>
+      <onleft>9102</onleft>
+      <onright>9100</onright>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
+      <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
+    </control>
+    <control type="image">
+      <left>1730</left>
+      <top>62</top>
+      <width>36</width>
+      <height>36</height>
+      <texture colordiffuse="FFFFFFFF">gear.png</texture>
+      <visible>Control.HasFocus(9101)</visible>
+    </control>
+    <control type="image">
+      <left>1730</left>
+      <top>62</top>
+      <width>36</width>
+      <height>36</height>
+      <texture colordiffuse="FF9C9EA6">gear.png</texture>
+      <visible>!Control.HasFocus(9101)</visible>
+    </control>
     <control type="button" id="9100">
       <left>1808</left>
       <top>44</top>
@@ -343,8 +380,9 @@
       <onclick>ActivateWindow(1100)</onclick>
       <label></label>
       <ondown>9000</ondown>
-      <onleft>9000</onleft>
-      <texturefocus colordiffuse="FFF4F4F5">circle.png</texturefocus>
+      <onleft>9101</onleft>
+      <onright>noop</onright>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
       <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
     </control>
     <control type="image">
@@ -352,7 +390,7 @@
       <top>62</top>
       <width>36</width>
       <height>36</height>
-      <texture colordiffuse="FF0E0F11">power.png</texture>
+      <texture colordiffuse="FFFFFFFF">power.png</texture>
       <visible>Control.HasFocus(9100)</visible>
     </control>
     <control type="image">

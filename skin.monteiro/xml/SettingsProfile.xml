@@ -63,7 +63,7 @@
           <top>0</top>
           <width>240</width>
           <height>320</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
         </control>
         <control type="image">
           <left>40</left>
@@ -81,8 +81,8 @@
           <align>center</align>
           <aligny>center</aligny>
           <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
@@ -111,9 +111,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label2>[B]$INFO[System.ProfileAutoLogin][/B]</label2>

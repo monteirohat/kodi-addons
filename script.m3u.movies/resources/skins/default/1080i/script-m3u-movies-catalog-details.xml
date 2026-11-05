@@ -99,8 +99,8 @@
         <align>center</align>
         <aligny>center</aligny>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <focusedcolor>FFFFFFFF</focusedcolor>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <label>$ADDON[script.m3u.movies 30300]</label>
         <visible>String.IsEqual(Window.Property(sources),true)</visible>
@@ -116,8 +116,8 @@
         <align>center</align>
         <aligny>center</aligny>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <focusedcolor>FFFFFFFF</focusedcolor>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <label>$ADDON[script.m3u.movies 30110]</label>
         <visible>String.IsEqual(Window.Property(playable),true)</visible>
@@ -133,8 +133,8 @@
         <align>center</align>
         <aligny>center</aligny>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <focusedcolor>FFFFFFFF</focusedcolor>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       </control>
     </control>
@@ -204,7 +204,7 @@
           <top>0</top>
           <width>208</width>
           <height>64</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
           <visible>Control.HasFocus(300)</visible>
         </control>
         <control type="image">
@@ -223,7 +223,7 @@
           <align>center</align>
           <aligny>center</aligny>
           <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
+          <textcolor>FFFFFFFF</textcolor>
           <label>$INFO[ListItem.Label]</label>
           <visible>Control.HasFocus(300)</visible>
         </control>
@@ -288,7 +288,7 @@
           <top>2</top>
           <width>1100</width>
           <height>66</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
           <visible>Control.HasFocus(400)</visible>
         </control>
         <control type="image">
@@ -315,7 +315,7 @@
           <aligny>center</aligny>
           <scroll>true</scroll>
           <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
+          <textcolor>FFFFFFFF</textcolor>
           <label>$INFO[ListItem.Label]</label>
           <visible>Control.HasFocus(400)</visible>
         </control>
@@ -327,7 +327,7 @@
           <align>right</align>
           <aligny>center</aligny>
           <font>font12</font>
-          <textcolor>FF55575E</textcolor>
+          <textcolor>FFD6E6FF</textcolor>
           <label>$INFO[ListItem.Label2]</label>
           <visible>Control.HasFocus(400)</visible>
         </control>

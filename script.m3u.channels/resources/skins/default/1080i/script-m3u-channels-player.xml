@@ -157,7 +157,7 @@
       <ondown>noop</ondown>
       <onleft>noop</onleft>
       <onright>noop</onright>
-      <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <visible allowhiddenfocus="true">String.IsEqual(Window.Property(bar),true) | Control.HasFocus(101)</visible>
       <animation effect="fade" time="200">VisibleChange</animation>
@@ -171,7 +171,7 @@
         <top>910</top>
         <width>40</width>
         <height>40</height>
-        <texture colordiffuse="FF0E0F11">star.png</texture>
+        <texture colordiffuse="FFFFFFFF">star.png</texture>
         <visible>Control.HasFocus(101) + String.IsEqual(Window.Property(favorite),true)</visible>
       </control>
       <control type="image">
@@ -179,7 +179,7 @@
         <top>910</top>
         <width>40</width>
         <height>40</height>
-        <texture colordiffuse="FF0E0F11">star-outline.png</texture>
+        <texture colordiffuse="FFFFFFFF">star-outline.png</texture>
         <visible>Control.HasFocus(101) + !String.IsEqual(Window.Property(favorite),true)</visible>
       </control>
       <control type="image">

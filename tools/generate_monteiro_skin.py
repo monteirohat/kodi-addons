@@ -41,6 +41,12 @@ STRINGS = {
     31018: ("Videos", "Vídeos"),
     31019: ("Music", "Música"),
     31020: ("Pictures", "Imagens"),
+    31044: ("Wi-Fi", "Wi-Fi"),
+    31045: ("Updates", "Atualizações"),
+    31046: ("Recently updated", "Recentes"),
+    31047: ("Repositories", "Repositórios"),
+    31048: ("Install from ZIP", "Instalar ZIP"),
+    31049: ("Check for updates", "Verificar atualizações"),
 }
 
 
@@ -136,8 +142,9 @@ def dim():
 
 def progress(control_id, left, top, width, height=10, info=None, visible=None):
     return control("progress", control_id, left=left, top=top, width=width, height=height,
-                   texturebg=('border="4" colordiffuse="%s"' % RAISED2, "panel.png"),
-                   midtexture=('border="4" colordiffuse="%s"' % ACCENT, "panel.png"), info=info, visible=visible)
+                   # The rounded panel texture tapers at the ends of a bar this thin, so the bar is flat, as the player bars.
+                   texturebg=('colordiffuse="%s"' % RAISED2, "white.png"),
+                   midtexture=('colordiffuse="%s"' % ACCENT, "white.png"), info=info, visible=visible)
 
 
 # Defaults: the look of the controls that Kodi creates by itself, such as the buttons of settings and dialogs ----------
@@ -195,7 +202,7 @@ def defaults():
     <texturenofocus />
     <radiowidth>72</radiowidth>
     <radioheight>40</radioheight>
-    <textureradioonfocus>toggle-on.png</textureradioonfocus>
+    <textureradioonfocus>toggle-on-focus.png</textureradioonfocus>
     <textureradioonnofocus>toggle-on.png</textureradioonnofocus>
     <textureradioofffocus colordiffuse="%(on_focus2)s">toggle-off.png</textureradioofffocus>
     <textureradiooffnofocus colordiffuse="%(text3)s">toggle-off.png</textureradiooffnofocus>
@@ -247,13 +254,13 @@ def defaults():
     <sliderheight>32</sliderheight>
     <texturesliderbar colordiffuse="%(raised2)s">slider-bar.png</texturesliderbar>
     <textureslidernib colordiffuse="%(accent)s">slider-nib.png</textureslidernib>
-    <textureslidernibfocus colordiffuse="%(accent)s">slider-nib.png</textureslidernibfocus>
+    <textureslidernibfocus colordiffuse="%(on_focus)s">slider-nib.png</textureslidernibfocus>
   </default>
   <default type="slider">
     <orientation>horizontal</orientation>
     <texturesliderbar colordiffuse="%(raised2)s">slider-bar.png</texturesliderbar>
     <textureslidernib colordiffuse="%(accent)s">slider-nib.png</textureslidernib>
-    <textureslidernibfocus colordiffuse="%(accent)s">slider-nib.png</textureslidernibfocus>
+    <textureslidernibfocus colordiffuse="%(on_focus)s">slider-nib.png</textureslidernibfocus>
   </default>
   <default type="edit">
     <font>font13</font>
@@ -316,51 +323,54 @@ def fonts():
 # Home -------------------------------------------------------------------------------------------------------------------
 
 HOME_ITEMS = [
-    # label, description, icon, action, and the add-on it needs
-    (31000, 31006, "tv.png", "RunAddon(script.m3u.channels)", "System.HasAddon(script.m3u.channels)"),
-    (31001, 31007, "film.png", "RunAddon(script.m3u.movies)", "System.HasAddon(script.m3u.movies)"),
-    (31002, 31008, "series.png", "RunScript(script.m3u.movies,series)", "System.HasAddon(script.m3u.movies)"),
-    (31003, 31009, "puzzle.png", "ActivateWindow(addonbrowser)", None),
-    (31004, 31010, "gear.png", "ActivateWindow(settings)", None),
+    # label, icon, action, and the add-on it needs
+    (31000, "tv.png", "RunAddon(script.m3u.channels)", "System.HasAddon(script.m3u.channels)"),
+    (31001, "film.png", "RunAddon(script.m3u.movies)", "System.HasAddon(script.m3u.movies)"),
+    (31002, "series.png", "RunScript(script.m3u.movies,series)", "System.HasAddon(script.m3u.movies)"),
+    (31018, "video.png", "ActivateWindow(Videos,sources://video/,return)", None),
+    (31019, "audio.png", "ActivateWindow(Music,sources://music/,return)", None),
 ]
+# The smaller row under the tiles.
+SHORTCUTS = [
+    (31020, "picture.png", "ActivateWindow(Pictures,sources://pictures/,return)", None),
+    (31031, "settings-files.png", "RunAddon(script.easy.files)", "System.HasAddon(script.easy.files)"),
+    (31003, "puzzle.png", "ActivateWindow(addonbrowser,addons://user/all,return)", None),
+]
+# Wi-Fi opens the LibreELEC settings, where the networks are. Elsewhere it opens the system information.
+WIFI = "System.HasAddon(service.libreelec.settings)"
+WIFI_ACTION = ('<onclick condition="%s">RunAddon(service.libreelec.settings)</onclick>\n'
+               '<onclick condition="!%s">ActivateWindow(systeminfo)</onclick>' % (WIFI, WIFI))
 
 
-def home():
-    tile, gap = 300, 32
-    count = len(HOME_ITEMS)
-    width = count * tile + (count - 1) * gap
-    left = (1920 - width) // 2
-    # Each item takes its tile and the gap after it, so the list holds them all without scrolling.
-    list_width = count * (tile + gap)
-    focus = "Control.HasFocus(9000)"
+
+def home_items(entries):
     items = []
-    for label_id, description_id, icon, action, condition in HOME_ITEMS:
+    for label_id, icon, action, condition in entries:
         if condition:
-            # Without the add-on, the tile offers to install it from the Monteiro repository.
+            # Without the add-on, the item offers to install it from the Monteiro repository.
             addon_id = action[action.index("(") + 1:].split(",")[0].rstrip(")")
             onclick = ('<onclick condition="%s">%s</onclick>\n<onclick condition="!%s">InstallAddon(%s)</onclick>'
                        % (condition, action, condition, addon_id))
         else:
             onclick = "<onclick>%s</onclick>" % action
-        description = "$LOCALIZE[%d]" % description_id
-        items.append("<item>\n  <label>$LOCALIZE[%d]</label>\n  <label2>%s</label2>\n  <icon>%s</icon>\n%s\n</item>"
-                     % (label_id, description, icon, indent(onclick, 2)))
-    def tile_parts(focused, condition=None):
-        return [panel(0, 0, tile, tile, FOCUS if focused else SURFACE, condition),
-                image(90, 64, 120, 120, "$INFO[ListItem.Icon]", ON_FOCUS if focused else TEXT2, condition),
-                label(0, 200, tile, 60, "$INFO[ListItem.Label]", "font_menu", ON_FOCUS if focused else TEXT, align="center", visible=condition)]
-    # The selected tile looks focused only while the menu has the focus, not while the power button has it.
-    layout = lambda focused: "\n".join(tile_parts(True, focus) + tile_parts(False, "!" + focus) if focused else tile_parts(False))
-    # A list, so the focus moves between the tiles while they stay in place.
-    menu = '''<control type="list" id="9000">
+        items.append("<item>\n  <label>$LOCALIZE[%d]</label>\n  <icon>%s</icon>\n%s\n</item>" % (label_id, icon, indent(onclick, 2)))
+    return "\n".join(items)
+
+
+def home_row(control_id, left, top, item_width, height, gap, count, parts, nav):
+    """A row of items that stay in place while the focus moves between them."""
+    focus = "Control.HasFocus(%d)" % control_id
+    # The selected item looks focused only while its row has the focus.
+    focused = "\n".join(parts(True, focus) + parts(False, "!" + focus))
+    return '''<control type="list" id="%d">
   <left>%d</left>
-  <top>300</top>
+  <top>%d</top>
   <width>%d</width>
   <height>%d</height>
   <orientation>horizontal</orientation>
   <scrolltime>0</scrolltime>
-  <onup>9100</onup>
-  <ondown>9200</ondown>
+  <onup>%s</onup>
+  <ondown>%s</ondown>
   <onleft>noop</onleft>
   <onright>noop</onright>
   <itemlayout width="%d" height="%d">
@@ -372,74 +382,59 @@ def home():
   <content>
 %s
   </content>
-</control>''' % (left, list_width, tile, tile + gap, tile, indent(layout(False), 4), tile + gap, tile,
-                  indent(layout(True), 4), indent("\n".join(items), 4))
-    top_buttons = round_button(9100, 1808, 44, "power.png", "ActivateWindow(%d)" % POWER_WINDOW, nav={"down": 9000, "left": 9000})
+</control>''' % (control_id, left, top, count * (item_width + gap), height, nav[0], nav[1], item_width + gap, height,
+                  indent("\n".join(parts(False)), 4), item_width + gap, height, indent(focused, 4),
+                  indent(home_items(nav[2]), 4))
+
+
+def home():
+    tile, gap, pill_height, row_gap = 300, 32, 100, 40
+    count = len(HOME_ITEMS)
+    width = count * tile + (count - 1) * gap
+    left = (1920 - width) // 2
+    # The rectangles below share the width of the tiles, so both rows line up at the edges.
+    pill = (width - (len(SHORTCUTS) - 1) * gap) // len(SHORTCUTS)
+    # Both rows sit halfway between the header and the date.
+    top = 116 + (854 - tile - row_gap - pill_height) // 2
+    def tile_parts(focused, condition=None):
+        return [panel(0, 0, tile, tile, FOCUS if focused else SURFACE, condition),
+                image(90, 64, 120, 120, "$INFO[ListItem.Icon]", ON_FOCUS if focused else TEXT2, condition),
+                label(0, 200, tile, 60, "$INFO[ListItem.Label]", "font_menu", ON_FOCUS if focused else TEXT, align="center", visible=condition)]
+    def pill_parts(focused, condition=None):
+        return [panel(0, 0, pill, pill_height, FOCUS if focused else SURFACE, condition),
+                image(36, 28, 44, 44, "$INFO[ListItem.Icon]", ON_FOCUS if focused else TEXT2, condition),
+                label(104, 0, pill - 130, pill_height, "$INFO[ListItem.Label]", "font14", ON_FOCUS if focused else TEXT, visible=condition)]
+    tiles = home_row(9000, left, top, tile, tile, gap, count, tile_parts, (9100, 9200, HOME_ITEMS))
+    pills = home_row(9200, left, top + tile + row_gap, pill, pill_height, gap, len(SHORTCUTS), pill_parts, (9000, "noop", SHORTCUTS))
+    # Wi-Fi, settings and power at the top right. Up from the tiles goes to power, the nearest to the clock.
+    top_buttons = (round_button(9102, 1616, 44, "wifi.png", WIFI_ACTION, nav={"down": 9000, "left": "noop", "right": 9101})
+                   + round_button(9101, 1712, 44, "gear.png", "ActivateWindow(settings)", nav={"down": 9000, "left": 9102, "right": 9100})
+                   + round_button(9100, 1808, 44, "power.png", "ActivateWindow(%d)" % POWER_WINDOW,
+                                  nav={"down": 9000, "left": 9101, "right": "noop"}))
     return window("Home screen: TV, Movies and Series open the Easy add-ons directly.", [
         image(0, 0, 1920, 1080, "white.png", BG),
         image(0, 0, 1920, 1080, "fanart.jpg", "40FFFFFF"),
         image(0, 0, 1920, 1080, "shade.png", "E60E0F11"),
         image(64, 48, 64, 64, "logo.png"),
         label(148, 44, 900, 72, "Monteiro", "font45_title"),
-        label(1100, 44, 520, 72, "$INFO[System.Time]", "font45", TEXT2, align="right"),
-        menu,
-        label(left, 640, width, 50, "$INFO[Container(9000).ListItem.Label2]", "font14", TEXT2, align="center"),
-        shortcuts(),
+        label(1060, 44, 520, 72, "$INFO[System.Time]", "font45", TEXT2, align="right"),
+        tiles,
+        pills,
         label(left, 990, width, 40, "$INFO[System.Date]", "font12", TEXT3, align="center"),
         *top_buttons,
     ], default=9000, extra="<menucontrol>9000</menucontrol>\n<backgroundcolor>%s</backgroundcolor>" % BG)
-
-
-SHORTCUTS = [(31018, "film.png", "ActivateWindow(Videos,sources://video/,return)", None),
-             (31019, "audio.png", "ActivateWindow(Music,sources://music/,return)", None),
-             (31020, "folder.png", "ActivateWindow(Pictures,sources://pictures/,return)", None),
-             (31031, "folder.png", "RunAddon(script.easy.files)", "System.HasAddon(script.easy.files)")]
-
-
-def shortcuts():
-    """Videos, music and pictures of Kodi, in a smaller row under the add-ons."""
-    pill, gap = 300, 24
-    width = len(SHORTCUTS) * (pill + gap)
-    focus = "Control.HasFocus(9200)"
-    def parts(focused, condition=None):
-        return [panel(0, 0, pill, 90, FOCUS if focused else SURFACE, condition),
-                image(28, 25, 40, 40, "$INFO[ListItem.Icon]", ON_FOCUS if focused else TEXT2, condition),
-                label(88, 0, pill - 110, 90, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT, visible=condition)]
-    items = "\n".join("<item>\n  <label>$LOCALIZE[%d]</label>\n  <icon>%s</icon>\n  <onclick>%s</onclick>%s\n</item>"
-                      % (label_id, icon, action, "\n  <visible>%s</visible>" % condition if condition else "")
-                      for label_id, icon, action, condition in SHORTCUTS)
-    return '''<control type="list" id="9200">
-  <left>%d</left>
-  <top>760</top>
-  <width>%d</width>
-  <height>90</height>
-  <orientation>horizontal</orientation>
-  <scrolltime>0</scrolltime>
-  <onup>9000</onup>
-  <ondown>noop</ondown>
-  <onleft>noop</onleft>
-  <onright>noop</onright>
-  <itemlayout width="%d" height="90">
-%s
-  </itemlayout>
-  <focusedlayout width="%d" height="90">
-%s
-  </focusedlayout>
-  <content>
-%s
-  </content>
-</control>''' % ((1920 - width + gap) // 2, width, pill + gap, indent("\n".join(parts(False)), 4), pill + gap,
-                  indent("\n".join(parts(True, focus) + parts(False, "!" + focus)), 4), indent(items, 4))
 
 
 def round_button(control_id, left, top, icon, onclick, size=72, nav=None):
     """A round icon button. Buttons cannot hold images, so the icon is drawn over it in two colors."""
     nav = nav or {}
     inset = size // 4
-    return [control("button", control_id, left=left, top=top, width=size, height=size, onclick=onclick, label="",
+    # An action can also be given as ready <onclick> tags, for actions that depend on a condition.
+    tagged = onclick.startswith("<")
+    return [control("button", control_id, left=left, top=top, width=size, height=size, onclick=None if tagged else onclick, label="",
                     onup=nav.get("up"), ondown=nav.get("down"), onleft=nav.get("left"), onright=nav.get("right"),
                     texturefocus=('colordiffuse="%s"' % FOCUS, "circle.png"),
-                    texturenofocus=('colordiffuse="%s"' % RAISED, "circle.png")),
+                    texturenofocus=('colordiffuse="%s"' % RAISED, "circle.png"), children=[onclick] if tagged else ()),
             image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, ON_FOCUS, "Control.HasFocus(%d)" % control_id),
             image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, TEXT2, "!Control.HasFocus(%d)" % control_id)]
 
@@ -483,10 +478,13 @@ def context_menu():
     return window("Context menus of Kodi and add-ons.", [
         image(-1920, -1080, 5760, 3240, "white.png", DIM),
         control("button", left=-1920, top=-1080, width=5760, height=3240, texturefocus="", texturenofocus="", onclick="Action(close)"),
-        # Kodi sizes image 999 by its own rules, so the buttons carry the background instead.
-        control("image", 999, left=0, top=0, width=560, height=10, texture=""),
+        # Kodi gives image 999 its own height, less the height of the grouplist, plus the height of the options. So the
+        # background is the grouplist with a margin of 20 around it, and Kodi keeps the whole menu on the screen.
+        panel(0, 0, 560, 1040, SURFACE).replace('<control type="image">', '<control type="image" id="999">', 1),
         control("grouplist", 996, left=20, top=20, width=520, height=1000, itemgap=0),
-        button(1000, 20, 20, 520, 76, align="left", texture_nofocus=SURFACE),
+        # The options are rows of the background, and only the focused one is rounded.
+        button(1000, 20, 20, 520, 76, align="left").replace(
+            'colordiffuse="%s">panel.png</texturenofocus>' % RAISED, 'colordiffuse="%s">white.png</texturenofocus>' % SURFACE),
     ], default=996, extra=pop() + "\n<coordinates>\n  <left>0</left>\n  <top>0</top>\n</coordinates>")
 
 
@@ -679,27 +677,36 @@ def settings_dialog(comment, with_categories, buttons, heading_id=2, level=True)
 
 
 def settings_menu():
-    entries = [("$LOCALIZE[14200]", "ActivateWindow(PlayerSettings)", None), ("$LOCALIZE[14211]", "ActivateWindow(MediaSettings)", None),
-               ("$LOCALIZE[14036]", "ActivateWindow(ServiceSettings)", None), ("$LOCALIZE[14206]", "ActivateWindow(InterfaceSettings)", None),
-               ("$LOCALIZE[13000]", "ActivateWindow(SystemSettings)", None), ("$LOCALIZE[24001]", "ActivateWindow(addonbrowser)", None),
-               ("$LOCALIZE[14204]", "ActivateWindow(PVRSettings)", None),
+    """The settings sections as square tiles with an icon, as the home screen."""
+    entries = [("$LOCALIZE[14200]", "settings-player.png", "ActivateWindow(PlayerSettings)", None),
+               ("$LOCALIZE[14211]", "film.png", "ActivateWindow(MediaSettings)", None),
+               ("$LOCALIZE[14036]", "settings-services.png", "ActivateWindow(ServiceSettings)", None),
+               ("$LOCALIZE[14206]", "settings-interface.png", "ActivateWindow(InterfaceSettings)", None),
+               ("$LOCALIZE[13000]", "gear.png", "ActivateWindow(SystemSettings)", None),
+               ("$LOCALIZE[24001]", "puzzle.png", "ActivateWindow(addonbrowser,addons://user/all,return)", None),
+               ("$LOCALIZE[14204]", "tv.png", "ActivateWindow(PVRSettings)", None),
                # Easy Files replaces the file manager of Kodi when it is installed.
-               ("$LOCALIZE[7]", "RunAddon(script.easy.files)", "System.HasAddon(script.easy.files)"),
-               ("$LOCALIZE[7]", "ActivateWindow(filemanager)", "!System.HasAddon(script.easy.files)"),
-               ("$LOCALIZE[130]", "ActivateWindow(systeminfo)", None), ("$LOCALIZE[13200]", "ActivateWindow(Profiles)", None),
-               ("$LOCALIZE[14111]", "ActivateWindow(eventlog)", "!System.HasAddon(service.libreelec.settings)"),
-               ("LibreELEC", "RunAddon(service.libreelec.settings)", "System.AddonIsEnabled(service.libreelec.settings)")]
-    items = "\n".join("<item>\n  <label>%s</label>\n  <onclick>%s</onclick>%s\n</item>"
-                      % (text, action, "\n  <visible>%s</visible>" % condition if condition else "") for text, action, condition in entries)
-    tile_w, tile_h = 400, 160
-    layout = lambda focused: "\n".join([panel(0, 0, tile_w - 24, tile_h - 24, FOCUS if focused else SURFACE),
-                                        label(30, 0, tile_w - 84, tile_h - 24, "$INFO[ListItem.Label]", "font30_title",
-                                              ON_FOCUS if focused else TEXT)])
+               # Short names, so every name fits on one line of its tile.
+               ("$LOCALIZE[31031]", "settings-files.png", "RunAddon(script.easy.files)", "System.HasAddon(script.easy.files)"),
+               ("$LOCALIZE[31031]", "settings-files.png", "ActivateWindow(filemanager)", "!System.HasAddon(script.easy.files)"),
+               ("$LOCALIZE[31032]", "settings-info.png", "ActivateWindow(systeminfo)", None),
+               ("$LOCALIZE[13200]", "settings-profiles.png", "ActivateWindow(Profiles)", None),
+               ("$LOCALIZE[14111]", "settings-events.png", "ActivateWindow(eventlog)", "!System.HasAddon(service.libreelec.settings)"),
+               ("LibreELEC", "settings-system.png", "RunAddon(service.libreelec.settings)", "System.AddonIsEnabled(service.libreelec.settings)")]
+    items = "\n".join("<item>\n  <label>%s</label>\n  <icon>%s</icon>\n  <onclick>%s</onclick>%s\n</item>"
+                      % (text, icon, action, "\n  <visible>%s</visible>" % condition if condition else "")
+                      for text, icon, action, condition in entries)
+    tile, gap, columns = 240, 24, 6
+    width = columns * (tile + gap)
+    layout = lambda focused: "\n".join([
+        panel(0, 0, tile, tile, FOCUS if focused else SURFACE),
+        image(75, 46, 90, 90, "$INFO[ListItem.Icon]", ON_FOCUS if focused else TEXT2),
+        label(10, 156, tile - 20, 56, "$INFO[ListItem.Label]", "font25_title", ON_FOCUS if focused else TEXT, align="center")])
     grid = '''<control type="panel" id="9000">
-  <left>160</left>
-  <top>240</top>
-  <width>1600</width>
-  <height>640</height>
+  <left>%d</left>
+  <top>250</top>
+  <width>%d</width>
+  <height>%d</height>
   <orientation>vertical</orientation>
   <scrolltime>120</scrolltime>
   <itemlayout width="%d" height="%d">
@@ -711,7 +718,8 @@ def settings_menu():
   <content>
 %s
   </content>
-</control>''' % (tile_w, tile_h, indent(layout(False), 4), tile_w, tile_h, indent(layout(True), 4), indent(items, 4))
+</control>''' % ((1920 - width + gap) // 2, width, 2 * (tile + gap), tile + gap, tile + gap, indent(layout(False), 4), tile + gap,
+                  tile + gap, indent(layout(True), 4), indent(items, 4))
     return window("Settings sections.", [
         image(0, 0, 1920, 1080, "white.png", BG),
         image(64, 48, 64, 64, "gear.png", TEXT2),
@@ -723,49 +731,69 @@ def settings_menu():
 
 # Add-ons --------------------------------------------------------------------------------------------------------------
 
+# The add-on browser opens on the installed add-ons. The other places of Kodi are buttons of a toolbar above the list:
+# control id, label, action, and when the button is shown. Kodi handles buttons 9 (check for updates) and 5 (settings).
+ADDON_TOOLBAR = [
+    (202, "$LOCALIZE[137]", "Container.Update(addons://search/)", None),
+    (203, "$LOCALIZE[31045]", "Container.Update(addons://outdated/)", "!String.IsEqual(System.AddonUpdateCount,0)"),
+    (204, "$LOCALIZE[31046]", "Container.Update(addons://recently_updated/)", None),
+    (206, "$LOCALIZE[31047]", "Container.Update(addons://repos/)", None),
+    (207, "$LOCALIZE[31048]", "InstallFromZip", None),
+    (9, "$LOCALIZE[31049]", None, None),
+    (5, "$LOCALIZE[10004]", None, None),
+]
+ADDONS_HOME = "addons://user/all"
+
+
 def addon_browser():
+    left, width = 60, 1800
     row = lambda focused: "\n".join([
-        panel(0, 0, 1240, 100, FOCUS) if focused else "",
+        # The selected row is blue only while the list has the focus, and grey while the toolbar has it.
+        panel(0, 0, width - 40, 100, FOCUS, "Control.HasFocus(50)") if focused else "",
+        panel(0, 0, width - 40, 100, RAISED, "!Control.HasFocus(50)") if focused else "",
         image(16, 10, 80, 80, "$INFO[ListItem.Icon]", keep=True, fallback="puzzle.png"),
-        label(120, 6, 860, 50, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT),
-        label(120, 50, 860, 40, "$INFO[ListItem.Label2]", "font12", ON_FOCUS2 if focused else TEXT2),
-        label(980, 0, 240, 100, "$INFO[ListItem.AddonVersion]", "font12", ON_FOCUS2 if focused else TEXT3, align="right"),
+        # The name sits above the summary, or in the middle of the row when there is none, as for the menu items.
+        label(120, 6, 1360, 50, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT, visible="!String.IsEmpty(ListItem.Label2)"),
+        label(120, 0, 1360, 100, "$INFO[ListItem.Label]", "font13", ON_FOCUS if focused else TEXT, visible="String.IsEmpty(ListItem.Label2)"),
+        label(120, 50, 1360, 40, "$INFO[ListItem.Label2]", "font12", ON_FOCUS2 if focused else TEXT2),
+        label(width - 320, 0, 260, 100, "$INFO[ListItem.AddonVersion]", "font12", ON_FOCUS2 if focused else TEXT3, align="right"),
     ])
     view = '''<control type="list" id="50">
-  <left>600</left>
-  <top>140</top>
-  <width>1240</width>
-  <height>900</height>
-  <onleft>9000</onleft>
+  <left>%d</left>
+  <top>260</top>
+  <width>%d</width>
+  <height>770</height>
+  <onup>9000</onup>
+  <onleft>noop</onleft>
   <onright>60</onright>
   <pagecontrol>60</pagecontrol>
   <scrolltime>120</scrolltime>
   <viewtype label="535">list</viewtype>
-  <itemlayout height="108" width="1240">
+  <itemlayout height="108" width="%d">
 %s
   </itemlayout>
-  <focusedlayout height="108" width="1240">
+  <focusedlayout height="108" width="%d">
 %s
   </focusedlayout>
-</control>''' % (indent(row(False), 4), indent(row(True), 4))
-    side = control("grouplist", 9000, left=60, top=240, width=480, height=700, onright=50, itemgap=12, children=[
-        label(0, 0, 480, 50, "$LOCALIZE[31021]", "font12", TEXT3, control_id=201),
-        control("radiobutton", 7, width=480, height=76, label="$LOCALIZE[25001]", font="font12",
-                texturenofocus=('border="16" colordiffuse="%s"' % RAISED, "panel.png")),
-        control("radiobutton", 8, width=480, height=76, label="$LOCALIZE[24999]", font="font12",
-                texturenofocus=('border="16" colordiffuse="%s"' % RAISED, "panel.png")),
-        button(9, 0, 0, 480, 76, "$LOCALIZE[24034]", align="left"),
-        button(5, 0, 0, 480, 76, "$LOCALIZE[10004]", align="left"),
-    ])
-    return window("Add-ons: categories, repositories and the add-ons in them.", [
+</control>''' % (left + 20, width - 40, width - 40, indent(row(False), 4), width - 40, indent(row(True), 4))
+    buttons = [button(control_id, 0, 0, "auto", 76, text, "font12", onclick=action, visible=condition, offset=32)
+               for control_id, text, action, condition in ADDON_TOOLBAR]
+    # A place opened from the toolbar takes the focus, so the remote moves in it right away.
+    buttons = [tool.replace(")</onclick>", ")</onclick>\n  <onclick>SetFocus(50)</onclick>", 1) if "Container.Update" in tool else tool
+               for tool in buttons]
+    toolbar = control("grouplist", 9000, left=left, top=140, width=width, height=76, orientation="horizontal", itemgap=16,
+                      ondown=50, onup="noop", onleft="noop", onright="noop", children=buttons)
+    installed = "String.IsEqual(Container.FolderPath,%s)" % ADDONS_HOME
+    return window("Add-ons: the installed add-ons, with a toolbar for search, repositories, updates and settings.", [
         image(0, 0, 1920, 1080, "white.png", BG),
         image(64, 48, 64, 64, "puzzle.png", TEXT2),
-        label(148, 44, 1000, 72, "$INFO[Container.FolderName]", "font45_title"),
+        label(148, 44, 1000, 72, "$LOCALIZE[24001]", "font45_title", visible=installed),
+        label(148, 44, 1000, 72, "$INFO[Container.FolderName]", "font45_title", visible="!" + installed),
         label(1100, 44, 760, 72, "$INFO[Container.NumItems] $LOCALIZE[31014]", "font13", TEXT2, align="right"),
-        panel(580, 130, 1280, 920, SURFACE),
+        toolbar,
+        panel(left, 240, width, 810, SURFACE),
         view,
-        control("scrollbar", 60, left=1844, top=150, width=8, height=880, onleft=50, onright=9000),
-        side,
+        control("scrollbar", 60, left=left + width - 16, top=260, width=8, height=770, onleft=50, onright="noop"),
     ], default=50, extra="<views>50</views>\n<menucontrol>9000</menucontrol>", window_type=None)
 
 
@@ -1471,6 +1499,27 @@ def media():
     draw.rounded_rectangle((p(14), p(46), p(114), p(110)), radius=p(12), fill=255)
     draw.polygon([(p(54), p(62)), (p(54), p(94)), (p(80), p(78))], fill=0)
     save(alpha, 128, 128, "series.png")
+    # Videos: a film strip with a play mark.
+    alpha, draw = canvas(128, 128)
+    draw.rounded_rectangle((p(8), p(20), p(120), p(108)), radius=p(14), fill=255)
+    for x in (16, 40, 64, 88):
+        for y in (26, 92):
+            draw.rounded_rectangle((p(x + 4), p(y), p(x + 20), p(y + 10)), radius=p(3), fill=0)
+    draw.polygon([(p(52), p(46)), (p(52), p(82)), (p(82), p(64))], fill=0)
+    save(alpha, 128, 128, "video.png")
+    # Pictures: a frame with mountains and a sun.
+    alpha, draw = canvas(128, 128)
+    draw.rounded_rectangle((p(8), p(18), p(120), p(110)), radius=p(14), fill=255)
+    draw.rounded_rectangle((p(20), p(30), p(108), p(98)), radius=p(6), fill=0)
+    draw.polygon([(p(22), p(96)), (p(52), p(54)), (p(72), p(80)), (p(84), p(66)), (p(106), p(96))], fill=255)
+    draw.ellipse((p(80), p(36), p(98), p(54)), fill=255)
+    save(alpha, 128, 128, "picture.png")
+    # Wi-Fi: three arcs over a dot.
+    alpha, draw = canvas(128, 128)
+    for radius in (76, 52, 28):
+        draw.arc((p(64 - radius), p(106 - radius), p(64 + radius), p(106 + radius)), start=225, end=315, fill=255, width=p(14))
+    draw.ellipse((p(54), p(96), p(74), p(116)), fill=255)
+    save(alpha, 128, 128, "wifi.png")
     # Power: a ring open at the top, with a bar.
     alpha, draw = canvas(128, 128)
     draw.arc((p(22), p(26), p(106), p(110)), start=-60, end=240, fill=255, width=p(11))
@@ -1480,7 +1529,8 @@ def media():
     alpha, draw = canvas(72, 40)
     draw.rounded_rectangle((0, 0, p(72) - 1, p(40) - 1), radius=p(20), fill=255)
     draw.ellipse((p(36), p(4), p(68), p(36)), fill=0)
-    save(alpha, 72, 40, "toggle-on-mask.png")
+    # On a focused blue row, the track is white and the blue of the row shows through the knob.
+    save(alpha, 72, 40, "toggle-on-focus.png")
     on = Image.new("RGBA", (72, 40), (0, 0, 0, 0))
     track = Image.new("RGBA", (72, 40), tuple(int(ACCENT[i:i + 2], 16) for i in (2, 4, 6)) + (255,))
     knob_alpha, knob_draw = canvas(72, 40)
@@ -1490,7 +1540,6 @@ def media():
     on = Image.composite(track, on, track_alpha.resize((72, 40), Image.LANCZOS))
     on = Image.composite(Image.new("RGBA", (72, 40), (255, 255, 255, 255)), on, knob_alpha.resize((72, 40), Image.LANCZOS))
     on.save(os.path.join(MEDIA, "toggle-on.png"))
-    os.remove(os.path.join(MEDIA, "toggle-on-mask.png"))
     alpha, draw = canvas(72, 40)
     draw.rounded_rectangle((0, 0, p(72) - 1, p(40) - 1), radius=p(20), outline=255, width=p(4))
     draw.ellipse((p(8), p(8), p(32), p(32)), fill=255)
@@ -1509,6 +1558,50 @@ def media():
     alpha, draw = canvas(32, 32)
     draw.ellipse((p(4), p(4), p(28), p(28)), fill=255)
     save(alpha, 32, 32, "slider-nib.png")
+    # Icons of the settings sections. The folder is white here, colored by the tile.
+    alpha, draw = canvas(128, 128)
+    draw.rounded_rectangle((p(10), p(24), p(58), p(44)), radius=p(8), fill=255)
+    draw.rounded_rectangle((p(10), p(34), p(118), p(104)), radius=p(10), fill=255)
+    save(alpha, 128, 128, "settings-files.png")
+    alpha, draw = canvas(128, 128)  # player: a play button in a ring
+    draw.ellipse((p(10), p(10), p(118), p(118)), outline=255, width=p(10))
+    draw.polygon([(p(50), p(38)), (p(50), p(90)), (p(92), p(64))], fill=255)
+    save(alpha, 128, 128, "settings-player.png")
+    alpha, draw = canvas(128, 128)  # services: three connected nodes
+    for cx, cy in ((64, 24), (24, 100), (104, 100)):
+        draw.ellipse((p(cx - 18), p(cy - 18), p(cx + 18), p(cy + 18)), fill=255)
+    for (ax, ay), (bx, by) in (((64, 24), (24, 100)), ((64, 24), (104, 100)), ((24, 100), (104, 100))):
+        draw.line([(p(ax), p(ay)), (p(bx), p(by))], fill=255, width=p(8))
+    save(alpha, 128, 128, "settings-services.png")
+    alpha, draw = canvas(128, 128)  # interface: a screen with two panels
+    draw.rounded_rectangle((p(8), p(18), p(120), p(96)), radius=p(12), fill=255)
+    draw.rounded_rectangle((p(20), p(30), p(52), p(84)), radius=p(5), fill=0)
+    draw.rounded_rectangle((p(60), p(30), p(108), p(54)), radius=p(5), fill=0)
+    draw.rounded_rectangle((p(60), p(62), p(108), p(84)), radius=p(5), fill=0)
+    draw.rounded_rectangle((p(44), p(104), p(84), p(114)), radius=p(5), fill=255)
+    save(alpha, 128, 128, "settings-interface.png")
+    alpha, draw = canvas(128, 128)  # system information: an i in a circle
+    draw.ellipse((p(8), p(8), p(120), p(120)), fill=255)
+    draw.ellipse((p(55), p(28), p(73), p(46)), fill=0)
+    draw.rounded_rectangle((p(56), p(56), p(72), p(100)), radius=p(8), fill=0)
+    save(alpha, 128, 128, "settings-info.png")
+    alpha, draw = canvas(128, 128)  # profiles: two people
+    draw.ellipse((p(20), p(20), p(60), p(60)), fill=255)
+    draw.rounded_rectangle((p(6), p(66), p(74), p(112)), radius=p(22), fill=255)
+    draw.ellipse((p(74), p(30), p(106), p(62)), fill=255)
+    draw.rounded_rectangle((p(66), p(70), p(122), p(108)), radius=p(18), fill=255)
+    save(alpha, 128, 128, "settings-profiles.png")
+    alpha, draw = canvas(128, 128)  # event log: lines with bullets
+    for top in (24, 56, 88):
+        draw.ellipse((p(10), p(top), p(26), p(top + 16)), fill=255)
+        draw.rounded_rectangle((p(38), p(top + 2), p(118), p(top + 14)), radius=p(6), fill=255)
+    save(alpha, 128, 128, "settings-events.png")
+    alpha, draw = canvas(128, 128)  # system of the device: sliders
+    for index, knob in enumerate((44, 84, 60)):
+        x = 26 + index * 38
+        draw.rounded_rectangle((p(x - 4), p(14), p(x + 4), p(114)), radius=p(4), fill=255)
+        draw.ellipse((p(x - 16), p(knob - 16), p(x + 16), p(knob + 16)), fill=255)
+    save(alpha, 128, 128, "settings-system.png")
     # Stop: a rounded square.
     alpha, draw = canvas(128, 128)
     draw.rounded_rectangle((p(30), p(30), p(98), p(98)), radius=p(12), fill=255)
@@ -1568,7 +1661,7 @@ EXTRA_STRINGS = {31013: ("Monteiro", "Monteiro"), 31014: ("items", "itens"), 310
                  31024: ("Show the profiles when Kodi starts", "Mostrar os perfis ao iniciar o Kodi"),
                  31025: ("Log in automatically", "Entrar automaticamente"), 31026: ("Channels", "Canais"), 31027: ("TV guide", "Guia de TV"),
                  31028: ("Recordings", "Gravações"), 31029: ("Timers", "Agendamentos"), 31030: ("Search", "Busca"),
-                 31031: ("Files", "Arquivos")}
+                 31031: ("Files", "Arquivos"), 31032: ("About", "Sobre")}
 
 
 def main():

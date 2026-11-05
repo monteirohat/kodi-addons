@@ -43,7 +43,7 @@ def catalog():
 {join(*poster(), *poster_item(TEXT2, TEXT3), spaces=4)}
   </itemlayout>
   <focusedlayout width="210" height="408">
-{join(panel(1, 2, 208, 304, ACCENT, catalog_focus), panel(1, 2, 208, 304, RAISED, "!" + catalog_focus),
+{join(panel(1, 2, 208, 304, FOCUS, catalog_focus), panel(1, 2, 208, 304, RAISED, "!" + catalog_focus),
       *poster(), *poster_item(TEXT, TEXT2, scroll=True), spaces=4)}
   </focusedlayout>
 </control>"""

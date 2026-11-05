@@ -91,7 +91,7 @@
           <top>0</top>
           <width>1060</width>
           <height>76</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
         </control>
         <control type="image">
           <left>20</left>
@@ -99,7 +99,7 @@
           <width>40</width>
           <height>40</height>
           <aspectratio>keep</aspectratio>
-          <texture colordiffuse="FF0E0F11" fallback="folder.png">$INFO[ListItem.Icon]</texture>
+          <texture colordiffuse="FFFFFFFF" fallback="folder.png">$INFO[ListItem.Icon]</texture>
         </control>
         <control type="label">
           <left>80</left>
@@ -108,8 +108,8 @@
           <height>76</height>
           <aligny>center</aligny>
           <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
@@ -152,7 +152,7 @@
           <top>0</top>
           <width>1060</width>
           <height>76</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
         </control>
         <control type="image">
           <left>20</left>
@@ -160,7 +160,7 @@
           <width>40</width>
           <height>40</height>
           <aspectratio>keep</aspectratio>
-          <texture colordiffuse="FF0E0F11" fallback="folder.png">$INFO[ListItem.Icon]</texture>
+          <texture colordiffuse="FFFFFFFF" fallback="folder.png">$INFO[ListItem.Icon]</texture>
         </control>
         <control type="label">
           <left>80</left>
@@ -169,8 +169,8 @@
           <height>76</height>
           <aligny>center</aligny>
           <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
@@ -201,9 +201,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[186]</label>
@@ -218,9 +218,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[222]</label>
@@ -235,9 +235,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[119]</label>
@@ -252,9 +252,9 @@
         <aligny>center</aligny>
         <textoffsetx>30</textoffsetx>
         <textcolor>FFF4F4F5</textcolor>
-        <focusedcolor>FF0E0F11</focusedcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
         <disabledcolor>FF62656D</disabledcolor>
-        <texturefocus border="16" colordiffuse="FFF4F4F5">panel.png</texturefocus>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
         <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
         <pulseonselect>false</pulseonselect>
         <label>$LOCALIZE[749]</label>

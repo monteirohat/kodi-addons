@@ -59,6 +59,30 @@ msgctxt "#31020"
 msgid "Pictures"
 msgstr "Imagens"
 
+msgctxt "#31044"
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
+msgctxt "#31045"
+msgid "Updates"
+msgstr "Atualizações"
+
+msgctxt "#31046"
+msgid "Recently updated"
+msgstr "Recentes"
+
+msgctxt "#31047"
+msgid "Repositories"
+msgstr "Repositórios"
+
+msgctxt "#31048"
+msgid "Install from ZIP"
+msgstr "Instalar ZIP"
+
+msgctxt "#31049"
+msgid "Check for updates"
+msgstr "Verificar atualizações"
+
 msgctxt "#31013"
 msgid "Monteiro"
 msgstr "Monteiro"
@@ -118,3 +142,7 @@ msgstr "Busca"
 msgctxt "#31031"
 msgid "Files"
 msgstr "Arquivos"
+
+msgctxt "#31032"
+msgid "About"
+msgstr "Sobre"

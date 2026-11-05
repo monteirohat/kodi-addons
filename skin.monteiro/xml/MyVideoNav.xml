@@ -129,7 +129,7 @@
           <top>0</top>
           <width>1780</width>
           <height>100</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
           <visible>Control.HasFocus(50)</visible>
         </control>
         <control type="image">
@@ -148,8 +148,8 @@
           <height>56</height>
           <aligny>center</aligny>
           <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
           <visible>Control.HasFocus(50)</visible>
         </control>
@@ -160,8 +160,8 @@
           <height>40</height>
           <aligny>center</aligny>
           <font>font12</font>
-          <textcolor>FF55575E</textcolor>
-          <selectedcolor>FF55575E</selectedcolor>
+          <textcolor>FFD6E6FF</textcolor>
+          <selectedcolor>FFD6E6FF</selectedcolor>
           <label>$INFO[ListItem.Label2]</label>
           <visible>Control.HasFocus(50)</visible>
         </control>
@@ -170,7 +170,7 @@
           <top>32</top>
           <width>36</width>
           <height>36</height>
-          <texture colordiffuse="FF0E0F11">check.png</texture>
+          <texture colordiffuse="FFFFFFFF">check.png</texture>
           <visible>ListItem.IsSelected + Control.HasFocus(50)</visible>
         </control>
         <control type="image">

@@ -41,106 +41,135 @@
       <label>$INFO[System.Time]</label>
     </control>
     <control type="panel" id="9000">
-      <left>160</left>
-      <top>240</top>
-      <width>1600</width>
-      <height>640</height>
+      <left>180</left>
+      <top>250</top>
+      <width>1584</width>
+      <height>528</height>
       <orientation>vertical</orientation>
       <scrolltime>120</scrolltime>
-      <itemlayout width="400" height="160">
+      <itemlayout width="264" height="264">
         <control type="image">
           <left>0</left>
           <top>0</top>
-          <width>376</width>
-          <height>136</height>
+          <width>240</width>
+          <height>240</height>
           <texture border="16" colordiffuse="FF17181B">panel.png</texture>
         </control>
+        <control type="image">
+          <left>75</left>
+          <top>46</top>
+          <width>90</width>
+          <height>90</height>
+          <texture colordiffuse="FF9C9EA6">$INFO[ListItem.Icon]</texture>
+        </control>
         <control type="label">
-          <left>30</left>
-          <top>0</top>
-          <width>316</width>
-          <height>136</height>
+          <left>10</left>
+          <top>156</top>
+          <width>220</width>
+          <height>56</height>
+          <align>center</align>
           <aligny>center</aligny>
-          <font>font30_title</font>
+          <font>font25_title</font>
           <textcolor>FFF4F4F5</textcolor>
           <selectedcolor>FFF4F4F5</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </itemlayout>
-      <focusedlayout width="400" height="160">
+      <focusedlayout width="264" height="264">
         <control type="image">
           <left>0</left>
           <top>0</top>
-          <width>376</width>
-          <height>136</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <width>240</width>
+          <height>240</height>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
+        </control>
+        <control type="image">
+          <left>75</left>
+          <top>46</top>
+          <width>90</width>
+          <height>90</height>
+          <texture colordiffuse="FFFFFFFF">$INFO[ListItem.Icon]</texture>
         </control>
         <control type="label">
-          <left>30</left>
-          <top>0</top>
-          <width>316</width>
-          <height>136</height>
+          <left>10</left>
+          <top>156</top>
+          <width>220</width>
+          <height>56</height>
+          <align>center</align>
           <aligny>center</aligny>
-          <font>font30_title</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <font>font25_title</font>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
       <content>
         <item>
           <label>$LOCALIZE[14200]</label>
+          <icon>settings-player.png</icon>
           <onclick>ActivateWindow(PlayerSettings)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[14211]</label>
+          <icon>film.png</icon>
           <onclick>ActivateWindow(MediaSettings)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[14036]</label>
+          <icon>settings-services.png</icon>
           <onclick>ActivateWindow(ServiceSettings)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[14206]</label>
+          <icon>settings-interface.png</icon>
           <onclick>ActivateWindow(InterfaceSettings)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[13000]</label>
+          <icon>gear.png</icon>
           <onclick>ActivateWindow(SystemSettings)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[24001]</label>
-          <onclick>ActivateWindow(addonbrowser)</onclick>
+          <icon>puzzle.png</icon>
+          <onclick>ActivateWindow(addonbrowser,addons://user/all,return)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[14204]</label>
+          <icon>tv.png</icon>
           <onclick>ActivateWindow(PVRSettings)</onclick>
         </item>
         <item>
-          <label>$LOCALIZE[7]</label>
+          <label>$LOCALIZE[31031]</label>
+          <icon>settings-files.png</icon>
           <onclick>RunAddon(script.easy.files)</onclick>
           <visible>System.HasAddon(script.easy.files)</visible>
         </item>
         <item>
-          <label>$LOCALIZE[7]</label>
+          <label>$LOCALIZE[31031]</label>
+          <icon>settings-files.png</icon>
           <onclick>ActivateWindow(filemanager)</onclick>
           <visible>!System.HasAddon(script.easy.files)</visible>
         </item>
         <item>
-          <label>$LOCALIZE[130]</label>
+          <label>$LOCALIZE[31032]</label>
+          <icon>settings-info.png</icon>
           <onclick>ActivateWindow(systeminfo)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[13200]</label>
+          <icon>settings-profiles.png</icon>
           <onclick>ActivateWindow(Profiles)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[14111]</label>
+          <icon>settings-events.png</icon>
           <onclick>ActivateWindow(eventlog)</onclick>
           <visible>!System.HasAddon(service.libreelec.settings)</visible>
         </item>
         <item>
           <label>LibreELEC</label>
+          <icon>settings-system.png</icon>
           <onclick>RunAddon(service.libreelec.settings)</onclick>
           <visible>System.AddonIsEnabled(service.libreelec.settings)</visible>
         </item>

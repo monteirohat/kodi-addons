@@ -74,7 +74,7 @@
           <top>0</top>
           <width>560</width>
           <height>80</height>
-          <texture border="16" colordiffuse="FFF4F4F5">panel.png</texture>
+          <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
         </control>
         <control type="label">
           <left>30</left>
@@ -83,8 +83,8 @@
           <height>80</height>
           <aligny>center</aligny>
           <font>font13</font>
-          <textcolor>FF0E0F11</textcolor>
-          <selectedcolor>FF0E0F11</selectedcolor>
+          <textcolor>FFFFFFFF</textcolor>
+          <selectedcolor>FFFFFFFF</selectedcolor>
           <label>$INFO[ListItem.Label]</label>
         </control>
       </focusedlayout>
