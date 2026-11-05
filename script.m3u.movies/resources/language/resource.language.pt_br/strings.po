@@ -1177,3 +1177,11 @@ msgstr "Não foi possível carregar as temporadas e os episódios. Verifique a c
 msgctxt "#30357"
 msgid "This series has no episodes listed yet."
 msgstr "Esta série ainda não tem episódios listados."
+
+msgctxt "#30358"
+msgid "Could not change the download: {0}"
+msgstr "Não foi possível alterar o download: {0}"
+
+msgctxt "#30359"
+msgid "The drive of the downloads is read-only, so nothing can be changed on it. Repair the drive on a computer and connect it again."
+msgstr "O disco dos downloads está somente leitura, então nada pode ser alterado nele. Repare o disco em um computador e conecte-o de novo."

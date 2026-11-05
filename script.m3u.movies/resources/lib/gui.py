@@ -2218,7 +2218,9 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
                                                        yeslabel=text(30142)):
                 self.engine.remove(info_hash, True)
         except torrents.EngineError as error:
-            xbmcgui.Dialog().ok(TITLE, text(30173, error))
+            # Torrest deletes its own files of the torrent even when the video stays, which a read-only drive refuses.
+            read_only = "read-only" in str(error).lower()
+            xbmcgui.Dialog().ok(TITLE, text(30359) if read_only else text(30358, error))
         self.update()
 
 
