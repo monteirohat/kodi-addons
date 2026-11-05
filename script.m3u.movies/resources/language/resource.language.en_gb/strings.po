@@ -1141,3 +1141,27 @@ msgstr ""
 msgctxt "#30348"
 msgid "Subtitle language"
 msgstr ""
+
+msgctxt "#30349"
+msgid "Watch now"
+msgstr ""
+
+msgctxt "#30350"
+msgid "Download"
+msgstr ""
+
+msgctxt "#30351"
+msgid "Waiting"
+msgstr ""
+
+msgctxt "#30352"
+msgid "Failed: {0}"
+msgstr ""
+
+msgctxt "#30353"
+msgid "This source is a stream of segments, not one file, so it cannot be saved. Watch it now or choose another source."
+msgstr ""
+
+msgctxt "#30354"
+msgid "Done in a moment"
+msgstr ""

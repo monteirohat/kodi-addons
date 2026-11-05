@@ -1,6 +1,7 @@
 """Background service that opens Easy Movie from the Movies and TV shows entries of the main menu.
 
-It also runs the torrent engine: unfinished downloads resume when Kodi starts, and the engine stops with Kodi.
+It also runs the torrent engine: unfinished downloads resume when Kodi starts, and the engine stops with Kodi. And it
+downloads the direct links of the catalog, so they go on after Easy Movie closes.
 """
 
 import os
@@ -12,7 +13,7 @@ import xbmcaddon
 import xbmcgui
 import xbmcvfs
 
-from resources.lib import torrents
+from resources.lib import direct, torrents
 
 
 ADDON_ID = "script.m3u.movies"
@@ -70,8 +71,24 @@ def stop_downloads():
     torrents.Engine(addon.getAddonInfo("path"), data_path).stop()
 
 
+def direct_downloads():
+    """Download the queued direct links, one at a time, until Kodi quits."""
+    addon = xbmcaddon.Addon(ADDON_ID)
+    monitor = xbmc.Monitor()
+    runner = direct.Runner(os.path.join(xbmcvfs.translatePath(addon.getAddonInfo("profile")), "direct"), monitor.abortRequested)
+    while not monitor.abortRequested():
+        try:
+            busy = runner.step()
+        except Exception as error:
+            xbmc.log("Easy Movie: direct download failed: %s" % error, xbmc.LOGWARNING)
+            busy = False
+        if not busy and monitor.waitForAbort(2):
+            break
+
+
 def run():
     threading.Thread(target=resume_downloads, daemon=True).start()
+    threading.Thread(target=direct_downloads, daemon=True).start()
     try:
         watch_menu()
     finally:

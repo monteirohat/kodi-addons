@@ -13,7 +13,7 @@ import xbmc
 import xbmcgui
 import xbmcvfs
 
-from resources.lib import cinemeta, folders, github, m3u, movies_menu, probe, series, storage, stremio, torrents
+from resources.lib import cinemeta, direct, folders, github, m3u, movies_menu, probe, series, storage, stremio, torrents
 from resources.lib.watcher import Watcher
 
 
@@ -36,6 +36,8 @@ MANAGER_LISTS, MANAGER_EMPTY = 100, 300
 MANAGER_ADD, MANAGER_SETTINGS, MANAGER_CLOSE, MANAGER_GITHUB, MANAGER_REMOVED = 201, 202, 203, 204, 205
 CATALOG_TABS, CATALOG_ADDONS, CATALOG_WATCH, CATALOG_MY_LIST, CATALOG_SOURCES = 100, 101, 201, 202, 203
 SOURCES_LIST, SOURCES_EMPTY = 100, 300
+# Direct links waiting for the background service, which downloads them. See direct.py.
+DIRECT_JOBS = os.path.join(storage.PROFILE, "direct")
 ADDONS_LIST, ADDONS_ADD, ADDONS_CLOSE = 100, 201, 203
 # Types of addon catalogs shown in each tab of the catalog. Anime catalogs list mostly series.
 TAB_TYPES = {"movie": ("movie",), "series": ("series", "anime")}
@@ -1450,6 +1452,26 @@ class CatalogWindow(xbmcgui.WindowXML):
         notify(text(30308, source["label"]))
         return True
 
+    def download_direct(self, source, title, origin=None):
+        """Queue a direct link for the background service. Returns True when it was queued."""
+        if not direct.can_download(source["url"]):
+            xbmcgui.Dialog().ok(TITLE, text(30353))
+            return False
+        folder = ADDON.getSetting("download_folder") or choose_download_folder()
+        if not folder:
+            return False
+        subfolder, name = direct.target_name(origin, source["url"], title)
+        path = os.path.join(folder, subfolder, name) if subfolder else os.path.join(folder, name)
+        stem, extension = os.path.splitext(path)
+        copy = 2
+        while os.path.exists(path) or os.path.exists(path + ".part"):
+            path, copy = "%s (%d)%s" % (stem, copy, extension), copy + 1
+        direct.add(DIRECT_JOBS, source["url"], source.get("headers"), path, os.path.splitext(os.path.basename(path))[0])
+        if origin and origin.get("id"):
+            storage.save_origins({path: origin})
+        notify(text(30308, os.path.basename(path)))
+        return True
+
     def play(self, source):
         url = source["url"]
         if source.get("headers"):
@@ -1702,8 +1724,13 @@ class SourcesPanel(xbmcgui.WindowXMLDialog):
         if source["kind"] == "torrent":
             if self.catalog.download(source, self.origin):
                 self.close()
-        else:
+            return
+        # A direct link plays while it downloads, or is saved to the download folder to watch later.
+        choice = xbmcgui.Dialog().contextmenu([text(30349), text(30350)])
+        if choice == 0:
             self.choice = dict(source, title=self.title, poster=self.poster)
+            self.close()
+        elif choice == 1 and self.catalog.download_direct(source, self.title, self.origin):
             self.close()
 
 
@@ -1961,6 +1988,28 @@ def free_space(folder):
     return stats.f_bavail * stats.f_frsize
 
 
+def direct_status(job):
+    """Detail line, progress and state of a direct link for the list of downloads."""
+    state = {"queued": "downloading", "downloading": "downloading", "paused": "paused", "finished": "finished",
+             "failed": "paused"}.get(job["state"], "downloading")
+    done, total = job["done"], job["total"]
+    progress = int(done * 100 / total) if total else (100 if job["state"] == "finished" else 0)
+    labels = {"queued": text(30351), "downloading": text(30183), "paused": text(30181), "finished": text(30182),
+              "failed": text(30352, job.get("error") or "?")}
+    parts = [text(30306), labels.get(job["state"], text(30351))]
+    if job["state"] == "downloading" and job["rate"]:
+        parts.append(rate_text(job["rate"]))
+    if total:
+        parts.append(size_text(total) if job["state"] == "finished" else text(30185, size_text(done), size_text(total)))
+    elif done:
+        parts.append(size_text(done))
+    if job["state"] == "downloading" and job["rate"] and total:
+        left = (total - done) / job["rate"]
+        if left >= 60:
+            parts.append(text(30186, duration_text(left)))
+    return "  ·  ".join(parts), progress, state
+
+
 def download_status(torrent, free=None):
     """Detail line, progress and state of a download for the list.
 
@@ -2021,20 +2070,24 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
                 self.update()
 
     def update(self):
-        """Show the downloads. Rows are updated in place, so the selection stays while they change."""
+        """Show the downloads: torrents, then direct links. Rows are updated in place, so the selection stays while
+        they change."""
         try:
             items = self.engine.torrents()
         except torrents.EngineError:
-            return
-        hashes = [torrent["info_hash"] for torrent in items]
+            items = []
+        jobs = direct.jobs(DIRECT_JOBS)
+        self.jobs = {job["id"]: job for job in jobs}
+        hashes = [torrent["info_hash"] for torrent in items] + ["direct:" + job["id"] for job in jobs]
+        rows = len(hashes)
         if hashes != self.hashes:
             position = self.list_control.getSelectedPosition()
             self.list_control.reset()
-            self.list_control.addItems([xbmcgui.ListItem() for _ in items])
-            if items:
-                self.list_control.selectItem(min(max(position, 0), len(items) - 1))
+            self.list_control.addItems([xbmcgui.ListItem() for _ in range(rows)])
+            if rows:
+                self.list_control.selectItem(min(max(position, 0), rows - 1))
             self.hashes = hashes
-            if not items and self.getFocusId() == DOWNLOADS_LIST:
+            if not rows and self.getFocusId() == DOWNLOADS_LIST:
                 self.setFocusId(DOWNLOADS_MAGNET)
         down = up = 0
         free = free_space(self.folder)
@@ -2051,8 +2104,17 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
             if state != "paused":
                 down += (torrent.get("status") or {}).get("download_rate", 0)
                 up += (torrent.get("status") or {}).get("upload_rate", 0)
-        self.setProperty("summary", text(30193, rate_text(down), rate_text(up)) if items else "")
-        self.getControl(DOWNLOADS_EMPTY).setLabel("" if items else text(30169))
+        for number, job in enumerate(jobs, len(items)):
+            detail, progress, state = direct_status(job)
+            row = self.list_control.getListItem(number)
+            row.setLabel(job["title"])
+            row.setLabel2(detail)
+            row.setProperty("progress", str(progress))
+            row.setProperty("percent", "%d%%" % progress)
+            row.setProperty("state", state)
+            down += job["rate"] if job["state"] == "downloading" else 0
+        self.setProperty("summary", text(30193, rate_text(down), rate_text(up)) if rows else "")
+        self.getControl(DOWNLOADS_EMPTY).setLabel("" if rows else text(30169))
 
     def onAction(self, action):
         if action.getId() in ACTION_BACK:
@@ -2129,6 +2191,9 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
         info_hash = self.hashes[position]
         row = self.list_control.getListItem(position)
         paused = row.getProperty("state") == "paused"
+        if info_hash.startswith("direct:"):
+            self.direct_menu(info_hash[len("direct:"):], row, paused)
+            return
         choice = xbmcgui.Dialog().contextmenu([text(30175 if paused else 30174), text(30176), text(30177)])
         try:
             if choice == 0:
@@ -2141,6 +2206,24 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
         except torrents.EngineError as error:
             xbmcgui.Dialog().ok(TITLE, text(30173, error))
         self.update()
+
+
+    def direct_menu(self, job_id, row, paused):
+        """Pause or resume a direct link, or remove it from the list, with or without its file."""
+        job = self.jobs.get(job_id, {})
+        finished = job.get("state") == "finished"
+        options = ([] if finished else [(text(30175 if paused or job.get("state") == "failed" else 30174),
+                                         "resume" if paused or job.get("state") == "failed" else "pause")])
+        options += [(text(30176), "remove"), (text(30177), "remove_files")]
+        choice = xbmcgui.Dialog().contextmenu([label for label, _ in options])
+        if choice < 0:
+            return
+        action = options[choice][1]
+        if action == "remove_files" and not xbmcgui.Dialog().yesno(TITLE, text(30178, row.getLabel()), nolabel=text(30040),
+                                                                   yeslabel=text(30142)):
+            return
+        direct.request(DIRECT_JOBS, job_id, action)
+        notify(text(30354))
 
 
 class RepoManager(xbmcgui.WindowXMLDialog):

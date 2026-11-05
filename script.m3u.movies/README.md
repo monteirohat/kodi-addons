@@ -12,8 +12,8 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 - Movie details with a large poster, genre, running time and source list, and **Play**, **Favorite** and **Remove movie** buttons.
 - Add lists from a web address, a file on the device or network, or the M3U files of a GitHub repository. No playlist configuration is required.
 - Browse the movies and series of Cinemeta, the catalog of Stremio, by popularity, release year and genre, search it, and keep titles in **My list**. Titles that are also in your lists can be played from there.
-- Add Stremio addons by their address, as in Stremio. Their catalogs join the catalog, and their sources open in a side panel: a torrent goes to Downloads, and a direct link plays at once.
-- Download torrents from magnet links, `.torrent` files or the catalog into a folder you choose, with a download list that shows progress, speed, time left and the free space of the folder.
+- Add Stremio addons by their address, as in Stremio. Their catalogs join the catalog, and their sources open in a side panel: a torrent goes to Downloads, and a direct link plays at once or downloads.
+- Download torrents from magnet links, `.torrent` files or the catalog, and the direct links of the catalog, into a folder you choose, with a download list that shows progress, speed, time left and the free space of the folder.
 - Add folders with your own video files, on the SD card, a USB drive or a network share. Posters and details come from Cinemeta, and files can be renamed or deleted from the catalog.
 - Playback controls in the style of streaming apps: play and pause between back and forward 10 seconds, and the subtitle and audio tracks in a side panel.
 - Subtitles from [OpenSubtitles](https://www.opensubtitles.org), turned on automatically in your language when a movie has none, with no account needed.
@@ -207,7 +207,7 @@ When an addon that gives sources is installed, movie details have a **Sources** 
 Each source shows its file or release name, and whether it is a **Torrent** or a **Direct link**, with its quality, audio languages, size, seeds and addon when the addon gives them. Addons mark languages with flags, shown as language codes, as in `EN RU` or `PT-BR`.
 
 - **Torrent**: goes to [Downloads](#downloads), into the download folder. When it is a pack of a whole season or collection, only the chosen file is downloaded. Easy Movie waits for the torrent details, then stops the other files.
-- **Direct link**: plays at once, with the request headers the addon asks for.
+- **Direct link**, with the play icon: OK offers **Watch now**, which plays it at once with the request headers the addon asks for, or **Download**. A download goes to [Downloads](#downloads), into the download folder, named after the title: an episode as `Series/Series S01E02.mp4`, a movie as `Movie (1999).mp4`. It continues after a lost connection and after Easy Movie closes, and shows in the catalog with the poster of its title once it ends. A live stream made of segments, as HLS, cannot be saved, and Easy Movie says so.
 
 **Left** or **Back** closes the panel. When the download folder has less free space than the torrent needs, Easy Movie names the folder, its free space and the size of the torrent, and offers **Change folder**.
 
@@ -225,7 +225,7 @@ The catalogs of an addon that can be shown without a search or a genre appear in
 
 ## Downloads
 
-The download icon at the end of the toolbar opens **Downloads**, a torrent download manager.
+The download icon at the end of the toolbar opens **Downloads**, the manager of torrents and of the direct links downloaded from the catalog.
 
 - **Add magnet link** asks for a magnet link or the web address of a `.torrent` file. Typing a long link with the remote is impractical, so paste it from a phone with a remote app such as Kore or Yatse while the keyboard is open.
 - **Add .torrent file** picks a `.torrent` file, for example one copied to a USB drive.

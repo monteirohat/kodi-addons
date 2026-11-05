@@ -1141,3 +1141,27 @@ msgstr "Baixar legendas automaticamente"
 msgctxt "#30348"
 msgid "Subtitle language"
 msgstr "Idioma das legendas"
+
+msgctxt "#30349"
+msgid "Watch now"
+msgstr "Assistir agora"
+
+msgctxt "#30350"
+msgid "Download"
+msgstr "Baixar"
+
+msgctxt "#30351"
+msgid "Waiting"
+msgstr "Na fila"
+
+msgctxt "#30352"
+msgid "Failed: {0}"
+msgstr "Falhou: {0}"
+
+msgctxt "#30353"
+msgid "This source is a stream of segments, not one file, so it cannot be saved. Watch it now or choose another source."
+msgstr "Esta fonte é uma transmissão em partes, e não um arquivo, então não pode ser salva. Assista agora ou escolha outra fonte."
+
+msgctxt "#30354"
+msgid "Done in a moment"
+msgstr "Pronto em instantes"
