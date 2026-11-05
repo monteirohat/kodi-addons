@@ -23,7 +23,7 @@ Easy Channel is a Kodi add-on for watching M3U lists in a TV box style screen. A
 
 ## Installation
 
-1. Install the **Monteiro** repository once, following the [repository instructions](../README.md#register-the-repository-in-kodi).
+1. Install the **Monteiro** repository once, following the [repository instructions](../README.md#installation).
 2. Open **Add-ons > Install from repository > Monteiro > Video add-ons > Easy Channel** and select **Install**.
 
 Easy Channel requires Kodi 21 (Omega) or later. It was developed and tested on LibreELEC 12.2 with Kodi 21 on a Raspberry Pi 4, using the default Estuary skin.

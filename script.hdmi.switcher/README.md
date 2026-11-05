@@ -55,7 +55,7 @@ The image may return to the first display after this reboot.
 
 ## Installation
 
-Install the **Monteiro** repository once, following the [repository instructions](../README.md#register-the-repository-in-kodi).
+Install the **Monteiro** repository once, following the [repository instructions](../README.md#installation).
 
 Then open **Add-ons > Install from repository > Monteiro > Program add-ons > HDMI Switcher** and select **Install**. Updates are delivered through the same repository after a new version is published.
 

@@ -42,3 +42,32 @@ jobs:
           git commit -m "Update Kodi repository [skip ci]"
           git pull --rebase
           git push
+
+  pages:
+    # The site for installing by URL, built from the repository the publish job committed.
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Check out the generated repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Build site
+        run: python3 tools/build_pages.py --output _site
+
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

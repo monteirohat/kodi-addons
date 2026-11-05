@@ -111,22 +111,23 @@ HDMI Switcher needs a [one-time setup](script.hdmi.switcher/README.md#one-time-s
 
 ## Installation
 
-Register the **Monteiro** repository in Kodi once, and every add-on and update installs from it.
+Register the **Monteiro** repository in Kodi once, and every add-on and update installs from it. No USB drive or download is needed: Kodi installs it from its web address.
 
-1. Download [repository.monteiromedia-1.0.5.zip](repository/repository.monteiromedia/repository.monteiromedia-1.0.5.zip) and copy it to a USB drive or a folder your Kodi device can reach.
-2. In Kodi, enable **Settings > System > Add-ons > Unknown sources**, then use **Add-ons > Install from zip file** to install the ZIP.
-3. Open **Add-ons > Install from repository > Monteiro** and install the add-ons you want.
+1. In Kodi, open **Settings > System > Add-ons** and turn on **Unknown sources**.
+2. Open **Settings > File manager > Add source**, select **&lt;None&gt;**, enter `https://monteirohat.github.io/kodi-addons/`, name the source **Monteiro**, and select **OK**.
+3. Open **Settings > Add-ons > Install from zip file > Monteiro** and select **repository.monteiromedia-1.0.5.zip**. Wait for the **Monteiro** repository installation notification.
+4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, and HDMI Switcher is under **Program add-ons**.
 
-### Register the repository in Kodi
+The same address opens an installation page in a web browser.
 
-1. On GitHub, open this repository's **Code** tab and select the branch where **Publish Kodi repository** completed successfully.
-2. Open **repository > repository.monteiromedia** and select **repository.monteiromedia-1.0.5.zip**. You can also open the [repository installation ZIP](repository/repository.monteiromedia/repository.monteiromedia-1.0.5.zip) directly from this README.
-3. On the file page, click **Download raw file** to download the ZIP. The full path from the repository root is `repository/repository.monteiromedia/repository.monteiromedia-1.0.5.zip`.
-4. Copy the downloaded ZIP to a USB drive or a folder accessible from your Kodi device.
-5. In Kodi, enable **Settings > System > Add-ons > Unknown sources**.
-6. Open **Add-ons > Install from zip file**, browse to the location used in step 4, and select **repository.monteiromedia-1.0.5.zip**. Wait for the **Monteiro** repository installation notification. Registering the repository is a one-time step.
-7. Open **Add-ons > Install from repository > Monteiro** and choose an add-on. HDMI Switcher is under **Program add-ons**, and Easy Channel and Easy Movie are under **Video add-ons**.
-8. Select **Install** and wait for installation to finish.
+### Install from a downloaded ZIP
+
+For a Kodi device without internet access during setup, install the repository from a file instead.
+
+1. Download [repository.monteiromedia-1.0.5.zip](repository/repository.monteiromedia/repository.monteiromedia-1.0.5.zip) from this repository, or from the assets of the [latest release](https://github.com/monteirohat/kodi-addons/releases/latest).
+2. Copy it to a USB drive or a folder your Kodi device can reach.
+3. In Kodi, turn on **Settings > System > Add-ons > Unknown sources**, then open **Add-ons > Install from zip file**, browse to the ZIP and select it.
+4. Open **Add-ons > Install from repository > Monteiro** and install the add-ons you want.
 
 Further add-ons and updates are installed through **Monteiro**. Enable automatic updates for the add-on if desired. If an update is not visible yet, open the repository context menu and select **Check for updates**.
 
@@ -148,7 +149,9 @@ Further add-ons and updates are installed through **Monteiro**. Enable automatic
 3. If the workflow reports a permissions error, enable **Read and write permissions** under **Settings > Actions > General > Workflow permissions**. Branch protection must allow the workflow to push its generated commit.
 4. In GitHub, open the **Code** tab and download the generated `repository/repository.monteiromedia/repository.monteiromedia-1.0.5.zip` after the workflow succeeds. The ZIP is committed to the repository; it is listed under **Code**, rather than as an Actions artifact.
 
-The initial generated files use `monteirohat/kodi-addons` and the `main` branch. The first workflow run adjusts these values to the actual repository location before installation. GitHub Pages is optional; Kodi downloads files directly from GitHub Raw.
+The initial generated files use `monteirohat/kodi-addons` and the `main` branch. The first workflow run adjusts these values to the actual repository location before installation. Kodi downloads the catalog and packages from GitHub Raw.
+
+The workflow also publishes the installation site on GitHub Pages, at `https://monteirohat.github.io/kodi-addons/`, for installing by URL. Set **Settings > Pages > Source** to **GitHub Actions** once. `tools/build_pages.py` builds the site from the `repository` directory: an index page in every folder with links that Kodi lists, and a copy of the repository ZIP at the root.
 
 ### Publish an add-on update
 
@@ -175,6 +178,7 @@ The name shown in Kodi is **Monteiro**. The technical ID remains `repository.mon
 | `repository/addons.xml.md5` | Catalog change indicator used by Kodi. |
 | `repository/<addon-id>/` | Versioned installation ZIPs, SHA-256 files, and published artwork. |
 | `tools/build_repository.py` | Catalog and package generator using Python's standard library. |
+| `tools/build_pages.py` | Generator of the GitHub Pages installation site from the `repository` directory. |
 | `tools/generate_m3u_channels_skin.py` | Generator of the Easy Channel window layouts and of the theme shared with Easy Movie. |
 | `tools/generate_m3u_movies_skin.py` | Generator of the Easy Movie window layouts. |
 | `tools/generate_easy_channel_art.py` | Generator of the Easy Channel icon, fanart, and header symbol. |

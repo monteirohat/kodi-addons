@@ -36,7 +36,7 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 
 ## Installation
 
-1. Install the **Monteiro** repository once, following the [repository instructions](../README.md#register-the-repository-in-kodi).
+1. Install the **Monteiro** repository once, following the [repository instructions](../README.md#installation).
 2. Open **Add-ons > Install from repository > Monteiro > Video add-ons > Easy Movie** and select **Install**.
 
 Easy Movie requires Kodi 21 (Omega) or later. It was developed and tested on LibreELEC 12.2 with Kodi 21 on a Raspberry Pi 4, using the default Estuary skin.
