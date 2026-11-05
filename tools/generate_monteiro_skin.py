@@ -416,7 +416,6 @@ def home():
         image(0, 0, 1920, 1080, "fanart.jpg", "40FFFFFF"),
         image(0, 0, 1920, 1080, "shade.png", "E60E0F11"),
         image(64, 48, 64, 64, "logo.png"),
-        label(148, 44, 900, 72, "Monteiro", "font45_title"),
         label(1060, 44, 520, 72, "$INFO[System.Time]", "font45", TEXT2, align="right"),
         tiles,
         pills,

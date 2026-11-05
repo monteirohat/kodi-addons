@@ -34,17 +34,6 @@
       <texture>logo.png</texture>
     </control>
     <control type="label">
-      <left>148</left>
-      <top>44</top>
-      <width>900</width>
-      <height>72</height>
-      <aligny>center</aligny>
-      <font>font45_title</font>
-      <textcolor>FFF4F4F5</textcolor>
-      <selectedcolor>FFF4F4F5</selectedcolor>
-      <label>Monteiro</label>
-    </control>
-    <control type="label">
       <left>1060</left>
       <top>44</top>
       <width>520</width>
