@@ -1,0 +1,72 @@
+# Monteiro skin language file
+msgid ""
+msgstr ""
+"Language: pt_BR\n"
+
+msgctxt "#31000"
+msgid "TV"
+msgstr "TV"
+
+msgctxt "#31001"
+msgid "Movies"
+msgstr "Filmes"
+
+msgctxt "#31002"
+msgid "Series"
+msgstr "Séries"
+
+msgctxt "#31003"
+msgid "Add-ons"
+msgstr "Add-ons"
+
+msgctxt "#31004"
+msgid "Settings"
+msgstr "Configurações"
+
+msgctxt "#31005"
+msgid "Power"
+msgstr "Energia"
+
+msgctxt "#31006"
+msgid "Live TV from your lists with Easy Channel"
+msgstr "TV ao vivo das suas listas com o Easy Channel"
+
+msgctxt "#31007"
+msgid "Movies of your lists and folders with Easy Movie"
+msgstr "Filmes das suas listas e pastas com o Easy Movie"
+
+msgctxt "#31008"
+msgid "Series and episodes with Easy Movie"
+msgstr "Séries e episódios com o Easy Movie"
+
+msgctxt "#31009"
+msgid "Install and manage add-ons"
+msgstr "Instale e gerencie add-ons"
+
+msgctxt "#31010"
+msgid "Player, interface, system and more"
+msgstr "Player, interface, sistema e mais"
+
+msgctxt "#31013"
+msgid "Monteiro"
+msgstr "Monteiro"
+
+msgctxt "#31014"
+msgid "items"
+msgstr "itens"
+
+msgctxt "#31015"
+msgid "Space"
+msgstr "Espaço"
+
+msgctxt "#31016"
+msgid "Delete"
+msgstr "Apagar"
+
+msgctxt "#31017"
+msgid "Shift"
+msgstr "Shift"
+
+msgctxt "#31021"
+msgid "Show"
+msgstr "Mostrar"

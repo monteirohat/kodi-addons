@@ -1,0 +1,72 @@
+# Monteiro skin language file
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+
+msgctxt "#31000"
+msgid "TV"
+msgstr ""
+
+msgctxt "#31001"
+msgid "Movies"
+msgstr ""
+
+msgctxt "#31002"
+msgid "Series"
+msgstr ""
+
+msgctxt "#31003"
+msgid "Add-ons"
+msgstr ""
+
+msgctxt "#31004"
+msgid "Settings"
+msgstr ""
+
+msgctxt "#31005"
+msgid "Power"
+msgstr ""
+
+msgctxt "#31006"
+msgid "Live TV from your lists with Easy Channel"
+msgstr ""
+
+msgctxt "#31007"
+msgid "Movies of your lists and folders with Easy Movie"
+msgstr ""
+
+msgctxt "#31008"
+msgid "Series and episodes with Easy Movie"
+msgstr ""
+
+msgctxt "#31009"
+msgid "Install and manage add-ons"
+msgstr ""
+
+msgctxt "#31010"
+msgid "Player, interface, system and more"
+msgstr ""
+
+msgctxt "#31013"
+msgid "Monteiro"
+msgstr ""
+
+msgctxt "#31014"
+msgid "items"
+msgstr ""
+
+msgctxt "#31015"
+msgid "Space"
+msgstr ""
+
+msgctxt "#31016"
+msgid "Delete"
+msgstr ""
+
+msgctxt "#31017"
+msgid "Shift"
+msgstr ""
+
+msgctxt "#31021"
+msgid "Show"
+msgstr ""

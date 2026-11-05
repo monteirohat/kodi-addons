@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="skin.monteiro" version="0.1.0" name="Monteiro" provider-name="Monteiro">
+  <requires>
+    <import addon="xbmc.gui" version="5.17.0" />
+  </requires>
+  <extension point="xbmc.gui.skin" debugging="false">
+    <res width="1920" height="1080" aspect="16:9" default="true" folder="xml" />
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">The design of Easy Channel and Easy Movie for all of Kodi</summary>
+    <summary lang="pt_BR">O visual do Easy Channel e do Easy Movie em todo o Kodi</summary>
+    <description lang="en_GB">A dark skin for the living room, in the design of the Monteiro add-ons. TV, Movies and Series on the home screen open Easy Channel and Easy Movie directly. Confirmations, menus, the keyboard, settings and the add-on browser share the same look. Preview version: the music, pictures, video library, file manager and live TV windows of Kodi are not included yet.</description>
+    <description lang="pt_BR">Um skin escuro para a sala, no visual dos add-ons Monteiro. TV, Filmes e Séries na tela inicial abrem direto o Easy Channel e o Easy Movie. Confirmações, menus, o teclado, as configurações e a tela de add-ons têm o mesmo visual. Versão de prévia: as telas de música, imagens, biblioteca de vídeos, gerenciador de arquivos e TV ao vivo do Kodi ainda não estão incluídas.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+    <website>https://github.com/monteirohat/kodi-addons</website>
+    <source>https://github.com/monteirohat/kodi-addons/tree/main/skin.monteiro</source>
+    <news>0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+    </assets>
+  </extension>
+</addon>
