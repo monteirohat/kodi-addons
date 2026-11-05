@@ -325,6 +325,83 @@
           <aspectratio>scale</aspectratio>
           <fadetime>150</fadetime>
           <texture background="true">$INFO[ListItem.Art(thumb)]</texture>
+          <visible>[String.IsEmpty(ListItem.Property(rotation)) | String.IsEqual(ListItem.Property(rotation),0)] + !String.IsEqual(ListItem.Property(mirror),true)</visible>
+        </control>
+        <control type="image">
+          <left>60</left>
+          <top>-41</top>
+          <width>194</width>
+          <height>295</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-90" end="-90" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),90) + String.IsEqual(ListItem.Property(mirror),false)</visible>
+        </control>
+        <control type="image">
+          <left>10</left>
+          <top>10</top>
+          <width>295</width>
+          <height>194</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-180" end="-180" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),180) + String.IsEqual(ListItem.Property(mirror),false)</visible>
+        </control>
+        <control type="image">
+          <left>60</left>
+          <top>-41</top>
+          <width>194</width>
+          <height>295</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-270" end="-270" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),270) + String.IsEqual(ListItem.Property(mirror),false)</visible>
+        </control>
+        <control type="image">
+          <left>10</left>
+          <top>10</top>
+          <width>295</width>
+          <height>194</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true" flipx="true">$INFO[ListItem.Art(thumb)]</texture>
+          <visible>[String.IsEmpty(ListItem.Property(rotation)) | String.IsEqual(ListItem.Property(rotation),0)] + String.IsEqual(ListItem.Property(mirror),true)</visible>
+        </control>
+        <control type="image">
+          <left>60</left>
+          <top>-41</top>
+          <width>194</width>
+          <height>295</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true" flipx="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-90" end="-90" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),90) + String.IsEqual(ListItem.Property(mirror),true)</visible>
+        </control>
+        <control type="image">
+          <left>10</left>
+          <top>10</top>
+          <width>295</width>
+          <height>194</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true" flipx="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-180" end="-180" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),180) + String.IsEqual(ListItem.Property(mirror),true)</visible>
+        </control>
+        <control type="image">
+          <left>60</left>
+          <top>-41</top>
+          <width>194</width>
+          <height>295</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true" flipx="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-270" end="-270" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),270) + String.IsEqual(ListItem.Property(mirror),true)</visible>
         </control>
         <control type="image">
           <left>261</left>
@@ -382,6 +459,83 @@
           <aspectratio>scale</aspectratio>
           <fadetime>150</fadetime>
           <texture background="true">$INFO[ListItem.Art(thumb)]</texture>
+          <visible>[String.IsEmpty(ListItem.Property(rotation)) | String.IsEqual(ListItem.Property(rotation),0)] + !String.IsEqual(ListItem.Property(mirror),true)</visible>
+        </control>
+        <control type="image">
+          <left>60</left>
+          <top>-41</top>
+          <width>194</width>
+          <height>295</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-90" end="-90" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),90) + String.IsEqual(ListItem.Property(mirror),false)</visible>
+        </control>
+        <control type="image">
+          <left>10</left>
+          <top>10</top>
+          <width>295</width>
+          <height>194</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-180" end="-180" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),180) + String.IsEqual(ListItem.Property(mirror),false)</visible>
+        </control>
+        <control type="image">
+          <left>60</left>
+          <top>-41</top>
+          <width>194</width>
+          <height>295</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-270" end="-270" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),270) + String.IsEqual(ListItem.Property(mirror),false)</visible>
+        </control>
+        <control type="image">
+          <left>10</left>
+          <top>10</top>
+          <width>295</width>
+          <height>194</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true" flipx="true">$INFO[ListItem.Art(thumb)]</texture>
+          <visible>[String.IsEmpty(ListItem.Property(rotation)) | String.IsEqual(ListItem.Property(rotation),0)] + String.IsEqual(ListItem.Property(mirror),true)</visible>
+        </control>
+        <control type="image">
+          <left>60</left>
+          <top>-41</top>
+          <width>194</width>
+          <height>295</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true" flipx="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-90" end="-90" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),90) + String.IsEqual(ListItem.Property(mirror),true)</visible>
+        </control>
+        <control type="image">
+          <left>10</left>
+          <top>10</top>
+          <width>295</width>
+          <height>194</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true" flipx="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-180" end="-180" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),180) + String.IsEqual(ListItem.Property(mirror),true)</visible>
+        </control>
+        <control type="image">
+          <left>60</left>
+          <top>-41</top>
+          <width>194</width>
+          <height>295</height>
+          <aspectratio>scale</aspectratio>
+          <fadetime>150</fadetime>
+          <texture background="true" flipx="true">$INFO[ListItem.Art(thumb)]</texture>
+          <animation effect="rotate" start="-270" end="-270" center="auto" time="0" condition="true">Conditional</animation>
+          <visible>String.IsEqual(ListItem.Property(rotation),270) + String.IsEqual(ListItem.Property(mirror),true)</visible>
         </control>
         <control type="image">
           <left>261</left>

@@ -13,23 +13,44 @@ favorite = "String.IsEqual(ListItem.Property(favorite),true)"
 TILE_WIDTH, TILE_HEIGHT = 315, 214
 
 
-def thumb(left, top, width, height, texture):
-    """A picture cropped to fill its tile, loaded in the background so the gallery scrolls smoothly."""
-    return f"""<control type="image">
-  <left>{left}</left>
-  <top>{top}</top>
-  <width>{width}</width>
-  <height>{height}</height>
-  <aspectratio>scale</aspectratio>
-  <fadetime>150</fadetime>
-  <texture background="true">{texture}</texture>
-</control>"""
+# Turns of a picture, clockwise, and whether it is mirrored first. gui.py keeps them as properties, without changing the file.
+ROTATIONS = (0, 90, 180, 270)
+
+
+def turned(left, top, width, height, texture, aspect, prefix, extra=""):
+    """A picture drawn turned and mirrored as its properties say: one image for each of the eight positions, and only the
+    matching one is shown. A quarter turn uses a box of swapped width and height around the same center, so the turned
+    picture fills the original box."""
+    controls = []
+    for mirror in ("false", "true"):
+        for rotation in ROTATIONS:
+            quarter = rotation in (90, 270)
+            w, h = (height, width) if quarter else (width, height)
+            x, y = left + (width - w) // 2, top + (height - h) // 2
+            flip = ' flipx="true"' if mirror == "true" else ""
+            # Kodi turns anticlockwise for positive angles.
+            turn = (f'\n  <animation effect="rotate" start="{-rotation}" end="{-rotation}" center="auto" time="0" condition="true">'
+                    f"Conditional</animation>") if rotation else ""
+            condition = f"String.IsEqual({prefix}(rotation),{rotation}) + String.IsEqual({prefix}(mirror),{mirror})"
+            if rotation == 0:
+                condition = f"[String.IsEmpty({prefix}(rotation)) | String.IsEqual({prefix}(rotation),0)] + "\
+                            f"{'!' if mirror == 'false' else ''}String.IsEqual({prefix}(mirror),true)"
+            controls.append(f"""<control type="image">
+  <left>{x}</left>
+  <top>{y}</top>
+  <width>{w}</width>
+  <height>{h}</height>
+  <aspectratio>{aspect}</aspectratio>{extra}
+  <texture background="true"{flip}>{texture}</texture>{turn}
+  <visible>{condition}</visible>
+</control>""")
+    return controls
 
 
 def tile():
     return [panel(10, 10, 295, 194, RAISED),
             image(117, 72, 80, 70, "picture.png", TEXT3),
-            thumb(10, 10, 295, 194, "$INFO[ListItem.Art(thumb)]"),
+            *turned(10, 10, 295, 194, "$INFO[ListItem.Art(thumb)]", "scale", "ListItem.Property", "\n  <fadetime>150</fadetime>"),
             # Favorite badge: a star on a dark disc, readable on any picture.
             panel(261, 18, 38, 38, BG, favorite),
             image(266, 23, 28, 28, "star.png", STAR, favorite)]
@@ -106,7 +127,7 @@ def viewer_screen():
         "<!-- The next and previous pictures load behind the black background, so moving to them is quick. -->",
         picture(11), picture(12),
         image(0, 0, 1920, 1080, "white.png", "FF000000"),
-        picture(10),
+        *turned(0, 0, 1920, 1080, "$INFO[Window.Property(picture)]", "keep", "Window.Property"),
         details,
         "<!-- An invisible button holds the focus, as a window needs a control that can take it. Keys are handled in gui.py. -->",
         """<control type="button" id="20">

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<addon id="script.easy.picture" name="Easy Picture" version="1.0.0" provider-name="Monteiro">
+<addon id="script.easy.picture" name="Easy Picture" version="1.1.0" provider-name="Monteiro">
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
   </requires>
@@ -9,13 +9,13 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="en_GB">Your photos in a gallery, for the remote control</summary>
     <summary lang="pt_BR">Suas fotos em galeria, para o controle remoto</summary>
-    <description lang="en_GB">Easy Picture shows the photos of your folders in the design of the Monteiro add-ons, with the albums on the left and the pictures of the album on the right, in a gallery. All pictures and your favorites come first, then one album for each folder. OK shows a picture in full screen, and Left and Right move to the next and previous ones. Hold OK on a picture to mark it as favorite or see its details: date, size, resolution and folder.</description>
-    <description lang="pt_BR">O Easy Picture mostra as fotos das suas pastas no visual dos add-ons Monteiro, com os álbuns à esquerda e as fotos do álbum à direita, em galeria. Todas as imagens e as suas favoritas vêm primeiro, e depois um álbum para cada pasta. OK mostra a foto em tela cheia, e Esquerda e Direita passam para a próxima e a anterior. Segure OK numa foto para marcá-la como favorita ou ver os detalhes: data, tamanho, resolução e pasta.</description>
+    <description lang="en_GB">Easy Picture shows the photos of your folders in the design of the Monteiro add-ons, with the albums on the left and the pictures of the album on the right, in a gallery. All pictures and your favorites come first, then one album for each folder. OK shows a picture in full screen, and Left and Right move to the next and previous ones. Hold OK on a picture to mark it as favorite, rotate or flip it, or see its details: date, size, resolution and folder.</description>
+    <description lang="pt_BR">O Easy Picture mostra as fotos das suas pastas no visual dos add-ons Monteiro, com os álbuns à esquerda e as fotos do álbum à direita, em galeria. Todas as imagens e as suas favoritas vêm primeiro, e depois um álbum para cada pasta. OK mostra a foto em tela cheia, e Esquerda e Direita passam para a próxima e a anterior. Segure OK numa foto para marcá-la como favorita, girá-la ou espelhá-la, ou ver os detalhes: data, tamanho, resolução e pasta.</description>
     <platform>all</platform>
     <license>MIT</license>
     <website>https://github.com/monteirohat/kodi-addons</website>
     <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.picture</source>
-    <news>1.0.0 - First release.</news>
+    <news>1.1.0 - Hold OK on a picture to rotate it 90 degrees right or left, or flip it horizontally or vertically, in the gallery and in full screen. The file of the picture does not change, and Original position undoes it. 1.0.0 - First release.</news>
     <assets>
       <icon>resources/icon.png</icon>
       <fanart>resources/fanart.jpg</fanart>

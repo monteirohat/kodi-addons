@@ -9,6 +9,7 @@ Easy Picture shows your photos on the TV in the design of Easy Channel, Easy Mov
 - **All pictures** first, newest first, then **Favorites**, then one album for each folder that holds pictures.
 - OK shows a picture in full screen. **Left** and **Right** move to the previous and next pictures of the album.
 - Hold OK on a picture to add it to the favorites or remove it, or to see its details: date, size, resolution and folder.
+- Hold OK on a picture to rotate it 90 degrees to the right or left, or flip it horizontally or vertically. The picture shows that way in the gallery and in full screen, and the file does not change. **Original position** undoes it.
 - Album covers, folder pictures and other artwork that music and video players leave in folders are left out.
 - Interface in English and Brazilian Portuguese.
 

@@ -20,13 +20,15 @@ MEDIA = os.path.join(PATH, "resources", "skins", "default", "media")
 PROFILE = xbmcvfs.translatePath(ADDON.getAddonInfo("profile"))
 FOLDERS_FILE = os.path.join(PROFILE, "folders.json")
 FAVORITES_FILE = os.path.join(PROFILE, "favorites.json")
+# Turns and mirrors of pictures, shown without changing the files: {path: [rotation, mirrored]}.
+TURNS_FILE = os.path.join(PROFILE, "turns.json")
 ACTION_LEFT, ACTION_RIGHT, ACTION_UP, ACTION_DOWN = 1, 2, 3, 4
 ACTION_BACK = (10, 92)
 ACTION_CONTEXT_MENU = 117
 ACTION_INFO = 11
 TOOLBAR, GROUPS, GALLERY = 100, 200, 300
 ALBUM_TITLE, ALBUM_COUNT, ALBUM_EMPTY = 401, 402, 404
-VIEWER_PICTURE, VIEWER_NEXT, VIEWER_PREVIOUS = 10, 11, 12
+VIEWER_NEXT, VIEWER_PREVIOUS = 11, 12
 # Delay before the gallery follows the highlighted album, so fast scrolling stays smooth.
 FOLLOW_DELAY = 0.3
 # Seconds the name and position of a picture stay on the screen after it changes.
@@ -145,6 +147,21 @@ def when(seconds):
     return time.strftime("%d/%m/%Y", time.localtime(seconds)) if seconds else ""
 
 
+def turn(position, change):
+    """The position of a picture after a change. A position is a clockwise rotation of the picture mirrored or not
+    first; a mirror after a rotation is the opposite rotation of the mirrored picture."""
+    rotation, mirrored = position
+    if change == "right":
+        return [(rotation + 90) % 360, mirrored]
+    if change == "left":
+        return [(rotation - 90) % 360, mirrored]
+    if change == "horizontal":
+        return [-rotation % 360, not mirrored]
+    if change == "vertical":
+        return [(180 - rotation) % 360, not mirrored]
+    return [0, False]
+
+
 def count_label(count):
     return text(30005) if count == 1 else text(30003, count)
 
@@ -158,6 +175,7 @@ class MainWindow(xbmcgui.WindowXML):
         self.grid_position = -1
         self.follow_timer = None
         self.favorites = set()
+        self.turns = {}
 
     def onInit(self):
         # Also called when the picture in full screen closes. Keep the current state then.
@@ -178,6 +196,7 @@ class MainWindow(xbmcgui.WindowXML):
             folders = default_folders()
             save(FOLDERS_FILE, folders)
         self.favorites = set(load(FAVORITES_FILE, []))
+        self.turns = load(TURNS_FILE, {})
         self.reload()
         if self.shown:
             self.setFocusId(GALLERY)
@@ -235,6 +254,7 @@ class MainWindow(xbmcgui.WindowXML):
             item.setLabel2(when(picture["time"]))
             item.setArt({"thumb": picture["path"]})
             item.setProperty("favorite", "true" if picture["path"] in self.favorites else "false")
+            self.set_turn(item, picture)
             items.append(item)
         self.gallery.reset()
         self.gallery.addItems(items)
@@ -255,6 +275,35 @@ class MainWindow(xbmcgui.WindowXML):
         index = self.group_list.getSelectedPosition()
         if 0 <= index < len(self.groups) and index != self.shown_index:
             self.show_group(index)
+
+    def turn_of(self, picture):
+        return self.turns.get(picture["path"], [0, False])
+
+    def set_turn(self, target, picture):
+        """Give a gallery item or the full screen window the rotation and mirror of a picture."""
+        rotation, mirrored = self.turn_of(picture)
+        target.setProperty("rotation", str(rotation))
+        target.setProperty("mirror", "true" if mirrored else "false")
+
+    def turn_options(self, picture, after=None):
+        """Options that turn or mirror a picture. after runs once the picture has changed."""
+        def change(kind):
+            position = turn(self.turn_of(picture), kind)
+            if position == [0, False]:
+                self.turns.pop(picture["path"], None)
+            else:
+                self.turns[picture["path"]] = position
+            save(TURNS_FILE, self.turns)
+            for index, shown in enumerate(self.shown):
+                if shown["path"] == picture["path"]:
+                    self.set_turn(self.gallery.getListItem(index), picture)
+            if after:
+                after()
+        options = [(30047, lambda: change("right")), (30048, lambda: change("left")),
+                   (30049, lambda: change("horizontal")), (30056, lambda: change("vertical"))]
+        if picture["path"] in self.turns:
+            options.append((30057, lambda: change("original")))
+        return options
 
     def selected_picture(self):
         position = self.gallery.getSelectedPosition()
@@ -326,9 +375,9 @@ class MainWindow(xbmcgui.WindowXML):
     def picture_menu(self, position):
         picture = self.shown[position]
         favorite = picture["path"] in self.favorites
-        options = [(30040, lambda: self.view(position)),
-                   (30043 if favorite else 30042, lambda: self.toggle_favorite(picture)),
-                   (30044, lambda: show_info(picture))]
+        options = ([(30040, lambda: self.view(position)),
+                    (30043 if favorite else 30042, lambda: self.toggle_favorite(picture))]
+                   + self.turn_options(picture) + [(30044, lambda: show_info(picture))])
         choice = xbmcgui.Dialog().contextmenu([text(string_id) for string_id, _ in options])
         if choice >= 0:
             options[choice][1]()
@@ -436,14 +485,14 @@ class Viewer(xbmcgui.WindowXMLDialog):
     """A picture in full screen. Left and Right move through the pictures of the album, which wrap around."""
 
     def onInit(self):
-        self.picture = self.getControl(VIEWER_PICTURE)
         self.hide_timer = None
         self.show()
 
     def show(self):
         count = len(self.pictures)
         picture = self.pictures[self.position]
-        self.picture.setImage(picture["path"], False)
+        self.setProperty("picture", picture["path"])
+        self.window.set_turn(self, picture)
         # The neighbours load behind the picture, so the next move is quick.
         self.getControl(VIEWER_NEXT).setImage(self.pictures[(self.position + 1) % count]["path"], False)
         self.getControl(VIEWER_PREVIOUS).setImage(self.pictures[(self.position - 1) % count]["path"], False)
@@ -480,8 +529,8 @@ class Viewer(xbmcgui.WindowXMLDialog):
         elif action_id == ACTION_CONTEXT_MENU:
             picture = self.pictures[self.position]
             favorite = picture["path"] in self.window.favorites
-            options = [(30043 if favorite else 30042, lambda: self.window.toggle_favorite(picture)),
-                       (30044, lambda: show_info(picture))]
+            options = ([(30043 if favorite else 30042, lambda: self.window.toggle_favorite(picture))]
+                       + self.window.turn_options(picture) + [(30044, lambda: show_info(picture))])
             choice = xbmcgui.Dialog().contextmenu([text(string_id) for string_id, _ in options])
             if choice >= 0:
                 options[choice][1]()

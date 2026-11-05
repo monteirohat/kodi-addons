@@ -107,6 +107,26 @@ msgctxt "#30046"
 msgid "Removed from favorites"
 msgstr "Removida das favoritas"
 
+msgctxt "#30047"
+msgid "Rotate 90° right"
+msgstr "Girar 90° à direita"
+
+msgctxt "#30048"
+msgid "Rotate 90° left"
+msgstr "Girar 90° à esquerda"
+
+msgctxt "#30049"
+msgid "Flip horizontally"
+msgstr "Espelhar na horizontal"
+
+msgctxt "#30056"
+msgid "Flip vertically"
+msgstr "Espelhar na vertical"
+
+msgctxt "#30057"
+msgid "Original position"
+msgstr "Voltar ao original"
+
 msgctxt "#30050"
 msgid "Name"
 msgstr "Nome"
