@@ -23,6 +23,30 @@
       </assets>
     </extension>
   </addon>
+  <addon id="script.easy.files" name="Easy Files" version="1.0.0" provider-name="Monteiro">
+    <requires>
+      <import addon="xbmc.python" version="3.0.1" />
+    </requires>
+    <extension point="xbmc.python.script" library="default.py">
+      <provides>executable</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+      <summary lang="en_GB">A simple file manager for the remote control</summary>
+      <summary lang="pt_BR">Um gerenciador de arquivos simples para o controle remoto</summary>
+      <description lang="en_GB">Easy Files browses your drives, network shares and the folders of Kodi in the design of the Monteiro add-ons, with places on the left and the folder on the right. OK opens a folder or plays a file. Hold OK on a file or folder to open, rename, copy, move or delete it, create a folder, or see its details: type, size, contents, date and the free space of the drive. Copies show their progress and can be cancelled.</description>
+      <description lang="pt_BR">O Easy Files navega pelos seus discos, compartilhamentos de rede e pastas do Kodi no visual dos add-ons Monteiro, com os locais à esquerda e a pasta à direita. OK abre uma pasta ou toca um arquivo. Segure OK num arquivo ou pasta para abrir, renomear, copiar, mover ou apagar, criar uma pasta ou ver os detalhes: tipo, tamanho, conteúdo, data e espaço livre do disco. As cópias mostram o progresso e podem ser canceladas.</description>
+      <platform>all</platform>
+      <license>MIT</license>
+      <website>https://github.com/monteirohat/kodi-addons</website>
+      <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.files</source>
+      <news>1.0.0 - First release.</news>
+      <assets>
+        <icon>resources/icon.png</icon>
+        <fanart>resources/fanart.jpg</fanart>
+        <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+      </assets>
+    </extension>
+  </addon>
   <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.1.2" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
@@ -109,7 +133,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="skin.monteiro" version="0.3.0" name="Monteiro" provider-name="Monteiro">
+  <addon id="skin.monteiro" version="0.3.1" name="Monteiro" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.gui" version="5.17.0" />
     </requires>
@@ -125,7 +149,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/skin.monteiro</source>
-      <news>0.3.0 - Live TV windows: channels, guide, recordings, timers, search and the channel list over the TV. Profiles and the login screen, favourites, the playlist, the event log, games, the details of videos, music, pictures and TV programmes, the subtitle search, the music player controls, the slider, the player information and the Info key during a video. 0.2.0 - Videos, Music and Pictures on the home screen, the file manager, adding media sources, system information, the slide show and the music visualisation. Player controls with icons, the time bar while paused, notification icons, the number keys, and selected items in lists that were not shown. 0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
+      <news>0.3.1 - Files on the home screen and the file manager in the settings open Easy Files when it is installed. 0.3.0 - Live TV windows: channels, guide, recordings, timers, search and the channel list over the TV. Profiles and the login screen, favourites, the playlist, the event log, games, the details of videos, music, pictures and TV programmes, the subtitle search, the music player controls, the slider, the player information and the Info key during a video. 0.2.0 - Videos, Music and Pictures on the home screen, the file manager, adding media sources, system information, the slide show and the music visualisation. Player controls with icons, the time bar while paused, notification icons, the number keys, and selected items in lists that were not shown. 0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
