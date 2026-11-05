@@ -261,6 +261,25 @@ def catalog_details_screen():
       details_button(202, 0, None, None, None, FOCUS, ON_FOCUS, top=0, width=440, ondown="300"), spaces=2)}
 </control>"""
     seasons, episodes = seasons_and_episodes(onup=250, top=480, height=386, condition=is_series)
+    # The seasons and episodes come a moment after the details. Meanwhile a spinner turns where they will show,
+    # and a message takes its place when they could not be loaded.
+    loading = "String.IsEqual(Window.Property(loading),true)"
+    spin = '<animation effect="rotate" end="-360" center="auto" time="900" loop="true" reversible="false" condition="true">Conditional</animation>'
+    # The spinner goes as soon as the first season shows, while the episodes of a long series are still being listed.
+    no_seasons = "Integer.IsEqual(Container(300).NumItems,0)"
+    spinner = f"""<control type="group">{skin.visible(is_series + " + " + loading + " + " + no_seasons)}
+  <control type="image">
+    <left>620</left>
+    <top>500</top>
+    <width>56</width>
+    <height>56</height>
+    <texture colordiffuse="{ACCENT}">spinner.png</texture>
+    {spin}
+  </control>
+{join(label(700, 500, 1000, 56, f"$ADDON[{ADDON_ID} 30355]", "font13", TEXT2), spaces=2)}
+</control>"""
+    failed = label(620, 500, 1100, 56, "$INFO[Window.Property(episodes_error)]", "font13", TEXT2,
+                   is_series + " + !" + loading + " + !String.IsEmpty(Window.Property(episodes_error))")
     return join(
         image(0, 0, 1920, 1080, "white.png", "D9000000"),
         panel(160, 80, 1600, 920, SURFACE),
@@ -278,6 +297,8 @@ def catalog_details_screen():
         textbox(620, 490, 1100, 460, "$INFO[Window.Property(plot)]", "font13", TEXT2, "!" + is_series),
         seasons,
         episodes,
+        spinner,
+        failed,
         spaces=0)
 
 

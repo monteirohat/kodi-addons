@@ -178,7 +178,7 @@ The list icon in the toolbar opens **Catalog**, the movies and series of [Cineme
 
 | Category | Content |
 | --- | --- |
-| **My list** | Titles you saved, with their count. |
+| **My list** | Titles you saved, with their count. Each tab opens here when it has titles, and on **Popular** otherwise. |
 | **Search** | Asks for a title and shows the matches. |
 | **Popular** | The most watched titles right now. |
 | **Featured** | Titles picked by Cinemeta. |

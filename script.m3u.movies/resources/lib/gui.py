@@ -44,7 +44,7 @@ TAB_TYPES = {"movie": ("movie",), "series": ("series", "anime")}
 RESOURCE_NAMES = {"catalog": 30284, "meta": 30287, "stream": 30285, "subtitles": 30286}
 TYPE_NAMES = {"movie": 30201, "series": 30117, "channel": 30288}
 # Position of Popular in the categories of the catalog, the one shown first.
-POPULAR_CATEGORY = 2
+MY_LIST_CATEGORY, POPULAR_CATEGORY = 0, 2
 # The catalog loads its next page when the selection gets this close to the last poster.
 LOAD_MORE_BEFORE = 12
 DOWNLOADS_LIST, DOWNLOADS_EMPTY = 100, 300
@@ -1116,14 +1116,17 @@ class CatalogWindow(xbmcgui.WindowXML):
                                   key=lambda category: category[0].casefold())
         self.group_list.reset()
         self.group_list.addItems([xbmcgui.ListItem(name) for name, _ in self.categories])
-        self.update_watchlist_count()
-        # Popular titles first. Kodi applies selectItem later, so the category is opened by its index.
-        self.group_list.selectItem(POPULAR_CATEGORY)
-        self.open_category(POPULAR_CATEGORY)
+        # My list first, the first category, when it has titles of this kind. Otherwise popular titles, so the tab does
+        # not open empty. Kodi applies selectItem later, so the category is opened by its index.
+        first = MY_LIST_CATEGORY if self.update_watchlist_count() else POPULAR_CATEGORY
+        self.group_list.selectItem(first)
+        self.open_category(first)
 
     def update_watchlist_count(self):
+        """Show the number of titles of My list of this kind, and return it."""
         count = len([item for item in storage.get_watchlist() if item["kind"] == self.kind])
-        self.group_list.getListItem(0).setLabel2(str(count) if count else "")
+        self.group_list.getListItem(MY_LIST_CATEGORY).setLabel2(str(count) if count else "")
+        return count
 
     def follow_group(self):
         index = self.group_list.getSelectedPosition()
@@ -1519,6 +1522,9 @@ class CatalogDetails(xbmcgui.WindowXMLDialog):
                 break
             xbmc.sleep(25)
         self.setFocusId(target)
+        # A spinner shows where the seasons go until they arrive.
+        self.setProperty("loading", "true" if self.series else "false")
+        self.setProperty("episodes_error", "")
         threading.Thread(target=self.load, daemon=True).start()
 
     def origin(self, item_id):
@@ -1546,25 +1552,33 @@ class CatalogDetails(xbmcgui.WindowXMLDialog):
         self.setProperty("people", "  ·  ".join(people))
 
     def load(self):
-        """Load the full description and, for a series, the episodes. Search results also lack the year,
-        genres and people, which this fills in."""
-        item = self.item
+        """Load the details while the spinner turns, then show the episodes, or why there are none."""
         try:
-            if item.get("addon"):
-                meta = stremio.meta(item["addon"], item.get("type", self.kind), item["id"])
-            elif item["id"].startswith("tt"):
-                meta = cinemeta.meta(self.kind, item["id"])
-            else:
-                return
+            found = self.fetch()
         except Exception:
-            return
+            found = None
+        if self.series:
+            if found:
+                self.show_episodes(found)
+            self.setProperty("episodes_error", "" if found else text(30356 if found is None else 30357))
+        self.setProperty("loading", "false")
+
+    def fetch(self):
+        """Load the full description and, for a series, return its episodes. Search results also lack the year,
+        genres and people, which this fills in. Returns None when the details could not be loaded."""
+        item = self.item
+        if item.get("addon"):
+            meta = stremio.meta(item["addon"], item.get("type", self.kind), item["id"])
+        elif item["id"].startswith("tt"):
+            meta = cinemeta.meta(self.kind, item["id"])
+        else:
+            return None
         full = cinemeta.summary(meta)
         self.item = dict(self.item, **{key: value for key, value in full.items() if value and key != "id"})
         self.show_info(self.item)
         self.plot = full["plot"] or self.plot
         self.setProperty("plot", self.plot)
-        if self.series:
-            self.show_episodes(cinemeta.episodes(meta))
+        return cinemeta.episodes(meta) if self.series else []
 
     def show_episodes(self, found):
         # Specials last.

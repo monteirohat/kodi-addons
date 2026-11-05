@@ -1165,3 +1165,15 @@ msgstr "Esta fonte é uma transmissão em partes, e não um arquivo, então não
 msgctxt "#30354"
 msgid "Done in a moment"
 msgstr "Pronto em instantes"
+
+msgctxt "#30355"
+msgid "Loading the seasons and episodes…"
+msgstr "Carregando as temporadas e os episódios…"
+
+msgctxt "#30356"
+msgid "The seasons and episodes could not be loaded. Check the internet connection and open the title again."
+msgstr "Não foi possível carregar as temporadas e os episódios. Verifique a conexão com a internet e abra o título de novo."
+
+msgctxt "#30357"
+msgid "This series has no episodes listed yet."
+msgstr "Esta série ainda não tem episódios listados."

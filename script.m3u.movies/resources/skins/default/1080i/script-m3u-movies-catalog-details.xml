@@ -365,5 +365,37 @@
       </focusedlayout>
       <visible>String.IsEqual(Window.Property(series),true)</visible>
     </control>
+    <control type="group">
+      <visible>String.IsEqual(Window.Property(series),true) + String.IsEqual(Window.Property(loading),true) + Integer.IsEqual(Container(300).NumItems,0)</visible>
+      <control type="image">
+        <left>620</left>
+        <top>500</top>
+        <width>56</width>
+        <height>56</height>
+        <texture colordiffuse="FF3B8BFF">spinner.png</texture>
+        <animation effect="rotate" end="-360" center="auto" time="900" loop="true" reversible="false" condition="true">Conditional</animation>
+      </control>
+      <control type="label">
+        <left>700</left>
+        <top>500</top>
+        <width>1000</width>
+        <height>56</height>
+        <aligny>center</aligny>
+        <font>font13</font>
+        <textcolor>FF9C9EA6</textcolor>
+        <label>$ADDON[script.m3u.movies 30355]</label>
+      </control>
+    </control>
+    <control type="label">
+      <left>620</left>
+      <top>500</top>
+      <width>1100</width>
+      <height>56</height>
+      <aligny>center</aligny>
+      <font>font13</font>
+      <textcolor>FF9C9EA6</textcolor>
+      <label>$INFO[Window.Property(episodes_error)]</label>
+      <visible>String.IsEqual(Window.Property(series),true) + !String.IsEqual(Window.Property(loading),true) + !String.IsEmpty(Window.Property(episodes_error))</visible>
+    </control>
   </controls>
 </window>

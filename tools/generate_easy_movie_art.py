@@ -80,6 +80,11 @@ logo.save(os.path.join(MEDIA, "logo.png"), optimize=True)
 film = render(128, 128, lambda d, s: mark(d, 0, 0, 128 * s, WHITE, WHITE, WHITE, outline=34), CLEAR, "RGBA")
 film.save(os.path.join(MEDIA, "film.png"), optimize=True)
 
+# Loading spinner, as in the Monteiro skin: three quarters of a ring, turned by the skin while something loads.
+spinner = render(128, 128, lambda d, s: d.arc((12 * s, 12 * s, 116 * s, 116 * s), start=0, end=270, fill=WHITE, width=12 * s),
+                 CLEAR, "RGBA")
+spinner.save(os.path.join(MEDIA, "spinner.png"), optimize=True)
+
 
 def fanart(draw, s):
     mark(draw, 120 * s, 200 * s, 300 * s)

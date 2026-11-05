@@ -1165,3 +1165,15 @@ msgstr ""
 msgctxt "#30354"
 msgid "Done in a moment"
 msgstr ""
+
+msgctxt "#30355"
+msgid "Loading the seasons and episodes…"
+msgstr ""
+
+msgctxt "#30356"
+msgid "The seasons and episodes could not be loaded. Check the internet connection and open the title again."
+msgstr ""
+
+msgctxt "#30357"
+msgid "This series has no episodes listed yet."
+msgstr ""
