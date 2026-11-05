@@ -6,7 +6,7 @@
 
 <p align="center">
   Add-ons práticos e de código aberto para Kodi, LibreELEC e Raspberry Pi.<br>
-  Assista canais e filmes de listas M3U do jeito fácil e controle sua central de mídia do sofá.
+  Assista canais e filmes de listas M3U, veja suas fotos e arquivos e controle sua central de mídia do sofá.
 </p>
 
 <p align="center">
@@ -68,6 +68,29 @@ As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o m
       Escolha a tela HDMI ativa de um Raspberry Pi 4 direto pelo Kodi.
       <br><br>
       <a href="#hdmi-switcher">Resumo</a> · <a href="script.hdmi.switcher/README.md">Guia</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <a href="script.easy.files/README.md"><img src="script.easy.files/resources/icon.png" alt="Easy Files" width="120"></a>
+      <h3>Easy Files</h3>
+      Um gerenciador de arquivos para o controle: copie, mova, renomeie e apague com um toque longo.
+      <br><br>
+      <a href="#easy-files">Resumo</a> · <a href="script.easy.files/README.md">Guia</a>
+    </td>
+    <td align="center" width="33%">
+      <a href="script.easy.picture/README.md"><img src="script.easy.picture/resources/icon.png" alt="Easy Picture" width="120"></a>
+      <h3>Easy Picture</h3>
+      Suas fotos em galeria, por álbum, e cada uma em tela cheia com um toque no OK.
+      <br><br>
+      <a href="#easy-picture">Resumo</a> · <a href="script.easy.picture/README.md">Guia</a>
+    </td>
+    <td align="center" width="33%">
+      <a href="skin.monteiro/README.md"><img src="skin.monteiro/resources/icon.png" alt="Skin Monteiro" width="120"></a>
+      <h3>Skin Monteiro</h3>
+      Uma tela inicial e menus no mesmo visual, com cada add-on Easy a um toque.
+      <br><br>
+      <a href="#skin-monteiro">Resumo</a> · <a href="skin.monteiro/README.md">Guia</a>
     </td>
   </tr>
 </table>
@@ -156,7 +179,7 @@ Leia o [guia do Easy Files](script.easy.files/README.md) para conhecer cada recu
 
 - Todas as imagens e as suas favoritas primeiro, e depois um álbum para cada pasta de fotos.
 - Esquerda e Direita passam as fotos em tela cheia.
-- Segure o **OK** numa foto para marcá-la como favorita ou ver a data, o tamanho, a resolução e a pasta.
+- Segure o **OK** numa foto para marcá-la como favorita, girá-la ou espelhá-la, ou ver a data, o tamanho, a resolução e a pasta.
 
 ![Easy Picture](script.easy.picture/resources/screenshots/screenshot-01.jpg)
 
@@ -167,7 +190,15 @@ Leia o [guia do Easy Picture](script.easy.picture/README.md) para conhecer cada 
 
 ## Skin Monteiro
 
-Uma prévia de skin para o Kodi no visual dos add-ons, sob a licença MIT. **TV**, **Filmes** e **Séries** na tela inicial abrem direto o Easy Channel e o Easy Movie. Instale em **Monteiro > Aparência > Skin** e leia o [guia do skin](skin.monteiro/README.md), em inglês.
+Um skin para o Kodi no visual dos add-ons, sob a licença MIT. A tela inicial abre direto os add-ons Easy, e as configurações, menus, teclado e barras do player seguem o mesmo visual escuro, com o foco em azul aço. Instale em **Monteiro > Aparência > Skin**.
+
+![Tela inicial do skin Monteiro](.github/assets/monteiro-skin.jpg)
+
+- **TV**, **Filmes** e **Séries** abrem o Easy Channel e o Easy Movie, **Imagens** abre o Easy Picture e **Arquivos** abre o Easy Files. Sem o add-on, o item oferece a instalação.
+- **Vídeos** e **Música** abrem as fontes do Kodi, e **Add-ons** abre os add-ons instalados, com uma barra para busca, repositórios e atualizações.
+- Os botões no canto superior direito abrem as configurações de Wi-Fi do LibreELEC, as configurações do Kodi e o menu de energia.
+
+Leia o [guia do skin](skin.monteiro/README.md), em inglês, para conhecer cada tela.
 
 ## Ajuda e sugestões
 

@@ -6,7 +6,7 @@
 
 <p align="center">
   Practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi.<br>
-  Watch M3U channels and movies the easy way, and control your media center from the couch.
+  Watch M3U channels and movies, browse your photos and files, and control your media center from the couch.
 </p>
 
 <p align="center">
@@ -68,6 +68,29 @@ Updates arrive through the repository. If one is not visible yet, open the conte
       Choose the active HDMI display of a Raspberry Pi 4 directly from Kodi.
       <br><br>
       <a href="#hdmi-switcher">Overview</a> · <a href="script.hdmi.switcher/README.md">Guide</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <a href="script.easy.files/README.md"><img src="script.easy.files/resources/icon.png" alt="Easy Files" width="120"></a>
+      <h3>Easy Files</h3>
+      A file manager for the remote: copy, move, rename and delete with one long press.
+      <br><br>
+      <a href="#easy-files">Overview</a> · <a href="script.easy.files/README.md">Guide</a>
+    </td>
+    <td align="center" width="33%">
+      <a href="script.easy.picture/README.md"><img src="script.easy.picture/resources/icon.png" alt="Easy Picture" width="120"></a>
+      <h3>Easy Picture</h3>
+      Your photos in a gallery, by album, and each one in full screen with one press of OK.
+      <br><br>
+      <a href="#easy-picture">Overview</a> · <a href="script.easy.picture/README.md">Guide</a>
+    </td>
+    <td align="center" width="33%">
+      <a href="skin.monteiro/README.md"><img src="skin.monteiro/resources/icon.png" alt="Monteiro skin" width="120"></a>
+      <h3>Monteiro skin</h3>
+      A home screen and menus in the same design, with every Easy add-on one press away.
+      <br><br>
+      <a href="#monteiro-skin">Overview</a> · <a href="skin.monteiro/README.md">Guide</a>
     </td>
   </tr>
 </table>
@@ -156,7 +179,7 @@ Read the [Easy Files guide](script.easy.files/README.md) for every feature.
 
 - All pictures and your favorites first, then one album for each folder of photos.
 - Left and Right move through the pictures in full screen.
-- Hold **OK** on a picture to mark it as favorite or see its date, size, resolution and folder.
+- Hold **OK** on a picture to mark it as favorite, rotate or flip it, or see its date, size, resolution and folder.
 
 ![Easy Picture](script.easy.picture/resources/screenshots/screenshot-01.jpg)
 
@@ -167,7 +190,15 @@ Read the [Easy Picture guide](script.easy.picture/README.md) for every feature.
 
 ## Monteiro skin
 
-A preview of a Kodi skin in the design of the add-ons, under the MIT license. **TV**, **Movies** and **Series** on its home screen open Easy Channel and Easy Movie directly. Install it from **Monteiro > Look and feel > Skin**, and read the [skin guide](skin.monteiro/README.md).
+A Kodi skin in the design of the add-ons, under the MIT license. Its home screen opens the Easy add-ons directly, and its settings, menus, keyboard and player bars share their dark look and steel blue focus. Install it from **Monteiro > Look and feel > Skin**.
+
+![Monteiro skin home screen](.github/assets/monteiro-skin.jpg)
+
+- **TV**, **Movies** and **Series** open Easy Channel and Easy Movie, **Pictures** opens Easy Picture, and **Files** opens Easy Files. Without an add-on, the item offers to install it.
+- **Videos** and **Music** open the sources of Kodi, and **Add-ons** opens the installed add-ons, with a toolbar for search, repositories and updates.
+- The buttons at the top right open the Wi-Fi settings of LibreELEC, the settings of Kodi and the power menu.
+
+Read the [skin guide](skin.monteiro/README.md) for every screen.
 
 ## Help and feedback
 

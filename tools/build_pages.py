@@ -31,6 +31,8 @@ ASSETS = {
     "easy-files.jpg": "script.easy.files/resources/screenshots/screenshot-01.jpg",
     "easy-picture.png": "script.easy.picture/resources/icon.png",
     "easy-picture.jpg": "script.easy.picture/resources/screenshots/screenshot-01.jpg",
+    "monteiro-skin.png": "skin.monteiro/resources/icon.png",
+    "monteiro-skin.jpg": ".github/assets/monteiro-skin.jpg",
     "easy-channel.gif": ".github/assets/easy-channel.gif",
     "easy-movie.gif": ".github/assets/easy-movie.gif",
     "easy-channel-buttons.jpg": "script.m3u.channels/resources/screenshots/screenshot-02.jpg",
@@ -184,7 +186,7 @@ HOME = Template("""<!doctype html>
   <div class="wrap">
     <div>
       <h1>Kodi add-ons for the living room</h1>
-      <p class="lead">Live TV and movies from your M3U lists, and the right HDMI display, on LibreELEC and Raspberry Pi. Install the repository once, from its address, and every add-on and update comes from it.</p>
+      <p class="lead">Live TV and movies from your M3U lists, your photos and files, a skin made for them, and the right HDMI display, on LibreELEC and Raspberry Pi. Install the repository once, from its address, and every add-on and update comes from it.</p>
       <div class="install">
         <h2>Install in Kodi</h2>
         <div class="url"><code id="address">${pages}</code><button type="button" id="copy">Copy</button></div>
@@ -204,7 +206,7 @@ HOME = Template("""<!doctype html>
 <section id="addons">
   <div class="wrap">
     <p class="eyebrow">Add-ons</p>
-    <h2 class="title">Five add-ons, one design</h2>
+    <h2 class="title">Five add-ons and a skin, one design</h2>
     <p class="lead">Made for the remote control, with the same dark interface, in English and Brazilian Portuguese.</p>
     <div class="cards">
       <a class="card" href="#easy-channel"><img src="assets/easy-channel.png" alt=""><h3>Easy Channel</h3><p>Live TV from M3U lists in a TV box style screen that keeps only the channels that work.</p><div class="version">Version ${channel_version} &middot; Video add-ons</div></a>
@@ -212,6 +214,7 @@ HOME = Template("""<!doctype html>
       <a class="card" href="#hdmi-switcher"><img src="assets/hdmi-switcher.png" alt=""><h3>HDMI Switcher</h3><p>Pick the active HDMI display of a Raspberry Pi 4 from the couch.</p><div class="version">Version ${hdmi_version} &middot; Program add-ons</div></a>
       <a class="card" href="#easy-files"><img src="assets/easy-files.png" alt=""><h3>Easy Files</h3><p>A file manager for the remote: copy, move, rename and delete with one long press.</p><div class="version">Version ${files_version} &middot; Program add-ons</div></a>
       <a class="card" href="#easy-picture"><img src="assets/easy-picture.png" alt=""><h3>Easy Picture</h3><p>Your photos in a gallery, by album, and each one in full screen with one press of OK.</p><div class="version">Version ${picture_version} &middot; Picture add-ons</div></a>
+      <a class="card" href="#monteiro-skin"><img src="assets/monteiro-skin.png" alt=""><h3>Monteiro skin</h3><p>A home screen and menus in the same design, with every Easy add-on one press away.</p><div class="version">Version ${skin_version} &middot; Look and feel &gt; Skin</div></a>
     </div>
   </div>
 </section>
@@ -302,12 +305,30 @@ HOME = Template("""<!doctype html>
       <ul>
         <li>All pictures and your favorites first, then one album for each folder of photos.</li>
         <li>Left and Right move through the pictures in full screen.</li>
-        <li>Hold <b>OK</b> on a picture to mark it as favorite or see its date, size, resolution and folder.</li>
+        <li>Hold <b>OK</b> on a picture to mark it as favorite, rotate or flip it, or see its date, size, resolution and folder.</li>
       </ul>
       <a class="more" href="${github}/blob/main/script.easy.picture/README.md">Read the Easy Picture guide &rarr;</a>
     </div>
     <div class="media">
       <img class="shot" src="assets/easy-picture.jpg" alt="Easy Picture: albums and the gallery of an album" width="1280" height="720" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section id="monteiro-skin">
+  <div class="wrap addon flip">
+    <div>
+      <div class="name"><img src="assets/monteiro-skin.png" alt=""><h2>Monteiro skin</h2></div>
+      <p>A Kodi skin in the design of the add-ons. Its home screen opens the Easy add-ons directly, and its settings, menus, keyboard and player bars share their dark look and steel blue focus.</p>
+      <ul>
+        <li><b>TV</b>, <b>Movies</b> and <b>Series</b> open Easy Channel and Easy Movie, <b>Pictures</b> opens Easy Picture, and <b>Files</b> opens Easy Files.</li>
+        <li><b>Add-ons</b> opens the installed add-ons, with a toolbar for search, repositories and updates.</li>
+        <li>Buttons for the Wi-Fi settings of LibreELEC, the settings of Kodi and the power menu.</li>
+      </ul>
+      <a class="more" href="${github}/blob/main/skin.monteiro/README.md">Read the skin guide &rarr;</a>
+    </div>
+    <div class="media">
+      <img class="shot" src="assets/monteiro-skin.jpg" alt="Monteiro skin: the home screen" width="1280" height="720" loading="lazy">
     </div>
   </div>
 </section>
@@ -345,7 +366,7 @@ def home(zip_name):
     return HOME.substitute(pages=PAGES, github=GITHUB, zip=html.escape(zip_name), zip_link=link(zip_name),
                            channel_version=found.get("script.m3u.channels", ""), movie_version=found.get("script.m3u.movies", ""),
                            hdmi_version=found.get("script.hdmi.switcher", ""), files_version=found.get("script.easy.files", "1.0.0"),
-                           picture_version=found.get("script.easy.picture", "1.0.0"))
+                           picture_version=found.get("script.easy.picture", "1.0.0"), skin_version=found.get("skin.monteiro", ""))
 
 
 def build(output):
