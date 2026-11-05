@@ -1,0 +1,62 @@
+name: Bug report
+description: Something in an add-on does not work as described.
+title: "[Bug] "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Do not paste list addresses, user names or passwords: many M3U and addon addresses contain credentials.
+  - type: dropdown
+    id: addon
+    attributes:
+      label: Add-on
+      options:
+        - Easy Channel
+        - Easy Movie
+        - HDMI Switcher
+        - Monteiro repository
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Add-on version
+      description: Shown in Add-ons > My add-ons, on the add-on page.
+      placeholder: "1.6.0"
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: Kodi, system and device
+      placeholder: "Kodi 21.3, LibreELEC 12.2.1, Raspberry Pi 4"
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened
+      description: What you saw, and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open Easy Movie
+        2. Select All movies
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Kodi log
+      description: Enable Settings > System > Logging > Enable debug logging, reproduce the problem, and upload kodi.log with the Kodi Logfile Uploader add-on. Paste the link here.
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Optional. Drag images here.

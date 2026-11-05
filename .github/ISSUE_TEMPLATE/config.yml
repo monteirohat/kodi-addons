@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions and tips
+    url: https://github.com/monteirohat/kodi-addons/discussions
+    about: Ask how to use the add-ons and share what works for you.

@@ -1,0 +1,34 @@
+name: Suggestion
+description: An idea for a new feature or an improvement.
+title: "[Suggestion] "
+labels: [enhancement]
+body:
+  - type: dropdown
+    id: addon
+    attributes:
+      label: Add-on
+      options:
+        - Easy Channel
+        - Easy Movie
+        - HDMI Switcher
+        - Monteiro repository
+        - A new add-on
+    validations:
+      required: true
+  - type: textarea
+    id: need
+    attributes:
+      label: What would you like to do
+      description: The situation and what is missing today.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: How it could work
+      description: Optional. Screens, keys or settings you imagine.
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: What you do today instead
+      description: Optional. Other add-ons or workarounds you use.
