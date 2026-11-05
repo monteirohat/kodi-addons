@@ -394,8 +394,14 @@ class MainWindow(xbmcgui.WindowXML):
             return
         self.lookup_running = True
 
+        origins = storage.get_origins()
+
         def lookup(item):
             try:
+                # A video downloaded from the catalog has the details of its title, without a search by its name.
+                origin = next((origins[path] for path in local_paths(item) if origins.get(path, {}).get("id")), None)
+                if origin:
+                    return item_id(item), cinemeta.details(origin["kind"], origin["id"]) or {}
                 # An empty result marks a video with no match, so it is not looked up every time.
                 return item_id(item), cinemeta.lookup(*self.lookup_query(item)) or {}
             except Exception:
@@ -1392,7 +1398,7 @@ class CatalogWindow(xbmcgui.WindowXML):
         return [(addon["manifest"]["name"], stremio.base_url(addon["url"])) for addon in storage.get_addons()
                 if stremio.supports(addon["manifest"], "stream", kind, item_id)]
 
-    def open_sources(self, title, kind, item_id, poster):
+    def open_sources(self, title, kind, item_id, poster, origin=None):
         """Show the sources of a movie or an episode. Returns the direct link chosen to play, or None."""
         addons = self.stream_addons(kind, item_id)
         if not addons:
@@ -1400,14 +1406,14 @@ class CatalogWindow(xbmcgui.WindowXML):
             return None
         panel = SourcesPanel("script-m3u-movies-sources.xml", PATH, "default", "1080i")
         panel.catalog, panel.title, panel.kind, panel.item_id, panel.addons = self, title, kind, item_id, addons
-        panel.poster, panel.choice = poster, None
+        panel.poster, panel.choice, panel.origin = poster, None, origin
         panel.doModal()
         choice = panel.choice
         del panel
         return choice
 
-    def download(self, source):
-        """Send a torrent to Downloads. Returns True when it was added."""
+    def download(self, source, origin=None):
+        """Send a torrent to Downloads. Returns True when it was added. origin is the catalog title it is for."""
         folder = ADDON.getSetting("download_folder") or choose_download_folder()
         if not folder:
             return False
@@ -1438,6 +1444,9 @@ class CatalogWindow(xbmcgui.WindowXML):
         if source.get("file_idx") is not None:
             # A pack of a whole season or collection: only the chosen file is downloaded.
             threading.Thread(target=downloads.only_file, args=(info_hash, source["file_idx"]), daemon=True).start()
+        if origin and origin.get("id"):
+            threading.Thread(target=remember_origin, args=(downloads, info_hash, folder, source.get("file_idx"), origin),
+                             daemon=True).start()
         notify(text(30308, source["label"]))
         return True
 
@@ -1489,6 +1498,17 @@ class CatalogDetails(xbmcgui.WindowXMLDialog):
             xbmc.sleep(25)
         self.setFocusId(target)
         threading.Thread(target=self.load, daemon=True).start()
+
+    def origin(self, item_id):
+        """The title a download is for, kept with the downloaded file so the folder shows it as this title.
+        An episode has an id such as "tt0123:1:2", with its season and number."""
+        item = self.item
+        origin = {"kind": "series" if self.series else "movie", "id": item.get("id", ""), "name": item.get("name", ""),
+                  "poster": item.get("poster", ""), "year": cinemeta.first_year(item.get("releaseInfo", "")) or 0}
+        parts = str(item_id).split(":")
+        if self.series and len(parts) >= 3 and parts[-2].isdigit() and parts[-1].isdigit():
+            origin["season"], origin["episode"] = int(parts[-2]), int(parts[-1])
+        return origin
 
     def stream_type(self):
         """The type addons know the title by: the one of its catalog for titles of addons, as anime."""
@@ -1592,7 +1612,7 @@ class CatalogDetails(xbmcgui.WindowXMLDialog):
 
     def sources(self, title, item_id):
         """Open the sources panel. A direct link chosen there is played once the details close."""
-        source = self.catalog.open_sources(title, self.stream_type(), item_id, self.item.get("poster", ""))
+        source = self.catalog.open_sources(title, self.stream_type(), item_id, self.item.get("poster", ""), self.origin(item_id))
         if source:
             self.choice, self.source = "play", source
             self.close()
@@ -1680,7 +1700,7 @@ class SourcesPanel(xbmcgui.WindowXMLDialog):
             return
         source = self.sources[position]
         if source["kind"] == "torrent":
-            if self.catalog.download(source):
+            if self.catalog.download(source, self.origin):
                 self.close()
         else:
             self.choice = dict(source, title=self.title, poster=self.poster)
@@ -1888,6 +1908,28 @@ def engine_settings():
 def on_sd_card(path):
     """Whether a folder is on the card that holds the system of LibreELEC, which heavy writes wear out."""
     return xbmc.getCondVisibility("System.HasAddon(service.libreelec.settings)") and path.startswith("/storage")
+
+
+def remember_origin(downloads, info_hash, folder, file_index, origin, timeout=600):
+    """Keep the catalog title of a download with the paths of its videos, once Torrest knows its files.
+
+    A single file, as an episode chosen from a season pack, takes the whole origin. Several videos, as a season
+    downloaded at once, keep only the series, so each episode takes its number from its file."""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        try:
+            files = downloads.files(info_hash)
+        except torrents.EngineError:
+            files = []
+        if files:
+            break
+        time.sleep(3)
+    else:
+        return
+    chosen = [item for item in files if item.get("id") == file_index] if file_index is not None else \
+        [item for item in files if folders.is_video(item.get("path", ""))]
+    whole = dict(origin) if len(chosen) == 1 else {key: value for key, value in origin.items() if key not in ("season", "episode")}
+    storage.save_origins({folder.rstrip("/") + "/" + item["path"].lstrip("/"): whole for item in chosen if item.get("path")})
 
 
 def choose_download_folder(current=""):

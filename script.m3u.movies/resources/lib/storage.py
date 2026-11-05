@@ -26,6 +26,8 @@ METADATA_FILE = os.path.join(PROFILE, "metadata.json")
 WATCHLIST_FILE = os.path.join(PROFILE, "watchlist.json")
 ADDONS_FILE = os.path.join(PROFILE, "addons.json")
 ADDED_FILE = os.path.join(PROFILE, "added.json")
+# The catalog title each downloaded video belongs to, by its path: {path: {kind, id, name, poster, year, season, episode}}.
+ORIGINS_FILE = os.path.join(PROFILE, "origins.json")
 # Share of a movie or episode after which it counts as watched.
 WATCHED_AT = 0.9
 # Tags found only in the playlist of a single stream, not in a list of channels.
@@ -123,7 +125,7 @@ def vfs_walk(root):
 def scan_folder(source):
     if not folder_exists(source):
         raise FolderUnavailable("folder not found: " + source)
-    text = folders.scan(source, os.walk if source.startswith("/") else vfs_walk)
+    text = folders.scan(source, os.walk if source.startswith("/") else vfs_walk, get_origins())
     if not m3u.parse(text):
         raise ValueError("no videos found")
     return text
@@ -275,6 +277,16 @@ def save_progress(item_id, position, total):
                          "watched": watched or progress.get(item_id, {}).get("watched", False), "time": int(time.time())}
     write_json(PROGRESS_FILE, progress)
     return progress[item_id]
+
+
+def get_origins():
+    return read_json(ORIGINS_FILE, {})
+
+
+def save_origins(changes):
+    origins = get_origins()
+    origins.update(changes)
+    write_json(ORIGINS_FILE, origins)
 
 
 def get_metadata():

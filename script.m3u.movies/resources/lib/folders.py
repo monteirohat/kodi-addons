@@ -32,6 +32,10 @@ NUMBERED = re.compile(r"^\s*(?:ep(?:is[oó]dio)?\.?\s*)?(\d{1,4})(?:\s*[-._)]\s*
 # where one title starts with a number, like "300", stays a folder of movies.
 NUMBERED_SHARE = 0.6
 SKIPPED = re.compile(r"(?<![a-z])sample(?![a-z])", re.IGNORECASE)
+# An episode number inside a file name, as in "Show.1988.480p.EP01.WEB-DL.mkv" or "Show - Episódio 3".
+EPISODE_MARK = re.compile(r"(?<![a-z0-9])(?:ep|epis[oó]dio|episode|cap[ií]tulo)[\s._-]*0*(\d{1,3})(?!\d)", re.IGNORECASE)
+# The season in the name of a folder, as in "Show - 1ª Temporada Completa" or "Show Season 2".
+SEASON_IN_NAME = re.compile(r"(\d{1,2})\s*[ªaº°]\s*temporada|temporada\s*0*(\d{1,2})|season\s*0*(\d{1,2})", re.IGNORECASE)
 
 
 def is_video(name):
@@ -72,8 +76,11 @@ def image_for(names, stem):
     return None
 
 
-def scan(root, walk):
+def scan(root, walk, known=None):
     """Videos under root as catalog channels in an M3U text.
+
+    known gives, by path, the title of the catalog a video was downloaded for: its kind, name, poster, and season and
+    episode. Such a video takes them instead of what its file name says.
 
     The first level of subfolders gives the groups, when they hold more than one title. The folder of a single
     movie or series, as a torrent download makes, is not a group. Episodes take the name of their series from
@@ -104,13 +111,22 @@ def scan(root, walk):
         numbered = [name for name in videos if NUMBERED.match(posixpath.splitext(name)[0])]
         episodes_by_number = bool(show) and len(numbered) >= 2 and len(numbered) >= NUMBERED_SHARE * len(videos)
         show_image = folder_images.get(show_folder)
+        # The other episodes of a folder with one downloaded for a series of the catalog belong to that series.
+        series_origin = next((origin for origin in ((known or {}).get(posixpath.join(folder, name)) for name in videos)
+                              if origin and origin.get("kind") == "series"), None)
         for name in videos:
             stem = posixpath.splitext(name)[0]
             path = posixpath.join(folder, name)
             own_image = image_for(files, stem)
             logo = posixpath.join(folder, own_image) if own_image else ""
             attributes = {"group-title": group}
+            origin = (known or {}).get(path)
+            # A whole season downloaded at once names only its series. Its episodes take their numbers from their files.
+            if origin and (origin.get("kind") != "series" or origin.get("episode")):
+                channels.append(from_catalog(attributes, origin, path, logo))
+                continue
             match = NUMBERED.match(stem) if episodes_by_number else None
+            mark = EPISODE_MARK.search(stem)
             if match:
                 title = clean(match.group(2))
                 display = "S%02dE%02d %s" % (season, int(match.group(1)), title)
@@ -125,6 +141,14 @@ def scan(root, walk):
                     if code.start() == 0 or len(show_parts) > 1:
                         attributes["pltv-subgroup"] = show
                     logo = logo or show_image or ""
+                elif mark and title_and_year(stem[:mark.start()])[0]:
+                    # An episode with only its number, after the name of its series: the season comes from the
+                    # folder, as "1ª Temporada" in the name of a torrent folder.
+                    found = SEASON_IN_NAME.search(posixpath.basename(folder))
+                    episode_season = int(next(group for group in found.groups() if group)) if found else season
+                    attributes["pltv-subgroup"] = series_origin["name"] if series_origin else title_and_year(stem[:mark.start()])[0]
+                    display = "S%02dE%02d" % (episode_season, int(mark.group(1)))
+                    logo = logo or (series_origin or {}).get("poster") or show_image or folder_images.get(folder, "")
                 else:
                     title, year = title_and_year(stem)
                     display = "%s (%d)" % (title, year) if year else title
@@ -142,6 +166,18 @@ def scan(root, walk):
         if len(titles[attributes["group-title"]]) < 2:
             attributes["group-title"] = ""
     return to_m3u(channels)
+
+
+def from_catalog(attributes, origin, path, logo):
+    """A video downloaded for a title of the catalog, with the name, poster, season and episode of that title."""
+    logo = origin.get("poster") or logo
+    if logo:
+        attributes["tvg-logo"] = logo
+    if origin.get("kind") == "series":
+        attributes["pltv-subgroup"] = origin["name"]
+        return attributes, "S%02dE%02d" % (origin.get("season") or 1, origin.get("episode") or 1), path
+    year = origin.get("year")
+    return attributes, "%s (%s)" % (origin["name"], year) if year else origin["name"], path
 
 
 def title_key(attributes, display, path):
