@@ -10,7 +10,7 @@ Easy Connect manages the Wi-Fi of LibreELEC in the design of Easy Channel, Easy 
 - The saved password shows as dots. **Show password** shows it, and it hides again when you leave the section. **Disconnect** asks first.
 - **Available networks**: the networks in range, the connected one first, then the known ones, then by signal. Each one shows its signal, a lock when it has a password, and whether it is connected or known. The list looks for networks again every 20 seconds while it shows, and **Search again** looks at once.
 - **OK** on a network connects to it. A known network connects with its saved password, and a new one asks for its password on the keyboard. When the device is connected to another network, Easy Connect asks first, as it leaves that network.
-- **Known networks**: every network connman keeps, in range or not. **OK** on one connects to it, shows its password, chooses whether it connects by itself, or forgets it and its password.
+- **Known networks**: every network connman keeps, in range or not. **OK** on one opens its details, with its signal, state, password and security, and buttons to connect to it, show its password, choose whether it connects by itself, or forget it and its password.
 - On the left, the network of the device with its signal and band, and the button that turns the Wi-Fi off, which asks first, or on.
 - Interface in English and Brazilian Portuguese.
 

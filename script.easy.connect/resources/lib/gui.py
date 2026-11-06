@@ -20,6 +20,7 @@ ACTION_BACK = (10, 92)
 ACTION_CONTEXT_MENU = 117
 GROUPS, DETAILS, NETWORKS, KNOWN = 200, 300, 400, 450
 POWER_BUTTON, PASSWORD_BUTTON, DISCONNECT_BUTTON, SCAN_BUTTON = 210, 501, 502, 503
+OPTIONS, CONNECT_OPTION, PASSWORD_OPTION, AUTOCONNECT_OPTION, FORGET_OPTION = 600, 601, 602, 603, 604
 SECTIONS = [("current", 30001), ("available", 30002), ("known", 30003)]
 # How often the current network is read again, and the networks in range looked for again while they show.
 UPDATE_SECONDS = 3
@@ -48,6 +49,19 @@ def signal_level(strength):
 
 def signal_icon(strength):
     return os.path.join(MEDIA, "wifi-%d.png" % signal_level(strength))
+
+
+def known_state(entry, network):
+    """Whether a known network is connected, in range or out of range, and whether it connects by itself."""
+    state = text(30060 if network and network["connected"] else 30073 if network else 30074)
+    return state + ("  ·  " + text(30075) if entry["autoconnect"] else "")
+
+
+def known_icon(network):
+    strength = network.get("strength") if network else None
+    if network and strength is not None:
+        return signal_icon(strength)
+    return os.path.join(MEDIA, "wifi-3.png" if network else "wifi-off.png")
 
 
 def security_of(service_id):
@@ -431,18 +445,8 @@ class MainWindow(xbmcgui.WindowXML):
         for entry in self.known:
             network = in_range.get(entry["name"])
             entry["network"] = network
-            if network and network["connected"]:
-                state = text(30060)
-            elif network:
-                state = text(30073)
-            else:
-                state = text(30074)
-            if entry["autoconnect"]:
-                state += "  ·  " + text(30075)
-            item = xbmcgui.ListItem(entry["name"], state)
-            strength = network.get("strength") if network else None
-            item.setArt({"icon": signal_icon(strength) if network and strength is not None else
-                         os.path.join(MEDIA, "wifi-3.png" if network else "wifi-off.png")})
+            item = xbmcgui.ListItem(entry["name"], known_state(entry, network))
+            item.setArt({"icon": known_icon(network)})
             item.setProperty("locked", "true" if security_of(entry["id"]) != "open" else "false")
             items.append(item)
         self.known_list.reset()
@@ -451,31 +455,32 @@ class MainWindow(xbmcgui.WindowXML):
             self.show_title()
 
     def known_menu(self, position):
+        """The modal of a known network. Connecting and forgetting happen after it closes."""
         if not 0 <= position < len(self.known):
             return
         entry = self.known[position]
+        dialog = NetworkDialog("script-easy-connect-network.xml", PATH, "default", "1080i", entry=entry, window=self)
+        dialog.doModal()
+        choice = dialog.choice
+        del dialog
         network = entry.get("network")
-        options = []
-        if network and not network["connected"]:
-            options.append((text(30062), lambda: self.connect_to(dict(network, security=security_of(network["id"])))))
-        options.append((text(30030), lambda: self.reveal(entry)))
-        options.append((text(30076 if entry["autoconnect"] else 30077), lambda: self.toggle_autoconnect(entry)))
-        options.append((text(30063), lambda: self.forget(entry)))
-        choice = xbmcgui.Dialog().contextmenu([label for label, _ in options])
-        if choice >= 0:
-            options[choice][1]()
-
-    @staticmethod
-    def reveal(entry):
-        saved = wifi.password(entry["id"])
-        xbmcgui.Dialog().ok(entry["name"], text(30078, saved) if saved else text(30036))
+        if choice == "connect" and network:
+            self.connect_to(dict(network, security=security_of(network["id"])))
+        elif choice == "forget":
+            self.forget(entry)
+        else:
+            self.show_known()
+            self.known_list.selectItem(position)
 
     def toggle_autoconnect(self, entry):
+        """Returns whether it changed."""
         try:
             wifi.set_autoconnect(entry["id"], not entry["autoconnect"])
         except wifi.WifiError as error:
             xbmcgui.Dialog().ok(TITLE, text(30052, error))
-        self.show_known()
+            return False
+        entry["autoconnect"] = not entry["autoconnect"]
+        return True
 
     def forget(self, entry):
         connected = bool(self.current and self.current["name"] == entry["name"])
@@ -492,6 +497,64 @@ class MainWindow(xbmcgui.WindowXML):
             self.show_available()
         if not self.known and self.getFocusId() == KNOWN:
             self.setFocusId(GROUPS)
+
+
+class NetworkDialog(xbmcgui.WindowXMLDialog):
+    """The options of a known network: connect, show the password, connect by itself, forget. choice is "connect" or
+    "forget" when the window has to do it after the modal closes."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args)
+        self.entry, self.window = kwargs["entry"], kwargs["window"]
+        self.choice = None
+        self.show_password = False
+        self.saved = ""
+
+    def onInit(self):
+        network = self.entry.get("network")
+        self.saved = wifi.password(self.entry["id"])
+        self.setProperty("name", self.entry["name"])
+        self.setProperty("icon", known_icon(network))
+        self.setProperty("security", text(SECURITY_NAMES[security_of(self.entry["id"])]))
+        self.setProperty("has_password", "true" if self.saved else "false")
+        self.setProperty("can_connect", "true" if network and not network["connected"] else "false")
+        self.show_state()
+        first = CONNECT_OPTION if network and not network["connected"] else PASSWORD_OPTION if self.saved else AUTOCONNECT_OPTION
+        # A button shown by a property can take the focus only once Kodi has drawn it.
+        monitor = xbmc.Monitor()
+        for _ in range(20):
+            if xbmc.getCondVisibility("Control.IsVisible(%d)" % first):
+                break
+            monitor.waitForAbort(0.02)
+        self.setFocusId(first)
+
+    def show_state(self):
+        self.setProperty("state", known_state(self.entry, self.entry.get("network")))
+        if not self.saved:
+            password = text(30036 if security_of(self.entry["id"]) == "open" else 30037)
+        else:
+            password = self.saved if self.show_password else HIDDEN_PASSWORD
+        self.setProperty("password", password)
+        self.getControl(PASSWORD_OPTION).setLabel(text(30045 if self.show_password else 30030))
+        self.getControl(AUTOCONNECT_OPTION).setLabel(text(30081), label2=text(30083 if self.entry["autoconnect"] else 30084))
+
+    def onClick(self, control_id):
+        if control_id == CONNECT_OPTION:
+            self.choice = "connect"
+            self.close()
+        elif control_id == PASSWORD_OPTION:
+            self.show_password = not self.show_password
+            self.show_state()
+        elif control_id == AUTOCONNECT_OPTION:
+            if self.window.toggle_autoconnect(self.entry):
+                self.show_state()
+        elif control_id == FORGET_OPTION:
+            self.choice = "forget"
+            self.close()
+
+    def onAction(self, action):
+        if action.getId() in ACTION_BACK:
+            self.close()
 
 
 def run():

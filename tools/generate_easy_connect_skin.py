@@ -3,7 +3,7 @@
 import os
 
 import generate_m3u_channels_skin as skin
-from generate_m3u_channels_skin import (ACCENT, BG, FOCUS, ON_FOCUS, ON_FOCUS2, RAISED, SURFACE, TEXT, TEXT2, has,
+from generate_m3u_channels_skin import (ACCENT, BG, DANGER, FOCUS, ON_FOCUS, ON_FOCUS2, RAISED, SURFACE, TEXT, TEXT2, has,
                                         image, join, label, panel, window)
 
 
@@ -12,6 +12,8 @@ GOOD = "FF3DD68C"
 section = lambda name: f"String.IsEqual(Window.Property(section),{name})"
 POWER_BUTTON, PASSWORD_BUTTON, DISCONNECT_BUTTON, SCAN_BUTTON = 210, 501, 502, 503
 DETAILS, NETWORKS, KNOWN = 300, 400, 450
+# The modal of a known network: its buttons, in a column that closes up when one is hidden.
+OPTIONS, CONNECT_OPTION, PASSWORD_OPTION, AUTOCONNECT_OPTION, FORGET_OPTION = 600, 601, 602, 603, 604
 
 
 def groups():
@@ -138,6 +140,61 @@ def main_screen():
         spaces=0)
 
 
+def network_screen():
+    """A known network: its signal, name and state, its password and security, and a button for each option. The
+    buttons show their label on the left and their state, as On or Off, on the right."""
+    left, top, width, height = 560, 170, 800, 740
+    inner = width - 80
+    has_password = "String.IsEqual(Window.Property(has_password),true)"
+    can_connect = "String.IsEqual(Window.Property(can_connect),true)"
+
+    def option(control_id, string_id, color=TEXT, condition=None):
+        return f"""<control type="button" id="{control_id}">
+  <width>{inner}</width>
+  <height>80</height>
+  <font>font13</font>
+  <aligny>center</aligny>
+  <textoffsetx>32</textoffsetx>
+  <textcolor>{color}</textcolor>
+  <focusedcolor>{ON_FOCUS}</focusedcolor>
+  <texturefocus border="16" colordiffuse="{FOCUS}">panel.png</texturefocus>
+  <texturenofocus border="16" colordiffuse="{RAISED}">panel.png</texturenofocus>
+  <label>$ADDON[{ADDON_ID} {string_id}]</label>{skin.visible(condition)}
+</control>"""
+
+    row = lambda y, title_id, value: [
+        label(left + 40, y, 300, 56, f"$ADDON[{ADDON_ID} {title_id}]", "font13", TEXT2),
+        label(left + 340, y, inner - 300, 56, f"$INFO[Window.Property({value})]", "font13", TEXT, align="right")]
+    options = f"""<control type="grouplist" id="{OPTIONS}">
+  <left>{left + 40}</left>
+  <top>{top + 330}</top>
+  <width>{inner}</width>
+  <height>{4 * 88}</height>
+  <itemgap>8</itemgap>
+  <orientation>vertical</orientation>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+{join(option(CONNECT_OPTION, 30062, condition=can_connect),
+      option(PASSWORD_OPTION, 30030, condition=has_password),
+      option(AUTOCONNECT_OPTION, 30081),
+      option(FORGET_OPTION, 30082, DANGER), spaces=2)}
+</control>"""
+    controls = join(
+        image(0, 0, 1920, 1080, "white.png", "D9000000"),
+        "<!-- The panel is shorter by a button when Connect is hidden, as for the connected network. -->",
+        panel(left, top, width, height, SURFACE, can_connect),
+        panel(left, top, width, height - 88, SURFACE, "!" + can_connect),
+        image(left + 40, top + 44, 64, 64, "$INFO[Window.Property(icon)]", TEXT),
+        label(left + 128, top + 30, inner - 88, 60, "$INFO[Window.Property(name)]", "font32_title", TEXT),
+        label(left + 128, top + 86, inner - 88, 36, "$INFO[Window.Property(state)]", "font12", TEXT2),
+        image(left + 30, top + 150, width - 60, 2, "white.png", RAISED),
+        *row(top + 168, 30025, "password"),
+        *row(top + 228, 30024, "security"),
+        image(left + 30, top + 304, width - 60, 2, "white.png", RAISED),
+        options, spaces=0)
+    return window("Modal options of a known network, opened from Known networks.", OPTIONS, controls, always=True)
+
+
 def main():
     skin.ADDON_ID, skin.GENERATOR = ADDON_ID, "generate_easy_connect_skin.py"
     folder = skin.skin_folder(ADDON_ID)
@@ -145,6 +202,8 @@ def main():
     with open(os.path.join(folder, "script-easy-connect-main.xml"), "w") as output:
         output.write(window("Main screen: the sections and the Wi-Fi switch on the left, the current, available or known "
                             "networks on the right.", 200, main_screen()))
+    with open(os.path.join(folder, "script-easy-connect-network.xml"), "w") as output:
+        output.write(network_screen())
 
 
 if __name__ == "__main__":

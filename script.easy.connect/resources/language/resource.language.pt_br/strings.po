@@ -259,18 +259,6 @@ msgctxt "#30075"
 msgid "connects by itself"
 msgstr "conecta sozinha"
 
-msgctxt "#30076"
-msgid "Do not connect by itself"
-msgstr "Não conectar sozinha"
-
-msgctxt "#30077"
-msgid "Connect by itself"
-msgstr "Conectar sozinha"
-
-msgctxt "#30078"
-msgid "Password: {0}"
-msgstr "Senha: {0}"
-
 msgctxt "#30079"
 msgid "Forget {0}? Its saved password is deleted."
 msgstr "Esquecer a rede {0}? A senha salva dela é apagada."
@@ -282,3 +270,19 @@ msgstr "Esquecer a rede {0}? A senha salva dela é apagada, e o aparelho sai des
 msgctxt "#30090"
 msgid "Easy Connect uses connman, the network manager of LibreELEC, which this system does not have."
 msgstr "O Easy Connect usa o connman, o gerenciador de rede do LibreELEC, que este sistema não tem."
+
+msgctxt "#30081"
+msgid "Connect by itself"
+msgstr "Conectar sozinha"
+
+msgctxt "#30082"
+msgid "Forget network"
+msgstr "Esquecer rede"
+
+msgctxt "#30083"
+msgid "On"
+msgstr "Ligada"
+
+msgctxt "#30084"
+msgid "Off"
+msgstr "Desligada"
