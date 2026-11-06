@@ -1,0 +1,276 @@
+# Easy Speed language file
+msgid ""
+msgstr ""
+"Language: pt_BR\n"
+
+msgctxt "#30000"
+msgid "Easy Speed"
+msgstr "Easy Speed"
+
+msgctxt "#30001"
+msgid "Speed test"
+msgstr "Teste de velocidade"
+
+msgctxt "#30002"
+msgid "Connection"
+msgstr "Conexão"
+
+msgctxt "#30003"
+msgid "History"
+msgstr "Histórico"
+
+msgctxt "#30010"
+msgid "Test again"
+msgstr "Testar de novo"
+
+msgctxt "#30012"
+msgid "Stop"
+msgstr "Parar"
+
+msgctxt "#30013"
+msgid "Check again"
+msgstr "Verificar de novo"
+
+msgctxt "#30020"
+msgid "Connecting to the server"
+msgstr "Conectando ao servidor"
+
+msgctxt "#30021"
+msgid "Measuring the latency"
+msgstr "Medindo a latência"
+
+msgctxt "#30022"
+msgid "Download"
+msgstr "Download"
+
+msgctxt "#30023"
+msgid "Upload"
+msgstr "Upload"
+
+msgctxt "#30024"
+msgid "Test finished"
+msgstr "Teste concluído"
+
+msgctxt "#30025"
+msgid "No internet"
+msgstr "Sem internet"
+
+msgctxt "#30026"
+msgid "Test stopped"
+msgstr "Teste interrompido"
+
+msgctxt "#30027"
+msgid "The test did not finish"
+msgstr "O teste não terminou"
+
+msgctxt "#30028"
+msgid "Could not test the speed: {0}"
+msgstr "Não foi possível testar a velocidade: {0}"
+
+msgctxt "#30030"
+msgid "Download"
+msgstr "Download"
+
+msgctxt "#30031"
+msgid "Upload"
+msgstr "Upload"
+
+msgctxt "#30032"
+msgid "Latency"
+msgstr "Latência"
+
+msgctxt "#30033"
+msgid "Latency in use"
+msgstr "Latência em uso"
+
+msgctxt "#30034"
+msgid "Mbps"
+msgstr "Mbps"
+
+msgctxt "#30035"
+msgid "{0} ms"
+msgstr "{0} ms"
+
+msgctxt "#30036"
+msgid "Server in {0}"
+msgstr "Servidor em {0}"
+
+msgctxt "#30037"
+msgid "{0} Mbps"
+msgstr "{0} Mbps"
+
+msgctxt "#30040"
+msgid "Plays videos in 4K without stopping"
+msgstr "Dá para assistir vídeos em 4K sem travar"
+
+msgctxt "#30041"
+msgid "Plays videos in Full HD without stopping"
+msgstr "Dá para assistir vídeos em Full HD sem travar"
+
+msgctxt "#30042"
+msgid "Plays videos in HD without stopping"
+msgstr "Dá para assistir vídeos em HD sem travar"
+
+msgctxt "#30043"
+msgid "Plays videos only in standard quality"
+msgstr "Dá para assistir vídeos só em qualidade normal"
+
+msgctxt "#30044"
+msgid "Too slow to play videos without stopping"
+msgstr "Lenta demais para assistir vídeos sem travar"
+
+msgctxt "#30050"
+msgid "Network"
+msgstr "Rede"
+
+msgctxt "#30051"
+msgid "Router"
+msgstr "Roteador"
+
+msgctxt "#30052"
+msgid "DNS"
+msgstr "DNS"
+
+msgctxt "#30053"
+msgid "Internet"
+msgstr "Internet"
+
+msgctxt "#30058"
+msgid "IP {0}"
+msgstr "IP {0}"
+
+msgctxt "#30059"
+msgid "Not connected to a network"
+msgstr "Não está conectado a uma rede"
+
+msgctxt "#30060"
+msgid "Router {0} answers"
+msgstr "O roteador {0} responde"
+
+msgctxt "#30061"
+msgid "Router {0} does not answer"
+msgstr "O roteador {0} não responde"
+
+msgctxt "#30062"
+msgid "No router found"
+msgstr "Nenhum roteador encontrado"
+
+msgctxt "#30063"
+msgid "Finds the addresses of sites"
+msgstr "Encontra os endereços dos sites"
+
+msgctxt "#30064"
+msgid "Does not find the addresses of sites"
+msgstr "Não encontra os endereços dos sites"
+
+msgctxt "#30065"
+msgid "Reaches the internet"
+msgstr "Chega à internet"
+
+msgctxt "#30066"
+msgid "A login page is in the way"
+msgstr "Uma página de login está no caminho"
+
+msgctxt "#30067"
+msgid "Does not reach the internet"
+msgstr "Não chega à internet"
+
+msgctxt "#30070"
+msgid "Everything works: the device reaches the router, finds the addresses of sites and reaches the internet."
+msgstr "Tudo funcionando: o aparelho chega ao roteador, encontra os endereços dos sites e chega à internet."
+
+msgctxt "#30071"
+msgid "Everything works, but the Wi-Fi signal is weak, which makes the internet slower. Bring the device and the router closer, or connect a network cable."
+msgstr "Tudo funcionando, mas o sinal do Wi-Fi está fraco, o que deixa a internet mais lenta. Aproxime o aparelho do roteador ou conecte um cabo de rede."
+
+msgctxt "#30072"
+msgid "The device is not connected to a network. Connect a network cable, or choose a Wi-Fi network in the settings of the system."
+msgstr "O aparelho não está conectado a uma rede. Conecte um cabo de rede ou escolha uma rede Wi-Fi nos ajustes do sistema."
+
+msgctxt "#30073"
+msgid "The router does not answer. Turn the router off and on again, and check its cables."
+msgstr "O roteador não responde. Desligue e ligue o roteador de novo e confira os cabos dele."
+
+msgctxt "#30074"
+msgid "The device reaches the router, but does not find the addresses of sites. Turn the router off and on again. If it goes on, the internet provider may be down."
+msgstr "O aparelho chega ao roteador, mas não encontra os endereços dos sites. Desligue e ligue o roteador de novo. Se continuar, a internet do provedor pode estar fora do ar."
+
+msgctxt "#30075"
+msgid "The device finds the addresses of sites, but does not reach them. The internet provider may be down."
+msgstr "O aparelho encontra os endereços dos sites, mas não chega até eles. A internet do provedor pode estar fora do ar."
+
+msgctxt "#30076"
+msgid "A login page is in the way, as on the networks of hotels. Sign in on a phone connected to the same network."
+msgstr "Uma página de login está no caminho, como nas redes de hotéis. Entre por um celular conectado à mesma rede."
+
+msgctxt "#30077"
+msgid "Checking the connection"
+msgstr "Verificando a conexão"
+
+msgctxt "#30078"
+msgid "No answer"
+msgstr "Sem resposta"
+
+msgctxt "#30079"
+msgid "Not checked"
+msgstr "Não verificado"
+
+msgctxt "#30080"
+msgid "No tests yet."
+msgstr "Nenhum teste ainda."
+
+msgctxt "#30081"
+msgid "{0} tests"
+msgstr "{0} testes"
+
+msgctxt "#30082"
+msgid "1 test"
+msgstr "1 teste"
+
+msgctxt "#30083"
+msgid "Delete this test"
+msgstr "Apagar este teste"
+
+msgctxt "#30084"
+msgid "Delete the history"
+msgstr "Apagar o histórico"
+
+msgctxt "#30085"
+msgid "Delete every test of the history?"
+msgstr "Apagar todos os testes do histórico?"
+
+msgctxt "#30090"
+msgid "Last test"
+msgstr "Último teste"
+
+msgctxt "#30091"
+msgid "Not connected"
+msgstr "Sem conexão"
+
+msgctxt "#30092"
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
+msgctxt "#30093"
+msgid "Cable"
+msgstr "Cabo"
+
+msgctxt "#30094"
+msgid "."
+msgstr ","
+
+msgctxt "#30095"
+msgid "signal {0}%"
+msgstr "sinal {0}%"
+
+msgctxt "#30096"
+msgid "link of {0} Mbps"
+msgstr "link de {0} Mbps"
+
+msgctxt "#30097"
+msgid "Connected"
+msgstr "Conectado"
+
+msgctxt "#30098"
+msgid "From the device to the internet, step by step"
+msgstr "Do aparelho até a internet, passo a passo"

@@ -179,7 +179,7 @@
     <control type="list" id="9200">
       <left>146</left>
       <top>663</top>
-      <width>1659</width>
+      <width>1660</width>
       <height>100</height>
       <orientation>horizontal</orientation>
       <scrolltime>0</scrolltime>
@@ -187,11 +187,11 @@
       <ondown>noop</ondown>
       <onleft>noop</onleft>
       <onright>noop</onright>
-      <itemlayout width="553" height="100">
+      <itemlayout width="415" height="100">
         <control type="image">
           <left>0</left>
           <top>0</top>
-          <width>521</width>
+          <width>383</width>
           <height>100</height>
           <texture border="16" colordiffuse="FF17181B">panel.png</texture>
         </control>
@@ -205,7 +205,7 @@
         <control type="label">
           <left>104</left>
           <top>0</top>
-          <width>391</width>
+          <width>253</width>
           <height>100</height>
           <aligny>center</aligny>
           <font>font14</font>
@@ -214,11 +214,11 @@
           <label>$INFO[ListItem.Label]</label>
         </control>
       </itemlayout>
-      <focusedlayout width="553" height="100">
+      <focusedlayout width="415" height="100">
         <control type="image">
           <left>0</left>
           <top>0</top>
-          <width>521</width>
+          <width>383</width>
           <height>100</height>
           <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
           <visible>Control.HasFocus(9200)</visible>
@@ -234,7 +234,7 @@
         <control type="label">
           <left>104</left>
           <top>0</top>
-          <width>391</width>
+          <width>253</width>
           <height>100</height>
           <aligny>center</aligny>
           <font>font14</font>
@@ -246,7 +246,7 @@
         <control type="image">
           <left>0</left>
           <top>0</top>
-          <width>521</width>
+          <width>383</width>
           <height>100</height>
           <texture border="16" colordiffuse="FF17181B">panel.png</texture>
           <visible>!Control.HasFocus(9200)</visible>
@@ -262,7 +262,7 @@
         <control type="label">
           <left>104</left>
           <top>0</top>
-          <width>391</width>
+          <width>253</width>
           <height>100</height>
           <aligny>center</aligny>
           <font>font14</font>
@@ -284,6 +284,12 @@
           <icon>settings-files.png</icon>
           <onclick condition="System.HasAddon(script.easy.files)">RunAddon(script.easy.files)</onclick>
           <onclick condition="!System.HasAddon(script.easy.files)">InstallAddon(script.easy.files)</onclick>
+        </item>
+        <item>
+          <label>$LOCALIZE[31050]</label>
+          <icon>speed.png</icon>
+          <onclick condition="System.HasAddon(script.easy.speed)">RunAddon(script.easy.speed)</onclick>
+          <onclick condition="!System.HasAddon(script.easy.speed)">InstallAddon(script.easy.speed)</onclick>
         </item>
         <item>
           <label>$LOCALIZE[31003]</label>

@@ -6,7 +6,7 @@
 
 <p align="center">
   Add-ons práticos e de código aberto para Kodi, LibreELEC e Raspberry Pi.<br>
-  Assista canais e filmes de listas M3U, ouça suas músicas, veja suas fotos e arquivos e controle sua central de mídia do sofá.
+  Assista canais e filmes de listas M3U, ouça suas músicas, veja suas fotos e arquivos, teste sua internet e controle sua central de mídia do sofá.
 </p>
 
 <p align="center">
@@ -40,7 +40,7 @@ Registre o repositório **Monteiro** no Kodi uma vez, pelo endereço web, e todo
 1. No Kodi, abra **Configurações > Sistema > Add-ons** e ligue **Fontes desconhecidas**.
 2. Abra **Configurações > Gerenciador de arquivos > Adicionar fonte**, selecione **&lt;Nenhum&gt;**, digite `https://monteirohat.github.io/kodi-addons/`, dê o nome **Monteiro** à fonte e selecione **OK**.
 3. Abra **Configurações > Add-ons > Instalar via arquivo zip > Monteiro** e selecione **repository.monteiromedia-1.0.5.zip**. Espere o aviso de que o repositório **Monteiro** foi instalado.
-4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, o HDMI Switcher e o Easy Files em **Add-ons de programas**, o Easy Picture em **Add-ons de imagens** e o Easy Music em **Add-ons de música**.
+4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, o HDMI Switcher, o Easy Files e o Easy Speed em **Add-ons de programas**, o Easy Picture em **Add-ons de imagens** e o Easy Music em **Add-ons de música**.
 
 As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o menu de contexto do **Monteiro** e selecione **Verificar atualizações**. Se o aparelho com Kodi estiver sem internet, baixe o ZIP na [última release](https://github.com/monteirohat/kodi-addons/releases/latest), copie para um pendrive e use **Instalar via arquivo zip**.
 
@@ -107,6 +107,13 @@ As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o m
       Todos os add-ons dos seus repositórios numa lista, com a categoria, os detalhes e as capturas de tela.
       <br><br>
       <a href="#skin-monteiro">Resumo</a> · <a href="script.monteiro.addons/README.md">Guia</a>
+    </td>
+    <td align="center" width="33%">
+      <a href="script.easy.speed/README.md"><img src="script.easy.speed/resources/icon.png" alt="Easy Speed" width="120"></a>
+      <h3>Easy Speed</h3>
+      A velocidade da sua internet nos servidores do fast.com, e a verificação da conexão passo a passo.
+      <br><br>
+      <a href="#easy-speed">Resumo</a> · <a href="script.easy.speed/README.md">Guia</a>
     </td>
   </tr>
 </table>
@@ -217,6 +224,22 @@ Leia o [guia do Easy Picture](script.easy.picture/README.md) para conhecer cada 
 
 Leia o [guia do Easy Music](script.easy.music/README.md) para conhecer cada recurso. O guia está em inglês.
 
+### Easy Speed
+
+<img src="script.easy.speed/resources/icon.png" alt="Easy Speed" width="72" align="left">
+
+**A velocidade da sua internet, no aparelho que toca os seus vídeos.** Um velocímetro mostra a velocidade enquanto ela é medida, nos servidores do fast.com, o teste de velocidade da Netflix.
+
+<br clear="left">
+
+- Download, upload, latência e latência com a conexão em uso, com a qualidade de vídeo que a conexão aguenta sem travar.
+- **Conexão** verifica a rede, o roteador, o DNS e a internet, um depois do outro, e diz onde está o problema e o que fazer.
+- O tipo de conexão, o sinal do Wi-Fi e os últimos testes num histórico.
+
+![Easy Speed](script.easy.speed/resources/screenshots/screenshot-01.jpg)
+
+Leia o [guia do Easy Speed](script.easy.speed/README.md) para conhecer cada recurso. O guia está em inglês.
+
 > [!NOTE]
 > O Easy Channel e o Easy Movie não oferecem nenhum conteúdo. Eles tocam as listas M3U que você adiciona, e você é responsável por usar só listas que tem permissão para assistir. Os repositórios sugeridos do GitHub reúnem canais gratuitos e públicos e filmes em domínio público, e são mantidos por terceiros.
 
@@ -226,7 +249,7 @@ Um skin para o Kodi no visual dos add-ons, sob a licença MIT. A tela inicial ab
 
 ![Tela inicial do skin Monteiro](.github/assets/monteiro-skin.jpg)
 
-- **TV**, **Filmes** e **Séries** abrem o Easy Channel e o Easy Movie, **Música** abre o Easy Music, **Imagens** abre o Easy Picture e **Arquivos** abre o Easy Files. Sem o add-on, o item oferece a instalação.
+- **TV**, **Filmes** e **Séries** abrem o Easy Channel e o Easy Movie, **Música** abre o Easy Music, **Imagens** abre o Easy Picture, **Arquivos** abre o Easy Files e **Velocidade** abre o Easy Speed. Sem o add-on, o item oferece a instalação.
 - **Vídeos** abre as fontes do Kodi, e **Add-ons** abre os add-ons instalados, com uma barra para busca, repositórios e atualizações. **Repositórios** lista os add-ons de cada repositório com as categorias, pelo [Monteiro Add-ons](script.monteiro.addons/README.md), que o skin instala junto.
 - Os botões no canto superior direito abrem as configurações de Wi-Fi do LibreELEC, as configurações do Kodi e o menu de energia.
 

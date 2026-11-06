@@ -1,0 +1,276 @@
+# Easy Speed language file
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "Easy Speed"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Speed test"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Connection"
+msgstr ""
+
+msgctxt "#30003"
+msgid "History"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Test again"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Stop"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Check again"
+msgstr ""
+
+msgctxt "#30020"
+msgid "Connecting to the server"
+msgstr ""
+
+msgctxt "#30021"
+msgid "Measuring the latency"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Download"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Upload"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Test finished"
+msgstr ""
+
+msgctxt "#30025"
+msgid "No internet"
+msgstr ""
+
+msgctxt "#30026"
+msgid "Test stopped"
+msgstr ""
+
+msgctxt "#30027"
+msgid "The test did not finish"
+msgstr ""
+
+msgctxt "#30028"
+msgid "Could not test the speed: {0}"
+msgstr ""
+
+msgctxt "#30030"
+msgid "Download"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Upload"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Latency"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Latency in use"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Mbps"
+msgstr ""
+
+msgctxt "#30035"
+msgid "{0} ms"
+msgstr ""
+
+msgctxt "#30036"
+msgid "Server in {0}"
+msgstr ""
+
+msgctxt "#30037"
+msgid "{0} Mbps"
+msgstr ""
+
+msgctxt "#30040"
+msgid "Plays videos in 4K without stopping"
+msgstr ""
+
+msgctxt "#30041"
+msgid "Plays videos in Full HD without stopping"
+msgstr ""
+
+msgctxt "#30042"
+msgid "Plays videos in HD without stopping"
+msgstr ""
+
+msgctxt "#30043"
+msgid "Plays videos only in standard quality"
+msgstr ""
+
+msgctxt "#30044"
+msgid "Too slow to play videos without stopping"
+msgstr ""
+
+msgctxt "#30050"
+msgid "Network"
+msgstr ""
+
+msgctxt "#30051"
+msgid "Router"
+msgstr ""
+
+msgctxt "#30052"
+msgid "DNS"
+msgstr ""
+
+msgctxt "#30053"
+msgid "Internet"
+msgstr ""
+
+msgctxt "#30058"
+msgid "IP {0}"
+msgstr ""
+
+msgctxt "#30059"
+msgid "Not connected to a network"
+msgstr ""
+
+msgctxt "#30060"
+msgid "Router {0} answers"
+msgstr ""
+
+msgctxt "#30061"
+msgid "Router {0} does not answer"
+msgstr ""
+
+msgctxt "#30062"
+msgid "No router found"
+msgstr ""
+
+msgctxt "#30063"
+msgid "Finds the addresses of sites"
+msgstr ""
+
+msgctxt "#30064"
+msgid "Does not find the addresses of sites"
+msgstr ""
+
+msgctxt "#30065"
+msgid "Reaches the internet"
+msgstr ""
+
+msgctxt "#30066"
+msgid "A login page is in the way"
+msgstr ""
+
+msgctxt "#30067"
+msgid "Does not reach the internet"
+msgstr ""
+
+msgctxt "#30070"
+msgid "Everything works: the device reaches the router, finds the addresses of sites and reaches the internet."
+msgstr ""
+
+msgctxt "#30071"
+msgid "Everything works, but the Wi-Fi signal is weak, which makes the internet slower. Bring the device and the router closer, or connect a network cable."
+msgstr ""
+
+msgctxt "#30072"
+msgid "The device is not connected to a network. Connect a network cable, or choose a Wi-Fi network in the settings of the system."
+msgstr ""
+
+msgctxt "#30073"
+msgid "The router does not answer. Turn the router off and on again, and check its cables."
+msgstr ""
+
+msgctxt "#30074"
+msgid "The device reaches the router, but does not find the addresses of sites. Turn the router off and on again. If it goes on, the internet provider may be down."
+msgstr ""
+
+msgctxt "#30075"
+msgid "The device finds the addresses of sites, but does not reach them. The internet provider may be down."
+msgstr ""
+
+msgctxt "#30076"
+msgid "A login page is in the way, as on the networks of hotels. Sign in on a phone connected to the same network."
+msgstr ""
+
+msgctxt "#30077"
+msgid "Checking the connection"
+msgstr ""
+
+msgctxt "#30078"
+msgid "No answer"
+msgstr ""
+
+msgctxt "#30079"
+msgid "Not checked"
+msgstr ""
+
+msgctxt "#30080"
+msgid "No tests yet."
+msgstr ""
+
+msgctxt "#30081"
+msgid "{0} tests"
+msgstr ""
+
+msgctxt "#30082"
+msgid "1 test"
+msgstr ""
+
+msgctxt "#30083"
+msgid "Delete this test"
+msgstr ""
+
+msgctxt "#30084"
+msgid "Delete the history"
+msgstr ""
+
+msgctxt "#30085"
+msgid "Delete every test of the history?"
+msgstr ""
+
+msgctxt "#30090"
+msgid "Last test"
+msgstr ""
+
+msgctxt "#30091"
+msgid "Not connected"
+msgstr ""
+
+msgctxt "#30092"
+msgid "Wi-Fi"
+msgstr ""
+
+msgctxt "#30093"
+msgid "Cable"
+msgstr ""
+
+msgctxt "#30094"
+msgid "."
+msgstr ""
+
+msgctxt "#30095"
+msgid "signal {0}%"
+msgstr ""
+
+msgctxt "#30096"
+msgid "link of {0} Mbps"
+msgstr ""
+
+msgctxt "#30097"
+msgid "Connected"
+msgstr ""
+
+msgctxt "#30098"
+msgid "From the device to the internet, step by step"
+msgstr ""

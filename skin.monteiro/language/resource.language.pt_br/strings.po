@@ -83,6 +83,10 @@ msgctxt "#31049"
 msgid "Check for updates"
 msgstr "Verificar atualizações"
 
+msgctxt "#31050"
+msgid "Speed"
+msgstr "Velocidade"
+
 msgctxt "#31013"
 msgid "Monteiro"
 msgstr "Monteiro"

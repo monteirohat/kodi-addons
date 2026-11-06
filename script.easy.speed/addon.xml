@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addon id="script.easy.speed" name="Easy Speed" version="1.0.0" provider-name="Monteiro">
+  <requires>
+    <import addon="xbmc.python" version="3.0.1" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Test the speed of your internet, for the remote control</summary>
+    <summary lang="pt_BR">Teste a velocidade da sua internet, pelo controle remoto</summary>
+    <description lang="en_GB">Easy Speed tests the internet of your device in the design of the Monteiro add-ons. It measures the latency, the download and the upload on the servers of fast.com, the speed test of Netflix, or of Cloudflare when fast.com does not answer, and says the video quality the connection plays without stopping. It also checks the connection step by step, from the network to the router, the DNS and the internet, and says where a problem is and what to do. The last tests stay in the history.</description>
+    <description lang="pt_BR">O Easy Speed testa a internet do seu aparelho no visual dos add-ons Monteiro. Ele mede a latência, o download e o upload nos servidores do fast.com, o teste de velocidade da Netflix, ou da Cloudflare quando o fast.com não responde, e diz a qualidade de vídeo que a conexão aguenta sem travar. Ele também verifica a conexão passo a passo, da rede ao roteador, ao DNS e à internet, e diz onde está o problema e o que fazer. Os últimos testes ficam no histórico.</description>
+    <platform>all</platform>
+    <license>MIT</license>
+    <website>https://github.com/monteirohat/kodi-addons</website>
+    <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.speed</source>
+    <news>1.0.0 - First release.</news>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+      <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+      <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+    </assets>
+  </extension>
+</addon>

@@ -88,6 +88,11 @@
       <size>52</size>
     </font>
     <font>
+      <name>font100_title</name>
+      <filename>NotoSans-Bold.ttf</filename>
+      <size>100</size>
+    </font>
+    <font>
       <name>font_clock</name>
       <filename>NotoSans-Regular.ttf</filename>
       <size>64</size>

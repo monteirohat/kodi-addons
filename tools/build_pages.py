@@ -33,6 +33,8 @@ ASSETS = {
     "easy-picture.jpg": "script.easy.picture/resources/screenshots/screenshot-01.jpg",
     "easy-music.png": "script.easy.music/resources/icon.png",
     "easy-music.jpg": "script.easy.music/resources/screenshots/screenshot-01.jpg",
+    "easy-speed.png": "script.easy.speed/resources/icon.png",
+    "easy-speed.jpg": "script.easy.speed/resources/screenshots/screenshot-01.jpg",
     "monteiro-skin.png": "skin.monteiro/resources/icon.png",
     "monteiro-skin.jpg": ".github/assets/monteiro-skin.jpg",
     "easy-channel.gif": ".github/assets/easy-channel.gif",
@@ -188,7 +190,7 @@ HOME = Template("""<!doctype html>
   <div class="wrap">
     <div>
       <h1>Kodi add-ons for the living room</h1>
-      <p class="lead">Live TV and movies from your M3U lists, your music, photos and files, a skin made for them, and the right HDMI display, on LibreELEC and Raspberry Pi. Install the repository once, from its address, and every add-on and update comes from it.</p>
+      <p class="lead">Live TV and movies from your M3U lists, your music, photos and files, a test of your internet, a skin made for them, and the right HDMI display, on LibreELEC and Raspberry Pi. Install the repository once, from its address, and every add-on and update comes from it.</p>
       <div class="install">
         <h2>Install in Kodi</h2>
         <div class="url"><code id="address">${pages}</code><button type="button" id="copy">Copy</button></div>
@@ -208,7 +210,7 @@ HOME = Template("""<!doctype html>
 <section id="addons">
   <div class="wrap">
     <p class="eyebrow">Add-ons</p>
-    <h2 class="title">Six add-ons and a skin, one design</h2>
+    <h2 class="title">Seven add-ons and a skin, one design</h2>
     <p class="lead">Made for the remote control, with the same dark interface, in English and Brazilian Portuguese.</p>
     <div class="cards">
       <a class="card" href="#easy-channel"><img src="assets/easy-channel.png" alt=""><h3>Easy Channel</h3><p>Live TV from M3U lists in a TV box style screen that keeps only the channels that work.</p><div class="version">Version ${channel_version} &middot; Video add-ons</div></a>
@@ -217,6 +219,7 @@ HOME = Template("""<!doctype html>
       <a class="card" href="#easy-files"><img src="assets/easy-files.png" alt=""><h3>Easy Files</h3><p>A file manager for the remote: copy, move, rename and delete with one long press.</p><div class="version">Version ${files_version} &middot; Program add-ons</div></a>
       <a class="card" href="#easy-picture"><img src="assets/easy-picture.png" alt=""><h3>Easy Picture</h3><p>Your photos in a gallery, by album, and each one in full screen with one press of OK.</p><div class="version">Version ${picture_version} &middot; Picture add-ons</div></a>
       <a class="card" href="#easy-music"><img src="assets/easy-music.png" alt=""><h3>Easy Music</h3><p>Your music by playlist, one for each folder, with a player bar always at hand.</p><div class="version">Version ${music_version} &middot; Music add-ons</div></a>
+      <a class="card" href="#easy-speed"><img src="assets/easy-speed.png" alt=""><h3>Easy Speed</h3><p>The speed of your internet on the servers of fast.com, and a check of the connection step by step.</p><div class="version">Version ${speed_version} &middot; Program add-ons</div></a>
       <a class="card" href="#monteiro-skin"><img src="assets/monteiro-skin.png" alt=""><h3>Monteiro skin</h3><p>A home screen and menus in the same design, with every Easy add-on one press away.</p><div class="version">Version ${skin_version} &middot; Look and feel &gt; Skin</div></a>
     </div>
   </div>
@@ -336,13 +339,31 @@ HOME = Template("""<!doctype html>
   </div>
 </section>
 
-<section id="monteiro-skin">
+<section id="easy-speed">
   <div class="wrap addon">
+    <div>
+      <div class="name"><img src="assets/easy-speed.png" alt=""><h2>Easy Speed</h2></div>
+      <p>How fast is your internet, on the device that plays your videos. A speedometer shows the speed as it is measured, on the servers of fast.com, the speed test of Netflix.</p>
+      <ul>
+        <li>Download, upload, latency, and latency while the connection is busy, with the video quality the connection plays without stopping.</li>
+        <li><b>Connection</b> checks the network, the router, the DNS and the internet one after the other, and says where a problem is and what to do.</li>
+        <li>The kind of connection, the Wi-Fi signal and the last tests in a history.</li>
+      </ul>
+      <a class="more" href="${github}/blob/main/script.easy.speed/README.md">Read the Easy Speed guide &rarr;</a>
+    </div>
+    <div class="media">
+      <img class="shot" src="assets/easy-speed.jpg" alt="Easy Speed: the speedometer and the results of a test" width="1280" height="720" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section id="monteiro-skin">
+  <div class="wrap addon flip">
     <div>
       <div class="name"><img src="assets/monteiro-skin.png" alt=""><h2>Monteiro skin</h2></div>
       <p>A Kodi skin in the design of the add-ons. Its home screen opens the Easy add-ons directly, and its settings, menus, keyboard and player bars share their dark look and steel blue focus.</p>
       <ul>
-        <li><b>TV</b>, <b>Movies</b> and <b>Series</b> open Easy Channel and Easy Movie, <b>Music</b> opens Easy Music, <b>Pictures</b> opens Easy Picture, and <b>Files</b> opens Easy Files.</li>
+        <li><b>TV</b>, <b>Movies</b> and <b>Series</b> open Easy Channel and Easy Movie, <b>Music</b> opens Easy Music, <b>Pictures</b> opens Easy Picture, <b>Files</b> opens Easy Files, and <b>Speed</b> opens Easy Speed.</li>
         <li><b>Add-ons</b> opens the installed add-ons, with a toolbar for search, repositories and updates. <b>Repositories</b> lists the add-ons of each repository with their categories.</li>
         <li>Buttons for the Wi-Fi settings of LibreELEC, the settings of Kodi and the power menu.</li>
       </ul>
@@ -388,7 +409,8 @@ def home(zip_name):
                            channel_version=found.get("script.m3u.channels", ""), movie_version=found.get("script.m3u.movies", ""),
                            hdmi_version=found.get("script.hdmi.switcher", ""), files_version=found.get("script.easy.files", "1.0.0"),
                            picture_version=found.get("script.easy.picture", "1.0.0"), skin_version=found.get("skin.monteiro", ""),
-                           music_version=found.get("script.easy.music", "1.0.0"))
+                           music_version=found.get("script.easy.music", "1.0.0"),
+                           speed_version=found.get("script.easy.speed", "1.0.0"))
 
 
 def build(output):

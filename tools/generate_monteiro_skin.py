@@ -47,6 +47,7 @@ STRINGS = {
     31047: ("Repositories", "Repositórios"),
     31048: ("Install from ZIP", "Instalar ZIP"),
     31049: ("Check for updates", "Verificar atualizações"),
+    31050: ("Speed", "Velocidade"),
 }
 
 
@@ -313,6 +314,7 @@ def fonts():
              ("font32", 32, False), ("font37", 37, False), ("font45", 45, False), ("font60", 60, False),
              ("font20_title", 20, True), ("font25_title", 25, True), ("font30_title", 30, True), ("font32_title", 32, True),
              ("font36_title", 36, True), ("font40_title", 40, True), ("font45_title", 45, True), ("font52_title", 52, True),
+             ("font100_title", 100, True),
              ("font_clock", 64, False), ("font_menu", 34, True)]
     entries = "\n".join("    <font>\n      <name>%s</name>\n      <filename>%s</filename>\n      <size>%d</size>\n    </font>"
                         % (name, "NotoSans-Bold.ttf" if bold else "NotoSans-Regular.ttf", size) for name, size, bold in sizes)
@@ -335,6 +337,7 @@ HOME_ITEMS = [
 SHORTCUTS = [
     (31020, "picture.png", "RunAddon(script.easy.picture)", "System.HasAddon(script.easy.picture)"),
     (31031, "settings-files.png", "RunAddon(script.easy.files)", "System.HasAddon(script.easy.files)"),
+    (31050, "speed.png", "RunAddon(script.easy.speed)", "System.HasAddon(script.easy.speed)"),
     (31003, "puzzle.png", "ActivateWindow(addonbrowser,addons://user/all,return)", None),
 ]
 # Wi-Fi opens the LibreELEC settings, where the networks are. Elsewhere it opens the system information.
@@ -1494,9 +1497,11 @@ def media():
     os.makedirs(MEDIA, exist_ok=True)
     channels = os.path.join(ROOT, "script.m3u.channels", "resources", "skins", "default", "media")
     movies = os.path.join(ROOT, "script.m3u.movies", "resources", "skins", "default", "media")
+    speed = os.path.join(ROOT, "script.easy.speed", "resources", "skins", "default", "media")
     for folder, names in ((channels, ["white.png", "panel.png", "tv.png", "gear.png", "check.png", "search.png"]),
                           (movies, ["circle.png", "film.png", "puzzle.png", "audio.png", "shade.png", "back10.png", "forward10.png",
-                                    "pause.png", "player_play.png"])):
+                                    "pause.png", "player_play.png"]),
+                          (speed, ["speed.png"])):
         for name in names:
             shutil.copy2(os.path.join(folder, name), os.path.join(MEDIA, name))
     shutil.copy2(os.path.join(ROOT, "repository.monteiromedia", "resources", "icon.png"), os.path.join(MEDIA, "logo.png"))
