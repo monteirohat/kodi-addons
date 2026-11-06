@@ -23,7 +23,32 @@
       </assets>
     </extension>
   </addon>
-  <addon id="script.easy.connect" name="Easy Connect" version="1.0.1" provider-name="Monteiro">
+  <addon id="script.easy.bluetooth" name="Easy Bluetooth" version="1.0.0" provider-name="Monteiro">
+    <requires>
+      <import addon="xbmc.python" version="3.0.1" />
+    </requires>
+    <extension point="xbmc.python.script" library="default.py">
+      <provides>executable</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+      <summary lang="en_GB">Pair and connect Bluetooth devices, for the remote control</summary>
+      <summary lang="pt_BR">Pareie e conecte dispositivos Bluetooth, pelo controle remoto</summary>
+      <description lang="en_GB">Easy Bluetooth pairs and connects headphones, speakers, keyboards, mice and game controllers in the design of the Monteiro add-ons. Devices lists the paired devices with their kind, state and battery; OK on one opens a modal to connect or disconnect it, choose whether it connects by itself, or forget it. Search for devices lists the named devices nearby with their signal, and OK pairs, trusts and connects one, asking for a code when the device needs it. A button turns the Bluetooth on and off.</description>
+      <description lang="pt_BR">O Easy Bluetooth pareia e conecta fones, caixas de som, teclados, mouses e controles de jogo no visual dos add-ons Monteiro. Dispositivos lista os dispositivos pareados com o tipo, o estado e a bateria; o OK num deles abre um modal para conectar ou desconectar, escolher se ele conecta sozinho ou esquecê-lo. Procurar dispositivos lista os dispositivos com nome por perto, com o sinal, e o OK pareia, confia e conecta um deles, pedindo um código quando o dispositivo precisa. Um botão liga e desliga o Bluetooth.</description>
+      <platform>linux</platform>
+      <license>MIT</license>
+      <website>https://github.com/monteirohat/kodi-addons</website>
+      <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.bluetooth</source>
+      <news>1.0.0 - First release.</news>
+      <assets>
+        <icon>resources/icon.png</icon>
+        <fanart>resources/fanart.jpg</fanart>
+        <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+        <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+      </assets>
+    </extension>
+  </addon>
+  <addon id="script.easy.connect" name="Easy Connect" version="1.0.2" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.1" />
     </requires>
@@ -40,7 +65,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.connect</source>
-      <news>1.0.1 - OK on a known network opens a modal with its signal, state, password and security, and buttons to connect, show the password, choose whether it connects by itself and forget it. 1.0.0 - First release.</news>
+      <news>1.0.2 - Connecting to a new network with a password works inside Kodi, which does not allow the way 1.0.1 started connmanctl. 1.0.1 - OK on a known network opens a modal with its signal, state, password and security, and buttons to connect, show the password, choose whether it connects by itself and forget it. 1.0.0 - First release.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
@@ -256,7 +281,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="skin.monteiro" version="0.4.0" name="Monteiro" provider-name="Monteiro">
+  <addon id="skin.monteiro" version="0.4.1" name="Monteiro" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.gui" version="5.17.0" />
       <import addon="script.monteiro.addons" version="1.0.0" />
@@ -273,7 +298,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/skin.monteiro</source>
-      <news>0.4.0 - The Wi-Fi button of the home screen opens Easy Connect, or offers to install it on LibreELEC, and its icon shows the Wi-Fi signal. 0.3.9 - The time bar of the skin no longer shows over the player of Easy Movie when a video is paused, as Easy Movie shows its own. 0.3.8 - Speed on the home screen, next to Add-ons, opens Easy Speed, or offers to install it. 0.3.7 - Music on the home screen opens Easy Music, or offers to install it. The time bar over the screen shows for videos only. 0.3.6 - Repositories in the add-on browser opens Monteiro Add-ons: the add-ons of each repository in one list, with their categories. 0.3.5 - Scroll bars are whole, with rounded ends. 0.3.4 - The home screen shows the logo without the name. 0.3.3 - Pictures on the home screen opens Easy Picture, or offers to install it. 0.3.2 - The focus is blue, with white text and icons. Context menus have one background and stay on the screen with all their options. The add-on browser opens on the installed add-ons, with a toolbar for search, updates, repositories, ZIP files and settings, and progress bars keep the same height. The settings sections are square tiles with an icon, as on the home screen, with the short names Files and About. The home screen has tiles for TV, Movies, Series, Videos and Music, a smaller row for Pictures, Files and Add-ons, and Wi-Fi, Settings and Power buttons at the top right. 0.3.1 - Files on the home screen and the file manager in the settings open Easy Files when it is installed. 0.3.0 - Live TV windows: channels, guide, recordings, timers, search and the channel list over the TV. Profiles and the login screen, favourites, the playlist, the event log, games, the details of videos, music, pictures and TV programmes, the subtitle search, the music player controls, the slider, the player information and the Info key during a video. 0.2.0 - Videos, Music and Pictures on the home screen, the file manager, adding media sources, system information, the slide show and the music visualisation. Player controls with icons, the time bar while paused, notification icons, the number keys, and selected items in lists that were not shown. 0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
+      <news>0.4.1 - A Bluetooth button next to Wi-Fi on the home screen opens Easy Bluetooth, or offers to install it. 0.4.0 - The Wi-Fi button of the home screen opens Easy Connect, or offers to install it on LibreELEC, and its icon shows the Wi-Fi signal. 0.3.9 - The time bar of the skin no longer shows over the player of Easy Movie when a video is paused, as Easy Movie shows its own. 0.3.8 - Speed on the home screen, next to Add-ons, opens Easy Speed, or offers to install it. 0.3.7 - Music on the home screen opens Easy Music, or offers to install it. The time bar over the screen shows for videos only. 0.3.6 - Repositories in the add-on browser opens Monteiro Add-ons: the add-ons of each repository in one list, with their categories. 0.3.5 - Scroll bars are whole, with rounded ends. 0.3.4 - The home screen shows the logo without the name. 0.3.3 - Pictures on the home screen opens Easy Picture, or offers to install it. 0.3.2 - The focus is blue, with white text and icons. Context menus have one background and stay on the screen with all their options. The add-on browser opens on the installed add-ons, with a toolbar for search, updates, repositories, ZIP files and settings, and progress bars keep the same height. The settings sections are square tiles with an icon, as on the home screen, with the short names Files and About. The home screen has tiles for TV, Movies, Series, Videos and Music, a smaller row for Pictures, Files and Add-ons, and Wi-Fi, Settings and Power buttons at the top right. 0.3.1 - Files on the home screen and the file manager in the settings open Easy Files when it is installed. 0.3.0 - Live TV windows: channels, guide, recordings, timers, search and the channel list over the TV. Profiles and the login screen, favourites, the playlist, the event log, games, the details of videos, music, pictures and TV programmes, the subtitle search, the music player controls, the slider, the player information and the Info key during a video. 0.2.0 - Videos, Music and Pictures on the home screen, the file manager, adding media sources, system information, the slide show and the music visualisation. Player controls with icons, the time bar while paused, notification icons, the number keys, and selected items in lists that were not shown. 0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
