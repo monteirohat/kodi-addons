@@ -911,9 +911,10 @@ def video_full_screen():
 
 def seek_bar():
     # Kodi opens this window by itself while its condition holds, so the condition is on the window.
-    # Music shows its time in its own players, such as the bar of Easy Music.
+    # Music shows its time in its own players, such as the bar of Easy Music, and so does the player of Easy Movie, whose
+    # window stays open while its videos play.
     shown = ("[Player.Seeking | Player.DisplayAfterSeek | Player.Paused | Player.Forwarding | Player.Rewinding] + Player.HasVideo"
-             " + !Window.IsActive(videoosd)")
+             " + !Window.IsActive(videoosd) + !Window.IsActive(script-m3u-movies-player.xml)")
     return window("Time bar while seeking or paused, for videos outside the Easy add-ons.", [
         image(0, 760, 1920, 320, "shade.png", "F2000000"),
         label(120, 880, 1200, 50, "$INFO[Player.Title]", "font30_title"),

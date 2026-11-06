@@ -3,7 +3,7 @@
 <window>
   <animation effect="fade" start="0" end="100" time="200">WindowOpen</animation>
   <animation effect="fade" start="100" end="0" time="200">WindowClose</animation>
-  <visible>[Player.Seeking | Player.DisplayAfterSeek | Player.Paused | Player.Forwarding | Player.Rewinding] + Player.HasVideo + !Window.IsActive(videoosd)</visible>
+  <visible>[Player.Seeking | Player.DisplayAfterSeek | Player.Paused | Player.Forwarding | Player.Rewinding] + Player.HasVideo + !Window.IsActive(videoosd) + !Window.IsActive(script-m3u-movies-player.xml)</visible>
   <depth>DepthOSD</depth>
   <controls>
     <control type="image">
