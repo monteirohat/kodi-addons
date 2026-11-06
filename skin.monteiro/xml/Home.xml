@@ -321,15 +321,16 @@
       <onright>9101</onright>
       <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
       <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
-      <onclick condition="System.HasAddon(service.libreelec.settings)">RunAddon(service.libreelec.settings)</onclick>
-      <onclick condition="!System.HasAddon(service.libreelec.settings)">ActivateWindow(systeminfo)</onclick>
+      <onclick condition="System.HasAddon(script.easy.connect)">RunAddon(script.easy.connect)</onclick>
+      <onclick condition="!System.HasAddon(script.easy.connect) + System.HasAddon(service.libreelec.settings)">InstallAddon(script.easy.connect)</onclick>
+      <onclick condition="!System.HasAddon(script.easy.connect) + !System.HasAddon(service.libreelec.settings)">ActivateWindow(systeminfo)</onclick>
     </control>
     <control type="image">
       <left>1634</left>
       <top>62</top>
       <width>36</width>
       <height>36</height>
-      <texture colordiffuse="FFFFFFFF">wifi.png</texture>
+      <texture colordiffuse="FFFFFFFF" fallback="wifi.png">$INFO[Window(Home).Property(EasyConnect.Icon)]</texture>
       <visible>Control.HasFocus(9102)</visible>
     </control>
     <control type="image">
@@ -337,7 +338,7 @@
       <top>62</top>
       <width>36</width>
       <height>36</height>
-      <texture colordiffuse="FF9C9EA6">wifi.png</texture>
+      <texture colordiffuse="FF9C9EA6" fallback="wifi.png">$INFO[Window(Home).Property(EasyConnect.Icon)]</texture>
       <visible>!Control.HasFocus(9102)</visible>
     </control>
     <control type="button" id="9101">

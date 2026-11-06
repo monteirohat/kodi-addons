@@ -340,10 +340,15 @@ SHORTCUTS = [
     (31050, "speed.png", "RunAddon(script.easy.speed)", "System.HasAddon(script.easy.speed)"),
     (31003, "puzzle.png", "ActivateWindow(addonbrowser,addons://user/all,return)", None),
 ]
-# Wi-Fi opens the LibreELEC settings, where the networks are. Elsewhere it opens the system information.
-WIFI = "System.HasAddon(service.libreelec.settings)"
-WIFI_ACTION = ('<onclick condition="%s">RunAddon(service.libreelec.settings)</onclick>\n'
-               '<onclick condition="!%s">ActivateWindow(systeminfo)</onclick>' % (WIFI, WIFI))
+# Wi-Fi opens Easy Connect, or offers to install it on LibreELEC, whose network manager it uses. Elsewhere it opens the
+# system information. Its icon shows the signal, which the service of Easy Connect keeps in a property of the home
+# screen; without it, the plain Wi-Fi icon shows.
+CONNECT = "System.HasAddon(script.easy.connect)"
+LIBREELEC = "System.HasAddon(service.libreelec.settings)"
+WIFI_ACTION = ('<onclick condition="%s">RunAddon(script.easy.connect)</onclick>\n'
+               '<onclick condition="!%s + %s">InstallAddon(script.easy.connect)</onclick>\n'
+               '<onclick condition="!%s + !%s">ActivateWindow(systeminfo)</onclick>' % (CONNECT, CONNECT, LIBREELEC, CONNECT, LIBREELEC))
+WIFI_ICON = "$INFO[Window(Home).Property(EasyConnect.Icon)]"
 
 
 
@@ -411,7 +416,7 @@ def home():
     tiles = home_row(9000, left, top, tile, tile, gap, count, tile_parts, (9100, 9200, HOME_ITEMS))
     pills = home_row(9200, left, top + tile + row_gap, pill, pill_height, gap, len(SHORTCUTS), pill_parts, (9000, "noop", SHORTCUTS))
     # Wi-Fi, settings and power at the top right. Up from the tiles goes to power, the nearest to the clock.
-    top_buttons = (round_button(9102, 1616, 44, "wifi.png", WIFI_ACTION, nav={"down": 9000, "left": "noop", "right": 9101})
+    top_buttons = (round_button(9102, 1616, 44, WIFI_ICON, WIFI_ACTION, fallback="wifi.png", nav={"down": 9000, "left": "noop", "right": 9101})
                    + round_button(9101, 1712, 44, "gear.png", "ActivateWindow(settings)", nav={"down": 9000, "left": 9102, "right": 9100})
                    + round_button(9100, 1808, 44, "power.png", "ActivateWindow(%d)" % POWER_WINDOW,
                                   nav={"down": 9000, "left": 9101, "right": "noop"}))
@@ -428,8 +433,9 @@ def home():
     ], default=9000, extra="<menucontrol>9000</menucontrol>\n<backgroundcolor>%s</backgroundcolor>" % BG)
 
 
-def round_button(control_id, left, top, icon, onclick, size=72, nav=None):
-    """A round icon button. Buttons cannot hold images, so the icon is drawn over it in two colors."""
+def round_button(control_id, left, top, icon, onclick, size=72, nav=None, fallback=None):
+    """A round icon button. Buttons cannot hold images, so the icon is drawn over it in two colors. fallback shows when
+    icon is empty."""
     nav = nav or {}
     inset = size // 4
     # An action can also be given as ready <onclick> tags, for actions that depend on a condition.
@@ -438,8 +444,10 @@ def round_button(control_id, left, top, icon, onclick, size=72, nav=None):
                     onup=nav.get("up"), ondown=nav.get("down"), onleft=nav.get("left"), onright=nav.get("right"),
                     texturefocus=('colordiffuse="%s"' % FOCUS, "circle.png"),
                     texturenofocus=('colordiffuse="%s"' % RAISED, "circle.png"), children=[onclick] if tagged else ()),
-            image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, ON_FOCUS, "Control.HasFocus(%d)" % control_id),
-            image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, TEXT2, "!Control.HasFocus(%d)" % control_id)]
+            image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, ON_FOCUS, "Control.HasFocus(%d)" % control_id,
+                  fallback=fallback),
+            image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, TEXT2, "!Control.HasFocus(%d)" % control_id,
+                  fallback=fallback)]
 
 
 # Dialogs --------------------------------------------------------------------------------------------------------------
@@ -1499,10 +1507,12 @@ def media():
     channels = os.path.join(ROOT, "script.m3u.channels", "resources", "skins", "default", "media")
     movies = os.path.join(ROOT, "script.m3u.movies", "resources", "skins", "default", "media")
     speed = os.path.join(ROOT, "script.easy.speed", "resources", "skins", "default", "media")
+    connect = os.path.join(ROOT, "script.easy.connect", "resources", "skins", "default", "media")
     for folder, names in ((channels, ["white.png", "panel.png", "tv.png", "gear.png", "check.png", "search.png"]),
                           (movies, ["circle.png", "film.png", "puzzle.png", "audio.png", "shade.png", "back10.png", "forward10.png",
                                     "pause.png", "player_play.png"]),
-                          (speed, ["speed.png"])):
+                          (speed, ["speed.png"]),
+                          (connect, ["wifi-0.png", "wifi-1.png", "wifi-2.png", "wifi-3.png", "wifi-off.png", "cable.png"])):
         for name in names:
             shutil.copy2(os.path.join(folder, name), os.path.join(MEDIA, name))
     shutil.copy2(os.path.join(ROOT, "repository.monteiromedia", "resources", "icon.png"), os.path.join(MEDIA, "logo.png"))

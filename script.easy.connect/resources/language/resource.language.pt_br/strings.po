@@ -1,0 +1,284 @@
+# Easy Connect language file
+msgid ""
+msgstr ""
+"Language: pt_BR\n"
+
+msgctxt "#30000"
+msgid "Easy Connect"
+msgstr "Easy Connect"
+
+msgctxt "#30001"
+msgid "Current network"
+msgstr "Rede atual"
+
+msgctxt "#30002"
+msgid "Available networks"
+msgstr "Redes disponíveis"
+
+msgctxt "#30003"
+msgid "Known networks"
+msgstr "Redes conhecidas"
+
+msgctxt "#30005"
+msgid "Wi-Fi"
+msgstr "Wi-Fi"
+
+msgctxt "#30006"
+msgid "No Wi-Fi"
+msgstr "Sem Wi-Fi"
+
+msgctxt "#30007"
+msgid "Wi-Fi off"
+msgstr "Wi-Fi desligado"
+
+msgctxt "#30008"
+msgid "Not connected"
+msgstr "Não conectado"
+
+msgctxt "#30010"
+msgid "Connected to the internet"
+msgstr "Conectado à internet"
+
+msgctxt "#30011"
+msgid "Connected, without internet"
+msgstr "Conectado, sem internet"
+
+msgctxt "#30012"
+msgid "The device is not connected to a Wi-Fi network. Choose one in Available networks."
+msgstr "O aparelho não está conectado a uma rede Wi-Fi. Escolha uma em Redes disponíveis."
+
+msgctxt "#30013"
+msgid "The Wi-Fi is off. Turn it on with the button at the bottom left."
+msgstr "O Wi-Fi está desligado. Ligue pelo botão no canto inferior esquerdo."
+
+msgctxt "#30014"
+msgid "No networks found. Select Search again in a moment."
+msgstr "Nenhuma rede encontrada. Selecione Procurar de novo daqui a pouco."
+
+msgctxt "#30015"
+msgid "Searching for networks"
+msgstr "Procurando redes"
+
+msgctxt "#30016"
+msgid "1 network in range"
+msgstr "1 rede ao alcance"
+
+msgctxt "#30017"
+msgid "{0} networks in range"
+msgstr "{0} redes ao alcance"
+
+msgctxt "#30018"
+msgid "1 network"
+msgstr "1 rede"
+
+msgctxt "#30019"
+msgid "{0} networks"
+msgstr "{0} redes"
+
+msgctxt "#30020"
+msgid "No known networks yet. The networks you connect to are kept here, with their passwords."
+msgstr "Nenhuma rede conhecida ainda. As redes em que você se conecta ficam aqui, com as senhas."
+
+msgctxt "#30021"
+msgid "Signal"
+msgstr "Sinal"
+
+msgctxt "#30022"
+msgid "Frequency"
+msgstr "Frequência"
+
+msgctxt "#30023"
+msgid "Link speed"
+msgstr "Velocidade do link"
+
+msgctxt "#30024"
+msgid "Security"
+msgstr "Segurança"
+
+msgctxt "#30025"
+msgid "Password"
+msgstr "Senha"
+
+msgctxt "#30026"
+msgid "IP address"
+msgstr "Endereço IP"
+
+msgctxt "#30027"
+msgid "Subnet mask"
+msgstr "Máscara de rede"
+
+msgctxt "#30028"
+msgid "Router"
+msgstr "Roteador"
+
+msgctxt "#30029"
+msgid "DNS"
+msgstr "DNS"
+
+msgctxt "#30030"
+msgid "Show password"
+msgstr "Mostrar senha"
+
+msgctxt "#30031"
+msgid "Disconnect"
+msgstr "Desconectar"
+
+msgctxt "#30032"
+msgid "Search again"
+msgstr "Procurar de novo"
+
+msgctxt "#30033"
+msgid "Turn Wi-Fi off"
+msgstr "Desligar o Wi-Fi"
+
+msgctxt "#30034"
+msgid "Turn Wi-Fi on"
+msgstr "Ligar o Wi-Fi"
+
+msgctxt "#30035"
+msgid "{0}%"
+msgstr "{0}%"
+
+msgctxt "#30036"
+msgid "No password, open network"
+msgstr "Sem senha, rede aberta"
+
+msgctxt "#30037"
+msgid "Not saved"
+msgstr "Não salva"
+
+msgctxt "#30038"
+msgid "channel {0}"
+msgstr "canal {0}"
+
+msgctxt "#30039"
+msgid "{0} Mbps"
+msgstr "{0} Mbps"
+
+msgctxt "#30040"
+msgid "Open"
+msgstr "Aberta"
+
+msgctxt "#30041"
+msgid "WEP"
+msgstr "WEP"
+
+msgctxt "#30042"
+msgid "WPA/WPA2"
+msgstr "WPA/WPA2"
+
+msgctxt "#30043"
+msgid "WPA Enterprise"
+msgstr "WPA Empresarial"
+
+msgctxt "#30044"
+msgid "MAC address of the device"
+msgstr "Endereço MAC do aparelho"
+
+msgctxt "#30045"
+msgid "Hide password"
+msgstr "Ocultar senha"
+
+msgctxt "#30050"
+msgid "Disconnect from {0}? The device stays without internet until it connects again."
+msgstr "Desconectar de {0}? O aparelho fica sem internet até se conectar de novo."
+
+msgctxt "#30051"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt "#30052"
+msgid "Could not change the Wi-Fi: {0}"
+msgstr "Não foi possível alterar o Wi-Fi: {0}"
+
+msgctxt "#30053"
+msgid "Turn the Wi-Fi off? The device stays without internet, unless a network cable is connected."
+msgstr "Desligar o Wi-Fi? O aparelho fica sem internet, a não ser que tenha um cabo de rede conectado."
+
+msgctxt "#30060"
+msgid "Connected"
+msgstr "Conectada"
+
+msgctxt "#30061"
+msgid "Known"
+msgstr "Conhecida"
+
+msgctxt "#30062"
+msgid "Connect"
+msgstr "Conectar"
+
+msgctxt "#30063"
+msgid "Forget"
+msgstr "Esquecer"
+
+msgctxt "#30064"
+msgid "Already connected to {0}"
+msgstr "Já conectado a {0}"
+
+msgctxt "#30065"
+msgid "This network uses the enterprise login of a company. Connect to it in the settings of LibreELEC."
+msgstr "Esta rede usa o login empresarial de uma empresa. Conecte-se a ela nas configurações do LibreELEC."
+
+msgctxt "#30066"
+msgid "Connect to {0}? The device leaves {1}."
+msgstr "Conectar a {0}? O aparelho sai da rede {1}."
+
+msgctxt "#30067"
+msgid "Connected to {0}"
+msgstr "Conectado a {0}"
+
+msgctxt "#30068"
+msgid "The password of {0} was not accepted. Check it and try again."
+msgstr "A senha de {0} não foi aceita. Confira e tente de novo."
+
+msgctxt "#30069"
+msgid "{0} did not answer. Move closer to the router and try again."
+msgstr "A rede {0} não respondeu. Aproxime-se do roteador e tente de novo."
+
+msgctxt "#30070"
+msgid "Could not connect to {0}: {1}"
+msgstr "Não foi possível conectar a {0}: {1}"
+
+msgctxt "#30071"
+msgid "Password of {0}"
+msgstr "Senha de {0}"
+
+msgctxt "#30072"
+msgid "A Wi-Fi password has at least 8 characters."
+msgstr "A senha de um Wi-Fi tem pelo menos 8 caracteres."
+
+msgctxt "#30073"
+msgid "In range"
+msgstr "Ao alcance"
+
+msgctxt "#30074"
+msgid "Out of range"
+msgstr "Fora de alcance"
+
+msgctxt "#30075"
+msgid "connects by itself"
+msgstr "conecta sozinha"
+
+msgctxt "#30076"
+msgid "Do not connect by itself"
+msgstr "Não conectar sozinha"
+
+msgctxt "#30077"
+msgid "Connect by itself"
+msgstr "Conectar sozinha"
+
+msgctxt "#30078"
+msgid "Password: {0}"
+msgstr "Senha: {0}"
+
+msgctxt "#30079"
+msgid "Forget {0}? Its saved password is deleted."
+msgstr "Esquecer a rede {0}? A senha salva dela é apagada."
+
+msgctxt "#30080"
+msgid "Forget {0}? Its saved password is deleted, and the device leaves it."
+msgstr "Esquecer a rede {0}? A senha salva dela é apagada, e o aparelho sai dessa rede."
+
+msgctxt "#30090"
+msgid "Easy Connect uses connman, the network manager of LibreELEC, which this system does not have."
+msgstr "O Easy Connect usa o connman, o gerenciador de rede do LibreELEC, que este sistema não tem."

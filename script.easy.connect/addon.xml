@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addon id="script.easy.connect" name="Easy Connect" version="1.0.0" provider-name="Monteiro">
+  <requires>
+    <import addon="xbmc.python" version="3.0.1" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.service" library="service.py" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Manage the Wi-Fi of LibreELEC, for the remote control</summary>
+    <summary lang="pt_BR">Gerencie o Wi-Fi do LibreELEC, pelo controle remoto</summary>
+    <description lang="en_GB">Easy Connect manages the Wi-Fi of LibreELEC in the design of the Monteiro add-ons. It shows the network the device is connected to, with its signal, frequency, link speed, security, addresses and saved password; the networks in range, with their signal and a lock on the ones with a password, to connect with one press of OK; and the known networks, to connect, see the password, choose whether each one connects by itself or forget it. A button turns the Wi-Fi on and off. With the Monteiro skin, the Wi-Fi button of the home screen opens Easy Connect and shows the signal.</description>
+    <description lang="pt_BR">O Easy Connect gerencia o Wi-Fi do LibreELEC no visual dos add-ons Monteiro. Ele mostra a rede em que o aparelho está conectado, com o sinal, a frequência, a velocidade do link, a segurança, os endereços e a senha salva; as redes ao alcance, com o sinal e um cadeado nas que têm senha, para conectar com um OK; e as redes conhecidas, para conectar, ver a senha, escolher se cada uma conecta sozinha ou esquecê-la. Um botão liga e desliga o Wi-Fi. Com o skin Monteiro, o botão de Wi-Fi da tela inicial abre o Easy Connect e mostra o sinal.</description>
+    <platform>linux</platform>
+    <license>MIT</license>
+    <website>https://github.com/monteirohat/kodi-addons</website>
+    <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.connect</source>
+    <news>1.0.0 - First release.</news>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+      <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+      <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+    </assets>
+  </extension>
+</addon>

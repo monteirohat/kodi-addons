@@ -38,7 +38,7 @@ The round buttons at the top right open:
 
 | Button | Opens |
 | --- | --- |
-| **Wi-Fi** | The LibreELEC settings, where **Connections** lists the networks. On other systems, the system information. |
+| **Wi-Fi** | [Easy Connect](../script.easy.connect/README.md), which manages the Wi-Fi. Without it, on LibreELEC, Kodi offers to install it; on other systems, the system information. Its icon shows the Wi-Fi signal while Easy Connect is installed, or a cable for a wired connection. |
 | **Settings** | The settings sections of Kodi, the file manager and the system information. |
 | **Power** | The power menu. |
 

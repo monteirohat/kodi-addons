@@ -1,0 +1,284 @@
+# Easy Connect language file
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "Easy Connect"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Current network"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Available networks"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Known networks"
+msgstr ""
+
+msgctxt "#30005"
+msgid "Wi-Fi"
+msgstr ""
+
+msgctxt "#30006"
+msgid "No Wi-Fi"
+msgstr ""
+
+msgctxt "#30007"
+msgid "Wi-Fi off"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Not connected"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Connected to the internet"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Connected, without internet"
+msgstr ""
+
+msgctxt "#30012"
+msgid "The device is not connected to a Wi-Fi network. Choose one in Available networks."
+msgstr ""
+
+msgctxt "#30013"
+msgid "The Wi-Fi is off. Turn it on with the button at the bottom left."
+msgstr ""
+
+msgctxt "#30014"
+msgid "No networks found. Select Search again in a moment."
+msgstr ""
+
+msgctxt "#30015"
+msgid "Searching for networks"
+msgstr ""
+
+msgctxt "#30016"
+msgid "1 network in range"
+msgstr ""
+
+msgctxt "#30017"
+msgid "{0} networks in range"
+msgstr ""
+
+msgctxt "#30018"
+msgid "1 network"
+msgstr ""
+
+msgctxt "#30019"
+msgid "{0} networks"
+msgstr ""
+
+msgctxt "#30020"
+msgid "No known networks yet. The networks you connect to are kept here, with their passwords."
+msgstr ""
+
+msgctxt "#30021"
+msgid "Signal"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Frequency"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Link speed"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Security"
+msgstr ""
+
+msgctxt "#30025"
+msgid "Password"
+msgstr ""
+
+msgctxt "#30026"
+msgid "IP address"
+msgstr ""
+
+msgctxt "#30027"
+msgid "Subnet mask"
+msgstr ""
+
+msgctxt "#30028"
+msgid "Router"
+msgstr ""
+
+msgctxt "#30029"
+msgid "DNS"
+msgstr ""
+
+msgctxt "#30030"
+msgid "Show password"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Disconnect"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Search again"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Turn Wi-Fi off"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Turn Wi-Fi on"
+msgstr ""
+
+msgctxt "#30035"
+msgid "{0}%"
+msgstr ""
+
+msgctxt "#30036"
+msgid "No password, open network"
+msgstr ""
+
+msgctxt "#30037"
+msgid "Not saved"
+msgstr ""
+
+msgctxt "#30038"
+msgid "channel {0}"
+msgstr ""
+
+msgctxt "#30039"
+msgid "{0} Mbps"
+msgstr ""
+
+msgctxt "#30040"
+msgid "Open"
+msgstr ""
+
+msgctxt "#30041"
+msgid "WEP"
+msgstr ""
+
+msgctxt "#30042"
+msgid "WPA/WPA2"
+msgstr ""
+
+msgctxt "#30043"
+msgid "WPA Enterprise"
+msgstr ""
+
+msgctxt "#30044"
+msgid "MAC address of the device"
+msgstr ""
+
+msgctxt "#30045"
+msgid "Hide password"
+msgstr ""
+
+msgctxt "#30050"
+msgid "Disconnect from {0}? The device stays without internet until it connects again."
+msgstr ""
+
+msgctxt "#30051"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30052"
+msgid "Could not change the Wi-Fi: {0}"
+msgstr ""
+
+msgctxt "#30053"
+msgid "Turn the Wi-Fi off? The device stays without internet, unless a network cable is connected."
+msgstr ""
+
+msgctxt "#30060"
+msgid "Connected"
+msgstr ""
+
+msgctxt "#30061"
+msgid "Known"
+msgstr ""
+
+msgctxt "#30062"
+msgid "Connect"
+msgstr ""
+
+msgctxt "#30063"
+msgid "Forget"
+msgstr ""
+
+msgctxt "#30064"
+msgid "Already connected to {0}"
+msgstr ""
+
+msgctxt "#30065"
+msgid "This network uses the enterprise login of a company. Connect to it in the settings of LibreELEC."
+msgstr ""
+
+msgctxt "#30066"
+msgid "Connect to {0}? The device leaves {1}."
+msgstr ""
+
+msgctxt "#30067"
+msgid "Connected to {0}"
+msgstr ""
+
+msgctxt "#30068"
+msgid "The password of {0} was not accepted. Check it and try again."
+msgstr ""
+
+msgctxt "#30069"
+msgid "{0} did not answer. Move closer to the router and try again."
+msgstr ""
+
+msgctxt "#30070"
+msgid "Could not connect to {0}: {1}"
+msgstr ""
+
+msgctxt "#30071"
+msgid "Password of {0}"
+msgstr ""
+
+msgctxt "#30072"
+msgid "A Wi-Fi password has at least 8 characters."
+msgstr ""
+
+msgctxt "#30073"
+msgid "In range"
+msgstr ""
+
+msgctxt "#30074"
+msgid "Out of range"
+msgstr ""
+
+msgctxt "#30075"
+msgid "connects by itself"
+msgstr ""
+
+msgctxt "#30076"
+msgid "Do not connect by itself"
+msgstr ""
+
+msgctxt "#30077"
+msgid "Connect by itself"
+msgstr ""
+
+msgctxt "#30078"
+msgid "Password: {0}"
+msgstr ""
+
+msgctxt "#30079"
+msgid "Forget {0}? Its saved password is deleted."
+msgstr ""
+
+msgctxt "#30080"
+msgid "Forget {0}? Its saved password is deleted, and the device leaves it."
+msgstr ""
+
+msgctxt "#30090"
+msgid "Easy Connect uses connman, the network manager of LibreELEC, which this system does not have."
+msgstr ""

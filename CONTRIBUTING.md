@@ -29,6 +29,7 @@ To share a Kodi log, enable **Settings > System > Logging > Enable debug logging
 | [Easy Picture](script.easy.picture/README.md) | `script.easy.picture` | Show the photos of your folders in a gallery, by album, and each one in full screen. |
 | [Easy Music](script.easy.music/README.md) | `script.easy.music` | Play the music of your folders by playlist, with a player bar at the bottom. |
 | [Easy Speed](script.easy.speed/README.md) | `script.easy.speed` | Test the speed of the internet on the servers of fast.com, and check the connection step by step. |
+| [Easy Connect](script.easy.connect/README.md) | `script.easy.connect` | Manage the Wi-Fi of LibreELEC: the current network with its password, the networks in range and the known ones. |
 | [Monteiro Add-ons](script.monteiro.addons/README.md) | `script.monteiro.addons` | List the add-ons of each repository with their categories. The Monteiro skin opens it from Repositories. |
 | Monteiro | `repository.monteiromedia` | Register this repository in Kodi for installation and updates. |
 
@@ -67,6 +68,7 @@ The name shown in Kodi is **Monteiro**. The technical ID remains `repository.mon
 | `script.easy.picture/` | Easy Picture source and documentation. |
 | `script.easy.music/` | Easy Music source and documentation. |
 | `script.easy.speed/` | Easy Speed source and documentation. |
+| `script.easy.connect/` | Easy Connect source and documentation. |
 | `script.monteiro.addons/` | Monteiro Add-ons source and documentation. |
 | `repository.monteiromedia/` | Repository registration add-on. |
 | `repository/addons.xml` | Generated Kodi add-on catalog. |
@@ -88,6 +90,8 @@ The name shown in Kodi is **Monteiro**. The technical ID remains `repository.mon
 | `tools/generate_easy_music_art.py` | Generator of the Easy Music icon, fanart, header symbol and the icons of the toolbar and the player. |
 | `tools/generate_easy_speed_skin.py` | Generator of the Easy Speed window layout. |
 | `tools/generate_easy_speed_art.py` | Generator of the Easy Speed icon, fanart, header symbol, speedometer and the icons of the results and the checks. |
+| `tools/generate_easy_connect_skin.py` | Generator of the Easy Connect window layout. |
+| `tools/generate_easy_connect_art.py` | Generator of the Easy Connect icon, fanart, header symbol and the icons of the signal and the networks. |
 | `tools/generate_monteiro_addons_skin.py` | Generator of the Monteiro Add-ons window layout. |
 | `tools/generate_monteiro_addons_art.py` | Generator of the Monteiro Add-ons icon, fanart and header symbol. |
 | `tools/generate_hdmi_switcher_skin.py` | Generator of the HDMI Switcher window layout. |

@@ -6,7 +6,7 @@
 
 <p align="center">
   Add-ons práticos e de código aberto para Kodi, LibreELEC e Raspberry Pi.<br>
-  Assista canais e filmes de listas M3U, ouça suas músicas, veja suas fotos e arquivos, teste sua internet e controle sua central de mídia do sofá.
+  Assista canais e filmes de listas M3U, ouça suas músicas, veja suas fotos e arquivos, teste sua internet, gerencie o Wi-Fi e controle sua central de mídia do sofá.
 </p>
 
 <p align="center">
@@ -40,7 +40,7 @@ Registre o repositório **Monteiro** no Kodi uma vez, pelo endereço web, e todo
 1. No Kodi, abra **Configurações > Sistema > Add-ons** e ligue **Fontes desconhecidas**.
 2. Abra **Configurações > Gerenciador de arquivos > Adicionar fonte**, selecione **&lt;Nenhum&gt;**, digite `https://monteirohat.github.io/kodi-addons/`, dê o nome **Monteiro** à fonte e selecione **OK**.
 3. Abra **Configurações > Add-ons > Instalar via arquivo zip > Monteiro** e selecione **repository.monteiromedia-1.0.5.zip**. Espere o aviso de que o repositório **Monteiro** foi instalado.
-4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, o HDMI Switcher, o Easy Files e o Easy Speed em **Add-ons de programas**, o Easy Picture em **Add-ons de imagens** e o Easy Music em **Add-ons de música**.
+4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, o HDMI Switcher, o Easy Files, o Easy Speed e o Easy Connect em **Add-ons de programas**, o Easy Picture em **Add-ons de imagens** e o Easy Music em **Add-ons de música**.
 
 As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o menu de contexto do **Monteiro** e selecione **Verificar atualizações**. Se o aparelho com Kodi estiver sem internet, baixe o ZIP na [última release](https://github.com/monteirohat/kodi-addons/releases/latest), copie para um pendrive e use **Instalar via arquivo zip**.
 
@@ -114,6 +114,15 @@ As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o m
       A velocidade da sua internet nos servidores do fast.com, e a verificação da conexão passo a passo.
       <br><br>
       <a href="#easy-speed">Resumo</a> · <a href="script.easy.speed/README.md">Guia</a>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" width="33%">
+      <a href="script.easy.connect/README.md"><img src="script.easy.connect/resources/icon.png" alt="Easy Connect" width="120"></a>
+      <h3>Easy Connect</h3>
+      O Wi-Fi do LibreELEC: a rede atual com a senha, as redes ao alcance e as conhecidas.
+      <br><br>
+      <a href="#easy-connect">Resumo</a> · <a href="script.easy.connect/README.md">Guia</a>
     </td>
   </tr>
 </table>
@@ -240,6 +249,22 @@ Leia o [guia do Easy Music](script.easy.music/README.md) para conhecer cada recu
 
 Leia o [guia do Easy Speed](script.easy.speed/README.md) para conhecer cada recurso. O guia está em inglês.
 
+### Easy Connect
+
+<img src="script.easy.connect/resources/icon.png" alt="Easy Connect" width="72" align="left">
+
+**O Wi-Fi do LibreELEC, do sofá.** A rede em que o aparelho está conectado, as redes ao alcance e as conhecidas, cada uma na sua seção.
+
+<br clear="left">
+
+- A rede atual com o sinal, a frequência e o canal, a velocidade do link, a segurança, os endereços e a senha salva, que só aparece quando você pede.
+- As redes ao alcance com o sinal e um cadeado nas que têm senha. O **OK** conecta e pede a senha numa rede nova.
+- As redes conhecidas, ao alcance ou não, para conectar, ver a senha, escolher se cada uma conecta sozinha ou esquecê-la. Um botão liga e desliga o Wi-Fi.
+
+![Easy Connect](script.easy.connect/resources/screenshots/screenshot-01.jpg)
+
+Leia o [guia do Easy Connect](script.easy.connect/README.md) para conhecer cada recurso. O guia está em inglês.
+
 > [!NOTE]
 > O Easy Channel e o Easy Movie não oferecem nenhum conteúdo. Eles tocam as listas M3U que você adiciona, e você é responsável por usar só listas que tem permissão para assistir. Os repositórios sugeridos do GitHub reúnem canais gratuitos e públicos e filmes em domínio público, e são mantidos por terceiros.
 
@@ -251,7 +276,7 @@ Um skin para o Kodi no visual dos add-ons, sob a licença MIT. A tela inicial ab
 
 - **TV**, **Filmes** e **Séries** abrem o Easy Channel e o Easy Movie, **Música** abre o Easy Music, **Imagens** abre o Easy Picture, **Arquivos** abre o Easy Files e **Velocidade** abre o Easy Speed. Sem o add-on, o item oferece a instalação.
 - **Vídeos** abre as fontes do Kodi, e **Add-ons** abre os add-ons instalados, com uma barra para busca, repositórios e atualizações. **Repositórios** lista os add-ons de cada repositório com as categorias, pelo [Monteiro Add-ons](script.monteiro.addons/README.md), que o skin instala junto.
-- Os botões no canto superior direito abrem as configurações de Wi-Fi do LibreELEC, as configurações do Kodi e o menu de energia.
+- Os botões no canto superior direito abrem o Easy Connect, cujo ícone mostra o sinal do Wi-Fi, as configurações do Kodi e o menu de energia.
 
 Leia o [guia do skin](skin.monteiro/README.md), em inglês, para conhecer cada tela.
 
