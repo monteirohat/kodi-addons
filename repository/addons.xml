@@ -96,6 +96,31 @@
       </assets>
     </extension>
   </addon>
+  <addon id="script.easy.speed" name="Easy Speed" version="1.0.0" provider-name="Monteiro">
+    <requires>
+      <import addon="xbmc.python" version="3.0.1" />
+    </requires>
+    <extension point="xbmc.python.script" library="default.py">
+      <provides>executable</provides>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+      <summary lang="en_GB">Test the speed of your internet, for the remote control</summary>
+      <summary lang="pt_BR">Teste a velocidade da sua internet, pelo controle remoto</summary>
+      <description lang="en_GB">Easy Speed tests the internet of your device in the design of the Monteiro add-ons. It measures the latency, the download and the upload on the servers of fast.com, the speed test of Netflix, or of Cloudflare when fast.com does not answer, and says the video quality the connection plays without stopping. It also checks the connection step by step, from the network to the router, the DNS and the internet, and says where a problem is and what to do. The last tests stay in the history.</description>
+      <description lang="pt_BR">O Easy Speed testa a internet do seu aparelho no visual dos add-ons Monteiro. Ele mede a latência, o download e o upload nos servidores do fast.com, o teste de velocidade da Netflix, ou da Cloudflare quando o fast.com não responde, e diz a qualidade de vídeo que a conexão aguenta sem travar. Ele também verifica a conexão passo a passo, da rede ao roteador, ao DNS e à internet, e diz onde está o problema e o que fazer. Os últimos testes ficam no histórico.</description>
+      <platform>all</platform>
+      <license>MIT</license>
+      <website>https://github.com/monteirohat/kodi-addons</website>
+      <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.speed</source>
+      <news>1.0.0 - First release.</news>
+      <assets>
+        <icon>resources/icon.png</icon>
+        <fanart>resources/fanart.jpg</fanart>
+        <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+        <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+      </assets>
+    </extension>
+  </addon>
   <addon id="script.hdmi.switcher" name="HDMI Switcher" version="1.1.3" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.python" version="3.0.0" />
@@ -205,7 +230,7 @@
       </assets>
     </extension>
   </addon>
-  <addon id="skin.monteiro" version="0.3.7" name="Monteiro" provider-name="Monteiro">
+  <addon id="skin.monteiro" version="0.3.8" name="Monteiro" provider-name="Monteiro">
     <requires>
       <import addon="xbmc.gui" version="5.17.0" />
       <import addon="script.monteiro.addons" version="1.0.0" />
@@ -222,7 +247,7 @@
       <license>MIT</license>
       <website>https://github.com/monteirohat/kodi-addons</website>
       <source>https://github.com/monteirohat/kodi-addons/tree/main/skin.monteiro</source>
-      <news>0.3.7 - Music on the home screen opens Easy Music, or offers to install it. The time bar over the screen shows for videos only. 0.3.6 - Repositories in the add-on browser opens Monteiro Add-ons: the add-ons of each repository in one list, with their categories. 0.3.5 - Scroll bars are whole, with rounded ends. 0.3.4 - The home screen shows the logo without the name. 0.3.3 - Pictures on the home screen opens Easy Picture, or offers to install it. 0.3.2 - The focus is blue, with white text and icons. Context menus have one background and stay on the screen with all their options. The add-on browser opens on the installed add-ons, with a toolbar for search, updates, repositories, ZIP files and settings, and progress bars keep the same height. The settings sections are square tiles with an icon, as on the home screen, with the short names Files and About. The home screen has tiles for TV, Movies, Series, Videos and Music, a smaller row for Pictures, Files and Add-ons, and Wi-Fi, Settings and Power buttons at the top right. 0.3.1 - Files on the home screen and the file manager in the settings open Easy Files when it is installed. 0.3.0 - Live TV windows: channels, guide, recordings, timers, search and the channel list over the TV. Profiles and the login screen, favourites, the playlist, the event log, games, the details of videos, music, pictures and TV programmes, the subtitle search, the music player controls, the slider, the player information and the Info key during a video. 0.2.0 - Videos, Music and Pictures on the home screen, the file manager, adding media sources, system information, the slide show and the music visualisation. Player controls with icons, the time bar while paused, notification icons, the number keys, and selected items in lists that were not shown. 0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
+      <news>0.3.8 - Speed on the home screen, next to Add-ons, opens Easy Speed, or offers to install it. 0.3.7 - Music on the home screen opens Easy Music, or offers to install it. The time bar over the screen shows for videos only. 0.3.6 - Repositories in the add-on browser opens Monteiro Add-ons: the add-ons of each repository in one list, with their categories. 0.3.5 - Scroll bars are whole, with rounded ends. 0.3.4 - The home screen shows the logo without the name. 0.3.3 - Pictures on the home screen opens Easy Picture, or offers to install it. 0.3.2 - The focus is blue, with white text and icons. Context menus have one background and stay on the screen with all their options. The add-on browser opens on the installed add-ons, with a toolbar for search, updates, repositories, ZIP files and settings, and progress bars keep the same height. The settings sections are square tiles with an icon, as on the home screen, with the short names Files and About. The home screen has tiles for TV, Movies, Series, Videos and Music, a smaller row for Pictures, Files and Add-ons, and Wi-Fi, Settings and Power buttons at the top right. 0.3.1 - Files on the home screen and the file manager in the settings open Easy Files when it is installed. 0.3.0 - Live TV windows: channels, guide, recordings, timers, search and the channel list over the TV. Profiles and the login screen, favourites, the playlist, the event log, games, the details of videos, music, pictures and TV programmes, the subtitle search, the music player controls, the slider, the player information and the Info key during a video. 0.2.0 - Videos, Music and Pictures on the home screen, the file manager, adding media sources, system information, the slide show and the music visualisation. Player controls with icons, the time bar while paused, notification icons, the number keys, and selected items in lists that were not shown. 0.1.0 - Preview: home screen with TV, Movies and Series opening the Easy add-ons, dialogs, keyboard, settings, add-on browser, file browser, power menu and player bars.</news>
       <assets>
         <icon>resources/icon.png</icon>
         <fanart>resources/fanart.jpg</fanart>
