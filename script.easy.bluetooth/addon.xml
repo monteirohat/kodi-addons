@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='utf-8'?>
+<addon id="script.easy.bluetooth" name="Easy Bluetooth" version="1.0.0" provider-name="Monteiro">
+  <requires>
+    <import addon="xbmc.python" version="3.0.1" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en_GB">Pair and connect Bluetooth devices, for the remote control</summary>
+    <summary lang="pt_BR">Pareie e conecte dispositivos Bluetooth, pelo controle remoto</summary>
+    <description lang="en_GB">Easy Bluetooth pairs and connects headphones, speakers, keyboards, mice and game controllers in the design of the Monteiro add-ons. Devices lists the paired devices with their kind, state and battery; OK on one opens a modal to connect or disconnect it, choose whether it connects by itself, or forget it. Search for devices lists the named devices nearby with their signal, and OK pairs, trusts and connects one, asking for a code when the device needs it. A button turns the Bluetooth on and off.</description>
+    <description lang="pt_BR">O Easy Bluetooth pareia e conecta fones, caixas de som, teclados, mouses e controles de jogo no visual dos add-ons Monteiro. Dispositivos lista os dispositivos pareados com o tipo, o estado e a bateria; o OK num deles abre um modal para conectar ou desconectar, escolher se ele conecta sozinho ou esquecê-lo. Procurar dispositivos lista os dispositivos com nome por perto, com o sinal, e o OK pareia, confia e conecta um deles, pedindo um código quando o dispositivo precisa. Um botão liga e desliga o Bluetooth.</description>
+    <platform>linux</platform>
+    <license>MIT</license>
+    <website>https://github.com/monteirohat/kodi-addons</website>
+    <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.bluetooth</source>
+    <news>1.0.0 - First release.</news>
+    <assets>
+      <icon>resources/icon.png</icon>
+      <fanart>resources/fanart.jpg</fanart>
+      <screenshot>resources/screenshots/screenshot-01.jpg</screenshot>
+      <screenshot>resources/screenshots/screenshot-02.jpg</screenshot>
+    </assets>
+  </extension>
+</addon>

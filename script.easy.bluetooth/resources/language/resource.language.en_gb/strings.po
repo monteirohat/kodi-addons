@@ -1,0 +1,244 @@
+# Easy Bluetooth language file
+msgid ""
+msgstr ""
+"Language: en_GB\n"
+
+msgctxt "#30000"
+msgid "Easy Bluetooth"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Devices"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Search for devices"
+msgstr ""
+
+msgctxt "#30005"
+msgid "Bluetooth"
+msgstr ""
+
+msgctxt "#30006"
+msgid "No Bluetooth"
+msgstr ""
+
+msgctxt "#30007"
+msgid "On"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Off"
+msgstr ""
+
+msgctxt "#30009"
+msgid "1 device connected"
+msgstr ""
+
+msgctxt "#30010"
+msgid "{0} devices connected"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Search again"
+msgstr ""
+
+msgctxt "#30012"
+msgid "1 device"
+msgstr ""
+
+msgctxt "#30013"
+msgid "{0} devices"
+msgstr ""
+
+msgctxt "#30014"
+msgid "No devices yet. Pair headphones, a speaker, a keyboard or a game controller in Search for devices."
+msgstr ""
+
+msgctxt "#30015"
+msgid "The Bluetooth is off. Turn it on with the button at the bottom left."
+msgstr ""
+
+msgctxt "#30016"
+msgid "Searching for devices"
+msgstr ""
+
+msgctxt "#30017"
+msgid "1 device nearby"
+msgstr ""
+
+msgctxt "#30018"
+msgid "{0} devices nearby"
+msgstr ""
+
+msgctxt "#30019"
+msgid "No devices found yet. Put the device in pairing mode and wait a moment."
+msgstr ""
+
+msgctxt "#30020"
+msgid "Put the device in pairing mode, usually by holding its power or Bluetooth button until a light blinks. Then select it in the list."
+msgstr ""
+
+msgctxt "#30021"
+msgid "Turn Bluetooth off"
+msgstr ""
+
+msgctxt "#30022"
+msgid "Turn Bluetooth on"
+msgstr ""
+
+msgctxt "#30023"
+msgid "Turn the Bluetooth off? The connected devices disconnect."
+msgstr ""
+
+msgctxt "#30024"
+msgid "Cancel"
+msgstr ""
+
+msgctxt "#30025"
+msgid "Could not change the Bluetooth: {0}"
+msgstr ""
+
+msgctxt "#30030"
+msgid "Headphones"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Speaker"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Keyboard"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Mouse"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Game controller"
+msgstr ""
+
+msgctxt "#30035"
+msgid "Phone"
+msgstr ""
+
+msgctxt "#30036"
+msgid "Computer"
+msgstr ""
+
+msgctxt "#30037"
+msgid "TV"
+msgstr ""
+
+msgctxt "#30038"
+msgid "Printer"
+msgstr ""
+
+msgctxt "#30039"
+msgid "Device"
+msgstr ""
+
+msgctxt "#30040"
+msgid "Connected"
+msgstr ""
+
+msgctxt "#30041"
+msgid "Paired"
+msgstr ""
+
+msgctxt "#30042"
+msgid "battery {0}%"
+msgstr ""
+
+msgctxt "#30050"
+msgid "Kind"
+msgstr ""
+
+msgctxt "#30051"
+msgid "Address"
+msgstr ""
+
+msgctxt "#30060"
+msgid "Connect"
+msgstr ""
+
+msgctxt "#30061"
+msgid "Connect by itself"
+msgstr ""
+
+msgctxt "#30062"
+msgid "Forget device"
+msgstr ""
+
+msgctxt "#30063"
+msgid "Forget {0}? It has to pair again to connect."
+msgstr ""
+
+msgctxt "#30064"
+msgid "Disconnect"
+msgstr ""
+
+msgctxt "#30065"
+msgid "On"
+msgstr ""
+
+msgctxt "#30066"
+msgid "Off"
+msgstr ""
+
+msgctxt "#30067"
+msgid "Could not connect to {0}. Turn it on, bring it closer and try again."
+msgstr ""
+
+msgctxt "#30068"
+msgid "Could not disconnect from {0}."
+msgstr ""
+
+msgctxt "#30070"
+msgid "Does {1} show the code {0}?"
+msgstr ""
+
+msgctxt "#30071"
+msgid "No"
+msgstr ""
+
+msgctxt "#30072"
+msgid "Yes, pair"
+msgstr ""
+
+msgctxt "#30073"
+msgid "PIN of {0}, often 0000 or 1234"
+msgstr ""
+
+msgctxt "#30074"
+msgid "Type {0} on {1}, then press Enter"
+msgstr ""
+
+msgctxt "#30075"
+msgid "{0} paired and connected"
+msgstr ""
+
+msgctxt "#30076"
+msgid "{0} did not accept the pairing. Put it in pairing mode again and try again."
+msgstr ""
+
+msgctxt "#30077"
+msgid "{0} did not answer. Put it in pairing mode, bring it closer and try again."
+msgstr ""
+
+msgctxt "#30078"
+msgid "Could not pair {0}: {1}"
+msgstr ""
+
+msgctxt "#30090"
+msgid "Easy Bluetooth uses BlueZ, the Bluetooth of Linux, which this system does not have."
+msgstr ""
+
+msgctxt "#30091"
+msgid "The Bluetooth service of LibreELEC is off. Turn it on?"
+msgstr ""
+
+msgctxt "#30092"
+msgid "This device has no Bluetooth adapter."
+msgstr ""

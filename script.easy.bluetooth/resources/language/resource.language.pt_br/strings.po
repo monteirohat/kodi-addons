@@ -1,0 +1,244 @@
+# Easy Bluetooth language file
+msgid ""
+msgstr ""
+"Language: pt_BR\n"
+
+msgctxt "#30000"
+msgid "Easy Bluetooth"
+msgstr "Easy Bluetooth"
+
+msgctxt "#30001"
+msgid "Devices"
+msgstr "Dispositivos"
+
+msgctxt "#30002"
+msgid "Search for devices"
+msgstr "Procurar dispositivos"
+
+msgctxt "#30005"
+msgid "Bluetooth"
+msgstr "Bluetooth"
+
+msgctxt "#30006"
+msgid "No Bluetooth"
+msgstr "Sem Bluetooth"
+
+msgctxt "#30007"
+msgid "On"
+msgstr "Ligado"
+
+msgctxt "#30008"
+msgid "Off"
+msgstr "Desligado"
+
+msgctxt "#30009"
+msgid "1 device connected"
+msgstr "1 dispositivo conectado"
+
+msgctxt "#30010"
+msgid "{0} devices connected"
+msgstr "{0} dispositivos conectados"
+
+msgctxt "#30011"
+msgid "Search again"
+msgstr "Procurar de novo"
+
+msgctxt "#30012"
+msgid "1 device"
+msgstr "1 dispositivo"
+
+msgctxt "#30013"
+msgid "{0} devices"
+msgstr "{0} dispositivos"
+
+msgctxt "#30014"
+msgid "No devices yet. Pair headphones, a speaker, a keyboard or a game controller in Search for devices."
+msgstr "Nenhum dispositivo ainda. Pareie fones, uma caixa de som, um teclado ou um controle de jogo em Procurar dispositivos."
+
+msgctxt "#30015"
+msgid "The Bluetooth is off. Turn it on with the button at the bottom left."
+msgstr "O Bluetooth está desligado. Ligue pelo botão no canto inferior esquerdo."
+
+msgctxt "#30016"
+msgid "Searching for devices"
+msgstr "Procurando dispositivos"
+
+msgctxt "#30017"
+msgid "1 device nearby"
+msgstr "1 dispositivo por perto"
+
+msgctxt "#30018"
+msgid "{0} devices nearby"
+msgstr "{0} dispositivos por perto"
+
+msgctxt "#30019"
+msgid "No devices found yet. Put the device in pairing mode and wait a moment."
+msgstr "Nenhum dispositivo encontrado ainda. Coloque o dispositivo em modo de pareamento e aguarde um pouco."
+
+msgctxt "#30020"
+msgid "Put the device in pairing mode, usually by holding its power or Bluetooth button until a light blinks. Then select it in the list."
+msgstr "Coloque o dispositivo em modo de pareamento, em geral segurando o botão de ligar ou de Bluetooth até uma luz piscar. Depois selecione-o na lista."
+
+msgctxt "#30021"
+msgid "Turn Bluetooth off"
+msgstr "Desligar o Bluetooth"
+
+msgctxt "#30022"
+msgid "Turn Bluetooth on"
+msgstr "Ligar o Bluetooth"
+
+msgctxt "#30023"
+msgid "Turn the Bluetooth off? The connected devices disconnect."
+msgstr "Desligar o Bluetooth? Os dispositivos conectados se desconectam."
+
+msgctxt "#30024"
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgctxt "#30025"
+msgid "Could not change the Bluetooth: {0}"
+msgstr "Não foi possível alterar o Bluetooth: {0}"
+
+msgctxt "#30030"
+msgid "Headphones"
+msgstr "Fones de ouvido"
+
+msgctxt "#30031"
+msgid "Speaker"
+msgstr "Caixa de som"
+
+msgctxt "#30032"
+msgid "Keyboard"
+msgstr "Teclado"
+
+msgctxt "#30033"
+msgid "Mouse"
+msgstr "Mouse"
+
+msgctxt "#30034"
+msgid "Game controller"
+msgstr "Controle de jogo"
+
+msgctxt "#30035"
+msgid "Phone"
+msgstr "Celular"
+
+msgctxt "#30036"
+msgid "Computer"
+msgstr "Computador"
+
+msgctxt "#30037"
+msgid "TV"
+msgstr "TV"
+
+msgctxt "#30038"
+msgid "Printer"
+msgstr "Impressora"
+
+msgctxt "#30039"
+msgid "Device"
+msgstr "Dispositivo"
+
+msgctxt "#30040"
+msgid "Connected"
+msgstr "Conectado"
+
+msgctxt "#30041"
+msgid "Paired"
+msgstr "Pareado"
+
+msgctxt "#30042"
+msgid "battery {0}%"
+msgstr "bateria {0}%"
+
+msgctxt "#30050"
+msgid "Kind"
+msgstr "Tipo"
+
+msgctxt "#30051"
+msgid "Address"
+msgstr "Endereço"
+
+msgctxt "#30060"
+msgid "Connect"
+msgstr "Conectar"
+
+msgctxt "#30061"
+msgid "Connect by itself"
+msgstr "Conectar sozinho"
+
+msgctxt "#30062"
+msgid "Forget device"
+msgstr "Esquecer dispositivo"
+
+msgctxt "#30063"
+msgid "Forget {0}? It has to pair again to connect."
+msgstr "Esquecer {0}? Ele vai ter que parear de novo para se conectar."
+
+msgctxt "#30064"
+msgid "Disconnect"
+msgstr "Desconectar"
+
+msgctxt "#30065"
+msgid "On"
+msgstr "Ligado"
+
+msgctxt "#30066"
+msgid "Off"
+msgstr "Desligado"
+
+msgctxt "#30067"
+msgid "Could not connect to {0}. Turn it on, bring it closer and try again."
+msgstr "Não foi possível conectar a {0}. Ligue o dispositivo, aproxime-o e tente de novo."
+
+msgctxt "#30068"
+msgid "Could not disconnect from {0}."
+msgstr "Não foi possível desconectar de {0}."
+
+msgctxt "#30070"
+msgid "Does {1} show the code {0}?"
+msgstr "O dispositivo {1} mostra o código {0}?"
+
+msgctxt "#30071"
+msgid "No"
+msgstr "Não"
+
+msgctxt "#30072"
+msgid "Yes, pair"
+msgstr "Sim, parear"
+
+msgctxt "#30073"
+msgid "PIN of {0}, often 0000 or 1234"
+msgstr "PIN de {0}, muitas vezes 0000 ou 1234"
+
+msgctxt "#30074"
+msgid "Type {0} on {1}, then press Enter"
+msgstr "Digite {0} em {1} e aperte Enter"
+
+msgctxt "#30075"
+msgid "{0} paired and connected"
+msgstr "{0} pareado e conectado"
+
+msgctxt "#30076"
+msgid "{0} did not accept the pairing. Put it in pairing mode again and try again."
+msgstr "{0} não aceitou o pareamento. Coloque-o em modo de pareamento de novo e tente outra vez."
+
+msgctxt "#30077"
+msgid "{0} did not answer. Put it in pairing mode, bring it closer and try again."
+msgstr "{0} não respondeu. Coloque-o em modo de pareamento, aproxime-o e tente de novo."
+
+msgctxt "#30078"
+msgid "Could not pair {0}: {1}"
+msgstr "Não foi possível parear {0}: {1}"
+
+msgctxt "#30090"
+msgid "Easy Bluetooth uses BlueZ, the Bluetooth of Linux, which this system does not have."
+msgstr "O Easy Bluetooth usa o BlueZ, o Bluetooth do Linux, que este sistema não tem."
+
+msgctxt "#30091"
+msgid "The Bluetooth service of LibreELEC is off. Turn it on?"
+msgstr "O serviço de Bluetooth do LibreELEC está desligado. Ligar agora?"
+
+msgctxt "#30092"
+msgid "This device has no Bluetooth adapter."
+msgstr "Este aparelho não tem um adaptador Bluetooth."

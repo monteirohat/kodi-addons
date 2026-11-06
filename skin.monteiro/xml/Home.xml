@@ -34,7 +34,7 @@
       <texture>logo.png</texture>
     </control>
     <control type="label">
-      <left>1060</left>
+      <left>964</left>
       <top>44</top>
       <width>520</width>
       <height>72</height>
@@ -310,6 +310,37 @@
       <selectedcolor>FF62656D</selectedcolor>
       <label>$INFO[System.Date]</label>
     </control>
+    <control type="button" id="9103">
+      <left>1520</left>
+      <top>44</top>
+      <width>72</width>
+      <height>72</height>
+      <label></label>
+      <ondown>9000</ondown>
+      <onleft>noop</onleft>
+      <onright>9102</onright>
+      <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
+      <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>
+      <visible>System.HasAddon(script.easy.bluetooth) | System.HasAddon(service.libreelec.settings)</visible>
+      <onclick condition="System.HasAddon(script.easy.bluetooth)">RunAddon(script.easy.bluetooth)</onclick>
+      <onclick condition="!System.HasAddon(script.easy.bluetooth)">InstallAddon(script.easy.bluetooth)</onclick>
+    </control>
+    <control type="image">
+      <left>1538</left>
+      <top>62</top>
+      <width>36</width>
+      <height>36</height>
+      <texture colordiffuse="FFFFFFFF">bluetooth.png</texture>
+      <visible>Control.HasFocus(9103)</visible>
+    </control>
+    <control type="image">
+      <left>1538</left>
+      <top>62</top>
+      <width>36</width>
+      <height>36</height>
+      <texture colordiffuse="FF9C9EA6">bluetooth.png</texture>
+      <visible>!Control.HasFocus(9103) + [System.HasAddon(script.easy.bluetooth) | System.HasAddon(service.libreelec.settings)]</visible>
+    </control>
     <control type="button" id="9102">
       <left>1616</left>
       <top>44</top>
@@ -317,7 +348,7 @@
       <height>72</height>
       <label></label>
       <ondown>9000</ondown>
-      <onleft>noop</onleft>
+      <onleft>9103</onleft>
       <onright>9101</onright>
       <texturefocus colordiffuse="FF4682B4">circle.png</texturefocus>
       <texturenofocus colordiffuse="FF222328">circle.png</texturenofocus>

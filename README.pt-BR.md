@@ -6,7 +6,7 @@
 
 <p align="center">
   Add-ons práticos e de código aberto para Kodi, LibreELEC e Raspberry Pi.<br>
-  Assista canais e filmes de listas M3U, ouça suas músicas, veja suas fotos e arquivos, teste sua internet, gerencie o Wi-Fi e controle sua central de mídia do sofá.
+  Assista canais e filmes de listas M3U, ouça suas músicas, veja suas fotos e arquivos, teste sua internet, gerencie o Wi-Fi e o Bluetooth e controle sua central de mídia do sofá.
 </p>
 
 <p align="center">
@@ -40,7 +40,7 @@ Registre o repositório **Monteiro** no Kodi uma vez, pelo endereço web, e todo
 1. No Kodi, abra **Configurações > Sistema > Add-ons** e ligue **Fontes desconhecidas**.
 2. Abra **Configurações > Gerenciador de arquivos > Adicionar fonte**, selecione **&lt;Nenhum&gt;**, digite `https://monteirohat.github.io/kodi-addons/`, dê o nome **Monteiro** à fonte e selecione **OK**.
 3. Abra **Configurações > Add-ons > Instalar via arquivo zip > Monteiro** e selecione **repository.monteiromedia-1.0.5.zip**. Espere o aviso de que o repositório **Monteiro** foi instalado.
-4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, o HDMI Switcher, o Easy Files, o Easy Speed e o Easy Connect em **Add-ons de programas**, o Easy Picture em **Add-ons de imagens** e o Easy Music em **Add-ons de música**.
+4. Abra **Instalar via repositório > Monteiro** e instale os add-ons que quiser. O Easy Channel e o Easy Movie ficam em **Add-ons de vídeo**, o HDMI Switcher, o Easy Files, o Easy Speed, o Easy Connect e o Easy Bluetooth em **Add-ons de programas**, o Easy Picture em **Add-ons de imagens** e o Easy Music em **Add-ons de música**.
 
 As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o menu de contexto do **Monteiro** e selecione **Verificar atualizações**. Se o aparelho com Kodi estiver sem internet, baixe o ZIP na [última release](https://github.com/monteirohat/kodi-addons/releases/latest), copie para um pendrive e use **Instalar via arquivo zip**.
 
@@ -123,6 +123,13 @@ As atualizações chegam pelo repositório. Se uma ainda não aparecer, abra o m
       O Wi-Fi do LibreELEC: a rede atual com a senha, as redes ao alcance e as conhecidas.
       <br><br>
       <a href="#easy-connect">Resumo</a> · <a href="script.easy.connect/README.md">Guia</a>
+    </td>
+    <td align="center" width="33%">
+      <a href="script.easy.bluetooth/README.md"><img src="script.easy.bluetooth/resources/icon.png" alt="Easy Bluetooth" width="120"></a>
+      <h3>Easy Bluetooth</h3>
+      Pareie e conecte fones, caixas de som, teclados e controles de jogo, com a bateria deles.
+      <br><br>
+      <a href="#easy-bluetooth">Resumo</a> · <a href="script.easy.bluetooth/README.md">Guia</a>
     </td>
   </tr>
 </table>
@@ -265,6 +272,22 @@ Leia o [guia do Easy Speed](script.easy.speed/README.md) para conhecer cada recu
 
 Leia o [guia do Easy Connect](script.easy.connect/README.md) para conhecer cada recurso. O guia está em inglês.
 
+### Easy Bluetooth
+
+<img src="script.easy.bluetooth/resources/icon.png" alt="Easy Bluetooth" width="72" align="left">
+
+**Fones, caixas de som, teclados e controles de jogo, sem fios.** Os dispositivos pareados e os que estão por perto, cada um na sua seção.
+
+<br clear="left">
+
+- Os dispositivos pareados com o tipo, se estão conectados e a bateria. O **OK** num deles abre um modal para conectar ou desconectar, escolher se ele conecta sozinho ou esquecê-lo.
+- **Procurar dispositivos** lista os dispositivos com nome por perto, com o sinal. O **OK** pareia, confia e conecta um dispositivo, pedindo um código quando ele precisa.
+- Um botão liga e desliga o Bluetooth, e o skin Monteiro abre o Easy Bluetooth pela tela inicial.
+
+![Easy Bluetooth](script.easy.bluetooth/resources/screenshots/screenshot-01.jpg)
+
+Leia o [guia do Easy Bluetooth](script.easy.bluetooth/README.md) para conhecer cada recurso. O guia está em inglês.
+
 > [!NOTE]
 > O Easy Channel e o Easy Movie não oferecem nenhum conteúdo. Eles tocam as listas M3U que você adiciona, e você é responsável por usar só listas que tem permissão para assistir. Os repositórios sugeridos do GitHub reúnem canais gratuitos e públicos e filmes em domínio público, e são mantidos por terceiros.
 
@@ -276,7 +299,7 @@ Um skin para o Kodi no visual dos add-ons, sob a licença MIT. A tela inicial ab
 
 - **TV**, **Filmes** e **Séries** abrem o Easy Channel e o Easy Movie, **Música** abre o Easy Music, **Imagens** abre o Easy Picture, **Arquivos** abre o Easy Files e **Velocidade** abre o Easy Speed. Sem o add-on, o item oferece a instalação.
 - **Vídeos** abre as fontes do Kodi, e **Add-ons** abre os add-ons instalados, com uma barra para busca, repositórios e atualizações. **Repositórios** lista os add-ons de cada repositório com as categorias, pelo [Monteiro Add-ons](script.monteiro.addons/README.md), que o skin instala junto.
-- Os botões no canto superior direito abrem o Easy Connect, cujo ícone mostra o sinal do Wi-Fi, as configurações do Kodi e o menu de energia.
+- Os botões no canto superior direito abrem o Easy Bluetooth, o Easy Connect, cujo ícone mostra o sinal do Wi-Fi, as configurações do Kodi e o menu de energia.
 
 Leia o [guia do skin](skin.monteiro/README.md), em inglês, para conhecer cada tela.
 

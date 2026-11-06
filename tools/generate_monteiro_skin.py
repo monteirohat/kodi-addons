@@ -349,6 +349,10 @@ WIFI_ACTION = ('<onclick condition="%s">RunAddon(script.easy.connect)</onclick>\
                '<onclick condition="!%s + %s">InstallAddon(script.easy.connect)</onclick>\n'
                '<onclick condition="!%s + !%s">ActivateWindow(systeminfo)</onclick>' % (CONNECT, CONNECT, LIBREELEC, CONNECT, LIBREELEC))
 WIFI_ICON = "$INFO[Window(Home).Property(EasyConnect.Icon)]"
+# Bluetooth opens Easy Bluetooth, or offers to install it. It shows on LibreELEC, and wherever Easy Bluetooth is installed.
+BLUETOOTH = "System.HasAddon(script.easy.bluetooth)"
+BLUETOOTH_ACTION = ('<onclick condition="%s">RunAddon(script.easy.bluetooth)</onclick>\n'
+                    '<onclick condition="!%s">InstallAddon(script.easy.bluetooth)</onclick>' % (BLUETOOTH, BLUETOOTH))
 
 
 
@@ -416,7 +420,9 @@ def home():
     tiles = home_row(9000, left, top, tile, tile, gap, count, tile_parts, (9100, 9200, HOME_ITEMS))
     pills = home_row(9200, left, top + tile + row_gap, pill, pill_height, gap, len(SHORTCUTS), pill_parts, (9000, "noop", SHORTCUTS))
     # Wi-Fi, settings and power at the top right. Up from the tiles goes to power, the nearest to the clock.
-    top_buttons = (round_button(9102, 1616, 44, WIFI_ICON, WIFI_ACTION, fallback="wifi.png", nav={"down": 9000, "left": "noop", "right": 9101})
+    top_buttons = (round_button(9103, 1520, 44, "bluetooth.png", BLUETOOTH_ACTION, nav={"down": 9000, "left": "noop", "right": 9102},
+                                visible="%s | %s" % (BLUETOOTH, LIBREELEC))
+                   + round_button(9102, 1616, 44, WIFI_ICON, WIFI_ACTION, fallback="wifi.png", nav={"down": 9000, "left": 9103, "right": 9101})
                    + round_button(9101, 1712, 44, "gear.png", "ActivateWindow(settings)", nav={"down": 9000, "left": 9102, "right": 9100})
                    + round_button(9100, 1808, 44, "power.png", "ActivateWindow(%d)" % POWER_WINDOW,
                                   nav={"down": 9000, "left": 9101, "right": "noop"}))
@@ -425,7 +431,7 @@ def home():
         image(0, 0, 1920, 1080, "fanart.jpg", "40FFFFFF"),
         image(0, 0, 1920, 1080, "shade.png", "E60E0F11"),
         image(64, 48, 64, 64, "logo.png"),
-        label(1060, 44, 520, 72, "$INFO[System.Time]", "font45", TEXT2, align="right"),
+        label(964, 44, 520, 72, "$INFO[System.Time]", "font45", TEXT2, align="right"),
         tiles,
         pills,
         label(left, 990, width, 40, "$INFO[System.Date]", "font12", TEXT3, align="center"),
@@ -433,9 +439,9 @@ def home():
     ], default=9000, extra="<menucontrol>9000</menucontrol>\n<backgroundcolor>%s</backgroundcolor>" % BG)
 
 
-def round_button(control_id, left, top, icon, onclick, size=72, nav=None, fallback=None):
+def round_button(control_id, left, top, icon, onclick, size=72, nav=None, fallback=None, visible=None):
     """A round icon button. Buttons cannot hold images, so the icon is drawn over it in two colors. fallback shows when
-    icon is empty."""
+    icon is empty, and visible is the condition of the button and its icon."""
     nav = nav or {}
     inset = size // 4
     # An action can also be given as ready <onclick> tags, for actions that depend on a condition.
@@ -443,11 +449,12 @@ def round_button(control_id, left, top, icon, onclick, size=72, nav=None, fallba
     return [control("button", control_id, left=left, top=top, width=size, height=size, onclick=None if tagged else onclick, label="",
                     onup=nav.get("up"), ondown=nav.get("down"), onleft=nav.get("left"), onright=nav.get("right"),
                     texturefocus=('colordiffuse="%s"' % FOCUS, "circle.png"),
-                    texturenofocus=('colordiffuse="%s"' % RAISED, "circle.png"), children=[onclick] if tagged else ()),
+                    texturenofocus=('colordiffuse="%s"' % RAISED, "circle.png"), children=[onclick] if tagged else (),
+                    visible=visible),
             image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, ON_FOCUS, "Control.HasFocus(%d)" % control_id,
                   fallback=fallback),
-            image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, TEXT2, "!Control.HasFocus(%d)" % control_id,
-                  fallback=fallback)]
+            image(left + inset, top + inset, size - 2 * inset, size - 2 * inset, icon, TEXT2,
+                  "!Control.HasFocus(%d)" % control_id + (" + [%s]" % visible if visible else ""), fallback=fallback)]
 
 
 # Dialogs --------------------------------------------------------------------------------------------------------------
@@ -1512,7 +1519,8 @@ def media():
                           (movies, ["circle.png", "film.png", "puzzle.png", "audio.png", "shade.png", "back10.png", "forward10.png",
                                     "pause.png", "player_play.png"]),
                           (speed, ["speed.png"]),
-                          (connect, ["wifi-0.png", "wifi-1.png", "wifi-2.png", "wifi-3.png", "wifi-off.png", "cable.png"])):
+                          (connect, ["wifi-0.png", "wifi-1.png", "wifi-2.png", "wifi-3.png", "wifi-off.png", "cable.png"]),
+                          (os.path.join(ROOT, "script.easy.bluetooth", "resources", "skins", "default", "media"), ["bluetooth.png"])):
         for name in names:
             shutil.copy2(os.path.join(folder, name), os.path.join(MEDIA, name))
     shutil.copy2(os.path.join(ROOT, "repository.monteiromedia", "resources", "icon.png"), os.path.join(MEDIA, "logo.png"))

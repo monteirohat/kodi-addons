@@ -37,6 +37,8 @@ ASSETS = {
     "easy-speed.jpg": "script.easy.speed/resources/screenshots/screenshot-01.jpg",
     "easy-connect.png": "script.easy.connect/resources/icon.png",
     "easy-connect.jpg": "script.easy.connect/resources/screenshots/screenshot-01.jpg",
+    "easy-bluetooth.png": "script.easy.bluetooth/resources/icon.png",
+    "easy-bluetooth.jpg": "script.easy.bluetooth/resources/screenshots/screenshot-01.jpg",
     "monteiro-skin.png": "skin.monteiro/resources/icon.png",
     "monteiro-skin.jpg": ".github/assets/monteiro-skin.jpg",
     "easy-channel.gif": ".github/assets/easy-channel.gif",
@@ -192,7 +194,7 @@ HOME = Template("""<!doctype html>
   <div class="wrap">
     <div>
       <h1>Kodi add-ons for the living room</h1>
-      <p class="lead">Live TV and movies from your M3U lists, your music, photos and files, a test of your internet, your Wi-Fi, a skin made for them, and the right HDMI display, on LibreELEC and Raspberry Pi. Install the repository once, from its address, and every add-on and update comes from it.</p>
+      <p class="lead">Live TV and movies from your M3U lists, your music, photos and files, a test of your internet, your Wi-Fi and Bluetooth, a skin made for them, and the right HDMI display, on LibreELEC and Raspberry Pi. Install the repository once, from its address, and every add-on and update comes from it.</p>
       <div class="install">
         <h2>Install in Kodi</h2>
         <div class="url"><code id="address">${pages}</code><button type="button" id="copy">Copy</button></div>
@@ -212,7 +214,7 @@ HOME = Template("""<!doctype html>
 <section id="addons">
   <div class="wrap">
     <p class="eyebrow">Add-ons</p>
-    <h2 class="title">Eight add-ons and a skin, one design</h2>
+    <h2 class="title">Nine add-ons and a skin, one design</h2>
     <p class="lead">Made for the remote control, with the same dark interface, in English and Brazilian Portuguese.</p>
     <div class="cards">
       <a class="card" href="#easy-channel"><img src="assets/easy-channel.png" alt=""><h3>Easy Channel</h3><p>Live TV from M3U lists in a TV box style screen that keeps only the channels that work.</p><div class="version">Version ${channel_version} &middot; Video add-ons</div></a>
@@ -223,6 +225,7 @@ HOME = Template("""<!doctype html>
       <a class="card" href="#easy-music"><img src="assets/easy-music.png" alt=""><h3>Easy Music</h3><p>Your music by playlist, one for each folder, with a player bar always at hand.</p><div class="version">Version ${music_version} &middot; Music add-ons</div></a>
       <a class="card" href="#easy-speed"><img src="assets/easy-speed.png" alt=""><h3>Easy Speed</h3><p>The speed of your internet on the servers of fast.com, and a check of the connection step by step.</p><div class="version">Version ${speed_version} &middot; Program add-ons</div></a>
       <a class="card" href="#easy-connect"><img src="assets/easy-connect.png" alt=""><h3>Easy Connect</h3><p>The Wi-Fi of LibreELEC: the current network with its password, the networks in range and the known ones.</p><div class="version">Version ${connect_version} &middot; Program add-ons</div></a>
+      <a class="card" href="#easy-bluetooth"><img src="assets/easy-bluetooth.png" alt=""><h3>Easy Bluetooth</h3><p>Pair and connect headphones, speakers, keyboards and game controllers, with their battery.</p><div class="version">Version ${bluetooth_version} &middot; Program add-ons</div></a>
       <a class="card" href="#monteiro-skin"><img src="assets/monteiro-skin.png" alt=""><h3>Monteiro skin</h3><p>A home screen and menus in the same design, with every Easy add-on one press away.</p><div class="version">Version ${skin_version} &middot; Look and feel &gt; Skin</div></a>
     </div>
   </div>
@@ -378,15 +381,33 @@ HOME = Template("""<!doctype html>
   </div>
 </section>
 
-<section id="monteiro-skin">
+<section id="easy-bluetooth">
   <div class="wrap addon">
+    <div>
+      <div class="name"><img src="assets/easy-bluetooth.png" alt=""><h2>Easy Bluetooth</h2></div>
+      <p>Headphones, speakers, keyboards and game controllers, without wires. The paired devices and the ones nearby, each in its section.</p>
+      <ul>
+        <li>The paired devices with their kind, whether they are connected and their battery. <b>OK</b> on one opens a modal to connect or disconnect it, choose whether it connects by itself, or forget it.</li>
+        <li><b>Search for devices</b> lists the named devices nearby with their signal. <b>OK</b> pairs a device, trusts it and connects it, asking for a code when the device needs one.</li>
+        <li>A button turns the Bluetooth on and off.</li>
+      </ul>
+      <a class="more" href="${github}/blob/main/script.easy.bluetooth/README.md">Read the Easy Bluetooth guide &rarr;</a>
+    </div>
+    <div class="media">
+      <img class="shot" src="assets/easy-bluetooth.jpg" alt="Easy Bluetooth: the paired devices with their battery" width="1280" height="720" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section id="monteiro-skin">
+  <div class="wrap addon flip">
     <div>
       <div class="name"><img src="assets/monteiro-skin.png" alt=""><h2>Monteiro skin</h2></div>
       <p>A Kodi skin in the design of the add-ons. Its home screen opens the Easy add-ons directly, and its settings, menus, keyboard and player bars share their dark look and steel blue focus.</p>
       <ul>
         <li><b>TV</b>, <b>Movies</b> and <b>Series</b> open Easy Channel and Easy Movie, <b>Music</b> opens Easy Music, <b>Pictures</b> opens Easy Picture, <b>Files</b> opens Easy Files, and <b>Speed</b> opens Easy Speed.</li>
         <li><b>Add-ons</b> opens the installed add-ons, with a toolbar for search, repositories and updates. <b>Repositories</b> lists the add-ons of each repository with their categories.</li>
-        <li>Buttons for Easy Connect, whose icon shows the Wi-Fi signal, the settings of Kodi and the power menu.</li>
+        <li>Buttons for Easy Bluetooth, Easy Connect, whose icon shows the Wi-Fi signal, the settings of Kodi and the power menu.</li>
       </ul>
       <a class="more" href="${github}/blob/main/skin.monteiro/README.md">Read the skin guide &rarr;</a>
     </div>
@@ -432,7 +453,8 @@ def home(zip_name):
                            picture_version=found.get("script.easy.picture", "1.0.0"), skin_version=found.get("skin.monteiro", ""),
                            music_version=found.get("script.easy.music", "1.0.0"),
                            speed_version=found.get("script.easy.speed", "1.0.0"),
-                           connect_version=found.get("script.easy.connect", "1.0.0"))
+                           connect_version=found.get("script.easy.connect", "1.0.0"),
+                           bluetooth_version=found.get("script.easy.bluetooth", "1.0.0"))
 
 
 def build(output):

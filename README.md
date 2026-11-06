@@ -6,7 +6,7 @@
 
 <p align="center">
   Practical, open-source Kodi add-ons for LibreELEC and Raspberry Pi.<br>
-  Watch M3U channels and movies, play your music, browse your photos and files, test your internet, manage the Wi-Fi, and control your media center from the couch.
+  Watch M3U channels and movies, play your music, browse your photos and files, test your internet, manage the Wi-Fi and Bluetooth, and control your media center from the couch.
 </p>
 
 <p align="center">
@@ -40,7 +40,7 @@ Register the **Monteiro** repository in Kodi once, from its web address, and eve
 1. In Kodi, open **Settings > System > Add-ons** and turn on **Unknown sources**.
 2. Open **Settings > File manager > Add source**, select **&lt;None&gt;**, enter `https://monteirohat.github.io/kodi-addons/`, name the source **Monteiro**, and select **OK**.
 3. Open **Settings > Add-ons > Install from zip file > Monteiro** and select **repository.monteiromedia-1.0.5.zip**. Wait for the **Monteiro** repository installation notification.
-4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, HDMI Switcher, Easy Files, Easy Speed and Easy Connect are under **Program add-ons**, Easy Picture is under **Picture add-ons**, and Easy Music is under **Music add-ons**.
+4. Open **Install from repository > Monteiro** and install the add-ons you want. Easy Channel and Easy Movie are under **Video add-ons**, HDMI Switcher, Easy Files, Easy Speed, Easy Connect and Easy Bluetooth are under **Program add-ons**, Easy Picture is under **Picture add-ons**, and Easy Music is under **Music add-ons**.
 
 Updates arrive through the repository. If one is not visible yet, open the context menu of **Monteiro** and select **Check for updates**. Without internet access on the Kodi device, download the ZIP from the [latest release](https://github.com/monteirohat/kodi-addons/releases/latest), copy it to a USB drive and use **Install from zip file**.
 
@@ -123,6 +123,13 @@ Updates arrive through the repository. If one is not visible yet, open the conte
       The Wi-Fi of LibreELEC: the current network with its password, the networks in range and the known ones.
       <br><br>
       <a href="#easy-connect">Overview</a> · <a href="script.easy.connect/README.md">Guide</a>
+    </td>
+    <td align="center" width="33%">
+      <a href="script.easy.bluetooth/README.md"><img src="script.easy.bluetooth/resources/icon.png" alt="Easy Bluetooth" width="120"></a>
+      <h3>Easy Bluetooth</h3>
+      Pair and connect headphones, speakers, keyboards and game controllers, with their battery.
+      <br><br>
+      <a href="#easy-bluetooth">Overview</a> · <a href="script.easy.bluetooth/README.md">Guide</a>
     </td>
   </tr>
 </table>
@@ -265,6 +272,22 @@ Read the [Easy Speed guide](script.easy.speed/README.md) for every feature.
 
 Read the [Easy Connect guide](script.easy.connect/README.md) for every feature.
 
+### Easy Bluetooth
+
+<img src="script.easy.bluetooth/resources/icon.png" alt="Easy Bluetooth" width="72" align="left">
+
+**Headphones, speakers, keyboards and game controllers, without wires.** The paired devices and the ones nearby, each in its section.
+
+<br clear="left">
+
+- The paired devices with their kind, whether they are connected and their battery. **OK** on one opens a modal to connect or disconnect it, choose whether it connects by itself, or forget it.
+- **Search for devices** lists the named devices nearby with their signal. **OK** pairs a device, trusts it and connects it, asking for a code when the device needs one.
+- A button turns the Bluetooth on and off, and the Monteiro skin opens Easy Bluetooth from the home screen.
+
+![Easy Bluetooth](script.easy.bluetooth/resources/screenshots/screenshot-01.jpg)
+
+Read the [Easy Bluetooth guide](script.easy.bluetooth/README.md) for every feature.
+
 > [!NOTE]
 > Easy Channel and Easy Movie do not provide any content. They play the M3U lists you add, and you are responsible for using only lists you are allowed to watch. The suggested GitHub repositories collect free, public channels and public domain movies, and are maintained by third parties.
 
@@ -276,7 +299,7 @@ A Kodi skin in the design of the add-ons, under the MIT license. Its home screen
 
 - **TV**, **Movies** and **Series** open Easy Channel and Easy Movie, **Music** opens Easy Music, **Pictures** opens Easy Picture, **Files** opens Easy Files, and **Speed** opens Easy Speed. Without an add-on, the item offers to install it.
 - **Videos** opens the sources of Kodi, and **Add-ons** opens the installed add-ons, with a toolbar for search, repositories and updates. **Repositories** lists the add-ons of each repository with their categories, with [Monteiro Add-ons](script.monteiro.addons/README.md), which the skin installs with itself.
-- The buttons at the top right open Easy Connect, whose icon shows the Wi-Fi signal, the settings of Kodi and the power menu.
+- The buttons at the top right open Easy Bluetooth, Easy Connect, whose icon shows the Wi-Fi signal, the settings of Kodi and the power menu.
 
 Read the [skin guide](skin.monteiro/README.md) for every screen.
 

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<addon id="script.easy.connect" name="Easy Connect" version="1.0.1" provider-name="Monteiro">
+<addon id="script.easy.connect" name="Easy Connect" version="1.0.2" provider-name="Monteiro">
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
   </requires>
@@ -16,7 +16,7 @@
     <license>MIT</license>
     <website>https://github.com/monteirohat/kodi-addons</website>
     <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.connect</source>
-    <news>1.0.1 - OK on a known network opens a modal with its signal, state, password and security, and buttons to connect, show the password, choose whether it connects by itself and forget it. 1.0.0 - First release.</news>
+    <news>1.0.2 - Connecting to a new network with a password works inside Kodi, which does not allow the way 1.0.1 started connmanctl. 1.0.1 - OK on a known network opens a modal with its signal, state, password and security, and buttons to connect, show the password, choose whether it connects by itself and forget it. 1.0.0 - First release.</news>
     <assets>
       <icon>resources/icon.png</icon>
       <fanart>resources/fanart.jpg</fanart>

@@ -220,14 +220,28 @@ def connect(service_id, passphrase=None):
     return connect_with_agent(service_id, passphrase)
 
 
+def spawn(command):
+    """Run an interactive command in a pseudo terminal, as at a terminal. Returns the process and the terminal to read
+    and write. Kodi runs add-ons in subinterpreters, where os.fork and pty.fork are not allowed, so it uses subprocess."""
+    terminal, child = pty.openpty()
+    try:
+        process = subprocess.Popen([command], stdin=child, stdout=child, stderr=child, start_new_session=True)
+    finally:
+        os.close(child)
+    return process, terminal
+
+
+def stop(process):
+    try:
+        process.wait(timeout=2)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait()
+
+
 def connect_with_agent(service_id, passphrase):
     """connmanctl in interactive mode, with its agent on, answering the question of the password."""
-    pid, fd = pty.fork()
-    if pid == 0:
-        try:
-            os.execvp("connmanctl", ["connmanctl"])
-        finally:
-            os._exit(127)
+    process, fd = spawn("connmanctl")
     output = ""
 
     def read_until(patterns, seconds):
@@ -283,10 +297,7 @@ def connect_with_agent(service_id, passphrase):
             os.close(fd)
         except OSError:
             pass
-        try:
-            os.waitpid(pid, 0)
-        except OSError:
-            pass
+        stop(process)
 
 
 if __name__ == "__main__":
