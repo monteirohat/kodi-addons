@@ -73,6 +73,20 @@ def bluetooth(d, p):
     rune(d, p(64), p(12), p(104), p(12))
 
 
+def bluetooth_off(d, p):
+    """The rune, faint, crossed by a line: the Bluetooth is off."""
+    rune(d, p(64), p(12), p(104), p(12), fill=110)
+    d.line([(p(18), p(14)), (p(110), p(116))], fill=0, width=p(26))
+    d.line([(p(18), p(14)), (p(110), p(116))], fill=255, width=p(12))
+
+
+def bluetooth_connected(d, p):
+    """The rune with a dot on each side: a device is connected."""
+    rune(d, p(64), p(12), p(104), p(12))
+    for x in (14, 114):
+        d.ellipse((p(x - 9), p(55), p(x + 9), p(73)), fill=255)
+
+
 def headphones(d, p):
     d.arc((p(14), p(14), p(114), p(114)), start=180, end=360, fill=255, width=p(12))
     d.rectangle((p(14), p(62), p(26), p(80)), fill=255)
@@ -153,7 +167,8 @@ def main():
     render(512, 512, lambda d, s: mark(d, 0, 8 * s, 512 * s), BG).save(os.path.join(RESOURCES, "icon.png"), optimize=True)
     render(256, 256, lambda d, s: mark(d, 0, 4 * s, 256 * s), (0, 0, 0, 0), "RGBA").save(os.path.join(MEDIA, "logo.png"), optimize=True)
     render(1280, 720, fanart, BG).save(os.path.join(RESOURCES, "fanart.jpg"), quality=90, optimize=True)
-    for name, paint in (("bluetooth.png", bluetooth), ("headphones.png", headphones), ("speaker.png", speaker),
+    for name, paint in (("bluetooth.png", bluetooth), ("bluetooth-off.png", bluetooth_off),
+                        ("bluetooth-connected.png", bluetooth_connected), ("headphones.png", headphones), ("speaker.png", speaker),
                         ("keyboard.png", keyboard), ("mouse.png", mouse), ("gamepad.png", gamepad), ("phone.png", phone),
                         ("computer.png", computer), ("tv.png", tv), ("printer.png", printer)):
         glyph(name, paint)

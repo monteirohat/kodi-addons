@@ -47,7 +47,7 @@ def adapter_card():
     """The Bluetooth of this device and its switch, under the sections."""
     return [image(60, 290, 480, 2, "white.png", RAISED),
             label(64, 310, 470, 36, f"$ADDON[{ADDON_ID} 30005]", "font12", ACCENT),
-            image(64, 360, 56, 56, "bluetooth.png", TEXT2),
+            image(64, 360, 56, 56, "$INFO[Window.Property(adapter_icon)]", TEXT2),
             label(140, 348, 400, 40, "$INFO[Window.Property(adapter_name)]", "font13", TEXT),
             label(140, 388, 400, 34, "$INFO[Window.Property(adapter_state)]", "font12", TEXT2),
             textbox_hint(),

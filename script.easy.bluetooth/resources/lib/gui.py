@@ -200,6 +200,10 @@ class MainWindow(xbmcgui.WindowXML):
                 state += "  ·  " + (text(30009) if connected == 1 else text(30010, connected))
             self.setProperty("adapter_state", state)
         self.getControl(POWER_BUTTON).setLabel(text(30021 if self.adapter and self.adapter["powered"] else 30022))
+        # The icon of the home screen follows at once, without waiting for the service.
+        icon = bluetooth.icon()
+        xbmcgui.Window(10000).setProperty("EasyBluetooth.Icon", icon)
+        self.setProperty("adapter_icon", os.path.join(MEDIA, icon))
         if self.section == "devices":
             self.show_paired()
 

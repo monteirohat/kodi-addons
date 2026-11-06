@@ -35,7 +35,7 @@ Headphones and speakers show as audio devices of Kodi. To hear the sound through
 
 ## With the Monteiro skin
 
-The Bluetooth button at the top right of the home screen of the Monteiro skin, next to Wi-Fi, opens Easy Bluetooth, or offers to install it.
+The Bluetooth button at the top right of the home screen of the Monteiro skin, next to Wi-Fi, opens Easy Bluetooth, or offers to install it. While Easy Bluetooth is installed, a service keeps the icon of that button up to date every 10 seconds: crossed when the Bluetooth is off, with a dot on each side while a device is connected, and plain otherwise.
 
 ## Requirements
 
@@ -46,6 +46,7 @@ Easy Bluetooth uses BlueZ, the Bluetooth of Linux, and its command line tool `bl
 | Path | Purpose |
 | --- | --- |
 | `default.py` | Opens the main window. |
+| `service.py` | Keeps the icon of the Bluetooth for the home screen of the Monteiro skin, in the window property `EasyBluetooth.Icon` of the home screen. |
 | `resources/lib/gui.py` | Main window, the modal of a device and pairing. |
 | `resources/lib/bluetooth.py` | BlueZ: the adapter, the devices and their details, connecting, trusting, forgetting, searching and pairing. It does not import Kodi modules: `python3 resources/lib/bluetooth.py` searches for 10 seconds and prints what it found. |
 | `resources/skins/default/` | Window layouts and icons. |

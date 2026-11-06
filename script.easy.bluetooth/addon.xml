@@ -1,11 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<addon id="script.easy.bluetooth" name="Easy Bluetooth" version="1.0.0" provider-name="Monteiro">
+<addon id="script.easy.bluetooth" name="Easy Bluetooth" version="1.0.1" provider-name="Monteiro">
   <requires>
     <import addon="xbmc.python" version="3.0.1" />
   </requires>
   <extension point="xbmc.python.script" library="default.py">
     <provides>executable</provides>
   </extension>
+  <extension point="xbmc.service" library="service.py" />
   <extension point="xbmc.addon.metadata">
     <summary lang="en_GB">Pair and connect Bluetooth devices, for the remote control</summary>
     <summary lang="pt_BR">Pareie e conecte dispositivos Bluetooth, pelo controle remoto</summary>
@@ -15,7 +16,7 @@
     <license>MIT</license>
     <website>https://github.com/monteirohat/kodi-addons</website>
     <source>https://github.com/monteirohat/kodi-addons/tree/main/script.easy.bluetooth</source>
-    <news>1.0.0 - First release.</news>
+    <news>1.0.1 - A service keeps the Bluetooth icon of the home screen of the Monteiro skin up to date: crossed when the Bluetooth is off, with dots while a device is connected. 1.0.0 - First release.</news>
     <assets>
       <icon>resources/icon.png</icon>
       <fanart>resources/fanart.jpg</fanart>

@@ -175,7 +175,7 @@
       <top>360</top>
       <width>56</width>
       <height>56</height>
-      <texture colordiffuse="FF9C9EA6">bluetooth.png</texture>
+      <texture colordiffuse="FF9C9EA6">$INFO[Window.Property(adapter_icon)]</texture>
     </control>
     <control type="label">
       <left>140</left>

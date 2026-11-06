@@ -113,6 +113,20 @@ def adapter():
             "discovering": values.get("Discovering") == "yes"}
 
 
+def icon():
+    """The icon of the Bluetooth for the home screen of the Monteiro skin: bluetooth-off.png when it is off,
+    bluetooth-connected.png while a device is connected, or bluetooth.png."""
+    if not service_active():
+        return "bluetooth-off.png"
+    state = adapter()
+    if not state or not state["powered"]:
+        return "bluetooth-off.png"
+    try:
+        return "bluetooth-connected.png" if devices("Connected") else "bluetooth.png"
+    except BluetoothError:
+        return "bluetooth.png"
+
+
 def set_powered(on):
     run("power", "on" if on else "off")
 

@@ -340,6 +340,7 @@ SHORTCUTS = [
     (31050, "speed.png", "RunAddon(script.easy.speed)", "System.HasAddon(script.easy.speed)"),
     (31003, "puzzle.png", "ActivateWindow(addonbrowser,addons://user/all,return)", None),
 ]
+# The services of Easy Connect and Easy Bluetooth name an image of the media of the skin; a texture needs its full path.
 # Wi-Fi opens Easy Connect, or offers to install it on LibreELEC, whose network manager it uses. Elsewhere it opens the
 # system information. Its icon shows the signal, which the service of Easy Connect keeps in a property of the home
 # screen; without it, the plain Wi-Fi icon shows.
@@ -348,11 +349,14 @@ LIBREELEC = "System.HasAddon(service.libreelec.settings)"
 WIFI_ACTION = ('<onclick condition="%s">RunAddon(script.easy.connect)</onclick>\n'
                '<onclick condition="!%s + %s">InstallAddon(script.easy.connect)</onclick>\n'
                '<onclick condition="!%s + !%s">ActivateWindow(systeminfo)</onclick>' % (CONNECT, CONNECT, LIBREELEC, CONNECT, LIBREELEC))
-WIFI_ICON = "$INFO[Window(Home).Property(EasyConnect.Icon)]"
+WIFI_ICON = "$INFO[Window(Home).Property(EasyConnect.Icon),special://skin/media/]"
 # Bluetooth opens Easy Bluetooth, or offers to install it. It shows on LibreELEC, and wherever Easy Bluetooth is installed.
+# Its icon shows whether the Bluetooth is off or a device is connected, which the service of Easy Bluetooth keeps in a
+# property of the home screen.
 BLUETOOTH = "System.HasAddon(script.easy.bluetooth)"
 BLUETOOTH_ACTION = ('<onclick condition="%s">RunAddon(script.easy.bluetooth)</onclick>\n'
                     '<onclick condition="!%s">InstallAddon(script.easy.bluetooth)</onclick>' % (BLUETOOTH, BLUETOOTH))
+BLUETOOTH_ICON = "$INFO[Window(Home).Property(EasyBluetooth.Icon),special://skin/media/]"
 
 
 
@@ -420,7 +424,7 @@ def home():
     tiles = home_row(9000, left, top, tile, tile, gap, count, tile_parts, (9100, 9200, HOME_ITEMS))
     pills = home_row(9200, left, top + tile + row_gap, pill, pill_height, gap, len(SHORTCUTS), pill_parts, (9000, "noop", SHORTCUTS))
     # Wi-Fi, settings and power at the top right. Up from the tiles goes to power, the nearest to the clock.
-    top_buttons = (round_button(9103, 1520, 44, "bluetooth.png", BLUETOOTH_ACTION, nav={"down": 9000, "left": "noop", "right": 9102},
+    top_buttons = (round_button(9103, 1520, 44, BLUETOOTH_ICON, BLUETOOTH_ACTION, fallback="bluetooth.png", nav={"down": 9000, "left": "noop", "right": 9102},
                                 visible="%s | %s" % (BLUETOOTH, LIBREELEC))
                    + round_button(9102, 1616, 44, WIFI_ICON, WIFI_ACTION, fallback="wifi.png", nav={"down": 9000, "left": 9103, "right": 9101})
                    + round_button(9101, 1712, 44, "gear.png", "ActivateWindow(settings)", nav={"down": 9000, "left": 9102, "right": 9100})
@@ -1520,7 +1524,7 @@ def media():
                                     "pause.png", "player_play.png"]),
                           (speed, ["speed.png"]),
                           (connect, ["wifi-0.png", "wifi-1.png", "wifi-2.png", "wifi-3.png", "wifi-off.png", "cable.png"]),
-                          (os.path.join(ROOT, "script.easy.bluetooth", "resources", "skins", "default", "media"), ["bluetooth.png"])):
+                          (os.path.join(ROOT, "script.easy.bluetooth", "resources", "skins", "default", "media"), ["bluetooth.png", "bluetooth-off.png", "bluetooth-connected.png"])):
         for name in names:
             shutil.copy2(os.path.join(folder, name), os.path.join(MEDIA, name))
     shutil.copy2(os.path.join(ROOT, "repository.monteiromedia", "resources", "icon.png"), os.path.join(MEDIA, "logo.png"))
