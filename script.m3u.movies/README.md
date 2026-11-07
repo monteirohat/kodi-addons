@@ -116,11 +116,11 @@ Movies and episodes play with the controls of Easy Movie, in the style of stream
 | Key | Controls hidden | Controls shown |
 | --- | --- | --- |
 | **OK**, **Up**, **Down**, **Info**, **Menu**, **Fast forward** or **Rewind** | Show the controls. | Use the highlighted button. |
-| **Left / Right** | Go back or forward 10 seconds, showing the controls with the back or forward button lit. Presses add up, so three presses skip 30 seconds, and the arrows keep skipping until the controls hide. | Move between the buttons. |
+| **Left / Right** | Go back or forward 10 seconds, showing the controls with the time bar highlighted. Presses add up, so three presses skip 30 seconds, and holding an arrow keeps skipping. **OK** then moves to the buttons. | Move between the buttons. |
 | **Back** | Stop the movie. Its progress is kept. | Hide the controls. |
 | **Play / Pause**, **Stop**, volume | Work as usual in Kodi. | Work as usual in Kodi. |
 
-In the last minute of an episode, or the last tenth of a short one, the controls show with **Next episode** above the time bar, with the season and number of the next episode of your lists, when there is one. It has the focus, so **OK** plays it, and the controls stay while it is offered. **Back** hides the controls and puts the button away for the rest of the episode. From the other buttons, **Up** reaches it. The next episode starts where it stopped when it was started before. It does not play by itself when the episode ends.
+In the last minute of an episode, or the last tenth of a short one, the controls show with **Next episode** above the time bar, with the season and number of the next episode of your lists, when there is one. It has the focus, so **OK** plays it, and the controls stay while it is offered, also after a skip with the arrows. **Back** hides the controls, and showing them again brings the button back, with the focus, until the episode ends. From the other buttons, **Up** reaches it. The next episode starts where it stopped when it was started before. It does not play by itself when the episode ends.
 
 **Subtitles** lists the subtitles of the video and subtitle files next to it, such as `Movie.pt-BR.srt`, with **Off** first. **Audio** lists the audio tracks, such as the Portuguese and English tracks of a dual audio release. The current track has a check mark. Select a track with **OK**, or close the panel with **Back**.
 

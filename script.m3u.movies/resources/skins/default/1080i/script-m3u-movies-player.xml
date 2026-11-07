@@ -22,6 +22,29 @@
         <texturebg colordiffuse="4DFFFFFF">white.png</texturebg>
         <midtexture colordiffuse="FF3B8BFF">white.png</midtexture>
       </control>
+      <!-- The time bar takes the focus while the arrows skip, drawn thicker and brighter then. -->
+      <control type="progress" id="301">
+        <left>120</left>
+        <top>860</top>
+        <width>1680</width>
+        <height>16</height>
+        <texturebg colordiffuse="66FFFFFF">white.png</texturebg>
+        <midtexture colordiffuse="FF3B8BFF">white.png</midtexture>
+        <visible>Control.HasFocus(207)</visible>
+      </control>
+      <control type="button" id="207">
+        <left>120</left>
+        <top>840</top>
+        <width>1680</width>
+        <height>56</height>
+        <onup>noop</onup>
+        <ondown>noop</ondown>
+        <onleft>noop</onleft>
+        <onright>noop</onright>
+        <texturefocus>-</texturefocus>
+        <texturenofocus>-</texturenofocus>
+        <label></label>
+      </control>
       <control type="label">
         <left>120</left>
         <top>816</top>

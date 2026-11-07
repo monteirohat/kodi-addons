@@ -394,6 +394,28 @@ def player_screen():
   <texturebg colordiffuse="4DFFFFFF">white.png</texturebg>
   <midtexture colordiffuse="{ACCENT}">white.png</midtexture>
 </control>""",
+        f"""<!-- The time bar takes the focus while the arrows skip, drawn thicker and brighter then. -->
+<control type="progress" id="301">
+  <left>120</left>
+  <top>860</top>
+  <width>1680</width>
+  <height>16</height>
+  <texturebg colordiffuse="66FFFFFF">white.png</texturebg>
+  <midtexture colordiffuse="{ACCENT}">white.png</midtexture>{skin.visible(has(207))}
+</control>""",
+        f"""<control type="button" id="207">
+  <left>120</left>
+  <top>840</top>
+  <width>1680</width>
+  <height>56</height>
+  <onup>noop</onup>
+  <ondown>noop</ondown>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <texturefocus>-</texturefocus>
+  <texturenofocus>-</texturenofocus>
+  <label></label>
+</control>""",
         label(120, 816, 600, 40, "$INFO[Window.Property(elapsed)]", "font12", TEXT),
         label(1200, 816, 600, 40, "$INFO[Window.Property(duration)]", "font12", TEXT2, align="right")]
     controls = [

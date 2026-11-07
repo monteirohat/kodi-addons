@@ -31,7 +31,9 @@ ACTION_BACK = (10, 92)
 # Kodi handles itself.
 ACTION_SHOW = (11, 12, 24, 68, 77, 78, 117, 229)
 SUBTITLES, BACK, PLAY, FORWARD, AUDIO, NEXT = 201, 202, 203, 204, 205, 206
-PROGRESS, TRACKS = 300, 400
+# The time bar takes the focus while the arrows skip, so they do not move between the buttons. It is drawn thicker then.
+TIME_BAR = 207
+PROGRESS, PROGRESS_FOCUSED, TRACKS = 300, 301, 400
 SKIP = 10
 # Seconds without keys before the controls hide, and before the time bar of a skip hides.
 HIDE_AFTER, BAR_HIDE_AFTER = 5, 3
@@ -231,8 +233,8 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
         self.online = kwargs.get("online")
         # The (season, number) of the next episode, and what plays it, when there is one.
         self.following, self.on_next = kwargs.get("following"), kwargs.get("on_next")
-        # Whether the next episode is offered, and whether Back put the offer away.
-        self.offering = self.dismissed = False
+        # Whether the next episode is offered. It shows with the controls.
+        self.offering = False
         # Whether the subtitles panel shows the online search still running.
         self.online_waiting = False
         self.mode = ""
@@ -257,6 +259,7 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
         if self.following:
             self.setProperty("next_label", text(30373, text(30133, *self.following)))
         self.progress = self.getControl(PROGRESS)
+        self.progress_focused = self.getControl(PROGRESS_FOCUSED)
         self.track_list = self.getControl(TRACKS)
         threading.Thread(target=self.loop, daemon=True).start()
 
@@ -306,14 +309,15 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
                     pass
             if self.panel == "subtitles" and self.online_waiting and self.online.results is not None:
                 self.open_panel("subtitles", self.track_list.getSelectedPosition())
-            if self.on_next and not self.dismissed:
+            if self.on_next:
                 self.offer_next()
             if not self.mode:
                 continue
             self.update_time()
             idle = now - self.last_key
             if self.mode == "bar" and idle > BAR_HIDE_AFTER and self.seek_target is None:
-                self.set_mode("")
+                # After a skip near the end, the controls stay, with the next episode button to press.
+                self.set_mode("full" if self.offering else "")
             elif self.mode == "full" and idle > HIDE_AFTER and not self.panel and not self.offering \
                     and not xbmc.getCondVisibility("Player.Paused"):
                 self.set_mode("")
@@ -330,18 +334,12 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
         self.offering = offering
         self.setProperty("next", "true" if offering else "")
         if offering and not self.panel:
-            # The controls show with the button, and stay while it is offered.
+            # The controls show with the button once, and stay while it is offered until Back hides them.
             if self.mode == "full":
                 self.focus(NEXT)
             else:
                 self.set_mode("full")
         elif not offering and self.getFocusId() == NEXT:
-            self.focus(PLAY)
-
-    def hide_next(self):
-        self.dismissed, self.offering = True, False
-        self.setProperty("next", "")
-        if self.getFocusId() == NEXT:
             self.focus(PLAY)
 
     def update_time(self):
@@ -356,7 +354,8 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
                 position = self.shown_target
         self.setProperty("elapsed", clock(position))
         self.setProperty("duration", clock(total) if total else "")
-        self.progress.setPercent(100.0 * position / total if total else 0)
+        for control in (self.progress, self.progress_focused):
+            control.setPercent(100.0 * position / total if total else 0)
 
     # Keys
 
@@ -372,16 +371,14 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
             return
         if self.mode == "full":
             if action_id in ACTION_BACK:
-                # Back also puts away the next episode, which would otherwise bring the controls back.
-                if self.offering:
-                    self.hide_next()
                 self.set_mode("")
             return
         if action_id in (ACTION_LEFT, ACTION_RIGHT):
-            # The controls show while skipping, with the back or forward button lit, and the arrows keep skipping.
+            # The controls show while skipping, with the time bar focused, and the arrows keep skipping.
             self.skip(-SKIP if action_id == ACTION_LEFT else SKIP)
             self.set_mode("bar")
-            self.focus(BACK if action_id == ACTION_LEFT else FORWARD)
+            if self.getFocusId() != TIME_BAR:
+                self.focus(TIME_BAR)
         elif action_id in ACTION_BACK:
             # Back leaves the movie, as in streaming apps. The watcher keeps how far it was watched.
             self.player.stop()
@@ -394,8 +391,10 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
         if control_id == TRACKS:
             self.choose_track(self.track_list.getSelectedPosition())
         elif control_id == NEXT:
-            if self.offering:
-                self.hide_next()
+            # Not with the OK that only showed the controls.
+            if self.offering and self.mode == "full" and time.time() - self.shown_at >= 0.5:
+                self.offering = False
+                self.setProperty("next", "")
                 self.on_next()
         elif self.mode != "full" or self.panel or time.time() - self.shown_at < 0.5:
             return
