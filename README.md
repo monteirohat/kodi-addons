@@ -168,7 +168,7 @@ Read the [Easy Channel guide](script.m3u.channels/README.md) for every feature a
 - Lists from a web address, a file, or GitHub, with a suggested repository of public domain movies.
 - The same list manager, checks, favorites and failure detection as Easy Channel, in the same design.
 - Folders with your own videos, on the SD card, USB drives or network shares, with posters and details from Cinemeta.
-- A catalog of the movies and series of Cinemeta, with **My list**, and Stremio addons added by their address, whose sources go to a torrent download manager or play at once.
+- The movies and series of Cinemeta and of Stremio addons added by their address, on the same screen as your lists, whose sources go to a torrent download manager or play at once. What is downloaded opens with a green check.
 - With an empty library, selecting **Movies** or **TV shows** in Kodi's main menu opens Easy Movie.
 
 <img src=".github/assets/easy-movie.gif" alt="Easy Movie: genres, posters, movie details and the Cinemeta catalog" width="860">

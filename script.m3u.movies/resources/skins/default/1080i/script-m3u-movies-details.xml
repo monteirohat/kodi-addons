@@ -33,6 +33,22 @@
       <texture fallback="film.png">$INFO[Window.Property(poster)]</texture>
     </control>
     <control type="image">
+      <left>316</left>
+      <top>186</top>
+      <width>44</width>
+      <height>44</height>
+      <texture border="16" colordiffuse="FF0E0F11">panel.png</texture>
+      <visible>!String.IsEmpty(Window.Property(downloaded))</visible>
+    </control>
+    <control type="image">
+      <left>320</left>
+      <top>190</top>
+      <width>36</width>
+      <height>36</height>
+      <texture colordiffuse="FF3DD68C">check.png</texture>
+      <visible>!String.IsEmpty(Window.Property(downloaded))</visible>
+    </control>
+    <control type="image">
       <left>660</left>
       <top>196</top>
       <width>36</width>
@@ -78,6 +94,26 @@
       <font>font12</font>
       <textcolor>FF9C9EA6</textcolor>
       <label>$INFO[Window.Property(list)]</label>
+      <visible>!!String.IsEmpty(Window.Property(downloaded))</visible>
+    </control>
+    <control type="image">
+      <left>760</left>
+      <top>410</top>
+      <width>28</width>
+      <height>28</height>
+      <texture colordiffuse="FF3DD68C">check.png</texture>
+      <visible>!String.IsEmpty(Window.Property(downloaded))</visible>
+    </control>
+    <control type="label">
+      <left>800</left>
+      <top>404</top>
+      <width>810</width>
+      <height>40</height>
+      <aligny>center</aligny>
+      <font>font12</font>
+      <textcolor>FF3DD68C</textcolor>
+      <label>$INFO[Window.Property(downloaded)]</label>
+      <visible>!String.IsEmpty(Window.Property(downloaded))</visible>
     </control>
     <!-- Description from Cinemeta, for the videos of folders -->
     <control type="textbox">

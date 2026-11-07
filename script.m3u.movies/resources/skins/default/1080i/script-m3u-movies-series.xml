@@ -33,6 +33,22 @@
       <texture fallback="film.png">$INFO[Window.Property(poster)]</texture>
     </control>
     <control type="image">
+      <left>216</left>
+      <top>136</top>
+      <width>44</width>
+      <height>44</height>
+      <texture border="16" colordiffuse="FF0E0F11">panel.png</texture>
+      <visible>!String.IsEmpty(Window.Property(downloaded))</visible>
+    </control>
+    <control type="image">
+      <left>220</left>
+      <top>140</top>
+      <width>36</width>
+      <height>36</height>
+      <texture colordiffuse="FF3DD68C">check.png</texture>
+      <visible>!String.IsEmpty(Window.Property(downloaded))</visible>
+    </control>
+    <control type="image">
       <left>522</left>
       <top>146</top>
       <width>34</width>
@@ -68,6 +84,26 @@
       <font>font13</font>
       <textcolor>FF3B8BFF</textcolor>
       <label>$INFO[Window.Property(group)]</label>
+      <visible>!!String.IsEmpty(Window.Property(downloaded))</visible>
+    </control>
+    <control type="image">
+      <left>620</left>
+      <top>288</top>
+      <width>28</width>
+      <height>28</height>
+      <texture colordiffuse="FF3DD68C">check.png</texture>
+      <visible>!String.IsEmpty(Window.Property(downloaded))</visible>
+    </control>
+    <control type="label">
+      <left>660</left>
+      <top>282</top>
+      <width>1060</width>
+      <height>40</height>
+      <aligny>center</aligny>
+      <font>font13</font>
+      <textcolor>FF3DD68C</textcolor>
+      <label>$INFO[Window.Property(downloaded)]</label>
+      <visible>!String.IsEmpty(Window.Property(downloaded))</visible>
     </control>
     <!-- Description from Cinemeta, below the poster -->
     <control type="textbox">
@@ -218,13 +254,21 @@
           <top>19</top>
           <width>32</width>
           <height>32</height>
-          <texture colordiffuse="FF3B8BFF">check.png</texture>
+          <texture colordiffuse="FF3DD68C">check.png</texture>
+          <visible>String.IsEqual(ListItem.Property(downloaded),true)</visible>
+        </control>
+        <control type="image">
+          <left>804</left>
+          <top>19</top>
+          <width>32</width>
+          <height>32</height>
+          <texture colordiffuse="FF62656D">eye.png</texture>
           <visible>String.IsEqual(ListItem.Property(watched),true)</visible>
         </control>
         <control type="label">
           <left>72</left>
           <top>0</top>
-          <width>780</width>
+          <width>716</width>
           <height>70</height>
           <aligny>center</aligny>
           <font>font13</font>
@@ -265,13 +309,21 @@
           <top>19</top>
           <width>32</width>
           <height>32</height>
-          <texture colordiffuse="FF3B8BFF">check.png</texture>
+          <texture colordiffuse="FF3DD68C">check.png</texture>
+          <visible>String.IsEqual(ListItem.Property(downloaded),true) + Control.HasFocus(400)</visible>
+        </control>
+        <control type="image">
+          <left>804</left>
+          <top>19</top>
+          <width>32</width>
+          <height>32</height>
+          <texture colordiffuse="FFD6E6FF">eye.png</texture>
           <visible>String.IsEqual(ListItem.Property(watched),true) + Control.HasFocus(400)</visible>
         </control>
         <control type="label">
           <left>72</left>
           <top>0</top>
-          <width>780</width>
+          <width>716</width>
           <height>70</height>
           <aligny>center</aligny>
           <scroll>true</scroll>
@@ -297,13 +349,21 @@
           <top>19</top>
           <width>32</width>
           <height>32</height>
-          <texture colordiffuse="FF3B8BFF">check.png</texture>
+          <texture colordiffuse="FF3DD68C">check.png</texture>
+          <visible>String.IsEqual(ListItem.Property(downloaded),true) + !Control.HasFocus(400)</visible>
+        </control>
+        <control type="image">
+          <left>804</left>
+          <top>19</top>
+          <width>32</width>
+          <height>32</height>
+          <texture colordiffuse="FF9C9EA6">eye.png</texture>
           <visible>String.IsEqual(ListItem.Property(watched),true) + !Control.HasFocus(400)</visible>
         </control>
         <control type="label">
           <left>72</left>
           <top>0</top>
-          <width>780</width>
+          <width>716</width>
           <height>70</height>
           <aligny>center</aligny>
           <font>font13</font>

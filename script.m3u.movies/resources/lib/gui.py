@@ -34,17 +34,15 @@ RESUME_AFTER = 60
 GROUP_TITLE, GROUP_COUNT, CHANNELS_EMPTY = 401, 402, 403
 MANAGER_LISTS, MANAGER_EMPTY = 100, 300
 MANAGER_ADD, MANAGER_SETTINGS, MANAGER_CLOSE, MANAGER_GITHUB, MANAGER_REMOVED = 201, 202, 203, 204, 205
-CATALOG_TABS, CATALOG_ADDONS, CATALOG_WATCH, CATALOG_MY_LIST, CATALOG_SOURCES = 100, 101, 201, 202, 203
+CATALOG_WATCH, CATALOG_MY_LIST, CATALOG_SOURCES = 201, 202, 203
 SOURCES_LIST, SOURCES_EMPTY = 100, 300
 # Direct links waiting for the background service, which downloads them. See direct.py.
 DIRECT_JOBS = os.path.join(storage.PROFILE, "direct")
 ADDONS_LIST, ADDONS_ADD, ADDONS_CLOSE = 100, 201, 203
-# Types of addon catalogs shown in each tab of the catalog. Anime catalogs list mostly series.
-TAB_TYPES = {"movie": ("movie",), "series": ("series", "anime")}
+# Types of the addon catalogs that are shown.
+CATALOG_TYPES = ("movie", "series", "anime")
 RESOURCE_NAMES = {"catalog": 30284, "meta": 30287, "stream": 30285, "subtitles": 30286}
 TYPE_NAMES = {"movie": 30201, "series": 30117, "channel": 30288}
-# Position of Popular in the categories of the catalog, the one shown first.
-MY_LIST_CATEGORY, POPULAR_CATEGORY = 0, 2
 # The catalog loads its next page when the selection gets this close to the last poster.
 LOAD_MORE_BEFORE = 12
 DOWNLOADS_LIST, DOWNLOADS_EMPTY = 100, 300
@@ -62,10 +60,10 @@ LOOKUP_WORKERS = 4
 
 # Toolbar above the groups: icon, label and the MainWindow method it runs. Add new tools here.
 TOOLS = [
-    ("gear.png", 30061, "open_manager"),
     ("search.png", 30002, "search"),
-    ("catalog.png", 30200, "open_catalog"),
     ("check.png", 30016, "check_group"),
+    ("puzzle.png", 30270, "open_addons"),
+    ("gear.png", 30061, "open_manager"),
     ("download.png", 30160, "open_downloads"),
 ]
 
@@ -141,8 +139,61 @@ def item_id(item):
     return "series:" + item["key"] if item.get("series") else item["channel"]["id"]
 
 
+def is_title(item):
+    """Whether an item is a title of the catalog, which has no list, and not an entry of the lists."""
+    return "list" not in item
+
+
+def favorite_key(item):
+    return item["id"] if is_title(item) else item_id(item)
+
+
+def type_name(kind):
+    return text(TYPE_NAMES[kind]) if kind in TYPE_NAMES else kind.capitalize()
+
+
 def item_name(item):
     return item["name"] if item.get("series") else item["channel"]["name"]
+
+
+def item_aliases(item):
+    """Other identities of a series joined from several, which its favorites may have been saved under."""
+    return ["series:" + key for key in item.get("aliases", [])]
+
+
+def is_favorite(item, favorites):
+    return any(key in favorites for key in [item_id(item), *item_aliases(item)])
+
+
+def merge_series(shows):
+    """Join the series of the lists that are one title of the catalog, by their Cinemeta id, as a series downloaded
+    from two addons that name it differently. The one with the most episodes keeps its name and poster, and the keys
+    of the others stay as its aliases."""
+    by_id, merged = {}, []
+    for show in shows:
+        meta_id = (show.get("meta") or {}).get("id")
+        if not meta_id:
+            merged.append(show)
+        elif meta_id not in by_id:
+            by_id[meta_id] = [show]
+            merged.append(by_id[meta_id])
+        else:
+            by_id[meta_id].append(show)
+    for index, members in enumerate(merged):
+        if not isinstance(members, list):
+            continue
+        if len(members) == 1:
+            merged[index] = members[0]
+            continue
+        members.sort(key=lambda show: -len(show["episodes"]))
+        show = dict(members[0])
+        show["episodes"] = sorted((entry for member in members for entry in member["episodes"]),
+                                  key=lambda entry: (entry["episode"]["season"], entry["episode"]["number"]))
+        show["seasons"] = sorted({entry["episode"]["season"] for entry in show["episodes"]})
+        show["groups"] = list(dict.fromkeys(group for member in members for group in member["groups"]))
+        show["aliases"] = [key for member in members[1:] for key in [member["key"], *member.get("aliases", [])]]
+        merged[index] = show
+    return merged
 
 
 def item_entries(item):
@@ -269,6 +320,29 @@ def duration_text(seconds):
     return text(30112, hours, minutes) if hours else text(30113, minutes)
 
 
+def season_name(season):
+    # Old cartoons are numbered by year, as in 1940, which is clearer alone.
+    if season == 0:
+        return text(30218)
+    return str(season) if season > 1000 else text(30120, season)
+
+
+def downloaded_text(episodes, downloaded):
+    """What is on the device, for a movie, with episodes None, or for a series. Empty when nothing is."""
+    if not downloaded:
+        return ""
+    if episodes is None:
+        return text(30370)
+    return text(30372) if episodes == 1 else text(30371, episodes)
+
+
+def show_downloaded(window, downloaded, line, name="library"):
+    """Set the line of a details window that names where a title is. With what is downloaded, it moves to the
+    property downloaded, which the window shows in green after a check."""
+    window.setProperty("downloaded", "  ·  ".join(part for part in (downloaded, line) if part) if downloaded else "")
+    window.setProperty(name, "" if downloaded else line)
+
+
 def export_list(item):
     removed = storage.get_removed()
     try:
@@ -291,19 +365,34 @@ def export_list(item):
 
 
 class MainWindow(xbmcgui.WindowXML):
+    """The toolbar and the groups on the left, posters on the right.
+
+    The first groups hold the movies and series of the lists and folders. After them come the catalogs of Cinemeta
+    and of the addons, which load page by page, and the genres of Cinemeta, with movies and series together. Favorites
+    and the results of a search hold both: entries of the lists and titles of the catalog. Titles of the catalog that
+    are also in the lists can be played from their details.
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.loaded = False
         self.all_entries = []
+        # Each group has its name and either its members, for the lists, or the sources of a catalog.
         self.groups = []
-        self.entries = []
+        # The posters shown: entries of the lists and titles of the catalog.
+        self.items = []
         self.shown_index = -1
         self.shown_name = None
+        # What the posters show: ("group", name) for a group of the lists, or the sources of a catalog.
+        self.shown_key = None
+        # Loaded pages of the catalogs by their sources, so returning to a catalog is instant. page is the one shown.
+        self.pages, self.page = {}, None
+        self.manifests = {}
         self.follow_timer = None
         # A group is built by one call at a time. A newer request stops an older one, see follow_group.
         self.show_lock = threading.Lock()
-        self.follow_requests = itertools.count()
-        self.follow_request = 0
+        self.requests = itertools.count()
+        self.request = 0
         self.grid_position = -1
         self.start_group = None
         self.movies, self.shows, self.catalog, self.progress = [], [], [], {}
@@ -324,8 +413,6 @@ class MainWindow(xbmcgui.WindowXML):
             tools.append(item)
         self.toolbar.addItems(tools)
         self.reload()
-        if not storage.get_lists():
-            self.open_manager()
         self.setFocusId(GROUPS)
 
     # Data
@@ -379,6 +466,8 @@ class MainWindow(xbmcgui.WindowXML):
             art = item if item.get("series") else item["channel"]
             local = art.setdefault("local_logo", art["logo"])
             art["logo"] = local or meta.get("poster") or ("" if item.get("series") else video_thumbnail(local_paths(item)[0]))
+        self.shows = merge_series(self.shows)
+        self.catalog = self.movies + self.shows
 
     def lookup_query(self, item):
         if item.get("series"):
@@ -400,10 +489,14 @@ class MainWindow(xbmcgui.WindowXML):
 
         def lookup(item):
             try:
-                # A video downloaded from the catalog has the details of its title, without a search by its name.
+                # A video downloaded from Cinemeta has the details of its title, without a search by its name. One
+                # downloaded from an addon, whose ids Cinemeta does not know, is searched by the name of its title.
                 origin = next((origins[path] for path in local_paths(item) if origins.get(path, {}).get("id")), None)
-                if origin:
+                if origin and origin["id"].startswith("tt"):
                     return item_id(item), cinemeta.details(origin["kind"], origin["id"]) or {}
+                if origin and origin.get("name"):
+                    year = origin.get("year") or self.addon_year(origin)
+                    return item_id(item), cinemeta.lookup(origin["kind"], origin["name"], year) or {}
                 # An empty result marks a video with no match, so it is not looked up every time.
                 return item_id(item), cinemeta.lookup(*self.lookup_query(item)) or {}
             except Exception:
@@ -423,8 +516,18 @@ class MainWindow(xbmcgui.WindowXML):
 
         threading.Thread(target=run, daemon=True).start()
 
+    def addon_year(self, origin):
+        """The year of a title of an addon, from its details, for the downloads whose catalog page had none. 0 when
+        no addon gives it."""
+        base = next((base for base, manifest in self.manifests.items()
+                     if stremio.has_meta(manifest, origin["kind"], origin["id"])), None)
+        if not base:
+            return 0
+        meta = stremio.meta(base, origin["kind"], origin["id"])
+        return cinemeta.first_year(meta.get("releaseInfo") or meta.get("year")) or 0
+
     def build_groups(self, position=None):
-        """Rebuild the groups from the loaded catalog, for example after playback changed the progress."""
+        """Rebuild the groups from the loaded lists, for example after playback changed the progress."""
         if position is None:
             position = self.channel_list.getSelectedPosition()
         groups = {}
@@ -435,28 +538,79 @@ class MainWindow(xbmcgui.WindowXML):
             for name in show["groups"]:
                 groups.setdefault(name, []).append(show)
         self.progress = storage.get_progress()
-        self.groups = [(text(30116), self.continue_items()), (text(30065), self.favorite_entries()),
-                       (text(30003), self.movies), (text(30117), self.shows)]
-        self.groups += [(name, members) for name, members in groups.items() if name]
+        lists = [(text(30116), self.continue_items()), (text(30065), self.favorite_entries()),
+                 (text(30003), self.movies), (text(30361), self.shows)]
+        lists += [(name, members) for name, members in groups.items() if name]
         if "" in groups:
-            self.groups.append((text(30043), groups[""]))
+            lists.append((text(30043), groups[""]))
+        self.groups = [{"name": name, "members": members} for name, members in lists] + self.catalog_groups()
         self.group_list.reset()
-        self.group_list.addItems([xbmcgui.ListItem(name, str(len(members))) for name, members in self.groups])
-        names = [name for name, _ in self.groups]
+        self.group_list.addItems([xbmcgui.ListItem(group["name"], "" if group.get("sources") else str(len(group["members"])))
+                                  for group in self.groups])
+        names = [group["name"] for group in self.groups]
         if self.shown_name in names:
             index = names.index(self.shown_name)
         elif self.start_group == "series":
             index = SERIES_GROUP
         else:
-            index = next(index for index in (CONTINUE_GROUP, FAVORITES_GROUP, MOVIES_GROUP)
-                         if self.groups[index][1] or index == MOVIES_GROUP)
+            # What is in progress, the favorites or the movies of the lists, else the popular movies of the catalog.
+            index = next((index for index in (CONTINUE_GROUP, FAVORITES_GROUP, MOVIES_GROUP) if self.groups[index]["members"]),
+                         len(lists))
         self.group_list.selectItem(index)
         with self.show_lock:
             self.show_group(index, max(position, 0))
 
+    def catalog_groups(self):
+        """The catalogs of Cinemeta, those of the addons, in the order of each addon, and the genres of Cinemeta."""
+        year = str(time.localtime().tm_year)
+        groups = []
+        for string_id, key in ((30362, ("top", None)), (30364, ("imdbRating", None)), (30366, ("year", year))):
+            groups += [{"name": text(string_id, year), "sources": [("movie", key)]},
+                       {"name": text(string_id + 1, year), "sources": [("series", key)]}]
+        self.manifests = {}
+        for addon in storage.get_addons():
+            manifest, base = addon["manifest"], stremio.base_url(addon["url"])
+            self.manifests[base] = manifest
+            order = {(catalog.get("type"), catalog.get("id")): index for index, catalog in enumerate(manifest.get("catalogs") or [])}
+            found = sorted((order.get((kind, catalog_id), 0), kind, catalog_id, name, pages, named)
+                           for kind in CATALOG_TYPES
+                           for catalog_id, name, named, pages in stremio.browsable_catalogs(manifest, kind))
+            names = [name for _, _, _, name, _, _ in found]
+            for _, kind, catalog_id, name, pages, named in found:
+                # Catalogs of movies and series often share a name, as Netflix, so their type tells them apart.
+                if names.count(name) > 1:
+                    name = "%s  ·  %s" % (name, type_name(kind))
+                # The header names the addon when the group does not, to keep the groups short.
+                groups.append({"name": name, "header": name if named else "%s  ·  %s" % (name, manifest["name"]),
+                               "sources": [(kind, ("addon", base, kind, catalog_id, pages))]})
+        for genre in sorted(GENRES, key=lambda genre: genre_name(genre).casefold()):
+            kinds = ("series",) if genre in SERIES_ONLY_GENRES else ("movie", "series")
+            groups.append({"name": genre_name(genre), "sources": [(kind, ("top", genre)) for kind in kinds]})
+        return groups
+
     def favorite_entries(self):
-        by_id = {item_id(item): item for item in self.catalog}
-        return [by_id[favorite] for favorite in storage.get_favorites() if favorite in by_id]
+        """Favorites of the lists, then the titles saved from the catalog, newest first.
+
+        A title of the catalog that is also in the lists becomes a favorite of the lists, so it shows once, and plays
+        with its progress."""
+        titles = []
+        for title in storage.get_watchlist():
+            entry = self.library_entry(title["kind"], title)
+            if entry is None:
+                titles.append(title)
+                continue
+            storage.toggle_watchlist(title["kind"], title)
+            if not is_favorite(entry, storage.get_favorites()):
+                storage.toggle_favorite(item_id(entry))
+        by_id = {}
+        for item in self.catalog:
+            for key in [item_id(item), *item_aliases(item)]:
+                by_id[key] = item
+        found = []
+        for favorite in storage.get_favorites():
+            if favorite in by_id and not any(item is by_id[favorite] for item in found):
+                found.append(by_id[favorite])
+        return found + titles
 
     def continue_items(self):
         """Movies stopped midway and series with watched episodes left to watch, most recent first."""
@@ -475,70 +629,222 @@ class MainWindow(xbmcgui.WindowXML):
         return [item for _, item in sorted(started, key=lambda pair: -pair[0])]
 
     def show_group(self, index, position=0, stale=None):
-        name, members = self.groups[index]
-        if self.show_entries(name, members, position, stale, index):
-            self.shown_index, self.shown_name = index, name
+        group = self.groups[index]
+        if group.get("sources"):
+            self.shown_index, self.shown_name = index, group["name"]
+            self.open_category(group.get("header", group["name"]), group["sources"], position=position)
+            return
+        if not storage.get_lists() and index in (MOVIES_GROUP, SERIES_GROUP):
+            empty = 30048
+        else:
+            empty = {CONTINUE_GROUP: 30130, FAVORITES_GROUP: 30066}.get(index, 30046)
+        if self.show_items(group["name"], group["members"], position, stale, text(empty)):
+            self.shown_index, self.shown_name = index, group["name"]
+            self.shown_key, self.page = ("group", group["name"]), None
 
-    def show_entries(self, title, entries, position=0, stale=None, group=None):
-        """Show cards in the catalog. Returns False when stale() stopped it before anything changed.
-
-        group is the index of the group shown, which picks the message of an empty group.
-        """
+    def show_items(self, title, items, position=0, stale=None, empty=""):
+        """Show posters. Returns False when stale() stopped it before anything changed. empty is the message shown
+        when there are none."""
         favorites = set(storage.get_favorites())
-        items = []
-        for number, entry in enumerate(entries, 1):
+        watchlist = {item["id"] for item in storage.get_watchlist()}
+        cards = []
+        for number, item in enumerate(items, 1):
             # Building thousands of cards takes a while, so a newer group can stop it.
             if stale and number % 200 == 0 and stale():
                 return False
-            items.append(self.card(entry, favorites))
+            cards.append(self.card(item, favorites, watchlist))
         if stale and stale():
             return False
-        self.entries = entries
+        self.items = items
         self.getControl(GROUP_TITLE).setLabel(title)
-        # Name the group on the check tool, so it is clear which channels it will test.
+        # Name the group on the check tool, so it is clear which movies it will test.
         check_tool = [method for _, _, method in TOOLS].index("check_group")
         self.toolbar.getListItem(check_tool).setLabel(text(30095, title))
-        self.getControl(GROUP_COUNT).setLabel(text(30135) if len(entries) == 1 else text(30132, len(entries)))
+        self.update_count()
         self.channel_list.reset()
-        self.channel_list.addItems(items)
-        if entries:
-            self.channel_list.selectItem(min(position, len(entries) - 1))
-            self.getControl(CHANNELS_EMPTY).setLabel("")
-        elif not storage.get_lists():
-            self.getControl(CHANNELS_EMPTY).setLabel(text(30048))
-        else:
-            empty = {CONTINUE_GROUP: 30130, FAVORITES_GROUP: 30066}.get(group, 30046)
-            self.getControl(CHANNELS_EMPTY).setLabel(text(empty))
+        self.channel_list.addItems(cards)
+        if items:
+            self.channel_list.selectItem(min(position, len(items) - 1))
+        self.getControl(CHANNELS_EMPTY).setLabel("" if items else empty)
         return True
 
-    def card(self, entry, favorites):
-        """Catalog card of a movie or a series, with its detail line and badges."""
-        item = xbmcgui.ListItem(item_name(entry), entry["list_name"])
-        logo = entry["logo"] if entry.get("series") else entry["channel"]["logo"]
-        if logo:
-            item.setArt({"icon": logo, "thumb": logo, "poster": logo})
-        if entry.get("series"):
-            episode, started = next_episode(entry, self.progress)
-            count = len(entry["episodes"])
-            detail = episode_code(episode) if started else (text(30134) if count == 1 else text(30127, count))
-            watched = all(self.progress.get(each["channel"]["id"], {}).get("watched") for each in entry["episodes"])
-        else:
-            state = self.progress.get(entry["channel"]["id"], {})
-            detail = text(30126, time_text(state["position"])) if resumable(state) else duration_text(entry["channel"]["duration"])
-            watched = state.get("watched", False)
-        item.setProperty("duration", detail)
-        item.setProperty("favorite", "true" if item_id(entry) in favorites else "false")
-        item.setProperty("watched", "true" if watched else "false")
-        return item
+    def update_count(self):
+        count = len(self.items)
+        self.getControl(GROUP_COUNT).setLabel("" if not count else text(30135) if count == 1 else text(30132, count))
 
-    def selected_entry(self):
+    def card(self, item, favorites, watchlist):
+        """Poster of a movie or a series, with its detail line and badges."""
+        if is_title(item):
+            return self.title_card(item, watchlist)
+        card = xbmcgui.ListItem(item_name(item), item["list_name"])
+        logo = item["logo"] if item.get("series") else item["channel"]["logo"]
+        if logo:
+            card.setArt({"icon": logo, "thumb": logo, "poster": logo})
+        if item.get("series"):
+            episode, started = next_episode(item, self.progress)
+            count = len(item["episodes"])
+            detail = episode_code(episode) if started else (text(30134) if count == 1 else text(30127, count))
+            watched = all(self.progress.get(each["channel"]["id"], {}).get("watched") for each in item["episodes"])
+        else:
+            state = self.progress.get(item["channel"]["id"], {})
+            detail = text(30126, time_text(state["position"])) if resumable(state) else duration_text(item["channel"]["duration"])
+            watched = state.get("watched", False)
+        card.setProperty("duration", detail)
+        card.setProperty("favorite", "true" if is_favorite(item, favorites) else "false")
+        card.setProperty("watched", "true" if watched else "false")
+        return card
+
+    def title_card(self, item, watchlist):
+        card = xbmcgui.ListItem(item["name"])
+        if item.get("poster"):
+            card.setArt({"icon": item["poster"], "thumb": item["poster"], "poster": item["poster"]})
+        parts = [str(item["year"])] if item.get("year") else []
+        if item.get("rating"):
+            parts.append(text(30155, item["rating"]))
+        # One space around the dot, so the rating fits under the poster.
+        card.setProperty("duration", " · ".join(parts))
+        card.setProperty("favorite", "true" if item["id"] in watchlist else "false")
+        return card
+
+    def selected_item(self):
         position = self.channel_list.getSelectedPosition()
-        return self.entries[position] if 0 <= position < len(self.entries) else None
+        return self.items[position] if 0 <= position < len(self.items) else None
+
+    # Catalogs
+
+    def open_category(self, title, sources, prefix=(), position=0):
+        """Show a catalog: at once when its first page is loaded, otherwise once it loads on a thread. sources are
+        the (kind, key) its titles come from, and prefix are entries of the lists shown before them, as in a search."""
+        key = tuple(sources)
+        self.shown_key = key
+        page = self.pages.get(key)
+        if page and not page["loading"]:
+            self.page = page
+            self.show_items(title, page["items"], position, empty=text(30209))
+            return
+        self.page = None
+        self.show_items(title, list(prefix), empty=text(30207))
+        if page:
+            # Its first page is still loading, and shows when it arrives.
+            return
+        page = self.pages[key] = {"items": list(prefix), "skips": [0] * len(sources), "more": [True] * len(sources),
+                                  "loading": True}
+
+        def run():
+            try:
+                found = self.fetch_next(sources, page)
+            except Exception as error:
+                del self.pages[key]
+                if self.shown_key == key:
+                    self.getControl(CHANNELS_EMPTY).setLabel(text(30208, error))
+                return
+            with self.show_lock:
+                page["items"] += found
+                page["loading"] = False
+                if self.shown_key == key:
+                    self.page = page
+                    selected = self.channel_list.getSelectedPosition() if prefix else 0
+                    self.show_items(title, page["items"], max(selected, 0), empty=text(30209))
+
+        threading.Thread(target=run, daemon=True).start()
+
+    def fetch_next(self, sources, page):
+        """The next titles of a catalog: the next page of each of its sources that has more, taken in turns. Raises
+        the error of the first source when none could be loaded."""
+        wanted = [index for index, more in enumerate(page["more"]) if more]
+
+        def get(index):
+            kind, key = sources[index]
+            try:
+                return self.fetch(kind, key, page["skips"][index]), None
+            except Exception as error:
+                return [], error
+
+        if not wanted:
+            return []
+        with ThreadPoolExecutor(max_workers=len(wanted)) as executor:
+            results = list(executor.map(get, wanted))
+        if all(error for _, error in results):
+            raise results[0][1]
+        known = {item["id"] for item in page["items"] if is_title(item)}
+        found = []
+        for index, (metas, error) in zip(wanted, results):
+            kind, key = sources[index]
+            new = self.unique(metas, known, kind, key)
+            page["skips"][index] += len(metas)
+            page["more"][index] = not error and bool(new) and self.pages_more(key, metas)
+            found.append(new)
+        return [item for row in itertools.zip_longest(*found) for item in row if item]
+
+    def fetch(self, kind, key, skip):
+        if key[0] == "search":
+            return cinemeta.search(kind, key[1])
+        if key[0] == "addon":
+            return stremio.catalog(key[1], key[2], key[3], skip)
+        return cinemeta.catalog(kind, key[0], key[1], skip)
+
+    def pages_more(self, key, metas):
+        """Whether a catalog may have another page after these titles. Searches and addon catalogs without skip have
+        one page."""
+        return bool(metas) and key[0] != "search" and (key[0] != "addon" or key[4])
+
+    def unique(self, metas, known, kind, key):
+        """Catalog titles whose id is not in known, which they are added to, with the fields kept for them and their
+        kind, movie or series.
+
+        Titles of an addon also keep their type and, when the addon gives details, its address, since their ids
+        may not be IMDb ids that Cinemeta knows."""
+        found = []
+        for meta in metas:
+            item = cinemeta.summary(meta)
+            if key[0] == "addon":
+                # The id of the addon itself. An IMDb id it also gives may be the one of a whole franchise.
+                item["id"] = meta.get("id") or item["id"]
+            if not item["id"] or item["id"] in known:
+                continue
+            known.add(item["id"])
+            # Anime catalogs list mostly series.
+            item["kind"] = "movie" if kind == "movie" else "series"
+            if key[0] == "addon":
+                item["type"] = meta.get("type") or kind
+                if stremio.has_meta(self.manifests.get(key[1], {"resources": []}), item["type"], item["id"]):
+                    item["addon"] = key[1]
+            found.append(item)
+        return found
+
+    def load_more(self):
+        """Load the next page of the catalog shown when the selection nears its end. Runs on a thread."""
+        page = self.page
+        if not page or not any(page["more"]) or page.get("more_loading") or \
+                self.channel_list.getSelectedPosition() < len(self.items) - LOAD_MORE_BEFORE:
+            return
+        page["more_loading"] = True
+        sources = self.shown_key
+
+        def run():
+            try:
+                new = self.fetch_next(sources, page)
+            except Exception:
+                new = []
+                page["more"] = [False] * len(sources)
+            with self.show_lock:
+                page["items"] += new
+                page["more_loading"] = False
+                if self.page is page and new:
+                    favorites = set(storage.get_favorites())
+                    watchlist = {item["id"] for item in storage.get_watchlist()}
+                    # Kodi selects the first poster when items are added, so the selection is put back.
+                    position = self.channel_list.getSelectedPosition()
+                    self.channel_list.addItems([self.card(item, favorites, watchlist) for item in new])
+                    self.channel_list.selectItem(position)
+                    self.update_count()
+
+        threading.Thread(target=run, daemon=True).start()
 
     # Navigation
 
     def focus_channels(self):
-        if self.entries:
+        if self.items:
             self.setFocusId(CHANNELS)
             self.grid_position = self.channel_list.getSelectedPosition()
 
@@ -551,6 +857,7 @@ class MainWindow(xbmcgui.WindowXML):
             if action_id == ACTION_LEFT and self.grid_position == previous:
                 self.setFocusId(GROUPS)
                 return
+            self.load_more()
         if action_id in ACTION_BACK:
             if focus == CHANNELS:
                 self.setFocusId(GROUPS)
@@ -560,39 +867,45 @@ class MainWindow(xbmcgui.WindowXML):
             self.channel_menu()
         elif focus == GROUPS and action_id == ACTION_LEFT:
             # Reach the toolbar without scrolling through the groups above, which would change the group.
-            if self.follow_timer:
-                self.follow_timer.cancel()
-            self.follow_group()
+            self.follow_now()
             self.setFocusId(TOOLBAR)
-        elif focus in (GROUPS, TOOLBAR) and action_id == ACTION_RIGHT:
-            if focus == GROUPS:
-                self.follow_group()
-                self.focus_channels()
+        elif focus == GROUPS and action_id == ACTION_RIGHT:
+            self.follow_now()
+            self.focus_channels()
         elif focus == GROUPS:
             if self.follow_timer:
                 self.follow_timer.cancel()
             self.follow_timer = threading.Timer(FOLLOW_DELAY, self.follow_group)
             self.follow_timer.start()
 
+    def follow_now(self):
+        if self.follow_timer:
+            self.follow_timer.cancel()
+        self.follow_group()
+
     def follow_group(self):
         """Show the highlighted group. Runs on timer threads too, so a group still being built is stopped by
         a newer request instead of replacing the group shown after it."""
-        request = self.follow_request = next(self.follow_requests)
+        request = self.request = next(self.requests)
         with self.show_lock:
             index = self.group_list.getSelectedPosition()
             if 0 <= index < len(self.groups) and index != self.shown_index:
-                self.show_group(index, stale=lambda: self.follow_request != request)
+                self.show_group(index, stale=lambda: self.request != request)
 
     def onClick(self, control_id):
         if control_id == TOOLBAR:
             getattr(self, TOOLS[self.toolbar.getSelectedPosition()][2])()
         elif control_id == GROUPS:
-            self.follow_group()
+            self.follow_now()
             self.focus_channels()
         elif control_id == CHANNELS:
-            entry = self.selected_entry()
-            if entry is not None:
-                self.open_details(entry)
+            item = self.selected_item()
+            if item is None:
+                pass
+            elif is_title(item):
+                self.open_title(item)
+            else:
+                self.open_details(item)
 
     def open_details(self, entry):
         if entry.get("series"):
@@ -601,12 +914,27 @@ class MainWindow(xbmcgui.WindowXML):
             details = MovieDetails("script-m3u-movies-details.xml", PATH, "default", "1080i")
         details.window, details.entry, details.choice, details.episode, details.start = self, entry, None, None, 0
         details.doModal()
-        choice, episode, start = details.choice, details.episode, details.start
+        choice, episode, start, source = details.choice, details.episode, details.start, getattr(details, "source", None)
         del details
         if choice == "play":
             self.watcher.play_channel(episode or entry, start, subtitle_target(episode, entry) if episode else subtitle_target(entry))
+        elif choice == "direct":
+            self.play(source)
         elif choice == "remove":
             self.remove([entry])
+
+    def open_title(self, item):
+        """The details of a title of the catalog. Watch opens the details of the same title in the lists."""
+        details = CatalogDetails("script-m3u-movies-catalog-details.xml", PATH, "default", "1080i")
+        details.catalog, details.kind, details.item = self, item["kind"], item
+        details.entry, details.choice = self.library_entry(item["kind"], item), None
+        details.doModal()
+        choice, entry, source = details.choice, details.entry, details.source
+        del details
+        if choice == "watch":
+            self.open_details(entry)
+        elif choice == "play":
+            self.play(source)
 
     def shutdown(self):
         if self.follow_timer:
@@ -667,19 +995,29 @@ class MainWindow(xbmcgui.WindowXML):
         elif answer == 2:
             self.watcher.play_channel(entry)
 
-    def toggle_favorite(self, entry):
-        added = storage.toggle_favorite(item_id(entry))
-        notify(text(30068 if added else 30069))
-        favorites = self.favorite_entries()
-        self.groups[FAVORITES_GROUP] = (self.groups[FAVORITES_GROUP][0], favorites)
-        self.group_list.getListItem(FAVORITES_GROUP).setLabel2(str(len(favorites)))
-        position = self.channel_list.getSelectedPosition()
-        if self.shown_index == FAVORITES_GROUP:
-            self.show_entries(self.groups[FAVORITES_GROUP][0], favorites, position, group=FAVORITES_GROUP)
-            if not favorites:
-                self.setFocusId(GROUPS)
+    def toggle_favorite(self, item):
+        """Add an entry of the lists or a title of the catalog to Favorites, or remove it. A title that is also in
+        the lists is a favorite of the lists."""
+        entry = self.library_entry(item["kind"], item) if is_title(item) else item
+        if entry is None:
+            added = storage.toggle_watchlist(item["kind"], item)
         else:
-            self.channel_list.getListItem(position).setProperty("favorite", "true" if added else "false")
+            added = storage.toggle_favorite(item_id(entry), item_aliases(entry))
+        notify(text(30068 if added else 30069))
+        group = self.groups[FAVORITES_GROUP]
+        group["members"] = self.favorite_entries()
+        self.group_list.getListItem(FAVORITES_GROUP).setLabel2(str(len(group["members"])))
+        if self.shown_index == FAVORITES_GROUP:
+            position = self.channel_list.getSelectedPosition()
+            self.show_group(FAVORITES_GROUP, max(position, 0))
+            if not group["members"]:
+                self.setFocusId(GROUPS)
+            return
+        # Compared by identity, since the details window of a title keeps a copy with the full record.
+        wanted = favorite_key(item)
+        for position, shown in enumerate(self.items):
+            if favorite_key(shown) == wanted:
+                self.channel_list.getListItem(position).setProperty("favorite", "true" if added else "false")
 
     def remove(self, items):
         entries = [entry for item in items for entry in item_entries(item)]
@@ -692,10 +1030,19 @@ class MainWindow(xbmcgui.WindowXML):
         self.reload()
 
     def channel_menu(self):
-        entry = self.selected_entry()
+        entry = self.selected_item()
         if entry is None:
             return
-        favorite = item_id(entry) in storage.get_favorites()
+        if is_title(entry):
+            library = self.library_entry(entry["kind"], entry)
+            if library:
+                in_list = is_favorite(library, storage.get_favorites())
+            else:
+                in_list = entry["id"] in {saved["id"] for saved in storage.get_watchlist()}
+            if xbmcgui.Dialog().contextmenu([text(30071 if in_list else 30070)]) == 0:
+                self.toggle_favorite(entry)
+            return
+        favorite = is_favorite(entry, storage.get_favorites())
         remove_label = text(30122 if entry.get("series") else 30018)
         options = [(text(30071 if favorite else 30070), self.toggle_favorite), (remove_label, lambda item: self.remove([item]))]
         if is_local(entry):
@@ -822,14 +1169,6 @@ class MainWindow(xbmcgui.WindowXML):
         # Finished downloads may be in a video folder.
         self.reload()
 
-    def open_catalog(self):
-        catalog = CatalogWindow("script-m3u-movies-catalog.xml", PATH, "default", "1080i")
-        catalog.main = self
-        catalog.doModal()
-        del catalog
-        # Downloads started in the catalog may be in a video folder.
-        self.reload()
-
     def library_entry(self, kind, meta):
         """The movie or series of the lists that is a catalog title, found by its IMDb id or its name."""
         wanted = cinemeta.normalized(meta["name"])
@@ -845,6 +1184,47 @@ class MainWindow(xbmcgui.WindowXML):
                 return movie
         return None
 
+    def downloaded(self, kind, item, entry):
+        """What of a catalog title is on the device: whether a movie is, or the (season, episode) of the episodes
+        of a series. entry is the title in the lists, whose videos are on the device when it is in a folder. The
+        downloads made from the catalog are also found by their title, in whichever folder they are."""
+        found = bool(entry) and is_local(entry)
+        episodes = set()
+        if found and kind == "series":
+            episodes = {(each["episode"]["season"], each["episode"]["number"]) for each in entry["episodes"]}
+        for path, origin in storage.get_origins().items():
+            if origin.get("id") != item["id"] or not xbmcvfs.exists(path):
+                continue
+            found = True
+            if kind != "series":
+                continue
+            if origin.get("episode"):
+                episodes.add((origin["season"], origin["episode"]))
+                continue
+            # A season downloaded at once keeps only the series, and each episode is named by its file.
+            parsed = series.parse_episode({"name": os.path.splitext(os.path.basename(path))[0],
+                                           "subgroup": origin.get("name", "")})
+            if parsed:
+                episodes.add((parsed[1], parsed[2]))
+        return episodes if kind == "series" else found
+
+    def catalog_series(self, show):
+        """The title of the catalog a series of the lists is: {"id", "name", "poster", "year", "kind"} and "addon",
+        the address of the addon that gives its episodes, or None for Cinemeta. None when the catalog does not know
+        it. A download from the catalog keeps its title, and the Cinemeta details of a folder name the others."""
+        origins = storage.get_origins()
+        origin = next((origins[path] for path in local_paths(show) if origins.get(path, {}).get("id")), None)
+        meta = show.get("meta") or {}
+        title = {"kind": "series", "id": (origin or meta).get("id") or "", "name": (origin or {}).get("name") or show["name"],
+                 "poster": (origin or {}).get("poster") or meta.get("poster") or show["logo"],
+                 "year": (origin or {}).get("year") or meta.get("year") or 0}
+        if not title["id"]:
+            return None
+        if title["id"].startswith("tt"):
+            return dict(title, addon=None)
+        addon = next((base for base, manifest in self.manifests.items() if stremio.has_meta(manifest, "series", title["id"])), None)
+        return dict(title, addon=addon) if addon else None
+
     def open_manager(self):
         manager = ListManager("script-m3u-movies-manager.xml", PATH, "default", "1080i")
         manager.on_change = self.reload
@@ -853,6 +1233,7 @@ class MainWindow(xbmcgui.WindowXML):
         del manager
 
     def search(self):
+        """Search the lists, whose results show first, and the movies and series of Cinemeta."""
         query = xbmcgui.Dialog().input(text(30044)).strip()
         if not query:
             return
@@ -860,15 +1241,26 @@ class MainWindow(xbmcgui.WindowXML):
         results = [movie for movie in self.movies if needle in movie["channel"]["name"].casefold()]
         results += [show for show in self.shows if needle in show["name"].casefold()
                     or any(needle in entry["channel"]["name"].casefold() for entry in show["episodes"])]
-        self.shown_index, self.shown_name = -1, None
-        self.show_entries(text(30042, query), results)
-        if results:
-            self.setFocusId(CHANNELS)
-        else:
-            notify(text(30045))
+        sources = [(kind, ("search", query)) for kind in ("movie", "series")]
+        with self.show_lock:
+            self.shown_index, self.shown_name = -1, None
+            self.open_category(text(30042, query), sources, prefix=results)
+        # The titles of Cinemeta load on a thread. Wait for them, so the focus can move to the posters.
+        key, monitor = tuple(sources), xbmc.Monitor()
+        for _ in range(150):
+            page = self.pages.get(key)
+            if results or self.shown_key != key or not page or not page["loading"]:
+                break
+            monitor.waitForAbort(0.1)
+        self.focus_channels()
 
     def check_group(self):
-        self.check_entries([entry for item in self.entries for entry in item_entries(item)])
+        entries = [entry for item in self.items if not is_title(item) for entry in item_entries(item)]
+        if self.items and not entries:
+            # Titles of the catalog are checked when their sources are listed.
+            xbmcgui.Dialog().ok(TITLE, text(30369))
+            return
+        self.check_entries(entries)
 
     def check_entries(self, entries):
         if not entries:
@@ -918,464 +1310,6 @@ class MainWindow(xbmcgui.WindowXML):
             notify(text(30031, len(selected)))
             self.reload()
 
-
-class MovieDetails(xbmcgui.WindowXMLDialog):
-    """Poster and details of a movie, with play, favorite and remove buttons. Sets choice for the catalog."""
-
-    def onInit(self):
-        movie = self.entry["channel"]
-        groups = "  ·  ".join(name for name in series.movie_groups(movie) if name) or text(30043)
-        self.setProperty("title", movie["name"])
-        self.setProperty("poster", movie["logo"])
-        self.setProperty("group", groups)
-        self.setProperty("list", self.entry["list_name"])
-        meta = self.entry.get("meta") or {}
-        self.setProperty("duration", meta_line(meta, duration_text(movie["duration"]) or meta.get("runtime", "")))
-        self.setProperty("plot", meta.get("plot", ""))
-        self.update_favorite()
-        self.setFocusId(DETAILS_PLAY)
-
-    def update_favorite(self):
-        favorite = self.entry["channel"]["id"] in storage.get_favorites()
-        self.setProperty("favorite", "true" if favorite else "false")
-        self.getControl(DETAILS_FAVORITE).setLabel(text(30115 if favorite else 30114))
-
-    def onAction(self, action):
-        if action.getId() in ACTION_BACK:
-            self.close()
-
-    def onClick(self, control_id):
-        if control_id == DETAILS_PLAY:
-            start = self.window.prepare(self.entry)
-            if start is not None:
-                self.choice, self.start = "play", start
-                self.close()
-            elif self.entry["channel"]["id"] in storage.get_removed():
-                self.close()
-        elif control_id == DETAILS_FAVORITE:
-            self.window.toggle_favorite(self.entry)
-            self.update_favorite()
-        elif control_id == DETAILS_REMOVE:
-            if xbmcgui.Dialog().yesno(TITLE, text(30067, self.entry["channel"]["name"]),
-                                      nolabel=text(30040), yeslabel=text(30022)):
-                self.choice = "remove"
-                self.close()
-
-
-class SeriesDetails(xbmcgui.WindowXMLDialog):
-    """Poster, seasons and episodes of a series. Sets choice and the episode to play for the catalog."""
-
-    def onInit(self):
-        show = self.entry
-        self.progress = storage.get_progress()
-        self.next, started = next_episode(show, self.progress)
-        self.setProperty("title", show["name"])
-        self.setProperty("poster", show["logo"])
-        meta = show.get("meta") or {}
-        info = text(30121, len(show["seasons"]), len(show["episodes"]))
-        self.setProperty("info", info + ("  ·  " + meta_line(meta) if meta_line(meta) else ""))
-        self.setProperty("plot", meta.get("plot", ""))
-        self.setProperty("group", "  ·  ".join(show["groups"]) or show["list_name"])
-        self.getControl(DETAILS_PLAY).setLabel(text(30118 if started else 30119, self.next["episode"]["season"],
-                                                    self.next["episode"]["number"]))
-        self.update_favorite()
-        seasons = self.getControl(SERIES_SEASONS)
-        seasons.reset()
-        seasons.addItems([xbmcgui.ListItem(text(30120, season)) for season in show["seasons"]])
-        self.season = show["seasons"].index(self.next["episode"]["season"])
-        seasons.selectItem(self.season)
-        self.show_season(select=self.next)
-        self.setFocusId(DETAILS_PLAY)
-
-    def show_season(self, select=None):
-        season = self.entry["seasons"][self.season]
-        self.episodes = [entry for entry in self.entry["episodes"] if entry["episode"]["season"] == season]
-        items = []
-        for entry in self.episodes:
-            title = entry["episode"]["title"]
-            number = entry["episode"]["number"]
-            # Specials have no episode number, only their title.
-            label = title if number == 0 and title else "E%02d" % number + ("  ·  " + title if title else "")
-            item = xbmcgui.ListItem(label)
-            state = self.progress.get(entry["channel"]["id"], {})
-            if resumable(state):
-                item.setLabel2(text(30126, time_text(state["position"])))
-            else:
-                item.setLabel2(duration_text(entry["channel"]["duration"]))
-            item.setProperty("watched", "true" if state.get("watched") else "false")
-            items.append(item)
-        episodes = self.getControl(SERIES_EPISODES)
-        episodes.reset()
-        episodes.addItems(items)
-        if select in self.episodes:
-            episodes.selectItem(self.episodes.index(select))
-
-    def update_favorite(self):
-        favorite = item_id(self.entry) in storage.get_favorites()
-        self.setProperty("favorite", "true" if favorite else "false")
-        self.getControl(DETAILS_FAVORITE).setLabel(text(30115 if favorite else 30114))
-
-    def onAction(self, action):
-        if action.getId() in ACTION_BACK:
-            self.close()
-        elif self.getFocusId() == SERIES_SEASONS:
-            season = self.getControl(SERIES_SEASONS).getSelectedPosition()
-            if season != self.season and 0 <= season < len(self.entry["seasons"]):
-                self.season = season
-                self.show_season()
-
-    def onClick(self, control_id):
-        if control_id == DETAILS_PLAY:
-            self.play(self.next)
-        elif control_id == DETAILS_FAVORITE:
-            self.window.toggle_favorite(self.entry)
-            self.update_favorite()
-        elif control_id == DETAILS_REMOVE:
-            if xbmcgui.Dialog().yesno(TITLE, text(30123, self.entry["name"], len(self.entry["episodes"])),
-                                      nolabel=text(30040), yeslabel=text(30022)):
-                self.choice = "remove"
-                self.close()
-        elif control_id == SERIES_SEASONS:
-            self.setFocusId(SERIES_EPISODES)
-        elif control_id == SERIES_EPISODES:
-            position = self.getControl(SERIES_EPISODES).getSelectedPosition()
-            if 0 <= position < len(self.episodes):
-                self.play(self.episodes[position])
-
-    def play(self, episode):
-        """Close and play the episode once its stream answers. Otherwise stay, to pick another episode."""
-        start = self.window.prepare(episode)
-        if start is not None:
-            self.choice, self.episode, self.start = "play", episode, start
-            self.close()
-            return
-        if episode["channel"]["id"] in storage.get_removed():
-            self.entry["episodes"] = [entry for entry in self.entry["episodes"] if entry is not episode]
-            if not self.entry["episodes"]:
-                self.close()
-                return
-            self.entry["seasons"] = sorted({entry["episode"]["season"] for entry in self.entry["episodes"]})
-            self.season = min(self.season, len(self.entry["seasons"]) - 1)
-            self.show_season()
-
-
-class CatalogWindow(xbmcgui.WindowXML):
-    """Movies and series of Cinemeta, the catalog of Stremio: categories on the left and posters on the right.
-
-    Titles of the catalog that are also in the lists can be played from their details. My list keeps the titles
-    the user saves.
-    """
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.loaded = False
-        self.kind = "movie"
-        self.categories = []
-        # Loaded pages by kind and category, so returning to a category is instant.
-        self.pages = {}
-        # The page shown, and its kind and category. The key is None for My list, which is not a Cinemeta page.
-        self.page, self.page_key, self.items = None, None, []
-        self.shown_index = -1
-        self.show_lock = threading.Lock()
-        self.requests = itertools.count()
-        self.request = 0
-        # The last request that failed to load.
-        self.failed = -1
-        self.follow_timer = None
-        self.grid_position = -1
-
-    def onInit(self):
-        # Also called when returning from full screen video. Keep the current state then.
-        if self.loaded:
-            return
-        self.loaded = True
-        self.tabs = self.getControl(CATALOG_TABS)
-        self.group_list = self.getControl(GROUPS)
-        self.poster_list = self.getControl(CHANNELS)
-        self.tabs.addItems([xbmcgui.ListItem(text(30201)), xbmcgui.ListItem(text(30117))])
-        self.show_categories()
-        self.setFocusId(GROUPS)
-
-    # Categories
-
-    def show_categories(self):
-        """Categories of the kind shown: My list, Search, the catalogs of Cinemeta and the genres."""
-        year = str(time.localtime().tm_year)
-        genres = [genre for genre in GENRES if self.kind == "series" or genre not in SERIES_ONLY_GENRES]
-        self.categories = [(text(30202), ("watchlist", None)), (text(30203), ("search", None)),
-                           (text(30204), ("top", None)), (text(30205), ("imdbRating", None)),
-                           (text(30206, year), ("year", year))]
-        self.manifests = {}
-        for addon in storage.get_addons():
-            manifest, base = addon["manifest"], stremio.base_url(addon["url"])
-            self.manifests[base] = manifest
-            for kind in TAB_TYPES[self.kind]:
-                for catalog_id, name, pages in stremio.browsable_catalogs(manifest, kind):
-                    self.categories.append((name, ("addon", base, kind, catalog_id, pages)))
-        self.categories += sorted(((genre_name(genre), ("top", genre)) for genre in genres),
-                                  key=lambda category: category[0].casefold())
-        self.group_list.reset()
-        self.group_list.addItems([xbmcgui.ListItem(name) for name, _ in self.categories])
-        # My list first, the first category, when it has titles of this kind. Otherwise popular titles, so the tab does
-        # not open empty. Kodi applies selectItem later, so the category is opened by its index.
-        first = MY_LIST_CATEGORY if self.update_watchlist_count() else POPULAR_CATEGORY
-        self.group_list.selectItem(first)
-        self.open_category(first)
-
-    def update_watchlist_count(self):
-        """Show the number of titles of My list of this kind, and return it."""
-        count = len([item for item in storage.get_watchlist() if item["kind"] == self.kind])
-        self.group_list.getListItem(MY_LIST_CATEGORY).setLabel2(str(count) if count else "")
-        return count
-
-    def follow_group(self):
-        index = self.group_list.getSelectedPosition()
-        if 0 <= index < len(self.categories) and index != self.shown_index:
-            if self.categories[index][1][0] == "search":
-                # A search starts only when selected, since it asks for a title.
-                return
-            self.open_category(index)
-
-    def open_category(self, index, query=None):
-        name, key = self.categories[index]
-        self.shown_index = index
-        if key[0] == "search":
-            key, name = ("search", query), text(30042, query)
-        elif key[0] == "addon":
-            # The header names the addon, which the categories leave out to keep them short.
-            name = "%s  ·  %s" % (name, self.manifests[key[1]]["name"])
-        request = self.request = next(self.requests)
-        if key[0] == "watchlist":
-            items = [item for item in storage.get_watchlist() if item["kind"] == self.kind]
-            self.show(name, {"items": items, "more": False, "skip": 0}, None, request)
-            return
-        kind = self.kind
-        page = self.pages.get((kind, key))
-        if page:
-            self.show(name, page, (kind, key), request)
-            return
-        with self.show_lock:
-            self.page, self.items = None, []
-            self.poster_list.reset()
-            self.set_header(name, "")
-            self.getControl(CHANNELS_EMPTY).setLabel(text(30207))
-
-        def run():
-            try:
-                metas = self.fetch(kind, key, 0)
-            except Exception as error:
-                self.failed = request
-                if self.request == request:
-                    self.getControl(CHANNELS_EMPTY).setLabel(text(30208, error))
-                return
-            page = {"items": self.unique(metas, [], key), "more": self.pages_more(key, metas), "skip": len(metas)}
-            self.pages[(kind, key)] = page
-            self.show(name, page, (kind, key), request)
-
-        threading.Thread(target=run, daemon=True).start()
-
-    def fetch(self, kind, key, skip):
-        if key[0] == "search":
-            return cinemeta.search(kind, key[1])
-        if key[0] == "addon":
-            return stremio.catalog(key[1], key[2], key[3], skip)
-        return cinemeta.catalog(kind, key[0], key[1], skip)
-
-    def pages_more(self, key, metas):
-        """Whether a category may have another page after these titles. Searches and addon catalogs without
-        skip have one page."""
-        return bool(metas) and key[0] != "search" and (key[0] != "addon" or key[4])
-
-    def unique(self, metas, known, key):
-        """Catalog titles not already in known, with the fields kept for them.
-
-        Titles of an addon also keep their type and, when the addon gives details, its address, since their ids
-        may not be IMDb ids that Cinemeta knows."""
-        seen = {item["id"] for item in known}
-        found = []
-        for meta in metas:
-            item = cinemeta.summary(meta)
-            if key[0] == "addon":
-                # The id of the addon itself. An IMDb id it also gives may be the one of a whole franchise.
-                item["id"] = meta.get("id") or item["id"]
-            if not item["id"] or item["id"] in seen:
-                continue
-            seen.add(item["id"])
-            if key[0] == "addon":
-                item["type"] = meta.get("type") or key[2]
-                if stremio.has_meta(self.manifests.get(key[1], {"resources": []}), item["type"], item["id"]):
-                    item["addon"] = key[1]
-            found.append(item)
-        return found
-
-    # Posters
-
-    def set_header(self, title, count):
-        self.getControl(GROUP_TITLE).setLabel(title)
-        self.getControl(GROUP_COUNT).setLabel(count)
-
-    def count_text(self):
-        return text(30135) if len(self.items) == 1 else text(30132, len(self.items))
-
-    def show(self, title, page, key, request):
-        """Show a page of titles, unless a newer category was chosen while it loaded."""
-        with self.show_lock:
-            if self.request != request:
-                return
-            self.page, self.page_key, self.items = page, key, page["items"]
-            watchlist = {item["id"] for item in storage.get_watchlist()}
-            self.poster_list.reset()
-            self.poster_list.addItems([self.card(item, watchlist) for item in self.items])
-            self.set_header(title, self.count_text() if self.items else "")
-            empty = 30210 if key is None else 30209
-            self.getControl(CHANNELS_EMPTY).setLabel("" if self.items else text(empty))
-
-    def card(self, item, watchlist):
-        card = xbmcgui.ListItem(item["name"])
-        if item.get("poster"):
-            card.setArt({"icon": item["poster"], "thumb": item["poster"], "poster": item["poster"]})
-        parts = [str(item["year"])] if item.get("year") else []
-        if item.get("rating"):
-            parts.append(text(30155, item["rating"]))
-        # One space around the dot, so the rating fits under the poster.
-        card.setProperty("duration", " · ".join(parts))
-        card.setProperty("favorite", "true" if item["id"] in watchlist else "false")
-        return card
-
-    def load_more(self):
-        """Load the next page of the catalog shown when the selection nears its end. Runs on a thread."""
-        page = self.page
-        if not page or not page["more"] or page.get("loading") or \
-                self.poster_list.getSelectedPosition() < len(self.items) - LOAD_MORE_BEFORE:
-            return
-        page["loading"] = True
-        kind, key = self.page_key
-
-        def run():
-            try:
-                metas = self.fetch(kind, key, page["skip"])
-            except Exception:
-                metas = []
-            new = self.unique(metas, page["items"], key)
-            with self.show_lock:
-                page["skip"] += len(metas)
-                page["more"], page["loading"] = bool(new) and self.pages_more(key, metas), False
-                page["items"] += new
-                if self.page is page and new:
-                    watchlist = {item["id"] for item in storage.get_watchlist()}
-                    # Kodi selects the first poster when items are added, so the selection is put back.
-                    position = self.poster_list.getSelectedPosition()
-                    self.poster_list.addItems([self.card(item, watchlist) for item in new])
-                    self.poster_list.selectItem(position)
-                    self.getControl(GROUP_COUNT).setLabel(self.count_text())
-
-        threading.Thread(target=run, daemon=True).start()
-
-    def selected_item(self):
-        position = self.poster_list.getSelectedPosition()
-        return self.items[position] if 0 <= position < len(self.items) else None
-
-    def toggle_watchlist(self, item):
-        added = storage.toggle_watchlist(self.kind, item)
-        notify(text(30216 if added else 30217))
-        self.update_watchlist_count()
-        if self.page_key is None:
-            # My list is shown: show it again without the removed title.
-            position = self.poster_list.getSelectedPosition()
-            self.open_category(self.shown_index)
-            if self.items:
-                self.poster_list.selectItem(min(position, len(self.items) - 1))
-            else:
-                self.setFocusId(GROUPS)
-        else:
-            # Compared by id, since the details window keeps a copy with the full record.
-            ids = [shown["id"] for shown in self.items]
-            if item["id"] in ids:
-                self.poster_list.getListItem(ids.index(item["id"])).setProperty("favorite", "true" if added else "false")
-
-    # Navigation
-
-    def onAction(self, action):
-        action_id = action.getId()
-        focus = self.getFocusId()
-        if focus == CHANNELS:
-            # Left in the first column does not move the selection, so it leads back to the categories.
-            previous, self.grid_position = self.grid_position, self.poster_list.getSelectedPosition()
-            if action_id == ACTION_LEFT and self.grid_position == previous:
-                self.setFocusId(GROUPS)
-                return
-            self.load_more()
-        if action_id in ACTION_BACK:
-            if focus == CHANNELS:
-                self.setFocusId(GROUPS)
-            else:
-                self.shutdown()
-        elif action_id == ACTION_CONTEXT_MENU and focus == CHANNELS:
-            item = self.selected_item()
-            if item is not None:
-                in_list = item["id"] in {saved["id"] for saved in storage.get_watchlist()}
-                if xbmcgui.Dialog().contextmenu([text(30215 if in_list else 30214)]) == 0:
-                    self.toggle_watchlist(item)
-        elif focus == CATALOG_TABS and action_id in (ACTION_LEFT, ACTION_RIGHT):
-            kind = ("movie", "series")[self.tabs.getSelectedPosition()]
-            if kind != self.kind:
-                self.kind = kind
-                self.show_categories()
-        elif focus == GROUPS and action_id == ACTION_RIGHT:
-            self.follow_now()
-            self.focus_posters()
-        elif focus == GROUPS:
-            if self.follow_timer:
-                self.follow_timer.cancel()
-            self.follow_timer = threading.Timer(FOLLOW_DELAY, self.follow_group)
-            self.follow_timer.start()
-
-    def onFocus(self, control_id):
-        # The posters can also be reached from the addons button, which the layout moves to directly.
-        if control_id == CHANNELS:
-            self.grid_position = self.poster_list.getSelectedPosition()
-
-    def follow_now(self):
-        if self.follow_timer:
-            self.follow_timer.cancel()
-        self.follow_group()
-
-    def focus_posters(self):
-        if self.items:
-            self.setFocusId(CHANNELS)
-            self.grid_position = self.poster_list.getSelectedPosition()
-
-    def onClick(self, control_id):
-        if control_id == CATALOG_TABS:
-            self.setFocusId(GROUPS)
-        elif control_id == CATALOG_ADDONS:
-            self.open_addons()
-        elif control_id == GROUPS:
-            index = self.group_list.getSelectedPosition()
-            if self.categories[index][1][0] == "search":
-                self.search(index)
-            else:
-                self.follow_now()
-                self.focus_posters()
-        elif control_id == CHANNELS:
-            item = self.selected_item()
-            if item is not None:
-                self.open_details(item)
-
-    def search(self, index):
-        query = xbmcgui.Dialog().input(text(30211)).strip()
-        if not query:
-            return
-        self.open_category(index, query)
-        request, key = self.request, (self.kind, ("search", query))
-        # The results load on a thread. Wait for them, so the focus can move to the posters.
-        monitor = xbmc.Monitor()
-        for _ in range(150):
-            if self.page_key == key or self.request != request or self.failed == request:
-                break
-            monitor.waitForAbort(0.1)
-        self.focus_posters()
-
     def open_addons(self):
         addons = AddonsWindow("script-m3u-movies-addons.xml", PATH, "default", "1080i")
         addons.doModal()
@@ -1383,20 +1317,8 @@ class CatalogWindow(xbmcgui.WindowXML):
         del addons
         if changed:
             # Catalogs of removed addons are dropped, and those of new ones are listed.
-            self.pages = {key: page for key, page in self.pages.items() if key[1][0] != "addon"}
-            self.show_categories()
-
-    def open_details(self, item):
-        details = CatalogDetails("script-m3u-movies-catalog-details.xml", PATH, "default", "1080i")
-        details.catalog, details.kind, details.item = self, self.kind, item
-        details.entry, details.choice = self.main.library_entry(self.kind, item), None
-        details.doModal()
-        choice, entry, source = details.choice, details.entry, details.source
-        del details
-        if choice == "watch":
-            self.main.open_details(entry)
-        elif choice == "play":
-            self.play(source)
+            self.pages = {key: page for key, page in self.pages.items() if all(source[0] != "addon" for _, source in key)}
+            self.build_groups()
 
     def stream_addons(self, kind, item_id):
         """Installed addons that give sources for an item, as (name, address), in the order they were added."""
@@ -1487,10 +1409,228 @@ class CatalogWindow(xbmcgui.WindowXML):
             item.setContentLookup(False)
         xbmc.Player().play(url, item)
 
-    def shutdown(self):
-        if self.follow_timer:
-            self.follow_timer.cancel()
-        self.close()
+
+class MovieDetails(xbmcgui.WindowXMLDialog):
+    """Poster and details of a movie, with play, favorite and remove buttons. Sets choice for the catalog."""
+
+    def onInit(self):
+        movie = self.entry["channel"]
+        groups = "  ·  ".join(name for name in series.movie_groups(movie) if name) or text(30043)
+        self.setProperty("title", movie["name"])
+        self.setProperty("poster", movie["logo"])
+        self.setProperty("group", groups)
+        show_downloaded(self, downloaded_text(None, is_local(self.entry)), self.entry["list_name"], "list")
+        meta = self.entry.get("meta") or {}
+        self.setProperty("duration", meta_line(meta, duration_text(movie["duration"]) or meta.get("runtime", "")))
+        self.setProperty("plot", meta.get("plot", ""))
+        self.update_favorite()
+        self.setFocusId(DETAILS_PLAY)
+
+    def update_favorite(self):
+        favorite = self.entry["channel"]["id"] in storage.get_favorites()
+        self.setProperty("favorite", "true" if favorite else "false")
+        self.getControl(DETAILS_FAVORITE).setLabel(text(30115 if favorite else 30114))
+
+    def onAction(self, action):
+        if action.getId() in ACTION_BACK:
+            self.close()
+
+    def onClick(self, control_id):
+        if control_id == DETAILS_PLAY:
+            start = self.window.prepare(self.entry)
+            if start is not None:
+                self.choice, self.start = "play", start
+                self.close()
+            elif self.entry["channel"]["id"] in storage.get_removed():
+                self.close()
+        elif control_id == DETAILS_FAVORITE:
+            self.window.toggle_favorite(self.entry)
+            self.update_favorite()
+        elif control_id == DETAILS_REMOVE:
+            if xbmcgui.Dialog().yesno(TITLE, text(30067, self.entry["channel"]["name"]),
+                                      nolabel=text(30040), yeslabel=text(30022)):
+                self.choice = "remove"
+                self.close()
+
+
+class SeriesDetails(xbmcgui.WindowXMLDialog):
+    """Poster, seasons and episodes of a series. Sets choice and the episode to play for the catalog, or the direct
+    link chosen in the sources of an episode.
+
+    When the series is known to the catalog, its full list of episodes loads on a thread and joins the episodes of
+    the lists: those in the lists play, and the others open their sources, to download or play them."""
+
+    def onInit(self):
+        show = self.entry
+        self.progress = storage.get_progress()
+        self.next, started = next_episode(show, self.progress)
+        self.source = None
+        self.setProperty("title", show["name"])
+        self.setProperty("poster", show["logo"])
+        self.meta = show.get("meta") or {}
+        self.setProperty("plot", self.meta.get("plot", ""))
+        show_downloaded(self, downloaded_text(len(show["episodes"]), is_local(show)),
+                        "  ·  ".join(group for group in show["groups"] if group) or show["list_name"], "group")
+        self.getControl(DETAILS_PLAY).setLabel(text(30118 if started else 30119, self.next["episode"]["season"],
+                                                    self.next["episode"]["number"]))
+        self.update_favorite()
+        self.catalog_episodes = []
+        self.build_rows()
+        self.season = self.seasons.index(self.next["episode"]["season"])
+        self.show_seasons()
+        self.show_season(select=self.next)
+        self.setFocusId(DETAILS_PLAY)
+        self.catalog_title = self.window.catalog_series(show)
+        if self.catalog_title:
+            threading.Thread(target=self.load, daemon=True).start()
+
+    def build_rows(self):
+        """The episodes of the series: those the catalog lists, each with its entry when it is in the lists, then the
+        entries the catalog does not list."""
+        local = {}
+        for entry in self.entry["episodes"]:
+            local.setdefault((entry["episode"]["season"], entry["episode"]["number"]), []).append(entry)
+        rows = []
+        for season, number, title, aired, _, video_id in self.catalog_episodes:
+            entries = local.pop((season, number), [None])
+            rows += [{"season": season, "number": number, "title": (entry or {}).get("episode", {}).get("title") or title,
+                      "aired": aired, "video_id": video_id, "entry": entry} for entry in entries]
+        rows += [{"season": entry["episode"]["season"], "number": entry["episode"]["number"],
+                  "title": entry["episode"]["title"], "aired": "", "video_id": None, "entry": entry}
+                 for entries in local.values() for entry in entries]
+        self.rows = sorted(rows, key=lambda row: (row["season"], row["number"]))
+        # Specials last.
+        self.seasons = sorted({row["season"] for row in rows}, key=lambda season: (season == 0, season))
+        count = len({(row["season"], row["number"]) for row in rows})
+        info = text(30121, len([season for season in self.seasons if season]) or 1, count)
+        self.setProperty("info", info + ("  ·  " + meta_line(self.meta) if meta_line(self.meta) else ""))
+
+    def load(self):
+        """Load the episodes of the series from the catalog, and show them with those of the lists."""
+        addon, title_id = self.catalog_title["addon"], self.catalog_title["id"]
+        try:
+            meta = stremio.meta(addon, "series", title_id) if addon else cinemeta.meta("series", title_id)
+            found = cinemeta.episodes(meta)
+        except Exception:
+            return
+        if not found:
+            return
+        try:
+            position = self.getControl(SERIES_EPISODES).getSelectedPosition()
+            selected = self.episodes[position] if 0 <= position < len(self.episodes) else None
+            season = self.seasons[self.season]
+            self.catalog_episodes = found
+            self.build_rows()
+            self.season = self.seasons.index(season) if season in self.seasons else 0
+            self.show_seasons()
+            self.show_season(select=selected and (selected["entry"] or (selected["season"], selected["number"])))
+        except RuntimeError:
+            # The details closed while the episodes loaded.
+            pass
+
+    def show_seasons(self):
+        seasons = self.getControl(SERIES_SEASONS)
+        seasons.reset()
+        seasons.addItems([xbmcgui.ListItem(season_name(season)) for season in self.seasons])
+        seasons.selectItem(self.season)
+
+    def show_season(self, select=None):
+        """Show the episodes of the season. select is the entry, or the (season, number), to highlight."""
+        season = self.seasons[self.season]
+        self.episodes = [row for row in self.rows if row["season"] == season]
+        items = []
+        for row in self.episodes:
+            title, number, entry = row["title"], row["number"], row["entry"]
+            # Specials have no episode number, only their title.
+            label = title if number == 0 and title else "E%02d" % number + ("  ·  " + title if title else "")
+            item = xbmcgui.ListItem(label)
+            aired = "/".join(reversed(row["aired"].split("-"))) if re.match(r"\d{4}-\d{2}-\d{2}$", row["aired"]) else ""
+            if entry:
+                state = self.progress.get(entry["channel"]["id"], {})
+                if resumable(state):
+                    item.setLabel2(text(30126, time_text(state["position"])))
+                else:
+                    # Video files have no duration in the lists, so they show the date the catalog gives.
+                    item.setLabel2(duration_text(entry["channel"]["duration"]) or aired)
+                item.setProperty("watched", "true" if state.get("watched") else "false")
+                item.setProperty("downloaded", "true" if is_local(entry) else "false")
+            else:
+                item.setLabel2(aired)
+            items.append(item)
+        episodes = self.getControl(SERIES_EPISODES)
+        episodes.reset()
+        episodes.addItems(items)
+        for index, row in enumerate(self.episodes):
+            if select is not None and (row["entry"] is select or (row["season"], row["number"]) == select):
+                episodes.selectItem(index)
+                break
+
+    def update_favorite(self):
+        favorite = is_favorite(self.entry, storage.get_favorites())
+        self.setProperty("favorite", "true" if favorite else "false")
+        self.getControl(DETAILS_FAVORITE).setLabel(text(30115 if favorite else 30114))
+
+    def onAction(self, action):
+        if action.getId() in ACTION_BACK:
+            self.close()
+        elif self.getFocusId() == SERIES_SEASONS:
+            season = self.getControl(SERIES_SEASONS).getSelectedPosition()
+            if season != self.season and 0 <= season < len(self.seasons):
+                self.season = season
+                self.show_season()
+
+    def onClick(self, control_id):
+        if control_id == DETAILS_PLAY:
+            self.play(self.next)
+        elif control_id == DETAILS_FAVORITE:
+            self.window.toggle_favorite(self.entry)
+            self.update_favorite()
+        elif control_id == DETAILS_REMOVE:
+            if xbmcgui.Dialog().yesno(TITLE, text(30123, self.entry["name"], len(self.entry["episodes"])),
+                                      nolabel=text(30040), yeslabel=text(30022)):
+                self.choice = "remove"
+                self.close()
+        elif control_id == SERIES_SEASONS:
+            self.setFocusId(SERIES_EPISODES)
+        elif control_id == SERIES_EPISODES:
+            position = self.getControl(SERIES_EPISODES).getSelectedPosition()
+            if not 0 <= position < len(self.episodes):
+                return
+            row = self.episodes[position]
+            if row["entry"]:
+                self.play(row["entry"])
+            else:
+                self.sources(row)
+
+    def sources(self, row):
+        """Open the sources of an episode that is not in the lists. A direct link chosen there plays once the
+        details close, and a download goes to Downloads, kept with the title of the series."""
+        name = "%s  ·  %s" % (self.entry["name"], text(30133, row["season"], row["number"]))
+        origin = dict(self.catalog_title, season=row["season"], episode=row["number"])
+        origin.pop("addon", None)
+        source = self.window.open_sources(name, "series", row["video_id"], origin["poster"], origin)
+        if source:
+            self.choice, self.source = "direct", source
+            self.close()
+
+    def play(self, episode):
+        """Close and play the episode once its stream answers. Otherwise stay, to pick another episode."""
+        start = self.window.prepare(episode)
+        if start is not None:
+            self.choice, self.episode, self.start = "play", episode, start
+            self.close()
+            return
+        if episode["channel"]["id"] in storage.get_removed():
+            self.entry["episodes"] = [entry for entry in self.entry["episodes"] if entry is not episode]
+            if not self.entry["episodes"]:
+                self.close()
+                return
+            self.entry["seasons"] = sorted({entry["episode"]["season"] for entry in self.entry["episodes"]})
+            season = self.seasons[self.season]
+            self.build_rows()
+            self.season = self.seasons.index(season) if season in self.seasons else 0
+            self.show_seasons()
+            self.show_season()
 
 
 class CatalogDetails(xbmcgui.WindowXMLDialog):
@@ -1504,7 +1644,13 @@ class CatalogDetails(xbmcgui.WindowXMLDialog):
         self.setProperty("title", item["name"])
         self.setProperty("poster", item.get("poster", ""))
         self.show_info(item)
-        self.setProperty("library", text(30222, self.entry["list_name"]) if self.entry else "")
+        # The episodes downloaded of a series, or whether a movie is, shown with a green check.
+        self.downloaded = self.catalog.downloaded(self.kind, item, self.entry)
+        progress = storage.get_progress()
+        self.watched = {(each["episode"]["season"], each["episode"]["number"]) for each in (self.entry or {}).get("episodes", [])
+                        if progress.get(each["channel"]["id"], {}).get("watched")}
+        library = text(30222, self.entry["list_name"]) if self.entry else ""
+        show_downloaded(self, downloaded_text(len(self.downloaded) if self.series else None, self.downloaded), library)
         self.setProperty("playable", "true" if self.entry else "false")
         self.plot = item.get("plot", "")
         self.setProperty("plot", self.plot)
@@ -1590,14 +1736,8 @@ class CatalogDetails(xbmcgui.WindowXMLDialog):
         self.setProperty("info", info + ("  ·  " + meta_line(self.item) if meta_line(self.item) else ""))
         control = self.getControl(SERIES_SEASONS)
         control.reset()
-        control.addItems([xbmcgui.ListItem(self.season_name(season)) for season in seasons])
+        control.addItems([xbmcgui.ListItem(season_name(season)) for season in seasons])
         self.show_season()
-
-    def season_name(self, season):
-        # Old cartoons are numbered by year, as in 1940, which is clearer alone.
-        if season == 0:
-            return text(30218)
-        return str(season) if season > 1000 else text(30120, season)
 
     def show_season(self):
         season = self.seasons[self.season]
@@ -1609,15 +1749,20 @@ class CatalogDetails(xbmcgui.WindowXMLDialog):
                 item.setLabel2("/".join(reversed(aired.split("-"))))
             # Shown below the poster while the episode is highlighted.
             item.setProperty("plot", plot or self.plot)
+            item.setProperty("downloaded", "true" if (season, number) in self.downloaded else "false")
+            item.setProperty("watched", "true" if (season, number) in self.watched else "false")
             items.append(item)
         control = self.getControl(SERIES_EPISODES)
         control.reset()
         control.addItems(items)
 
     def update_watchlist(self):
-        in_list = self.item["id"] in {item["id"] for item in storage.get_watchlist()}
+        if self.entry:
+            in_list = is_favorite(self.entry, storage.get_favorites())
+        else:
+            in_list = self.item["id"] in {item["id"] for item in storage.get_watchlist()}
         self.setProperty("favorite", "true" if in_list else "false")
-        self.getControl(CATALOG_MY_LIST).setLabel(text(30215 if in_list else 30214))
+        self.getControl(CATALOG_MY_LIST).setLabel(text(30071 if in_list else 30070))
 
     def onAction(self, action):
         if action.getId() in ACTION_BACK:
@@ -1634,7 +1779,7 @@ class CatalogDetails(xbmcgui.WindowXMLDialog):
             self.choice = "watch"
             self.close()
         elif control_id == CATALOG_MY_LIST:
-            self.catalog.toggle_watchlist(self.item)
+            self.catalog.toggle_favorite(self.item)
             self.update_watchlist()
         elif control_id == CATALOG_SOURCES:
             self.sources(self.item["name"], self.item["id"])
@@ -1776,7 +1921,7 @@ class AddonsWindow(xbmcgui.WindowXMLDialog):
         """What an addon gives, for which types, and where it is."""
         manifest = addon["manifest"]
         resources = [text(RESOURCE_NAMES[name]) for name in stremio.resource_names(manifest) if name in RESOURCE_NAMES]
-        types = [text(TYPE_NAMES[kind]) if kind in TYPE_NAMES else kind.capitalize() for kind in manifest.get("types") or []]
+        types = [type_name(kind) for kind in manifest.get("types") or []]
         parts = [", ".join(resources), ", ".join(types), urlsplit(addon["url"]).hostname or ""]
         return "  ·  ".join(part for part in parts if part)
 

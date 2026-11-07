@@ -15,12 +15,12 @@ msgid "Removed movies"
 msgstr "Filmes removidos"
 
 msgctxt "#30002"
-msgid "Search movies"
-msgstr "Buscar filmes"
+msgid "Search movies and series"
+msgstr "Buscar filmes e séries"
 
 msgctxt "#30003"
-msgid "All movies"
-msgstr "Todos os filmes"
+msgid "My movies"
+msgstr "Meus filmes"
 
 msgctxt "#30004"
 msgid "Web address (URL)"
@@ -183,12 +183,9 @@ msgid "Other"
 msgstr "Outros"
 
 msgctxt "#30044"
-msgid "Movie title"
-msgstr "Título do filme"
+msgid "Title of the movie or series"
+msgstr "Título do filme ou da série"
 
-msgctxt "#30045"
-msgid "No movies found"
-msgstr "Nenhum filme encontrado"
 
 msgctxt "#30046"
 msgid "No movies here"
@@ -199,8 +196,8 @@ msgid "Could not save the file: {0}"
 msgstr "Não foi possível salvar o arquivo: {0}"
 
 msgctxt "#30048"
-msgid "No lists yet. Select the gear icon above the groups to add one."
-msgstr "Nenhuma lista ainda. Use o ícone de engrenagem acima dos grupos para adicionar."
+msgid "No lists yet. Select Settings, above the groups, to add a list or a folder."
+msgstr "Nenhuma lista ainda. Use Configurações, acima dos grupos, para adicionar uma lista ou uma pasta."
 
 msgctxt "#30049"
 msgid "No lists yet. Select Add list to start."
@@ -223,8 +220,8 @@ msgid "M3U lists"
 msgstr "Listas M3U"
 
 msgctxt "#30061"
-msgid "Manage lists"
-msgstr "Gerenciar listas"
+msgid "Settings"
+msgstr "Configurações"
 
 msgctxt "#30062"
 msgid "Settings"
@@ -243,8 +240,8 @@ msgid "Favorites"
 msgstr "Favoritos"
 
 msgctxt "#30066"
-msgid "No favorites yet. Open a movie and select Add to favorites."
-msgstr "Nenhum favorito ainda. Abra um filme e selecione Adicionar aos favoritos."
+msgid "No favorites yet. Open a movie or a series and select Add to favorites."
+msgstr "Nenhum favorito ainda. Abra um filme ou uma série e selecione Adicionar aos favoritos."
 
 msgctxt "#30067"
 msgid "Remove the movie \"{0}\" from the list?"
@@ -690,33 +687,15 @@ msgctxt "#30193"
 msgid "{0} down  ·  {1} up"
 msgstr "{0} baixando  ·  {1} enviando"
 
-msgctxt "#30200"
-msgid "Catalog"
-msgstr "Catálogo"
 
 msgctxt "#30201"
 msgid "Movies"
 msgstr "Filmes"
 
-msgctxt "#30202"
-msgid "My list"
-msgstr "Minha lista"
 
-msgctxt "#30203"
-msgid "Search"
-msgstr "Buscar"
 
-msgctxt "#30204"
-msgid "Popular"
-msgstr "Populares"
 
-msgctxt "#30205"
-msgid "Featured"
-msgstr "Destaques"
 
-msgctxt "#30206"
-msgid "New in {0}"
-msgstr "Lançamentos de {0}"
 
 msgctxt "#30207"
 msgid "Loading…"
@@ -730,37 +709,13 @@ msgctxt "#30209"
 msgid "Nothing found"
 msgstr "Nada encontrado"
 
-msgctxt "#30210"
-msgid "Your list is empty. Add movies and series from their details or with the Menu button."
-msgstr "Sua lista está vazia. Adicione filmes e séries pelos detalhes ou com o botão Menu."
 
-msgctxt "#30211"
-msgid "Search the catalog"
-msgstr "Buscar no catálogo"
 
-msgctxt "#30212"
-msgid "OK: details  ·  Menu: My list  ·  Back: categories"
-msgstr "OK: detalhes  ·  Menu: minha lista  ·  Voltar: categorias"
 
-msgctxt "#30213"
-msgid "From Cinemeta  ·  descriptions in English"
-msgstr "Do Cinemeta  ·  descrições em inglês"
 
-msgctxt "#30214"
-msgid "Add to My list"
-msgstr "Adicionar à minha lista"
 
-msgctxt "#30215"
-msgid "Remove from My list"
-msgstr "Remover da minha lista"
 
-msgctxt "#30216"
-msgid "Added to My list"
-msgstr "Adicionado à minha lista"
 
-msgctxt "#30217"
-msgid "Removed from My list"
-msgstr "Removido da minha lista"
 
 msgctxt "#30218"
 msgid "Specials"
@@ -1185,3 +1140,47 @@ msgstr "Não foi possível alterar o download: {0}"
 msgctxt "#30359"
 msgid "The drive of the downloads is read-only, so nothing can be changed on it. Repair the drive on a computer and connect it again."
 msgstr "O disco dos downloads está somente leitura, então nada pode ser alterado nele. Repare o disco em um computador e conecte-o de novo."
+
+msgctxt "#30361"
+msgid "My series"
+msgstr "Minhas séries"
+
+msgctxt "#30362"
+msgid "Popular movies"
+msgstr "Filmes populares"
+
+msgctxt "#30363"
+msgid "Popular series"
+msgstr "Séries populares"
+
+msgctxt "#30364"
+msgid "Featured movies"
+msgstr "Filmes em destaque"
+
+msgctxt "#30365"
+msgid "Featured series"
+msgstr "Séries em destaque"
+
+msgctxt "#30366"
+msgid "Movies of {0}"
+msgstr "Filmes de {0}"
+
+msgctxt "#30367"
+msgid "Series of {0}"
+msgstr "Séries de {0}"
+
+msgctxt "#30369"
+msgid "Only the movies and series of your lists can be checked. Choose one of their groups, as My movies."
+msgstr "Só os filmes e séries das suas listas podem ser verificados. Escolha um dos grupos delas, como Meus filmes."
+
+msgctxt "#30370"
+msgid "Downloaded"
+msgstr "Baixado"
+
+msgctxt "#30371"
+msgid "{0} episodes downloaded"
+msgstr "{0} episódios baixados"
+
+msgctxt "#30372"
+msgid "1 episode downloaded"
+msgstr "1 episódio baixado"

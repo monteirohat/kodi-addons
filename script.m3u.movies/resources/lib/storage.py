@@ -210,14 +210,16 @@ def get_favorites():
     return read_json(FAVORITES_FILE, [])
 
 
-def toggle_favorite(channel_id):
-    """Add or remove a favorite. Returns True when the channel is now a favorite."""
+def toggle_favorite(channel_id, aliases=()):
+    """Add or remove a favorite. Returns True when the channel is now a favorite. aliases are other identities of the
+    same item, as those of series joined into one, which count as it and are removed with it."""
     favorites = get_favorites()
-    added = channel_id not in favorites
+    keys = [channel_id, *aliases]
+    added = not any(key in favorites for key in keys)
     if added:
         favorites.append(channel_id)
     else:
-        favorites.remove(channel_id)
+        favorites = [favorite for favorite in favorites if favorite not in keys]
     write_json(FAVORITES_FILE, favorites)
     return added
 

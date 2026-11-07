@@ -6,13 +6,14 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 
 ## Features
 
-- Poster catalog with genres on the left and six posters per row, showing title and running time.
+- One screen for everything: the groups of your lists and the catalogs of Cinemeta and of Stremio addons on the left, and six posters per row on the right, showing title and running time.
 - Episodes such as `Show S01E02`, `Show 1x02` or `Show T01 E02` are grouped into one series card, with seasons, episodes and a **Continue** button for the next episode.
-- Watched movies and episodes get a check mark, movies and episodes stopped midway resume where you stopped, and a **Continue watching** group lists what is in progress.
+- Watched movies and episodes get an eye, movies and episodes stopped midway resume where you stopped, and a **Continue watching** group lists what is in progress.
 - Movie details with a large poster, genre, running time and source list, and **Play**, **Favorite** and **Remove movie** buttons.
 - Add lists from a web address, a file on the device or network, or the M3U files of a GitHub repository. No playlist configuration is required.
-- Browse the movies and series of Cinemeta, the catalog of Stremio, by popularity, release year and genre, search it, and keep titles in **My list**. Titles that are also in your lists can be played from there.
-- Add Stremio addons by their address, as in Stremio. Their catalogs join the catalog, and their sources open in a side panel: a torrent goes to Downloads, and a direct link plays at once or downloads.
+- The popular, featured and new movies and series of Cinemeta, the catalog of Stremio, and its genres, with movies and series together, after the groups of your lists. Catalog titles can be kept in **Favorites**, and those that are also in your lists play from there.
+- Add Stremio addons by their address, as in Stremio. Their catalogs join the groups, and their sources open in a side panel: a torrent goes to Downloads, and a direct link plays at once or downloads.
+- The details of a movie or series that is downloaded show a green check, and so do its downloaded episodes.
 - Download torrents from magnet links, `.torrent` files or the catalog, and the direct links of the catalog, into a folder you choose, with a download list that shows progress, speed, time left and the free space of the folder.
 - Add folders with your own video files, on the SD card, a USB drive or a network share. Posters and details come from Cinemeta, and files can be renamed or deleted from the catalog.
 - Playback controls in the style of streaming apps: play and pause between back and forward 10 seconds, and the subtitle and audio tracks in a side panel.
@@ -20,7 +21,7 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 - When a movie fails to open, or stops right after starting, Easy Movie offers to remove it.
 - **Check movies** tests a whole genre at once and removes the movies that do not respond.
 - **Favorites** genre at the top, kept across list updates.
-- Search across all lists, restore removed movies, and export a clean M3U file for other apps.
+- Search your lists and Cinemeta at once, restore removed movies, and export a clean M3U file for other apps.
 - With an empty library, selecting **Movies** or **TV shows** in Kodi's main menu opens Easy Movie, on the movies or on the series.
 - Interface in English and Brazilian Portuguese.
 
@@ -43,22 +44,36 @@ Easy Movie requires Kodi 21 (Omega) or later. It was developed and tested on Lib
 
 ## Getting started
 
-1. Open Easy Movie from **Movies** in the main menu, or from **Add-ons > Video add-ons**. On first use the list manager opens automatically.
+1. Open Easy Movie from **Movies** in the main menu, or from **Add-ons > Video add-ons**. Without lists, it opens on the popular movies of Cinemeta. To add a list, select the gear icon, **Settings**, in the toolbar.
 2. Select **GitHub**, then the suggested repository `OnlineM3U/publicdomainm3u`, choose **Search lists**, and pick `movies.m3u`. You can also use **Add list** with a web address or a file.
-3. Close the manager. The genres of every list appear on the left and their posters on the right.
+3. Close the manager. The groups of every list appear on the left, before the catalogs, and their posters on the right.
 
 ## Using Easy Movie
 
 ### Remote control
 
-| Key | On the genres | On a poster |
+| Key | On the groups | On a poster |
 | --- | --- | --- |
-| **Up / Down** | Move between genres. The catalog follows the highlighted genre. | Move between rows. |
+| **Up / Down** | Move between groups. The posters follow the highlighted group. | Move between rows. Up on the first row moves to the toolbar. |
 | **Right** | Move to the posters. | Move to the next poster. |
-| **Left** | Move to the toolbar, keeping the highlighted genre. | Move to the previous poster. In the first column, return to the genres. |
-| **OK** | Move to the posters. | Open the movie details. |
-| **Back** | Close Easy Movie. | Return to the genres. |
-| **Menu** (**C** on a keyboard) | | Favorite, remove or check the movie. |
+| **Left** | Move to the toolbar, keeping the highlighted group. | Move to the previous poster. In the first column, return to the groups. |
+| **OK** | Move to the posters. | Open the details. |
+| **Back** | Close Easy Movie. | Return to the groups. |
+| **Menu** (**C** on a keyboard) | | Favorite, remove or check a movie of your lists, or add a catalog title to **Favorites** or remove it. |
+
+### Groups
+
+| Group | Content |
+| --- | --- |
+| **Continue watching** | Movies stopped midway and series with episodes left, most recent first. |
+| **Favorites** | Your favorite movies and series of the lists, then the catalog titles you added, newest first. A catalog title that is also in your lists shows once, as the movie or series of the lists. |
+| **My movies** / **My series** | Every movie and series of your lists and folders, newest first. |
+| Genres of your lists | The `group-title` of the lists, and the subfolders of video folders, ending with **Other**. |
+| **Popular**, **Featured** and the year's movies and series | The most watched titles of Cinemeta right now, those it picks, and those released this year, movies and series apart. |
+| Catalogs of addons | The catalogs of the addons you added, in the order of each addon, such as **Netflix · Movies**. The header names the addon. |
+| Genres of Cinemeta | Popular movies and series of each genre together, from Action to Western, and Reality show, Talk show and Game show for series. |
+
+Easy Movie opens on **Continue watching**, **Favorites** or **My movies**, the first that has titles, or else on the popular movies. The groups of the catalog load about 50 titles at a time, and the next ones load when the selection nears the last row. Loaded groups are kept while Easy Movie is open, so returning to one is instant.
 
 ### Movie details
 
@@ -84,9 +99,13 @@ The same stream in several lists is shown once. Episodes with the same code but 
 
 Opening a series shows its poster, seasons and episodes. **Continue** plays the next episode: the one stopped midway, or the first unwatched episode after the last one watched. Select a season and an episode to play any other episode. **Remove series** removes all its episodes.
 
+When the series is known to the catalog, as a series downloaded from its sources or a series of a video folder with Cinemeta details, its details list every episode of the catalog, also those that are not in your lists. A downloaded episode has a green check, and a watched one an eye before its date. An episode in your lists plays, and the others open their [sources](#sources), to download them or watch them at once. The episodes of the catalog load a moment after the details open.
+
+The series of your lists that are one title of Cinemeta show as one series, as a series downloaded in part from Cinemeta and in part from an addon that names it in Portuguese. The one with the most episodes keeps its name and poster. A title downloaded from an addon is looked up on Cinemeta by its name and year.
+
 ### Progress and Continue watching
 
-Easy Movie remembers how far each movie and episode was watched. Playing past 90% marks it as watched, shown with a check mark. A movie or episode stopped after the first minute offers **Resume** or **Play from the beginning** the next time.
+Easy Movie remembers how far each movie and episode was watched. Playing past 90% marks it as watched, shown with an eye. A movie or episode stopped after the first minute offers **Resume** or **Play from the beginning** the next time.
 
 The groups start with **Continue watching**, with movies stopped midway and series with episodes left, most recent first, followed by **Favorites**, **All movies** and **Series**. **All movies** and the genres show the newest movies first, such as a finished download. Movies that arrived together keep the order of their lists. Easy Movie opens on **Continue watching** when it has items.
 
@@ -125,10 +144,10 @@ The toolbar above the genres shows the name of the focused tool.
 
 | Icon | Tool |
 | --- | --- |
-| Gear | **Manage lists** opens the list manager. |
-| Magnifier | **Search movies** by title across all lists. |
-| List | **Catalog** opens the Cinemeta catalog. See [Catalog](#catalog). |
-| Check mark | **Check movies** tests every movie of the shown genre. The tool shows the genre name. Movies that do not respond can be removed all at once or one by one. |
+| Magnifier | **Search movies and series** by title in your lists, whose results show first, and in Cinemeta. |
+| Check mark | **Check movies** tests every movie of the shown group of your lists. The tool shows the group name. Movies that do not respond can be removed all at once or one by one. The groups of the catalog are not checked. |
+| Puzzle piece | **Addons** opens the Stremio addons. See [Addons](#addons). |
+| Gear | **Settings** opens the list manager, with the settings of Easy Movie. See [Managing lists](#managing-lists). |
 | Download arrow | **Downloads** opens the torrent download manager. See [Downloads](#downloads). |
 
 ### Movies that do not work
@@ -144,7 +163,7 @@ Genres are taken from `group-title`. Movies without a genre, or with a placehold
 
 ## Video folders
 
-Select **Add list** > **Folder with videos** to add a folder with your own video files, such as `/storage/videos`, a USB drive under `/var/media`, or a network share such as `smb://`. The folder becomes a list like the others. A folder on this device, such as a USB drive, is read again each time Easy Movie opens and when the Catalog or Downloads closes, so new videos and finished downloads show at once. A network share is read again with the web lists, or with **Update list** after you add or remove files.
+Select **Add list** > **Folder with videos** to add a folder with your own video files, such as `/storage/videos`, a USB drive under `/var/media`, or a network share such as `smb://`. The folder becomes a list like the others. A folder on this device, such as a USB drive, is read again each time Easy Movie opens and when Downloads closes, so new videos and finished downloads show at once. A network share is read again with the web lists, or with **Update list** after you add or remove files.
 
 - Each first level subfolder with more than one movie or series becomes a genre, such as `Movies` or `Cartoons`. The folder of a single movie or series, as a torrent download makes, is not a genre.
 - File names are cleaned for display: `O.Senhor.dos.Aneis.2001.1080p.BluRay.mkv` appears as **O Senhor dos Aneis (2001)**.
@@ -174,31 +193,13 @@ Renaming and deleting need a drive that can be written. A drive formatted as NTF
 
 ## Catalog
 
-The list icon in the toolbar opens **Catalog**, the movies and series of [Cinemeta](https://v3-cinemeta.strem.io), the metadata service of Stremio. It has the layout of the main screen, with **Movies** and **Series** tabs above the categories and the puzzle piece button of [Addons](#addons) next to them.
+After the groups of your lists come the movies and series of [Cinemeta](https://v3-cinemeta.strem.io), the metadata service of Stremio, and the catalogs of the [addons](#addons) you added. See [Groups](#groups).
 
-| Category | Content |
-| --- | --- |
-| **My list** | Titles you saved, with their count. Each tab opens here when it has titles, and on **Popular** otherwise. |
-| **Search** | Asks for a title and shows the matches. |
-| **Popular** | The most watched titles right now. |
-| **Featured** | Titles picked by Cinemeta. |
-| **New in** the current year | Titles released this year. |
-| Catalogs of addons | The catalogs of the addons you added, after the ones of Cinemeta. The header shows the addon name. |
-| Genres | Popular titles of each genre, from Action to Western. Series also have Reality show, Talk show and Game show. |
-
-| Key | On the tabs and the addons button | On the categories | On a poster |
-| --- | --- | --- | --- |
-| **Left / Right** | Switch between **Movies** and **Series**, and reach the addons button. Right on the addons button moves to the posters. | Right moves to the posters. | Move between posters. Left in the first column returns to the categories. |
-| **Up / Down** | Down moves to the categories. | Move between categories. The posters follow the highlighted one. | Move between rows. Up on the first row moves to the tabs. |
-| **OK** | Open **Addons** from its button. | Move to the posters, or ask for a title on **Search**. | Open the details. |
-| **Menu** | | | Add to or remove from **My list**. |
-| **Back** | Close the catalog. | Close the catalog. | Return to the categories. |
-
-Pages have about 50 titles, and the next page loads when the selection nears the last row. Loaded categories are kept while the catalog is open, so returning to one is instant.
-
-Select a poster to open its details: poster, year, IMDb rating, genres, running time, director, cast and description. A series also shows its seasons and episodes with their air dates, and the description below the poster follows the highlighted episode. **Add to My list** saves the title, which then shows a star, and **Menu** on a poster does the same without opening it.
+Select a poster to open its details: poster, year, IMDb rating, genres, running time, director, cast and description. A series also shows its seasons and episodes with their air dates, and the description below the poster follows the highlighted episode. **Add to favorites** saves the title in **Favorites**, where it then shows a star, and **Menu** on a poster does the same without opening it.
 
 When the title is also in your lists, found by the Cinemeta details of a video folder or by name and year, the details show **In your lists** with the list name and a **Play** button, which opens the movie or series from your lists. Descriptions are in English.
+
+When the title is downloaded, a green check shows on its poster and before **Downloaded**, or the number of episodes downloaded of a series, and each downloaded episode has a green check. A title is downloaded when it is in a video folder of your lists, or when a download from its sources ended, in whichever folder it is. The details of a movie or series of a video folder show the same check.
 
 ### Sources
 
@@ -213,7 +214,7 @@ Each source shows its file or release name, and whether it is a **Torrent** or a
 
 ### Addons
 
-The puzzle piece button next to the tabs opens **Addons**, the Stremio addons the catalog uses. A Stremio addon is a web address that describes itself in a `manifest.json` file and answers with catalogs, details, sources or subtitles.
+The puzzle piece in the toolbar opens **Addons**, the Stremio addons whose catalogs and sources Easy Movie uses. A Stremio addon is a web address that describes itself in a `manifest.json` file and answers with catalogs, details, sources or subtitles.
 
 - **Cinemeta** is built in and always listed first.
 - **Add addon** asks for the address of an addon. Paste its `manifest.json` address, the address without `manifest.json`, or a `stremio://` install link. Typing an address with the remote is slow, so paste it from a phone with [Kore](https://kodi.wiki/view/Kore) or Yatse while the keyboard is open.
@@ -221,7 +222,7 @@ The puzzle piece button next to the tabs opens **Addons**, the Stremio addons th
 - Select an addon to **Update addon**, which reads its manifest again, or **Remove addon**.
 - An addon that must be configured first, such as one that asks for a language or an account, shows the address of its configuration page. Configure it there on a phone or computer, and add the address it gives.
 
-The catalogs of an addon that can be shown without a search or a genre appear in the categories: catalogs of movies in **Movies**, and catalogs of series and anime in **Series**. Their titles open with the details of the addon when it gives them, or of Cinemeta. The sources of addons are listed in [Sources](#sources).
+The catalogs of an addon that can be shown without a search or a genre appear in the groups, after the ones of Cinemeta. Catalogs of movies and series with the same name, as Netflix, show their type, and a catalog without a name takes the name of its addon. Their titles open with the details of the addon when it gives them, or of Cinemeta. The sources of addons are listed in [Sources](#sources).
 
 ## Downloads
 
@@ -230,7 +231,7 @@ The download icon at the end of the toolbar opens **Downloads**, the manager of 
 - **Add magnet link** asks for a magnet link or the web address of a `.torrent` file. Typing a long link with the remote is impractical, so paste it from a phone with a remote app such as Kore or Yatse while the keyboard is open.
 - **Add .torrent file** picks a `.torrent` file, for example one copied to a USB drive.
 - **Change folder** chooses where downloads are saved. On LibreELEC, a folder on the SD card asks for confirmation first, since downloads write a lot and wear cards out. Use a USB drive or hard disk instead.
-- The list shows each download with its progress, state, speed, connections, size and time left, and updates every two seconds. The header shows the total download and upload speeds, and the folder line its free space.
+- The list shows each download with its progress, state, speed, connections, size and time left, and updates every two seconds. When it does not fit, a scroll bar on its right shows how near its end the selection is. The header shows the total download and upload speeds, and the folder line its free space.
 - The engine pauses downloads when the folder is full. They then show **No space left in the folder** instead of paused, and resume after space is freed and they are resumed.
 - Select a download, or press **Menu**, to **Pause** or **Resume** it, **Remove from the list**, or **Remove and delete files**.
 
@@ -309,8 +310,8 @@ Easy Movie stores its data in Kodi's add-on data folder, `userdata/addon_data/sc
 | `progress.json` | Playback position and watched state of movies and episodes. |
 | `added.json` | When each movie first appeared in the lists, for showing the newest first. |
 | `metadata.json` | Cinemeta details of the movies and series of video folders. |
-| `watchlist.json` | Titles saved to **My list** in the catalog. |
-| `addons.json` | Stremio addons added in the catalog, with their addresses and manifests. |
+| `watchlist.json` | Catalog titles added to **Favorites**. |
+| `addons.json` | Stremio addons added in **Addons**, with their addresses and manifests. |
 | `torrest/` | The torrent engine, its settings, log and saved downloads. |
 | `subtitles/` | Subtitles downloaded from OpenSubtitles for the movie playing. |
 | `repositories.json` | GitHub repositories, once the suggested one is changed. |
@@ -322,7 +323,7 @@ Easy Movie connects only to the addresses of your lists, streams and posters, to
 - A check confirms that a stream server answers, not that the movie plays. Movies that pass a check can still fail, and are then offered for removal after playback.
 - Series are recognized by episode codes in the names. Episodes without a code are shown as movies.
 - Kodi's own dialogs, such as confirmations, selection lists and the keyboard, use the style of the current skin.
-- The catalog shows catalogs of movies, series and anime. Catalogs of live TV and catalogs that need a search or a genre are left out. Addon searches are not used yet: **Search** searches Cinemeta.
+- The catalog shows catalogs of movies, series and anime. Catalogs of live TV and catalogs that need a search or a genre are left out. Addon searches are not used yet: **Search** searches your lists and Cinemeta.
 - Direct links from addons play without saving progress, and their titles are not marked as watched. They also play with the controls of the Kodi skin.
 - Online subtitles depend on the OpenSubtitles v3 service of Stremio, which may change. A subtitle of another release of the movie can be out of sync. Rare and very new titles may have none in Portuguese.
 - While a movie is paused, the Kodi skin also shows its own time bar at the top of the screen. Subtitles are drawn behind the playback controls while these are shown.
@@ -342,7 +343,7 @@ Easy Movie shares its design and most of its code with Easy Channel. Each add-on
 | --- | --- |
 | `default.py` | Opens the main window. |
 | `service.py` | Background service for the Movies and TV shows menus. |
-| `resources/lib/gui.py` | Main window, movie and series details, Cinemeta catalog, downloads, list manager and repository manager. |
+| `resources/lib/gui.py` | Main window with the groups of the lists and the catalogs, movie and series details, the details of catalog titles, sources, addons, downloads, list manager and repository manager. |
 | `resources/lib/series.py` | Episode recognition and grouping into series. |
 | `resources/lib/folders.py` | Video folders: finds the videos and describes them as an M3U list. |
 | `resources/lib/cinemeta.py` | Cinemeta catalogs, search, details and episodes. |
@@ -355,7 +356,7 @@ Easy Movie shares its design and most of its code with Easy Channel. Each add-on
 | `resources/lib/m3u.py` | M3U parsing and writing. |
 | `resources/lib/probe.py` | Stream checks. |
 | `resources/lib/github.py` | GitHub repository search. |
-| `resources/lib/storage.py` | Lists, cache, favorites, removed movies, progress, Cinemeta details, My list and addons. |
+| `resources/lib/storage.py` | Lists, cache, favorites and the catalog titles of Favorites, removed movies, progress, Cinemeta details and addons. |
 | `resources/lib/movies_menu.py` | Movies and TV shows menu service. |
 | `resources/skins/default/` | Window layouts and textures. |
 

@@ -8,8 +8,11 @@ from generate_m3u_channels_skin import (ACCENT, BG, DANGER, FOCUS, ON_FOCUS, ON_
 
 
 ADDON_ID = "script.m3u.movies"
+# The check of what is downloaded, the green of Easy Connect and Easy Speed.
+GREEN = "FF3DD68C"
 favorite = "String.IsEqual(ListItem.Property(favorite),true)"
 watched = "String.IsEqual(ListItem.Property(watched),true)"
+downloaded = "!String.IsEmpty(Window.Property(downloaded))"
 catalog_focus = has(300)
 
 
@@ -22,9 +25,9 @@ def poster():
     return [panel(9, 10, 192, 288, RAISED),
             image(9, 10, 192, 288, "$INFO[ListItem.Art(poster)]", keep=True, fallback="film.png"),
             image(166, 18, 28, 28, "star.png", STAR, favorite),
-            # Watched badge: a check mark on a dark disc, readable on any poster.
+            # Watched badge: an eye on a dark disc, readable on any poster.
             panel(15, 16, 38, 38, BG, watched),
-            image(18, 19, 32, 32, "check.png", ACCENT, watched)]
+            image(18, 19, 32, 32, "eye.png", ACCENT, watched)]
 
 
 def catalog():
@@ -74,6 +77,18 @@ def main_screen():
         spaces=0)
 
 
+def poster_check(left, top):
+    """A green check on a dark disc at the top left of the poster of a details window, while the title is downloaded."""
+    return [panel(left + 6, top + 6, 44, 44, BG, downloaded), image(left + 10, top + 10, 36, 36, "check.png", GREEN, downloaded)]
+
+
+def place_line(left, top, width, prop, color, font="font13"):
+    """The line that names where a title is, or, with a green check before it, what of it is downloaded."""
+    return [label(left, top, width, 40, f"$INFO[Window.Property({prop})]", font, color, "!" + downloaded),
+            image(left, top + 6, 28, 28, "check.png", GREEN, downloaded),
+            label(left + 40, top, width - 40, 40, "$INFO[Window.Property(downloaded)]", font, GREEN, downloaded)]
+
+
 def details_button(control_id, left, onleft, onright, string_id, focus_color, focus_text, top=840, width=270, ondown="noop",
                    condition=None):
     """A button of a details window. Without onleft and onright, a grouplist places it and moves between its buttons."""
@@ -103,11 +118,12 @@ def details_screen():
         panel(260, 130, 1400, 820, SURFACE),
         panel(310, 180, 400, 600, RAISED),
         image(310, 180, 400, 600, "$INFO[Window.Property(poster)]", keep=True, fallback="film.png"),
+        *poster_check(310, 180),
         image(660, 196, 36, 36, "star.png", STAR, favorite_on),
         textbox(760, 180, 850, 120, "$INFO[Window.Property(title)]", "font36_title", TEXT),
         label(760, 310, 850, 44, "$INFO[Window.Property(group)]", "font13", ACCENT),
         label(760, 360, 850, 40, "$INFO[Window.Property(duration)]", "font12", TEXT2),
-        label(760, 404, 850, 40, "$INFO[Window.Property(list)]", "font12", TEXT2),
+        *place_line(760, 404, 850, "list", TEXT2, "font12"),
         "<!-- Description from Cinemeta, for the videos of folders -->",
         textbox(760, 460, 850, 340, "$INFO[Window.Property(plot)]", "font12", TEXT2),
         details_button(201, 760, 203, 202, 30110, FOCUS, ON_FOCUS),
@@ -137,9 +153,12 @@ def seasons_and_episodes(onup=201, top=444, height=420, condition=None):
       season_label(ON_FOCUS, seasons_focus), season_label(ACCENT, "!" + seasons_focus), spaces=4)}
   </focusedlayout>{skin.visible(condition)}
 </control>"""
+    # A green check on the left for a downloaded episode, and an eye before the date for a watched one.
+    episode_downloaded = "String.IsEqual(ListItem.Property(downloaded),true)"
     episode = lambda name, detail, condition=None, scroll=False: [
-        image(22, 19, 32, 32, "check.png", ACCENT, watched + (" + " + condition if condition else "")),
-        label(72, 0, 780, 70, "$INFO[ListItem.Label]", "font13", name, condition, scroll=scroll),
+        image(22, 19, 32, 32, "check.png", GREEN, skin.both(episode_downloaded, condition)),
+        image(804, 19, 32, 32, "eye.png", detail, skin.both(watched, condition)),
+        label(72, 0, 716, 70, "$INFO[ListItem.Label]", "font13", name, condition, scroll=scroll),
         label(860, 0, 216, 70, "$INFO[ListItem.Label2]", "font12", detail, condition, align="right")]
     episodes = f"""<control type="list" id="400">
   <left>620</left>
@@ -168,10 +187,11 @@ def series_screen():
         panel(160, 80, 1600, 920, SURFACE),
         panel(210, 130, 360, 540, RAISED),
         image(210, 130, 360, 540, "$INFO[Window.Property(poster)]", keep=True, fallback="film.png"),
+        *poster_check(210, 130),
         image(522, 146, 34, 34, "star.png", STAR, "String.IsEqual(Window.Property(favorite),true)"),
         textbox(620, 126, 1100, 110, "$INFO[Window.Property(title)]", "font36_title", TEXT),
         label(620, 240, 1100, 40, "$INFO[Window.Property(info)]", "font12", TEXT2),
-        label(620, 282, 1100, 40, "$INFO[Window.Property(group)]", "font13", ACCENT),
+        *place_line(620, 282, 1100, "group", ACCENT),
         "<!-- Description from Cinemeta, below the poster -->",
         textbox(210, 696, 360, 280, "$INFO[Window.Property(plot)]", "font12", TEXT2),
         details_button(201, 620, 203, 202, None, FOCUS, ON_FOCUS, top=340, width=360, ondown="300"),
@@ -179,66 +199,6 @@ def series_screen():
         details_button(203, 1360, 202, 201, 30122, DANGER, TEXT, top=340, width=360, ondown="300"),
         seasons,
         episodes,
-        spaces=0)
-
-
-def catalog_screen():
-    """The Cinemeta catalog: Movies and Series tabs, categories on the left and posters on the right."""
-    tab_focus = has(100)
-    tab_label = lambda color, condition=None: label(0, 0, 200, 96, "$INFO[ListItem.Label]", "font13", color, condition, align="center")
-    tabs = f"""<control type="list" id="100">
-  <left>40</left>
-  <top>110</top>
-  <width>416</width>
-  <height>96</height>
-  <orientation>horizontal</orientation>
-  <onleft>noop</onleft>
-  <onright>101</onright>
-  <ondown>200</ondown>
-  <scrolltime>120</scrolltime>
-  <itemlayout width="208" height="96">
-{join(panel(0, 0, 200, 96, SURFACE), tab_label(TEXT2), spaces=4)}
-  </itemlayout>
-  <focusedlayout width="208" height="96">
-{join(panel(0, 0, 200, 96, FOCUS, tab_focus), panel(0, 0, 200, 96, RAISED, "!" + tab_focus),
-      tab_label(ON_FOCUS, tab_focus), tab_label(ACCENT, "!" + tab_focus), spaces=4)}
-  </focusedlayout>
-</control>"""
-    addons_button = f"""<control type="button" id="101">
-  <left>456</left>
-  <top>110</top>
-  <width>104</width>
-  <height>96</height>
-  <onup>noop</onup>
-  <ondown>200</ondown>
-  <onleft>100</onleft>
-  <onright>300</onright>
-  <texturefocus border="16" colordiffuse="{FOCUS}">panel.png</texturefocus>
-  <texturenofocus border="16" colordiffuse="{SURFACE}">panel.png</texturenofocus>
-</control>"""
-    return join(
-        image(0, 0, 1920, 1080, "white.png", BG),
-        image(56, 30, 56, 56, "catalog.png", ACCENT),
-        label(128, 28, 900, 60, f"$ADDON[{ADDON_ID} 30200]", "font32_title", TEXT),
-        label(1360, 28, 500, 60, "$INFO[System.Time]", "font32_title", TEXT2, align="right"),
-        "<!-- Movies and Series, and the addons button -->",
-        tabs,
-        addons_button,
-        image(482, 132, 52, 52, "puzzle.png", ON_FOCUS, has(101)),
-        image(482, 132, 52, 52, "puzzle.png", TEXT2, "!" + has(101)),
-        label(44, 212, 516, 36, f"$ADDON[{ADDON_ID} 30213]", "font12", TEXT3, "!" + has(101)),
-        label(44, 212, 516, 36, f"$ADDON[{ADDON_ID} 30270]", "font12", ACCENT, has(101)),
-        "<!-- Categories, filled from gui.py -->",
-        panel(40, 256, 520, 784, SURFACE),
-        skin.groups,
-        "<!-- Posters, with the category name, title count and hints in the header -->",
-        panel(580, 110, 1300, 930, SURFACE),
-        label(612, 114, 940, 56, "", "font32_title", TEXT, control_id=401),
-        label(1560, 114, 290, 56, "", "font12", TEXT2, align="right", control_id=402),
-        label(612, 166, 1240, 32, f"$ADDON[{ADDON_ID} 30212]", "font12", TEXT3),
-        image(604, 206, 1252, 2, "white.png", RAISED),
-        label(620, 300, 1220, 300, "", "font13", TEXT2, align="center", center=False, control_id=403, wrap=True),
-        catalog(),
         spaces=0)
 
 
@@ -285,11 +245,12 @@ def catalog_details_screen():
         panel(160, 80, 1600, 920, SURFACE),
         panel(210, 130, 360, 540, RAISED),
         image(210, 130, 360, 540, "$INFO[Window.Property(poster)]", keep=True, fallback="film.png"),
+        *poster_check(210, 130),
         image(522, 146, 34, 34, "star.png", STAR, "String.IsEqual(Window.Property(favorite),true)"),
         textbox(620, 126, 1100, 110, "$INFO[Window.Property(title)]", "font36_title", TEXT),
         label(620, 240, 1100, 40, "$INFO[Window.Property(info)]", "font12", TEXT2),
         label(620, 282, 1100, 40, "$INFO[Window.Property(people)]", "font12", TEXT2),
-        label(620, 324, 1100, 40, "$INFO[Window.Property(library)]", "font13", ACCENT),
+        *place_line(620, 324, 1100, "library", ACCENT),
         buttons,
         "<!-- Description: below the poster for a series, where it follows the highlighted episode, and below the buttons for a movie -->",
         textbox(210, 696, 360, 280, "$INFO[Window.Property(plot)]", "font12", TEXT2, is_series + " + !" + has(400)),
@@ -492,12 +453,12 @@ def player_screen():
         spaces=0)
 
 
-def progress_bar(top, background, condition=None):
+def progress_bar(top, background, condition=None, width=1288):
     """Progress of a download, from ListItem.Property(progress), drawn over a background track."""
     return f"""<control type="progress">
   <left>24</left>
   <top>{top}</top>
-  <width>1312</width>
+  <width>{width}</width>
   <height>8</height>
   <texturebg colordiffuse="{background}">white.png</texturebg>
   <midtexture colordiffuse="{ACCENT}">white.png</midtexture>
@@ -507,25 +468,28 @@ def progress_bar(top, background, condition=None):
 
 def downloads_screen():
     focus = has(100)
+    # The list leaves room on its right for the scroll bar.
+    width = 1336
     item = lambda name, detail, track, condition=None, scroll=False: [
-        label(24, 8, 1100, 44, "$INFO[ListItem.Label]", "font13", name, condition, scroll=scroll),
-        label(1136, 8, 200, 44, "$INFO[ListItem.Property(percent)]", "font13", name, condition, align="right"),
-        progress_bar(58, track, condition),
-        label(24, 70, 1312, 34, "$INFO[ListItem.Label2]", "font12", detail, condition)]
+        label(24, 8, width - 260, 44, "$INFO[ListItem.Label]", "font13", name, condition, scroll=scroll),
+        label(width - 224, 8, 200, 44, "$INFO[ListItem.Property(percent)]", "font13", name, condition, align="right"),
+        progress_bar(58, track, condition, width - 48),
+        label(24, 70, width - 48, 34, "$INFO[ListItem.Label2]", "font12", detail, condition)]
     downloads = f"""<control type="list" id="100">
   <left>290</left>
   <top>350</top>
-  <width>1360</width>
+  <width>{width}</width>
   <height>600</height>
   <onup>201</onup>
   <onleft>noop</onleft>
   <onright>noop</onright>
+  <pagecontrol>110</pagecontrol>
   <scrolltime>120</scrolltime>
   <itemlayout height="120">
-{join(panel(0, 2, 1360, 112, RAISED), *item(TEXT, TEXT2, SURFACE), spaces=4)}
+{join(panel(0, 2, width, 112, RAISED), *item(TEXT, TEXT2, SURFACE), spaces=4)}
   </itemlayout>
   <focusedlayout height="120">
-{join(panel(0, 2, 1360, 112, FOCUS, focus), panel(0, 2, 1360, 112, RAISED, "!" + focus),
+{join(panel(0, 2, width, 112, FOCUS, focus), panel(0, 2, width, 112, RAISED, "!" + focus),
       *item(ON_FOCUS, ON_FOCUS2, TEXT2, focus, True), *item(TEXT, TEXT2, SURFACE, "!" + focus), spaces=4)}
   </focusedlayout>
 </control>"""
@@ -544,19 +508,36 @@ def downloads_screen():
         button(204, 1398, 252, 203, 201, 30063),
         label(330, 440, 1280, 200, "", "font13", TEXT2, align="center", center=False, control_id=300, wrap=True),
         downloads,
+        scrollbar(110, 290 + width + 16, 352, 596, 100),
         spaces=0)
+
+
+def scrollbar(control_id, left, top, height, list_id):
+    """A thin scroll bar next to a list, which shows how far down the list is and how much of it fits. It shows only
+    when the list does not fit, and the remote never reaches it: the list moves it."""
+    return f"""<control type="scrollbar" id="{control_id}">
+  <left>{left}</left>
+  <top>{top}</top>
+  <width>8</width>
+  <height>{height}</height>
+  <onleft>{list_id}</onleft>
+  <onright>{list_id}</onright>
+  <texturesliderbackground colordiffuse="{RAISED}">white.png</texturesliderbackground>
+  <texturesliderbar colordiffuse="{TEXT2}">white.png</texturesliderbar>
+  <texturesliderbarfocus colordiffuse="{ACCENT}">white.png</texturesliderbarfocus>
+  <orientation>vertical</orientation>
+  <showonepage>false</showonepage>
+</control>"""
 
 
 def main():
     skin.ADDON_ID, skin.GENERATOR = ADDON_ID, "generate_m3u_movies_skin.py"
     files = {
-        "script-m3u-movies-main.xml": window("Main screen: toolbar and groups on the left, movie posters on the right.", 200, main_screen()),
+        "script-m3u-movies-main.xml": window("Main screen: toolbar and groups on the left, the posters of the lists and of the catalogs on the right.", 200, main_screen()),
         "script-m3u-movies-details.xml": window("Modal movie details opened from a poster.", 201, details_screen(), always=True),
         "script-m3u-movies-series.xml": window("Modal series details with seasons and episodes, opened from a series poster.", 201,
                                                series_screen(), always=True),
-        "script-m3u-movies-catalog.xml": window("Cinemeta catalog opened from the catalog icon: tabs and categories on the left, posters on the right.",
-                                                200, catalog_screen()),
-        "script-m3u-movies-catalog-details.xml": window("Modal details of a catalog title, with seasons and episodes for a series.", 202,
+        "script-m3u-movies-catalog-details.xml": window("Modal details of a title of a catalog, with seasons and episodes for a series.", 202,
                                                         catalog_details_screen(), always=True),
         "script-m3u-movies-sources.xml": window("Modal sources of a catalog title, sliding in from the right.", 100, sources_screen(), always=True),
         "script-m3u-movies-player.xml": window("Modal playback controls over the video of a movie or an episode.", 203, player_screen()),
@@ -565,7 +546,7 @@ def main():
             [skin.button(201, 290, 256, 203, 204, 30000), skin.button(204, 561, 256, 201, 205, 30093),
              skin.button(205, 832, 256, 204, 202, 30001), skin.button(202, 1103, 256, 205, 203, 30062),
              skin.button(203, 1374, 256, 202, 201, 30063)], width=1400),
-        "script-m3u-movies-addons.xml": skin.manager("Modal Stremio addons opened from the catalog.", "puzzle.png", 30270, "puzzle.png",
+        "script-m3u-movies-addons.xml": skin.manager("Modal Stremio addons opened from the addons icon.", "puzzle.png", 30270, "puzzle.png",
             [skin.button(201, 440, 512, 203, 203, 30272), skin.button(203, 968, 512, 201, 201, 30063)], logos=True),
         "script-m3u-movies-repos.xml": skin.manager("Modal GitHub repository manager opened from the list manager.", "search.png", 30075, "search.png",
             [skin.button(201, 440, 512, 203, 203, 30076), skin.button(203, 968, 512, 201, 201, 30063)]),

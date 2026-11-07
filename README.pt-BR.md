@@ -168,7 +168,7 @@ Leia o [guia do Easy Channel](script.m3u.channels/README.md) para conhecer cada 
 - Listas por endereço web, por arquivo ou do GitHub, com um repositório sugerido de filmes em domínio público.
 - O mesmo gerenciador de listas, verificação, favoritos e detecção de falhas do Easy Channel, no mesmo visual.
 - Pastas com os seus próprios vídeos, no cartão SD, em pendrives ou em compartilhamentos de rede, com pôsteres e detalhes do Cinemeta.
-- Um catálogo dos filmes e séries do Cinemeta, com **Minha lista**, e addons do Stremio adicionados pelo endereço, cujas fontes vão para um gerenciador de downloads de torrent ou tocam na hora.
+- Os filmes e séries do Cinemeta e dos addons do Stremio adicionados pelo endereço, na mesma tela das suas listas, cujas fontes vão para um gerenciador de downloads de torrent ou tocam na hora. O que já foi baixado abre com um check verde.
 - Com a biblioteca vazia, selecionar **Filmes** ou **Seriados** no menu principal do Kodi abre o Easy Movie.
 
 <img src=".github/assets/easy-movie.gif" alt="Easy Movie: gêneros, pôsteres, detalhes do filme e o catálogo do Cinemeta" width="860">

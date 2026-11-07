@@ -63,8 +63,9 @@ def needs_configuration(manifest):
 
 
 def browsable_catalogs(manifest, kind):
-    """Catalogs of a kind that can be shown without asking anything, as (id, name, pages). A catalog that requires
-    a search or a genre is left out. pages tells whether it accepts skip, to load more titles."""
+    """Catalogs of a kind that can be shown without asking anything, as (id, name, pages, named). A catalog that
+    requires a search or a genre is left out. pages tells whether it accepts skip, to load more titles, and named
+    whether its name already names the addon."""
     found = []
     for catalog in manifest.get("catalogs") or []:
         if catalog.get("type") != kind or not catalog.get("id"):
@@ -74,18 +75,23 @@ def browsable_catalogs(manifest, kind):
         if required:
             continue
         pages = any(item.get("name") == "skip" for item in extra)
-        found.append((catalog["id"], short_name(catalog.get("name") or catalog["id"], manifest["name"]), pages))
+        found.append((catalog["id"], *catalog_name(catalog.get("name") or "", manifest["name"]), pages))
     return found
 
 
-def short_name(name, addon_name):
-    """A catalog name without the addon name in front, as in "Filmes" for "Brazuca Play - Filmes" of the addon
-    "Brazuca Play (Não Oficial)"."""
+def catalog_name(name, addon_name):
+    """The name of a catalog without repeated spaces, which some addons have, as in "Prime  Video", and whether it
+    names the addon. A short name of the addon in front is kept, with a dot after it, as in "Brazuca Play  ·  Filmes"
+    for "Brazuca Play - Filmes" of the addon "Brazuca Play (Não Oficial)". A catalog without a name takes the name of
+    the addon."""
+    name = " ".join(name.split())
+    if not name:
+        return " ".join(addon_name.split()), True
     for separator in (" - ", " | ", ": "):
         prefix, found, rest = name.partition(separator)
         if found and rest and addon_name.lower().startswith(prefix.strip().lower()):
-            return rest.strip()
-    return name
+            return "%s  ·  %s" % (prefix.strip(), rest.strip()), True
+    return name, False
 
 
 def has_meta(manifest, kind, item_id):

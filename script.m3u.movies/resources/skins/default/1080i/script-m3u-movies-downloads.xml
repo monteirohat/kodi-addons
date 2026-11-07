@@ -140,24 +140,25 @@
     <control type="list" id="100">
       <left>290</left>
       <top>350</top>
-      <width>1360</width>
+      <width>1336</width>
       <height>600</height>
       <onup>201</onup>
       <onleft>noop</onleft>
       <onright>noop</onright>
+      <pagecontrol>110</pagecontrol>
       <scrolltime>120</scrolltime>
       <itemlayout height="120">
         <control type="image">
           <left>0</left>
           <top>2</top>
-          <width>1360</width>
+          <width>1336</width>
           <height>112</height>
           <texture border="16" colordiffuse="FF222328">panel.png</texture>
         </control>
         <control type="label">
           <left>24</left>
           <top>8</top>
-          <width>1100</width>
+          <width>1076</width>
           <height>44</height>
           <aligny>center</aligny>
           <font>font13</font>
@@ -165,7 +166,7 @@
           <label>$INFO[ListItem.Label]</label>
         </control>
         <control type="label">
-          <left>1136</left>
+          <left>1112</left>
           <top>8</top>
           <width>200</width>
           <height>44</height>
@@ -178,7 +179,7 @@
         <control type="progress">
           <left>24</left>
           <top>58</top>
-          <width>1312</width>
+          <width>1288</width>
           <height>8</height>
           <texturebg colordiffuse="FF17181B">white.png</texturebg>
           <midtexture colordiffuse="FF3B8BFF">white.png</midtexture>
@@ -187,7 +188,7 @@
         <control type="label">
           <left>24</left>
           <top>70</top>
-          <width>1312</width>
+          <width>1288</width>
           <height>34</height>
           <aligny>center</aligny>
           <font>font12</font>
@@ -199,7 +200,7 @@
         <control type="image">
           <left>0</left>
           <top>2</top>
-          <width>1360</width>
+          <width>1336</width>
           <height>112</height>
           <texture border="16" colordiffuse="FF4682B4">panel.png</texture>
           <visible>Control.HasFocus(100)</visible>
@@ -207,7 +208,7 @@
         <control type="image">
           <left>0</left>
           <top>2</top>
-          <width>1360</width>
+          <width>1336</width>
           <height>112</height>
           <texture border="16" colordiffuse="FF222328">panel.png</texture>
           <visible>!Control.HasFocus(100)</visible>
@@ -215,7 +216,7 @@
         <control type="label">
           <left>24</left>
           <top>8</top>
-          <width>1100</width>
+          <width>1076</width>
           <height>44</height>
           <aligny>center</aligny>
           <scroll>true</scroll>
@@ -225,7 +226,7 @@
           <visible>Control.HasFocus(100)</visible>
         </control>
         <control type="label">
-          <left>1136</left>
+          <left>1112</left>
           <top>8</top>
           <width>200</width>
           <height>44</height>
@@ -239,7 +240,7 @@
         <control type="progress">
           <left>24</left>
           <top>58</top>
-          <width>1312</width>
+          <width>1288</width>
           <height>8</height>
           <texturebg colordiffuse="FF9C9EA6">white.png</texturebg>
           <midtexture colordiffuse="FF3B8BFF">white.png</midtexture>
@@ -249,7 +250,7 @@
         <control type="label">
           <left>24</left>
           <top>70</top>
-          <width>1312</width>
+          <width>1288</width>
           <height>34</height>
           <aligny>center</aligny>
           <font>font12</font>
@@ -260,7 +261,7 @@
         <control type="label">
           <left>24</left>
           <top>8</top>
-          <width>1100</width>
+          <width>1076</width>
           <height>44</height>
           <aligny>center</aligny>
           <font>font13</font>
@@ -269,7 +270,7 @@
           <visible>!Control.HasFocus(100)</visible>
         </control>
         <control type="label">
-          <left>1136</left>
+          <left>1112</left>
           <top>8</top>
           <width>200</width>
           <height>44</height>
@@ -283,7 +284,7 @@
         <control type="progress">
           <left>24</left>
           <top>58</top>
-          <width>1312</width>
+          <width>1288</width>
           <height>8</height>
           <texturebg colordiffuse="FF17181B">white.png</texturebg>
           <midtexture colordiffuse="FF3B8BFF">white.png</midtexture>
@@ -293,7 +294,7 @@
         <control type="label">
           <left>24</left>
           <top>70</top>
-          <width>1312</width>
+          <width>1288</width>
           <height>34</height>
           <aligny>center</aligny>
           <font>font12</font>
@@ -302,6 +303,19 @@
           <visible>!Control.HasFocus(100)</visible>
         </control>
       </focusedlayout>
+    </control>
+    <control type="scrollbar" id="110">
+      <left>1642</left>
+      <top>352</top>
+      <width>8</width>
+      <height>596</height>
+      <onleft>100</onleft>
+      <onright>100</onright>
+      <texturesliderbackground colordiffuse="FF222328">white.png</texturesliderbackground>
+      <texturesliderbar colordiffuse="FF9C9EA6">white.png</texturesliderbar>
+      <texturesliderbarfocus colordiffuse="FF3B8BFF">white.png</texturesliderbarfocus>
+      <orientation>vertical</orientation>
+      <showonepage>false</showonepage>
     </control>
   </controls>
 </window>

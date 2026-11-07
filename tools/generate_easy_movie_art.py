@@ -1,4 +1,4 @@
-"""Easy Movie artwork: add-on icon, header mark, poster placeholder and fanart.
+"""Easy Movie artwork: add-on icon, header mark, poster placeholder, the watched icon and fanart.
 
 Uses the colors and shapes of Easy Channel's artwork. Requires Pillow and the Inter font (SIL Open Font
 License, https://rsms.me/inter/). Run with the folder that holds Inter-Bold.ttf and Inter-Medium.ttf:
@@ -84,6 +84,19 @@ film.save(os.path.join(MEDIA, "film.png"), optimize=True)
 spinner = render(128, 128, lambda d, s: d.arc((12 * s, 12 * s, 116 * s, 116 * s), start=0, end=270, fill=WHITE, width=12 * s),
                  CLEAR, "RGBA")
 spinner.save(os.path.join(MEDIA, "spinner.png"), optimize=True)
+
+
+def eye(draw, s):
+    """An open eye: the mark of a watched episode, apart from the check of a downloaded one."""
+    p = lambda value: value * s
+    upper = [(p(6 + 116 * t / 30), p(64 - 46 * math.sin(math.pi * t / 30))) for t in range(31)]
+    lower = [(p(122 - 116 * t / 30), p(64 + 46 * math.sin(math.pi * t / 30))) for t in range(31)]
+    draw.polygon(upper + lower, fill=WHITE)
+    draw.ellipse((p(40), p(40), p(88), p(88)), fill=CLEAR)
+    draw.ellipse((p(52), p(52), p(76), p(76)), fill=WHITE)
+
+
+render(128, 128, eye, CLEAR, "RGBA").save(os.path.join(MEDIA, "eye.png"), optimize=True)
 
 
 def fanart(draw, s):

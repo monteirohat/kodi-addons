@@ -257,7 +257,7 @@ HOME = Template("""<!doctype html>
       <p>The movies and series of your M3U lists and video folders, as a poster catalog. Open a movie to see its details, or a series to pick a season and continue where you stopped.</p>
       <ul>
         <li>Genres on the left, posters on the right, <b>Continue watching</b> and watched marks.</li>
-        <li>The <b>Cinemeta</b> catalog of Stremio, with <b>My list</b>, and Stremio addons added by their address.</li>
+        <li>The <b>Cinemeta</b> catalog of Stremio and Stremio addons added by their address, on the same screen as your lists, with a green check on what is downloaded.</li>
         <li>Torrent downloads into a folder you choose, and your own video folders with posters and details.</li>
         <li>Streaming style playback controls, and subtitles from <b>OpenSubtitles</b> turned on in your language.</li>
       </ul>

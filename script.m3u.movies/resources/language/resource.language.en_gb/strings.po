@@ -15,11 +15,11 @@ msgid "Removed movies"
 msgstr ""
 
 msgctxt "#30002"
-msgid "Search movies"
+msgid "Search movies and series"
 msgstr ""
 
 msgctxt "#30003"
-msgid "All movies"
+msgid "My movies"
 msgstr ""
 
 msgctxt "#30004"
@@ -183,12 +183,9 @@ msgid "Other"
 msgstr ""
 
 msgctxt "#30044"
-msgid "Movie title"
+msgid "Title of the movie or series"
 msgstr ""
 
-msgctxt "#30045"
-msgid "No movies found"
-msgstr ""
 
 msgctxt "#30046"
 msgid "No movies here"
@@ -199,7 +196,7 @@ msgid "Could not save the file: {0}"
 msgstr ""
 
 msgctxt "#30048"
-msgid "No lists yet. Select the gear icon above the groups to add one."
+msgid "No lists yet. Select Settings, above the groups, to add a list or a folder."
 msgstr ""
 
 msgctxt "#30049"
@@ -223,7 +220,7 @@ msgid "M3U lists"
 msgstr ""
 
 msgctxt "#30061"
-msgid "Manage lists"
+msgid "Settings"
 msgstr ""
 
 msgctxt "#30062"
@@ -243,7 +240,7 @@ msgid "Favorites"
 msgstr ""
 
 msgctxt "#30066"
-msgid "No favorites yet. Open a movie and select Add to favorites."
+msgid "No favorites yet. Open a movie or a series and select Add to favorites."
 msgstr ""
 
 msgctxt "#30067"
@@ -690,33 +687,15 @@ msgctxt "#30193"
 msgid "{0} down  ·  {1} up"
 msgstr ""
 
-msgctxt "#30200"
-msgid "Catalog"
-msgstr ""
 
 msgctxt "#30201"
 msgid "Movies"
 msgstr ""
 
-msgctxt "#30202"
-msgid "My list"
-msgstr ""
 
-msgctxt "#30203"
-msgid "Search"
-msgstr ""
 
-msgctxt "#30204"
-msgid "Popular"
-msgstr ""
 
-msgctxt "#30205"
-msgid "Featured"
-msgstr ""
 
-msgctxt "#30206"
-msgid "New in {0}"
-msgstr ""
 
 msgctxt "#30207"
 msgid "Loading…"
@@ -730,37 +709,13 @@ msgctxt "#30209"
 msgid "Nothing found"
 msgstr ""
 
-msgctxt "#30210"
-msgid "Your list is empty. Add movies and series from their details or with the Menu button."
-msgstr ""
 
-msgctxt "#30211"
-msgid "Search the catalog"
-msgstr ""
 
-msgctxt "#30212"
-msgid "OK: details  ·  Menu: My list  ·  Back: categories"
-msgstr ""
 
-msgctxt "#30213"
-msgid "From Cinemeta  ·  descriptions in English"
-msgstr ""
 
-msgctxt "#30214"
-msgid "Add to My list"
-msgstr ""
 
-msgctxt "#30215"
-msgid "Remove from My list"
-msgstr ""
 
-msgctxt "#30216"
-msgid "Added to My list"
-msgstr ""
 
-msgctxt "#30217"
-msgid "Removed from My list"
-msgstr ""
 
 msgctxt "#30218"
 msgid "Specials"
@@ -1184,4 +1139,48 @@ msgstr ""
 
 msgctxt "#30359"
 msgid "The drive of the downloads is read-only, so nothing can be changed on it. Repair the drive on a computer and connect it again."
+msgstr ""
+
+msgctxt "#30361"
+msgid "My series"
+msgstr ""
+
+msgctxt "#30362"
+msgid "Popular movies"
+msgstr ""
+
+msgctxt "#30363"
+msgid "Popular series"
+msgstr ""
+
+msgctxt "#30364"
+msgid "Featured movies"
+msgstr ""
+
+msgctxt "#30365"
+msgid "Featured series"
+msgstr ""
+
+msgctxt "#30366"
+msgid "Movies of {0}"
+msgstr ""
+
+msgctxt "#30367"
+msgid "Series of {0}"
+msgstr ""
+
+msgctxt "#30369"
+msgid "Only the movies and series of your lists can be checked. Choose one of their groups, as My movies."
+msgstr ""
+
+msgctxt "#30370"
+msgid "Downloaded"
+msgstr ""
+
+msgctxt "#30371"
+msgid "{0} episodes downloaded"
+msgstr ""
+
+msgctxt "#30372"
+msgid "1 episode downloaded"
 msgstr ""
