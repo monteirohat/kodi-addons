@@ -158,14 +158,37 @@ def scan(root, walk, known=None):
             if logo:
                 attributes["tvg-logo"] = logo
             channels.append((attributes, display, path))
-    # A group needs more than one title: movies, or series by their name.
-    titles = {}
+    # A group needs more than one title: movies, or series by their name. A folder named after one of its titles is
+    # the folder of that title, as a series whose episodes were downloaded under two names, and not a group.
+    titles, names = {}, {}
     for attributes, display, path in channels:
         titles.setdefault(attributes["group-title"], set()).add(title_key(attributes, display, path))
+        names.setdefault(attributes["group-title"], set()).add(title_name(attributes, display))
     for attributes, _, _ in channels:
-        if len(titles[attributes["group-title"]]) < 2:
+        group = attributes["group-title"]
+        if len(titles[group]) < 2 or named_after(group, names[group]):
             attributes["group-title"] = ""
     return to_m3u(channels)
+
+
+def plain(text):
+    """Letters and digits of a name, in lower case and without accents, to compare names."""
+    text = unicodedata.normalize("NFKD", text)
+    return "".join(char for char in text.lower() if char.isalnum() and not unicodedata.combining(char))
+
+
+def named_after(folder, names):
+    """Whether a folder is named after one of the titles it holds, as "Pepper Chocolate" or
+    "Baby Looney Tunes (2002) Season 1-2 (1080p)", by the start of its name."""
+    folder = plain(clean(folder))
+    return any(name and folder.startswith(name) for name in map(plain, names))
+
+
+def title_name(attributes, display):
+    """The name of the title a video is part of: its series, or the movie without its year."""
+    episode = series.parse_episode({"name": display, "subgroup": attributes.get("pltv-subgroup", ""),
+                                    "group": attributes["group-title"]})
+    return episode[0] if episode else title_and_year(display)[0]
 
 
 def from_catalog(attributes, origin, path, logo):
