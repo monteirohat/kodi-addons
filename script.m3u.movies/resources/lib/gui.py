@@ -46,7 +46,7 @@ TYPE_NAMES = {"movie": 30201, "series": 30117, "channel": 30288}
 # The catalog loads its next page when the selection gets this close to the last poster.
 LOAD_MORE_BEFORE = 12
 DOWNLOADS_LIST, DOWNLOADS_EMPTY = 100, 300
-DOWNLOADS_MAGNET, DOWNLOADS_FILE, DOWNLOADS_FOLDER, DOWNLOADS_CLOSE = 201, 202, 203, 204
+DOWNLOADS_MAGNET, DOWNLOADS_FILE, DOWNLOADS_FOLDER, DOWNLOADS_CLOSE, DOWNLOADS_CLEAR = 201, 202, 203, 204, 205
 # Below this many free bytes, a download folder counts as full.
 LOW_SPACE = 200 << 20
 # Seconds between updates of the download list.
@@ -2323,6 +2323,8 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
         elif control_id == DOWNLOADS_FOLDER:
             if self.choose_folder():
                 self.show_folder()
+        elif control_id == DOWNLOADS_CLEAR:
+            self.clear()
         elif control_id == DOWNLOADS_CLOSE:
             self.closed = True
             self.close()
@@ -2401,6 +2403,53 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
             xbmcgui.Dialog().ok(TITLE, text(30359) if read_only else text(30358, error))
         self.update()
 
+
+    def clear(self):
+        """Take every download off the list, keeping their files. Downloads that have not finished stop when taken
+        off, so they are kept unless asked."""
+        try:
+            items = self.engine.torrents()
+        except torrents.EngineError:
+            items = []
+        jobs = direct.jobs(DIRECT_JOBS)
+        downloads = [(torrent["info_hash"], torrents.state_of(torrent.get("status") or {}) == "finished") for torrent in items]
+        downloads += [("direct:" + job["id"], job["state"] == "finished") for job in jobs]
+        if not downloads:
+            notify(text(30169))
+            return
+        unfinished = len([finished for _, finished in downloads if not finished])
+        dialog = xbmcgui.Dialog()
+        if not unfinished:
+            if not dialog.yesno(TITLE, text(30376, len(downloads)), nolabel=text(30040), yeslabel=text(30375)):
+                return
+            chosen = downloads
+        else:
+            answer = dialog.yesnocustom(TITLE, text(30377, unfinished, len(downloads)), customlabel=text(30378),
+                                        nolabel=text(30040), yeslabel=text(30379))
+            if answer == 2:
+                chosen = [download for download in downloads if download[1]]
+            elif answer == 1:
+                chosen = downloads
+            else:
+                return
+        failed = []
+        for key, _ in chosen:
+            if key.startswith("direct:"):
+                direct.request(DIRECT_JOBS, key[len("direct:"):], "remove")
+                continue
+            try:
+                self.engine.remove(key, False)
+            except torrents.EngineError as error:
+                failed.append(error)
+        if failed:
+            read_only = any("read-only" in str(error).lower() for error in failed)
+            dialog.ok(TITLE, text(30359) if read_only else text(30358, failed[0]))
+        cleared = len(chosen) - len(failed)
+        if cleared:
+            notify(text(30380, cleared))
+        self.update()
+        if not self.hashes:
+            self.setFocusId(DOWNLOADS_MAGNET)
 
     def direct_menu(self, job_id, row, paused):
         """Pause or resume a direct link, or remove it from the list, with or without its file."""

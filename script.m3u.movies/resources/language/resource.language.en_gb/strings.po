@@ -1192,3 +1192,27 @@ msgstr ""
 msgctxt "#30374"
 msgid "The file of \"{0}\" stopped before its end, or did not open. It may be incomplete, as after a copy or a download that was interrupted. Copy or download it again. Do you want to remove it from the list?"
 msgstr ""
+
+msgctxt "#30375"
+msgid "Clear list"
+msgstr ""
+
+msgctxt "#30376"
+msgid "Clear the {0} downloads from the list? Their files are kept."
+msgstr ""
+
+msgctxt "#30377"
+msgid "{0} of the {1} downloads have not finished yet, and stop if cleared. Files are kept either way."
+msgstr ""
+
+msgctxt "#30378"
+msgid "Only finished"
+msgstr ""
+
+msgctxt "#30379"
+msgid "Clear all"
+msgstr ""
+
+msgctxt "#30380"
+msgid "{0} downloads cleared from the list"
+msgstr ""

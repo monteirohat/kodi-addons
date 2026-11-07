@@ -58,7 +58,7 @@
     <control type="button" id="201">
       <left>290</left>
       <top>250</top>
-      <width>400</width>
+      <width>320</width>
       <height>76</height>
       <onup>noop</onup>
       <ondown>100</ondown>
@@ -74,9 +74,9 @@
       <label>$ADDON[script.m3u.movies 30161]</label>
     </control>
     <control type="button" id="202">
-      <left>706</left>
+      <left>622</left>
       <top>250</top>
-      <width>360</width>
+      <width>330</width>
       <height>76</height>
       <onup>noop</onup>
       <ondown>100</ondown>
@@ -92,14 +92,14 @@
       <label>$ADDON[script.m3u.movies 30162]</label>
     </control>
     <control type="button" id="203">
-      <left>1082</left>
+      <left>964</left>
       <top>250</top>
-      <width>300</width>
+      <width>260</width>
       <height>76</height>
       <onup>noop</onup>
       <ondown>100</ondown>
       <onleft>202</onleft>
-      <onright>204</onright>
+      <onright>205</onright>
       <font>font13</font>
       <align>center</align>
       <aligny>center</aligny>
@@ -109,14 +109,32 @@
       <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
       <label>$ADDON[script.m3u.movies 30163]</label>
     </control>
-    <control type="button" id="204">
-      <left>1398</left>
+    <control type="button" id="205">
+      <left>1236</left>
       <top>250</top>
-      <width>252</width>
+      <width>240</width>
       <height>76</height>
       <onup>noop</onup>
       <ondown>100</ondown>
       <onleft>203</onleft>
+      <onright>204</onright>
+      <font>font13</font>
+      <align>center</align>
+      <aligny>center</aligny>
+      <textcolor>FFF4F4F5</textcolor>
+      <focusedcolor>FFFFFFFF</focusedcolor>
+      <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
+      <texturenofocus border="16" colordiffuse="FF222328">panel.png</texturenofocus>
+      <label>$ADDON[script.m3u.movies 30375]</label>
+    </control>
+    <control type="button" id="204">
+      <left>1488</left>
+      <top>250</top>
+      <width>162</width>
+      <height>76</height>
+      <onup>noop</onup>
+      <ondown>100</ondown>
+      <onleft>205</onleft>
       <onright>201</onright>
       <font>font13</font>
       <align>center</align>

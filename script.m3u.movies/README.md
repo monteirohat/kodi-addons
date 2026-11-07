@@ -236,6 +236,7 @@ The download icon at the end of the toolbar opens **Downloads**, the manager of 
 - The list shows each download with its progress, state, speed, connections, size and time left, and updates every two seconds. When it does not fit, a scroll bar on its right shows how near its end the selection is. The header shows the total download and upload speeds, and the folder line its free space.
 - The engine pauses downloads when the folder is full. They then show **No space left in the folder** instead of paused, and resume after space is freed and they are resumed.
 - Select a download, or press **Menu**, to **Pause** or **Resume** it, **Remove from the list**, or **Remove and delete files**.
+- **Clear list** takes every download off the list at once, after a confirmation, and keeps their files. When some have not finished, it asks whether to clear **Only finished** ones or **Clear all**, which stops the others.
 
 Downloads keep going after the screen is closed, while Kodi runs. When Kodi starts, unfinished downloads resume. Add the download folder as a video folder to see what you downloaded in the catalog.
 
