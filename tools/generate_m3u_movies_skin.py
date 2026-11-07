@@ -319,10 +319,9 @@ def sources_screen():
 
 def player_screen():
     """Playback controls over the video: the time bar, play and pause between back and forward 10 seconds, and
-    subtitles and audio, which open their tracks in a panel from the right. gui.py sets Window.Property(mode) to
-    bar, for the time bar alone while seeking, or full."""
+    subtitles and audio, which open their tracks in a panel from the right. controls.py sets Window.Property(mode) to
+    bar while the arrows skip, or full while they move between the buttons. Both show all of the controls."""
     shown = "!String.IsEmpty(Window.Property(mode))"
-    full = "String.IsEqual(Window.Property(mode),full)"
     tracks_open = "!String.IsEmpty(Window.Property(panel))"
     fade = """<animation effect="fade" start="0" end="100" time="200">Visible</animation>
 <animation effect="fade" start="100" end="0" time="300">Hidden</animation>"""
@@ -347,7 +346,7 @@ def player_screen():
   <top>{top}</top>
   <width>{size}</width>
   <height>{size}</height>
-  <onup>noop</onup>
+  <onup>206</onup>
   <ondown>noop</ondown>
   <onleft>{onleft}</onleft>
   <onright>{onright}</onright>
@@ -363,7 +362,7 @@ def player_screen():
   <top>920</top>
   <width>340</width>
   <height>84</height>
-  <onup>noop</onup>
+  <onup>206</onup>
   <ondown>noop</ondown>
   <onleft>{onleft}</onleft>
   <onright>{onright}</onright>
@@ -446,9 +445,34 @@ def player_screen():
       tracks,
       label(left + 40, 1012, width - 80, 40, f"$ADDON[{ADDON_ID} 30327]", "font12", TEXT3), spaces=2)}
 </control>"""
+    # Near the end of an episode, the next one, above the time bar on the right, with the controls, which show
+    # with it.
+    next_focus = has(206)
+    next_button = f"""<control type="button" id="206">
+  <left>1200</left>
+  <top>712</top>
+  <width>600</width>
+  <height>84</height>
+  <onup>noop</onup>
+  <ondown>203</ondown>
+  <onleft>noop</onleft>
+  <onright>noop</onright>
+  <font>font13</font>
+  <align>left</align>
+  <aligny>center</aligny>
+  <textoffsetx>84</textoffsetx>
+  <textcolor>{TEXT}</textcolor>
+  <focusedcolor>{ON_FOCUS}</focusedcolor>
+  <texturefocus border="16" colordiffuse="{FOCUS}">panel.png</texturefocus>
+  <texturenofocus border="16" colordiffuse="CC17181B">panel.png</texturenofocus>
+  <label>$INFO[Window.Property(next_label)]</label>
+</control>"""
+    next_offer = group(shown + " + String.IsEqual(Window.Property(next),true) + String.IsEmpty(Window.Property(panel))", next_button,
+                       image(1228, 734, 40, 40, "next.png", ON_FOCUS, next_focus),
+                       image(1228, 734, 40, 40, "next.png", TEXT, "!" + next_focus))
     return join(
-        group(shown, *bar),
-        group(full, *controls),
+        group(shown, *bar, *controls),
+        next_offer,
         tracks_panel,
         spaces=0)
 

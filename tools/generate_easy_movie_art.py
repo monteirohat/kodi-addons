@@ -1,4 +1,4 @@
-"""Easy Movie artwork: add-on icon, header mark, poster placeholder, the watched icon and fanart.
+"""Easy Movie artwork: add-on icon, header mark, poster placeholder, the watched and next episode icons and fanart.
 
 Uses the colors and shapes of Easy Channel's artwork. Requires Pillow and the Inter font (SIL Open Font
 License, https://rsms.me/inter/). Run with the folder that holds Inter-Bold.ttf and Inter-Medium.ttf:
@@ -8,6 +8,7 @@ License, https://rsms.me/inter/). Run with the folder that holds Inter-Bold.ttf 
 
 import math
 import os
+import shutil
 import sys
 
 from PIL import Image, ImageDraw, ImageFont
@@ -97,6 +98,10 @@ def eye(draw, s):
 
 
 render(128, 128, eye, CLEAR, "RGBA").save(os.path.join(MEDIA, "eye.png"), optimize=True)
+
+# The next song icon of Easy Music, for the next episode button of the playback controls.
+shutil.copy2(os.path.join(ADDON, "..", "script.easy.music", "resources", "skins", "default", "media", "next.png"),
+             os.path.join(MEDIA, "next.png"))
 
 
 def fanart(draw, s):

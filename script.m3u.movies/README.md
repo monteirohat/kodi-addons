@@ -16,7 +16,7 @@ Easy Movie is a Kodi add-on that shows the movies and series of your M3U lists a
 - The details of a movie or series that is downloaded show a green check, and so do its downloaded episodes.
 - Download torrents from magnet links, `.torrent` files or the catalog, and the direct links of the catalog, into a folder you choose, with a download list that shows progress, speed, time left and the free space of the folder.
 - Add folders with your own video files, on the SD card, a USB drive or a network share. Posters and details come from Cinemeta, and files can be renamed or deleted from the catalog.
-- Playback controls in the style of streaming apps: play and pause between back and forward 10 seconds, and the subtitle and audio tracks in a side panel.
+- Playback controls in the style of streaming apps: play and pause between back and forward 10 seconds, and the subtitle and audio tracks in a side panel. Near the end of an episode, **Next episode** plays the next one.
 - Subtitles from [OpenSubtitles](https://www.opensubtitles.org), turned on automatically in your language when a movie has none, with no account needed.
 - When a movie fails to open, or stops right after starting, Easy Movie offers to remove it.
 - **Check movies** tests a whole genre at once and removes the movies that do not respond.
@@ -115,10 +115,12 @@ Movies and episodes play with the controls of Easy Movie, in the style of stream
 
 | Key | Controls hidden | Controls shown |
 | --- | --- | --- |
-| **OK**, **Up**, **Down**, **Info** or **Menu** | Show the controls. | Use the highlighted button. |
-| **Left / Right** | Go back or forward 10 seconds, showing the time bar. Presses add up, so three presses skip 30 seconds. | Move between the buttons. |
+| **OK**, **Up**, **Down**, **Info**, **Menu**, **Fast forward** or **Rewind** | Show the controls. | Use the highlighted button. |
+| **Left / Right** | Go back or forward 10 seconds, showing the controls with the back or forward button lit. Presses add up, so three presses skip 30 seconds, and the arrows keep skipping until the controls hide. | Move between the buttons. |
 | **Back** | Stop the movie. Its progress is kept. | Hide the controls. |
 | **Play / Pause**, **Stop**, volume | Work as usual in Kodi. | Work as usual in Kodi. |
+
+In the last minute of an episode, or the last tenth of a short one, the controls show with **Next episode** above the time bar, with the season and number of the next episode of your lists, when there is one. It has the focus, so **OK** plays it, and the controls stay while it is offered. **Back** hides the controls and puts the button away for the rest of the episode. From the other buttons, **Up** reaches it. The next episode starts where it stopped when it was started before. It does not play by itself when the episode ends.
 
 **Subtitles** lists the subtitles of the video and subtitle files next to it, such as `Movie.pt-BR.srt`, with **Off** first. **Audio** lists the audio tracks, such as the Portuguese and English tracks of a dual audio release. The current track has a check mark. Select a track with **OK**, or close the panel with **Back**.
 
@@ -155,7 +157,7 @@ The toolbar above the genres shows the name of the focused tool.
 Before playing, Easy Movie checks that the stream answers, with a **Connecting** dialog that can be cancelled. The details window stays open meanwhile, so another episode can be picked right away. Kodi itself waits for an unresponsive server on its interface thread, which froze the screen for half a minute, so streams that do not answer are reported before Kodi tries them. A stream that answers is checked in about two seconds, and most open without the dialog appearing. A stream that does not answer is reported within 8 seconds, the **Check timeout** setting, with **Remove**, **Cancel** or **Play anyway**.
 
 
-When a movie fails to open, stops before it starts, or ends within a minute of starting, Easy Movie asks whether to **Remove** it, **Keep** it, or **Try again**. Kodi stops waiting for an unreachable server after 8 seconds, and a movie still opening after 15 seconds is checked, so a dead link is reported in about 20 seconds. Stopping a movie after it started is never treated as a failure.
+When a movie fails to open, stops before it starts, or ends within a minute of starting without reaching its end, Easy Movie asks whether to **Remove** it, **Keep** it, or **Try again**. For a video file of a folder, it says that the file may be incomplete, as after a copy or a download that was interrupted: its player reaches the end of the data when it plays or skips past it. Kodi stops waiting for an unreachable server after 8 seconds, and a movie still opening after 15 seconds is checked, so a dead link is reported in about 20 seconds. Stopping a movie after it started is never treated as a failure.
 
 The original M3U is never changed. Removed movies are recorded by stream address and hidden from every list, so a removal keeps working when a web list is downloaded again. Restore a movie from **Removed movies** in the list manager if it works again later. **Export clean M3U** in the list manager saves a list without its removed movies.
 
@@ -351,7 +353,7 @@ Easy Movie shares its design and most of its code with Easy Channel. Each add-on
 | `resources/lib/torrents.py` | Torrent engine: starts Torrest and uses its API. |
 | `resources/bin/` | Torrest executables for each platform, with their license and checksums. |
 | `resources/lib/watcher.py` | Playback, progress and failure detection. |
-| `resources/lib/controls.py` | Playback controls over the video, with the subtitle and audio tracks and the online subtitles. |
+| `resources/lib/controls.py` | Playback controls over the video, with the subtitle and audio tracks, the online subtitles and the next episode button. |
 | `resources/lib/subtitles.py` | OpenSubtitles search, ranking, file hash and download. |
 | `resources/lib/m3u.py` | M3U parsing and writing. |
 | `resources/lib/probe.py` | Stream checks. |

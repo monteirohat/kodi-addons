@@ -1184,3 +1184,11 @@ msgstr "{0} episódios baixados"
 msgctxt "#30372"
 msgid "1 episode downloaded"
 msgstr "1 episódio baixado"
+
+msgctxt "#30373"
+msgid "Next episode  ·  {0}"
+msgstr "Próximo episódio  ·  {0}"
+
+msgctxt "#30374"
+msgid "The file of \"{0}\" stopped before its end, or did not open. It may be incomplete, as after a copy or a download that was interrupted. Copy or download it again. Do you want to remove it from the list?"
+msgstr "O arquivo de \"{0}\" parou antes do fim, ou não abriu. Ele pode estar incompleto, como depois de uma cópia ou de um download interrompido. Copie ou baixe de novo. Deseja remover da lista?"

@@ -43,11 +43,6 @@
         <textcolor>FF9C9EA6</textcolor>
         <label>$INFO[Window.Property(duration)]</label>
       </control>
-    </control>
-    <control type="group">
-      <visible>String.IsEqual(Window.Property(mode),full)</visible>
-      <animation effect="fade" start="0" end="100" time="200">Visible</animation>
-      <animation effect="fade" start="100" end="0" time="300">Hidden</animation>
       <control type="image">
         <left>0</left>
         <top>0</top>
@@ -81,7 +76,7 @@
         <top>920</top>
         <width>340</width>
         <height>84</height>
-        <onup>noop</onup>
+        <onup>206</onup>
         <ondown>noop</ondown>
         <onleft>noop</onleft>
         <onright>202</onright>
@@ -116,7 +111,7 @@
         <top>914</top>
         <width>96</width>
         <height>96</height>
-        <onup>noop</onup>
+        <onup>206</onup>
         <ondown>noop</ondown>
         <onleft>201</onleft>
         <onright>203</onright>
@@ -145,7 +140,7 @@
         <top>902</top>
         <width>120</width>
         <height>120</height>
-        <onup>noop</onup>
+        <onup>206</onup>
         <ondown>noop</ondown>
         <onleft>202</onleft>
         <onright>204</onright>
@@ -190,7 +185,7 @@
         <top>914</top>
         <width>96</width>
         <height>96</height>
-        <onup>noop</onup>
+        <onup>206</onup>
         <ondown>noop</ondown>
         <onleft>203</onleft>
         <onright>205</onright>
@@ -219,7 +214,7 @@
         <top>920</top>
         <width>340</width>
         <height>84</height>
-        <onup>noop</onup>
+        <onup>206</onup>
         <ondown>noop</ondown>
         <onleft>204</onleft>
         <onright>noop</onright>
@@ -248,6 +243,46 @@
         <height>40</height>
         <texture colordiffuse="FFF4F4F5">audio.png</texture>
         <visible>!Control.HasFocus(205)</visible>
+      </control>
+    </control>
+    <control type="group">
+      <visible>!String.IsEmpty(Window.Property(mode)) + String.IsEqual(Window.Property(next),true) + String.IsEmpty(Window.Property(panel))</visible>
+      <animation effect="fade" start="0" end="100" time="200">Visible</animation>
+      <animation effect="fade" start="100" end="0" time="300">Hidden</animation>
+      <control type="button" id="206">
+        <left>1200</left>
+        <top>712</top>
+        <width>600</width>
+        <height>84</height>
+        <onup>noop</onup>
+        <ondown>203</ondown>
+        <onleft>noop</onleft>
+        <onright>noop</onright>
+        <font>font13</font>
+        <align>left</align>
+        <aligny>center</aligny>
+        <textoffsetx>84</textoffsetx>
+        <textcolor>FFF4F4F5</textcolor>
+        <focusedcolor>FFFFFFFF</focusedcolor>
+        <texturefocus border="16" colordiffuse="FF4682B4">panel.png</texturefocus>
+        <texturenofocus border="16" colordiffuse="CC17181B">panel.png</texturenofocus>
+        <label>$INFO[Window.Property(next_label)]</label>
+      </control>
+      <control type="image">
+        <left>1228</left>
+        <top>734</top>
+        <width>40</width>
+        <height>40</height>
+        <texture colordiffuse="FFFFFFFF">next.png</texture>
+        <visible>Control.HasFocus(206)</visible>
+      </control>
+      <control type="image">
+        <left>1228</left>
+        <top>734</top>
+        <width>40</width>
+        <height>40</height>
+        <texture colordiffuse="FFF4F4F5">next.png</texture>
+        <visible>!Control.HasFocus(206)</visible>
       </control>
     </control>
     <control type="group">

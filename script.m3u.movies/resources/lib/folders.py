@@ -130,8 +130,8 @@ def scan(root, walk, known=None):
             if match:
                 title = clean(match.group(2))
                 display = "S%02dE%02d %s" % (season, int(match.group(1)), title)
-                attributes["pltv-subgroup"] = show
-                logo = logo or show_image or ""
+                attributes["pltv-subgroup"] = series_origin["name"] if series_origin else show
+                logo = logo or (series_origin or {}).get("poster") or show_image or ""
             else:
                 display = clean(stem)
                 if show and re.search(r"\b[Ss]\d{1,2}\s*[Ee]\d{1,3}|\b\d{1,2}[xX]\d{1,3}\b", display):

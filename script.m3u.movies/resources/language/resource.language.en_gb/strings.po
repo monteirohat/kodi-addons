@@ -1184,3 +1184,11 @@ msgstr ""
 msgctxt "#30372"
 msgid "1 episode downloaded"
 msgstr ""
+
+msgctxt "#30373"
+msgid "Next episode  ·  {0}"
+msgstr ""
+
+msgctxt "#30374"
+msgid "The file of \"{0}\" stopped before its end, or did not open. It may be incomplete, as after a copy or a download that was interrupted. Copy or download it again. Do you want to remove it from the list?"
+msgstr ""

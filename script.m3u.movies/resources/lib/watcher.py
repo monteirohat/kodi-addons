@@ -10,8 +10,10 @@ from resources.lib import controls, m3u, probe
 
 
 OPEN_TIMEOUT = 120
-# A live channel that ends on its own this soon after starting is treated as broken.
+# A live channel that ends on its own this soon after starting is treated as broken, unless it played to its end.
 EARLY_END = 60
+# A video that played to this many seconds before its end ended normally, as after a skip to its end.
+NEAR_END = 30
 # A channel still opening after this many seconds is checked, so a dead server does not keep Kodi waiting.
 CHECK_AFTER = 15
 CHECK_TIMEOUT = 8
@@ -29,11 +31,14 @@ def playable_url(url):
 
 
 class Watcher(xbmc.Player):
-    def __init__(self, on_failure, on_progress):
+    def __init__(self, on_failure, on_progress, next_of=None, play_next=None):
         super().__init__()
         self.on_failure = on_failure
         # Called with the entry, position and total in seconds, and whether playback is over.
         self.on_progress = on_progress
+        # next_of gives the episode after the one playing, or None, which the controls offer near its end, and
+        # play_next plays it. Both take an entry.
+        self.next_of, self.play_next = next_of, play_next
         self.monitor = xbmc.Monitor()
         self.lock = threading.Lock()
         self.events = []
@@ -126,7 +131,8 @@ class Watcher(xbmc.Player):
                 elif event == "error":
                     failed = True
                 elif event == "ended":
-                    failed = watched["started"] is None or time.time() - watched["started"] < EARLY_END
+                    near_end = watched["total"] > 0 and watched["total"] - watched["position"] <= NEAR_END
+                    failed = watched["started"] is None or (time.time() - watched["started"] < EARLY_END and not near_end)
                     finished = ended = True
                 if failed or finished:
                     break
@@ -179,7 +185,13 @@ class Watcher(xbmc.Player):
             detail = "S%02dE%02d" % (episode["season"], episode["number"]) + ("  ·  " + episode["title"] if episode["title"] else "")
         else:
             title, detail = watched["channel"]["name"], ""
-        self.controls = controls.open_controls(self, title, detail, self.online)
+        next_entry = self.next_of(watched) if episode and self.next_of else None
+        following = on_next = None
+        if next_entry:
+            # Played on a thread, since it closes the controls that ask for it.
+            on_next = lambda: threading.Thread(target=self.play_next, args=(next_entry,), daemon=True).start()
+            following = (next_entry["episode"]["season"], next_entry["episode"]["number"])
+        self.controls = controls.open_controls(self, title, detail, self.online, following, on_next)
 
     def close_controls(self):
         window, self.controls = self.controls, None

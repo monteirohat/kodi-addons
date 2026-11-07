@@ -396,7 +396,7 @@ class MainWindow(xbmcgui.WindowXML):
         self.grid_position = -1
         self.start_group = None
         self.movies, self.shows, self.catalog, self.progress = [], [], [], {}
-        self.watcher = Watcher(self.on_failure, self.on_progress)
+        self.watcher = Watcher(self.on_failure, self.on_progress, self.next_after, self.play_next)
 
     def onInit(self):
         # Also called when returning from full screen video. Keep the current state then.
@@ -480,23 +480,36 @@ class MainWindow(xbmcgui.WindowXML):
         if not ADDON.getSettingBool("folder_metadata"):
             return
         known = storage.get_metadata()
-        pending = [item for item in self.catalog if is_local(item) and item_id(item) not in known]
+        origins = storage.get_origins()
+
+        def origin_of(item):
+            return next((origins[path] for path in local_paths(item) if origins.get(path, {}).get("id")), None)
+
+        def missing(item):
+            """Whether an item has no details yet. One that had no match is looked up again once its videos are
+            known to be of a title of the catalog, as a torrent whose files arrive after the folder was read."""
+            details = known.get(item_id(item))
+            if details is None:
+                return True
+            origin = None if details.get("id") else origin_of(item)
+            return bool(origin) and details.get("tried") != origin["id"]
+
+        pending = [item for item in self.catalog if is_local(item) and missing(item)]
         if not pending or getattr(self, "lookup_running", False):
             return
         self.lookup_running = True
-
-        origins = storage.get_origins()
 
         def lookup(item):
             try:
                 # A video downloaded from Cinemeta has the details of its title, without a search by its name. One
                 # downloaded from an addon, whose ids Cinemeta does not know, is searched by the name of its title.
-                origin = next((origins[path] for path in local_paths(item) if origins.get(path, {}).get("id")), None)
+                # Without a match, the id of the title is kept as tried, so it is not looked up every time.
+                origin = origin_of(item)
                 if origin and origin["id"].startswith("tt"):
-                    return item_id(item), cinemeta.details(origin["kind"], origin["id"]) or {}
+                    return item_id(item), cinemeta.details(origin["kind"], origin["id"]) or {"tried": origin["id"]}
                 if origin and origin.get("name"):
                     year = origin.get("year") or self.addon_year(origin)
-                    return item_id(item), cinemeta.lookup(origin["kind"], origin["name"], year) or {}
+                    return item_id(item), cinemeta.lookup(origin["kind"], origin["name"], year) or {"tried": origin["id"]}
                 # An empty result marks a video with no match, so it is not looked up every time.
                 return item_id(item), cinemeta.lookup(*self.lookup_query(item)) or {}
             except Exception:
@@ -983,13 +996,33 @@ class MainWindow(xbmcgui.WindowXML):
         if finished:
             self.build_groups()
 
+    def show_of(self, episode):
+        """The series of the lists an episode is part of, or None."""
+        channel_id = episode["channel"]["id"]
+        return next((show for show in self.shows if any(entry["channel"]["id"] == channel_id for entry in show["episodes"])), None)
+
+    def next_after(self, episode):
+        """The episode of the lists after one, offered near its end, or None after the last one. Episodes of the
+        catalog that are not in the lists are skipped, since they play from their sources."""
+        show = self.show_of(episode)
+        if show is None:
+            return None
+        current = (episode["episode"]["season"], episode["episode"]["number"])
+        return next((entry for entry in show["episodes"] if (entry["episode"]["season"], entry["episode"]["number"]) > current), None)
+
+    def play_next(self, episode):
+        """Play the next episode from the controls, where it stopped when it was started before."""
+        state = storage.get_progress().get(episode["channel"]["id"])
+        start = state["position"] if resumable(state) else 0
+        self.watcher.play_channel(episode, start, subtitle_target(episode, self.show_of(episode)))
+
     def on_failure(self, entry):
         """Called by the watcher when a channel did not play."""
         if not ADDON.getSettingBool("offer_remove"):
             return
-        answer = xbmcgui.Dialog().yesnocustom(
-            TITLE, text(30021, display_name(entry)), customlabel=text(30024),
-            nolabel=text(30023), yeslabel=text(30022))
+        # A video file of a folder that stops early is usually cut short, as by a copy or a download that stopped.
+        message = text(30374 if is_local(entry) else 30021, display_name(entry))
+        answer = xbmcgui.Dialog().yesnocustom(TITLE, message, customlabel=text(30024), nolabel=text(30023), yeslabel=text(30022))
         if answer == 1:
             self.remove([entry])
         elif answer == 2:
