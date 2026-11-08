@@ -18,6 +18,11 @@
           <default>true</default>
           <control type="toggle" />
         </setting>
+        <setting id="autoplay_next" type="boolean" label="30381">
+          <level>0</level>
+          <default>true</default>
+          <control type="toggle" />
+        </setting>
         <setting id="subtitles_auto" type="boolean" label="30347">
           <level>0</level>
           <default>true</default>

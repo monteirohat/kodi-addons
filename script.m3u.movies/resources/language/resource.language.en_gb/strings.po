@@ -1216,3 +1216,15 @@ msgstr ""
 msgctxt "#30380"
 msgid "{0} downloads cleared from the list"
 msgstr ""
+
+msgctxt "#30381"
+msgid "Play the next episode when one ends"
+msgstr ""
+
+msgctxt "#30382"
+msgid "Next episode  ·  {0}  ·  in {1} s"
+msgstr ""
+
+msgctxt "#30383"
+msgid "{0} stopped before its end, and its file may be incomplete."
+msgstr ""

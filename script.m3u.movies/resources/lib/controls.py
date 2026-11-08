@@ -62,6 +62,11 @@ def enabled():
     return ADDON.getSettingBool("player_controls")
 
 
+def autoplay():
+    """Whether the next episode plays when one ends."""
+    return ADDON.getSettingBool("autoplay_next")
+
+
 def clock(seconds):
     seconds = max(int(seconds), 0)
     hours, rest = divmod(seconds, 3600)
@@ -256,8 +261,8 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
             return
         self.setProperty("title", self.title)
         self.setProperty("detail", self.detail)
-        if self.following:
-            self.setProperty("next_label", text(30373, text(30133, *self.following)))
+        # The seconds counted down on the next episode button, when the next episode plays by itself at the end.
+        self.counted = None
         self.progress = self.getControl(PROGRESS)
         self.progress_focused = self.getControl(PROGRESS_FOCUSED)
         self.track_list = self.getControl(TRACKS)
@@ -329,6 +334,8 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
         except RuntimeError:
             return
         offering = total > 0 and 0 < total - position <= min(NEXT_BEFORE, total * NEXT_SHARE)
+        if offering:
+            self.label_next(int(total - position) + 1 if autoplay() else None)
         if offering == self.offering:
             return
         self.offering = offering
@@ -341,6 +348,14 @@ class PlayerControls(xbmcgui.WindowXMLDialog):
                 self.set_mode("full")
         elif not offering and self.getFocusId() == NEXT:
             self.focus(PLAY)
+
+    def label_next(self, seconds):
+        """Name the next episode on its button, and count down the seconds before it plays by itself."""
+        if seconds == self.counted and self.getProperty("next_label"):
+            return
+        self.counted = seconds
+        episode = text(30133, *self.following)
+        self.setProperty("next_label", text(30382, episode, seconds) if seconds else text(30373, episode))
 
     def update_time(self):
         try:

@@ -471,9 +471,9 @@ def player_screen():
     # with it.
     next_focus = has(206)
     next_button = f"""<control type="button" id="206">
-  <left>1200</left>
+  <left>1080</left>
   <top>712</top>
-  <width>600</width>
+  <width>720</width>
   <height>84</height>
   <onup>noop</onup>
   <ondown>203</ondown>
@@ -490,8 +490,8 @@ def player_screen():
   <label>$INFO[Window.Property(next_label)]</label>
 </control>"""
     next_offer = group(shown + " + String.IsEqual(Window.Property(next),true) + String.IsEmpty(Window.Property(panel))", next_button,
-                       image(1228, 734, 40, 40, "next.png", ON_FOCUS, next_focus),
-                       image(1228, 734, 40, 40, "next.png", TEXT, "!" + next_focus))
+                       image(1108, 734, 40, 40, "next.png", ON_FOCUS, next_focus),
+                       image(1108, 734, 40, 40, "next.png", TEXT, "!" + next_focus))
     return join(
         group(shown, *bar, *controls),
         next_offer,

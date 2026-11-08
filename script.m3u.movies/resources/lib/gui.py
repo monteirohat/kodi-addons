@@ -38,6 +38,8 @@ CATALOG_WATCH, CATALOG_MY_LIST, CATALOG_SOURCES = 201, 202, 203
 SOURCES_LIST, SOURCES_EMPTY = 100, 300
 # Direct links waiting for the background service, which downloads them. See direct.py.
 DIRECT_JOBS = os.path.join(storage.PROFILE, "direct")
+# Files picked from torrents, as episodes chosen one by one from a season pack. See torrents.read_picks.
+PICKS_FILE = os.path.join(storage.PROFILE, "picks.json")
 ADDONS_LIST, ADDONS_ADD, ADDONS_CLOSE = 100, 201, 203
 # Types of the addon catalogs that are shown.
 CATALOG_TYPES = ("movie", "series", "anime")
@@ -396,7 +398,7 @@ class MainWindow(xbmcgui.WindowXML):
         self.grid_position = -1
         self.start_group = None
         self.movies, self.shows, self.catalog, self.progress = [], [], [], {}
-        self.watcher = Watcher(self.on_failure, self.on_progress, self.next_after, self.play_next)
+        self.watcher = Watcher(self.on_failure, self.on_progress, self.following)
 
     def onInit(self):
         # Also called when returning from full screen video. Keep the current state then.
@@ -1010,11 +1012,15 @@ class MainWindow(xbmcgui.WindowXML):
         current = (episode["episode"]["season"], episode["episode"]["number"])
         return next((entry for entry in show["episodes"] if (entry["episode"]["season"], entry["episode"]["number"]) > current), None)
 
-    def play_next(self, episode):
-        """Play the next episode from the controls, where it stopped when it was started before."""
-        state = storage.get_progress().get(episode["channel"]["id"])
-        start = state["position"] if resumable(state) else 0
-        self.watcher.play_channel(episode, start, subtitle_target(episode, self.show_of(episode)))
+    def following(self, episode):
+        """What plays after an episode: the next episode of the lists, the second where it starts, which is where it
+        stopped when it was started before, and what it is for its subtitles, as (entry, start, subtitles). None
+        after the last one."""
+        entry = self.next_after(episode)
+        if entry is None:
+            return None
+        state = storage.get_progress().get(entry["channel"]["id"])
+        return entry, state["position"] if resumable(state) else 0, subtitle_target(entry, self.show_of(entry))
 
     def on_failure(self, entry):
         """Called by the watcher when a channel did not play."""
@@ -1391,19 +1397,21 @@ class MainWindow(xbmcgui.WindowXML):
             if not chosen or chosen == folder:
                 return False
             folder = chosen
+        file_index = source.get("file_idx")
         downloads = engine()
         busy(True)
         try:
             downloads.start(folder, engine_settings())
-            info_hash = downloads.add_magnet(source["magnet"], folder)
+            added_before = {torrent["info_hash"] for torrent in downloads.torrents()}
+            # A file of a pack, as an episode of a season, downloads alone, with the other files picked from the pack.
+            info_hash = downloads.add_magnet(source["magnet"], folder, download=file_index is None)
         except torrents.EngineError as error:
             busy(False)
             xbmcgui.Dialog().ok(TITLE, text(30173, error))
             return False
         busy(False)
-        if source.get("file_idx") is not None:
-            # A pack of a whole season or collection: only the chosen file is downloaded.
-            threading.Thread(target=downloads.only_file, args=(info_hash, source["file_idx"]), daemon=True).start()
+        if file_index is not None and pick_file(downloads, info_hash, file_index, folder, info_hash in added_before):
+            threading.Thread(target=apply_picks_when_ready, args=(downloads, info_hash), daemon=True).start()
         if origin and origin.get("id"):
             threading.Thread(target=remember_origin, args=(downloads, info_hash, folder, source.get("file_idx"), origin),
                              daemon=True).start()
@@ -2129,6 +2137,96 @@ def on_sd_card(path):
     return xbmc.getCondVisibility("System.HasAddon(service.libreelec.settings)") and path.startswith("/storage")
 
 
+def pick_file(downloads, info_hash, file_index, folder, added_before):
+    """Add a file to the picks of a torrent, as an episode chosen from a season pack. Returns False when the torrent
+    already downloads all of its files, as one added whole before."""
+    picks = torrents.read_picks(PICKS_FILE)
+    pick = picks.get(info_hash)
+    if pick is None and added_before:
+        pick = adopted_pick(downloads, info_hash, folder)
+        if pick is None:
+            return False
+    pick = pick or {"files": [], "paused": [], "folder": folder}
+    if file_index not in pick["files"]:
+        pick["files"].append(file_index)
+    # Picking a paused file again resumes it.
+    pick["paused"] = [paused for paused in pick.get("paused", []) if paused != file_index]
+    picks[info_hash] = pick
+    torrents.write_picks(PICKS_FILE, picks)
+    return True
+
+
+def adopted_pick(downloads, info_hash, folder):
+    """Picks for a torrent that has none, as one whose files were picked before picks were kept: the files it
+    downloads, and those downloaded for titles of the catalog, whose paths are in the origins. None when it downloads
+    all of its files, or its files are not known yet."""
+    try:
+        files = downloads.files_status(info_hash)
+    except torrents.EngineError:
+        files = []
+    downloading = [item["id"] for item in files if (item.get("status") or {}).get("priority", 0) > 0]
+    if not files or len(downloading) == len(files):
+        return None
+    origins = storage.get_origins()
+    downloaded_for_titles = [item["id"] for item in files if item["id"] not in downloading
+                             and file_path(folder, item) in origins]
+    return {"files": downloading + downloaded_for_titles, "paused": [], "folder": folder}
+
+
+def apply_picks_when_ready(downloads, info_hash, timeout=600):
+    """Apply the picks of a torrent once its metadata arrives. Runs on a thread. The picks are read each time, so the
+    latest apply when several files were picked at once."""
+    deadline = time.time() + timeout
+    while time.time() < deadline:
+        pick = torrents.read_picks(PICKS_FILE).get(info_hash)
+        if pick is None:
+            return
+        try:
+            if downloads.apply_picks(info_hash, pick):
+                return
+        except torrents.EngineError:
+            pass
+        time.sleep(2)
+
+
+def file_path(folder, item):
+    """Where a file of a torrent is saved, from the folder of the torrent and the path Torrest gives."""
+    return folder.rstrip("/") + "/" + item["path"].lstrip("/")
+
+
+def picked_label(item, folder, origins):
+    """The name of a file picked from a torrent: its title of the catalog with its episode, as the direct links
+    show it, or its file name."""
+    origin = origins.get(file_path(folder, item)) or {}
+    if origin.get("kind") == "series" and origin.get("episode"):
+        return "%s S%02dE%02d" % (origin["name"], origin.get("season") or 1, origin["episode"])
+    return os.path.splitext(item.get("name") or posixpath.basename(item["path"]))[0]
+
+
+def picked_status(torrent, item, pick, free=None):
+    """Detail line, progress and state of a file picked from a torrent, for the list of downloads. The torrent
+    downloads its picked files together, so their speed shows in the header only."""
+    torrent_state = torrents.state_of(torrent.get("status") or {})
+    status = item.get("status") or {}
+    total = status.get("total") or item.get("length", 0)
+    done = status.get("total_done", 0)
+    if total and done >= total:
+        state = "finished"
+    elif item["id"] in pick.get("paused", []):
+        state = "paused"
+    elif torrent_state in ("paused", "metadata", "checking"):
+        state = torrent_state
+    else:
+        state = "downloading"
+    # The engine pauses a torrent when the folder is full.
+    full = state == "paused" and torrent_state == "paused" and free is not None and free < min(total - done, LOW_SPACE)
+    parts = [text(30312) if full else text({"metadata": 30179, "checking": 30180, "paused": 30181, "finished": 30182,
+                                             "downloading": 30183}[state])]
+    if total:
+        parts.append(size_text(total) if state == "finished" else text(30185, size_text(done), size_text(total)))
+    return "  ·  ".join(parts), int(done * 100 / total) if total else 0, state
+
+
 def remember_origin(downloads, info_hash, folder, file_index, origin, timeout=600):
     """Keep the catalog title of a download with the paths of its videos, once Torrest knows its files.
 
@@ -2148,7 +2246,7 @@ def remember_origin(downloads, info_hash, folder, file_index, origin, timeout=60
     chosen = [item for item in files if item.get("id") == file_index] if file_index is not None else \
         [item for item in files if folders.is_video(item.get("path", ""))]
     whole = dict(origin) if len(chosen) == 1 else {key: value for key, value in origin.items() if key not in ("season", "episode")}
-    storage.save_origins({folder.rstrip("/") + "/" + item["path"].lstrip("/"): whole for item in chosen if item.get("path")})
+    storage.save_origins({file_path(folder, item): whole for item in chosen if item.get("path")})
 
 
 def choose_download_folder(current=""):
@@ -2226,11 +2324,14 @@ def download_status(torrent, free=None):
 
 
 class DownloadsWindow(xbmcgui.WindowXMLDialog):
-    """Torrent downloads: add a magnet link or a .torrent file, choose the folder, and follow the list."""
+    """Torrent downloads: add a magnet link or a .torrent file, choose the folder, and follow the list.
+
+    Each row has a key: the info hash of a torrent, "file:<info hash>:<file id>" for a file picked from a torrent, as
+    an episode of a season pack, or "direct:<job id>" for a direct link."""
 
     def onInit(self):
         self.closed = False
-        self.hashes = []
+        self.keys = []
         self.list_control = self.getControl(DOWNLOADS_LIST)
         self.engine = engine()
         self.folder = ADDON.getSetting("download_folder")
@@ -2248,7 +2349,7 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
             return
         busy(False)
         self.update()
-        self.setFocusId(DOWNLOADS_LIST if self.hashes else DOWNLOADS_MAGNET)
+        self.setFocusId(DOWNLOADS_LIST if self.keys else DOWNLOADS_MAGNET)
         threading.Thread(target=self.follow, daemon=True).start()
 
     def show_folder(self, free=None):
@@ -2262,51 +2363,94 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
                 self.update()
 
     def update(self):
-        """Show the downloads: torrents, then direct links. Rows are updated in place, so the selection stays while
-        they change."""
+        """Show the downloads: torrents, then direct links. A torrent of which only picked files download shows a row
+        for each of them, once its files are known. Rows are updated in place, so the selection stays while they
+        change."""
         try:
             items = self.engine.torrents()
         except torrents.EngineError:
-            items = []
+            items = None
         jobs = direct.jobs(DIRECT_JOBS)
         self.jobs = {job["id"]: job for job in jobs}
-        hashes = [torrent["info_hash"] for torrent in items] + ["direct:" + job["id"] for job in jobs]
-        rows = len(hashes)
-        if hashes != self.hashes:
-            position = self.list_control.getSelectedPosition()
-            self.list_control.reset()
-            self.list_control.addItems([xbmcgui.ListItem() for _ in range(rows)])
-            if rows:
-                self.list_control.selectItem(min(max(position, 0), rows - 1))
-            self.hashes = hashes
-            if not rows and self.getFocusId() == DOWNLOADS_LIST:
-                self.setFocusId(DOWNLOADS_MAGNET)
-        down = up = 0
+        picks = self.checked_picks(items)
+        items = items or []
+        origins = None
         free = free_space(self.folder)
         self.show_folder(free)
-        for number, torrent in enumerate(items):
-            detail, progress, state = download_status(torrent, free)
-            row = self.list_control.getListItem(number)
-            row.setLabel(torrent.get("name") or torrent["info_hash"])
-            row.setLabel2(detail)
-            row.setProperty("progress", str(progress))
-            row.setProperty("percent", "%d%%" % progress)
-            row.setProperty("state", state)
+        # Each row: its key, name, detail line, progress and state.
+        rows = []
+        down = up = 0
+        for torrent in items:
+            info_hash, status = torrent["info_hash"], torrent.get("status") or {}
             # Torrest takes a few seconds to report no speed for a paused torrent.
-            if state != "paused":
-                down += (torrent.get("status") or {}).get("download_rate", 0)
-                up += (torrent.get("status") or {}).get("upload_rate", 0)
-        for number, job in enumerate(jobs, len(items)):
-            detail, progress, state = direct_status(job)
+            if torrents.state_of(status) != "paused":
+                down += status.get("download_rate", 0)
+                up += status.get("upload_rate", 0)
+            pick = picks.get(info_hash)
+            files = self.picked_files(info_hash, pick) if pick else []
+            if not files:
+                rows.append((info_hash, torrent.get("name") or info_hash, *download_status(torrent, free)))
+                continue
+            if origins is None:
+                origins = storage.get_origins()
+            for item in files:
+                rows.append(("file:%s:%d" % (info_hash, item["id"]), picked_label(item, pick.get("folder", self.folder), origins),
+                             *picked_status(torrent, item, pick, free)))
+        for job in jobs:
+            rows.append(("direct:" + job["id"], job["title"], *direct_status(job)))
+            down += job["rate"] if job["state"] == "downloading" else 0
+        keys = [row[0] for row in rows]
+        if keys != self.keys:
+            position = self.list_control.getSelectedPosition()
+            self.list_control.reset()
+            self.list_control.addItems([xbmcgui.ListItem() for _ in rows])
+            if rows:
+                self.list_control.selectItem(min(max(position, 0), len(rows) - 1))
+            self.keys = keys
+            if not rows and self.getFocusId() == DOWNLOADS_LIST:
+                self.setFocusId(DOWNLOADS_MAGNET)
+        for number, (_, name, detail, progress, state) in enumerate(rows):
             row = self.list_control.getListItem(number)
-            row.setLabel(job["title"])
+            row.setLabel(name)
             row.setLabel2(detail)
             row.setProperty("progress", str(progress))
             row.setProperty("percent", "%d%%" % progress)
             row.setProperty("state", state)
-            down += job["rate"] if job["state"] == "downloading" else 0
         self.setProperty("summary", text(30193, rate_text(down), rate_text(up)) if rows else "")
         self.getControl(DOWNLOADS_EMPTY).setLabel("" if rows else text(30169))
+
+    def checked_picks(self, items):
+        """The picks, with picks found again for a torrent that downloads none of its files, as one whose files were
+        picked one by one before picks were kept, so all of them were stopped. items are the torrents, or None when
+        the engine did not answer. Picks of a torrent that is gone stay, since Torrest lists no torrent for a moment
+        after it starts. Removing a torrent here removes its picks."""
+        picks = torrents.read_picks(PICKS_FILE)
+        if items is None:
+            return picks
+        changed = False
+        for torrent in items:
+            status = torrent.get("status") or {}
+            if torrent["info_hash"] in picks or not status.get("has_metadata") or status.get("total_wanted", 0):
+                continue
+            pick = adopted_pick(self.engine, torrent["info_hash"], self.folder)
+            if pick and pick["files"]:
+                picks[torrent["info_hash"]] = pick
+                changed = True
+        if changed:
+            torrents.write_picks(PICKS_FILE, picks)
+        return picks
+
+    def picked_files(self, info_hash, pick):
+        """The picked files of a torrent with their status, in the order of their names, which is the order of the
+        episodes of a pack. Their downloads are set again from the picks, so they match them. Empty before the
+        metadata."""
+        try:
+            files = self.engine.files_status(info_hash)
+            if files:
+                self.engine.apply_picks(info_hash, pick, files)
+        except torrents.EngineError:
+            return []
+        return sorted((item for item in files if item["id"] in pick["files"]), key=lambda item: item["path"].casefold())
 
     def onAction(self, action):
         if action.getId() in ACTION_BACK:
@@ -2380,13 +2524,16 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
 
     def download_menu(self):
         position = self.list_control.getSelectedPosition()
-        if not 0 <= position < len(self.hashes):
+        if not 0 <= position < len(self.keys):
             return
-        info_hash = self.hashes[position]
+        info_hash = self.keys[position]
         row = self.list_control.getListItem(position)
         paused = row.getProperty("state") == "paused"
         if info_hash.startswith("direct:"):
             self.direct_menu(info_hash[len("direct:"):], row, paused)
+            return
+        if info_hash.startswith("file:"):
+            self.file_menu(info_hash, row, paused)
             return
         choice = xbmcgui.Dialog().contextmenu([text(30175 if paused else 30174), text(30176), text(30177)])
         try:
@@ -2394,9 +2541,11 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
                 (self.engine.resume if paused else self.engine.pause)(info_hash)
             elif choice == 1:
                 self.engine.remove(info_hash, False)
+                self.drop_pick(info_hash)
             elif choice == 2 and xbmcgui.Dialog().yesno(TITLE, text(30178, row.getLabel()), nolabel=text(30040),
                                                        yeslabel=text(30142)):
                 self.engine.remove(info_hash, True)
+                self.drop_pick(info_hash)
         except torrents.EngineError as error:
             # Torrest deletes its own files of the torrent even when the video stays, which a read-only drive refuses.
             read_only = "read-only" in str(error).lower()
@@ -2404,16 +2553,83 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
         self.update()
 
 
+    def file_menu(self, key, row, paused):
+        """Pause or resume a file picked from a torrent, or remove it from the list, with or without its file. The
+        other files picked from the torrent go on."""
+        _, info_hash, file_id = key.split(":")
+        file_id = int(file_id)
+        finished = row.getProperty("state") == "finished"
+        options = [] if finished else [(text(30175 if paused else 30174), "resume" if paused else "pause")]
+        options += [(text(30176), "remove"), (text(30177), "delete")]
+        choice = xbmcgui.Dialog().contextmenu([label for label, _ in options])
+        if choice < 0:
+            return
+        action = options[choice][1]
+        if action == "delete" and not xbmcgui.Dialog().yesno(TITLE, text(30178, row.getLabel()), nolabel=text(30040),
+                                                             yeslabel=text(30142)):
+            return
+        try:
+            if action in ("pause", "resume"):
+                self.pause_files(info_hash, [file_id], action == "pause")
+            else:
+                self.forget_files(info_hash, [file_id], delete=action == "delete")
+        except torrents.EngineError as error:
+            read_only = "read-only" in str(error).lower()
+            xbmcgui.Dialog().ok(TITLE, text(30359) if read_only else text(30358, error))
+        self.update()
+
+    def pause_files(self, info_hash, file_ids, pause):
+        """Pause files picked from a torrent, or resume them, and the torrent with them when it was paused."""
+        picks = torrents.read_picks(PICKS_FILE)
+        pick = picks.get(info_hash)
+        if pick is None:
+            return
+        paused = set(pick.get("paused", []))
+        pick["paused"] = sorted(paused | set(file_ids)) if pause else sorted(paused - set(file_ids))
+        self.engine.apply_picks(info_hash, pick)
+        if not pause:
+            self.engine.resume(info_hash)
+        torrents.write_picks(PICKS_FILE, picks)
+
+    def forget_files(self, info_hash, file_ids, delete=False):
+        """Take files picked from a torrent off the list, deleting them when delete. The torrent goes with its last
+        picked file."""
+        picks = torrents.read_picks(PICKS_FILE)
+        pick = picks.get(info_hash)
+        if pick is None:
+            return
+        pick["files"] = [file_id for file_id in pick["files"] if file_id not in file_ids]
+        pick["paused"] = [file_id for file_id in pick.get("paused", []) if file_id not in file_ids]
+        if not pick["files"]:
+            self.engine.remove(info_hash, delete)
+            del picks[info_hash]
+            torrents.write_picks(PICKS_FILE, picks)
+            return
+        paths = []
+        if delete:
+            folder = pick.get("folder", self.folder)
+            paths = [file_path(folder, item) for item in self.engine.files_status(info_hash) if item["id"] in file_ids]
+        self.engine.apply_picks(info_hash, pick)
+        torrents.write_picks(PICKS_FILE, picks)
+        for path in paths:
+            try:
+                os.remove(path)
+            except FileNotFoundError:
+                pass
+            except OSError as error:
+                raise torrents.EngineError(str(error))
+
+    def drop_pick(self, info_hash):
+        picks = torrents.read_picks(PICKS_FILE)
+        if picks.pop(info_hash, None) is not None:
+            torrents.write_picks(PICKS_FILE, picks)
+
     def clear(self):
         """Take every download off the list, keeping their files. Downloads that have not finished stop when taken
         off, so they are kept unless asked."""
-        try:
-            items = self.engine.torrents()
-        except torrents.EngineError:
-            items = []
-        jobs = direct.jobs(DIRECT_JOBS)
-        downloads = [(torrent["info_hash"], torrents.state_of(torrent.get("status") or {}) == "finished") for torrent in items]
-        downloads += [("direct:" + job["id"], job["state"] == "finished") for job in jobs]
+        self.update()
+        downloads = [(key, self.list_control.getListItem(index).getProperty("state") == "finished")
+                     for index, key in enumerate(self.keys)]
         if not downloads:
             notify(text(30169))
             return
@@ -2433,22 +2649,32 @@ class DownloadsWindow(xbmcgui.WindowXMLDialog):
             else:
                 return
         failed = []
+        # Files picked from the same torrent are taken off together.
+        picked = {}
         for key, _ in chosen:
             if key.startswith("direct:"):
                 direct.request(DIRECT_JOBS, key[len("direct:"):], "remove")
-                continue
+            elif key.startswith("file:"):
+                _, info_hash, file_id = key.split(":")
+                picked.setdefault(info_hash, []).append(int(file_id))
+            else:
+                try:
+                    self.engine.remove(key, False)
+                    self.drop_pick(key)
+                except torrents.EngineError as error:
+                    failed.append(error)
+        for info_hash, file_ids in picked.items():
             try:
-                self.engine.remove(key, False)
+                self.forget_files(info_hash, file_ids)
             except torrents.EngineError as error:
                 failed.append(error)
         if failed:
             read_only = any("read-only" in str(error).lower() for error in failed)
             dialog.ok(TITLE, text(30359) if read_only else text(30358, failed[0]))
-        cleared = len(chosen) - len(failed)
-        if cleared:
-            notify(text(30380, cleared))
+        if len(failed) < len(chosen):
+            notify(text(30380, len(chosen) - len(failed)))
         self.update()
-        if not self.hashes:
+        if not self.keys:
             self.setFocusId(DOWNLOADS_MAGNET)
 
     def direct_menu(self, job_id, row, paused):

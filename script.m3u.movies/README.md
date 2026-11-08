@@ -120,7 +120,7 @@ Movies and episodes play with the controls of Easy Movie, in the style of stream
 | **Back** | Stop the movie. Its progress is kept. | Hide the controls. |
 | **Play / Pause**, **Stop**, volume | Work as usual in Kodi. | Work as usual in Kodi. |
 
-In the last minute of an episode, or the last tenth of a short one, the controls show with **Next episode** above the time bar, with the season and number of the next episode of your lists, when there is one. It has the focus, so **OK** plays it, and the controls stay while it is offered, also after a skip with the arrows. **Back** hides the controls, and showing them again brings the button back, with the focus, until the episode ends. From the other buttons, **Up** reaches it. The next episode starts where it stopped when it was started before. It does not play by itself when the episode ends.
+In the last minute of an episode, or the last tenth of a short one, the controls show with **Next episode** above the time bar, with the season and number of the next episode of your lists, when there is one. It has the focus, so **OK** plays it, and the controls stay while it is offered, also after a skip with the arrows. **Back** hides the controls, and showing them again brings the button back, with the focus, until the episode ends. From the other buttons, **Up** reaches it. The next episode starts where it stopped when it was started before. When the episode ends, the next one plays by itself, without leaving the video, and the button counts down the seconds until then. It is queued in the video playlist of Kodi when the episode starts, so Kodi goes on to it as with any playlist, and the button skips to the end of the episode for the same. To leave the series, stop the episode instead, with **Back** or **Stop**. An episode that stops before its end, as an incomplete file, does not lead to the next. Turn off **Play the next episode when one ends** in the settings to only offer the button.
 
 **Subtitles** lists the subtitles of the video and subtitle files next to it, such as `Movie.pt-BR.srt`, with **Off** first. **Audio** lists the audio tracks, such as the Portuguese and English tracks of a dual audio release. The current track has a check mark. Select a track with **OK**, or close the panel with **Back**.
 
@@ -209,7 +209,7 @@ When an addon that gives sources is installed, movie details have a **Sources** 
 
 Each source shows its file or release name, and whether it is a **Torrent** or a **Direct link**, with its quality, audio languages, size, seeds and addon when the addon gives them. Addons mark languages with flags, shown as language codes, as in `EN RU` or `PT-BR`.
 
-- **Torrent**: goes to [Downloads](#downloads), into the download folder. When it is a pack of a whole season or collection, only the chosen file is downloaded. Easy Movie waits for the torrent details, then stops the other files.
+- **Torrent**: goes to [Downloads](#downloads), into the download folder. When it is a pack of a whole season or collection, only the chosen file is downloaded. Episodes chosen one by one from the same pack download together, each with its own row in **Downloads**. Nothing of the pack downloads until its details arrive, and then only the chosen files do, also when Easy Movie was closed meanwhile.
 - **Direct link**, with the play icon: OK offers **Watch now**, which plays it at once with the request headers the addon asks for, or **Download**. A download goes to [Downloads](#downloads), into the download folder, named after the title: an episode as `Series/Series S01E02.mp4`, a movie as `Movie (1999).mp4`. It continues after a lost connection and after Easy Movie closes, and shows in the catalog with the poster of its title once it ends. A live stream made of segments, as HLS, cannot be saved, and Easy Movie says so.
 
 **Left** or **Back** closes the panel. When the download folder has less free space than the torrent needs, Easy Movie names the folder, its free space and the size of the torrent, and offers **Change folder**.
@@ -235,7 +235,7 @@ The download icon at the end of the toolbar opens **Downloads**, the manager of 
 - **Change folder** chooses where downloads are saved. On LibreELEC, a folder on the SD card asks for confirmation first, since downloads write a lot and wear cards out. Use a USB drive or hard disk instead.
 - The list shows each download with its progress, state, speed, connections, size and time left, and updates every two seconds. When it does not fit, a scroll bar on its right shows how near its end the selection is. The header shows the total download and upload speeds, and the folder line its free space.
 - The engine pauses downloads when the folder is full. They then show **No space left in the folder** instead of paused, and resume after space is freed and they are resumed.
-- Select a download, or press **Menu**, to **Pause** or **Resume** it, **Remove from the list**, or **Remove and delete files**.
+- Select a download, or press **Menu**, to **Pause** or **Resume** it, **Remove from the list**, or **Remove and delete files**. An episode chosen from a season pack has its own row, and these act on that episode alone. The speed of a pack shows in the header only, since its episodes download together.
 - **Clear list** takes every download off the list at once, after a confirmation, and keeps their files. When some have not finished, it asks whether to clear **Only finished** ones or **Clear all**, which stops the others.
 
 Downloads keep going after the screen is closed, while Kodi runs. When Kodi starts, unfinished downloads resume. Add the download folder as a video folder to see what you downloaded in the catalog.
@@ -281,6 +281,7 @@ Turn off **Open Easy Movie from the Movies menu** or **Open Easy Movie from the 
 | Open Easy Movie from the Movies menu | On | Open Easy Movie when **Movies** is selected in Kodi's main menu and the movie library is empty. |
 | Open Easy Movie from the TV shows menu | On | Open Easy Movie on the series when **TV shows** is selected and the TV show library is empty. |
 | Easy Movie player controls | On | Show the controls of Easy Movie over movies and episodes. Off uses the controls of the Kodi skin. |
+| Play the next episode when one ends | On | When an episode of your lists ends, play the next one. Off only offers it near the end. |
 | Download subtitles automatically | On | Turn on a subtitle from OpenSubtitles when a movie has none in the subtitle language. |
 | Subtitle language | Portuguese (Brazil) | Language of the online subtitles: Portuguese (Brazil), Portuguese, English or Spanish. English is also tried after the other languages. |
 | Offer to remove movies that fail to play | On | Show the removal dialog after a failed playback. |
@@ -314,6 +315,7 @@ Easy Movie stores its data in Kodi's add-on data folder, `userdata/addon_data/sc
 | `added.json` | When each movie first appeared in the lists, for showing the newest first. |
 | `metadata.json` | Cinemeta details of the movies and series of video folders. |
 | `watchlist.json` | Catalog titles added to **Favorites**. |
+| `picks.json` | The files chosen from torrents of season packs, by torrent. |
 | `addons.json` | Stremio addons added in **Addons**, with their addresses and manifests. |
 | `torrest/` | The torrent engine, its settings, log and saved downloads. |
 | `subtitles/` | Subtitles downloaded from OpenSubtitles for the movie playing. |
@@ -330,7 +332,6 @@ Easy Movie connects only to the addresses of your lists, streams and posters, to
 - Direct links from addons play without saving progress, and their titles are not marked as watched. They also play with the controls of the Kodi skin.
 - Online subtitles depend on the OpenSubtitles v3 service of Stremio, which may change. A subtitle of another release of the movie can be out of sync. Rare and very new titles may have none in Portuguese.
 - While a movie is paused, the Kodi skin also shows its own time bar at the top of the screen. Subtitles are drawn behind the playback controls while these are shown.
-- Downloading only one file of a pack needs Easy Movie to stay open until the torrent details arrive, usually a few seconds. When it is closed before, the whole pack downloads. Remove it in **Downloads** and choose the source again.
 
 ## Disclaimer
 
@@ -345,15 +346,15 @@ Easy Movie shares its design and most of its code with Easy Channel. Each add-on
 | Path | Purpose |
 | --- | --- |
 | `default.py` | Opens the main window. |
-| `service.py` | Background service for the Movies and TV shows menus. |
+| `service.py` | Background service for the Movies and TV shows menus, the torrent engine, the files chosen from packs and the direct links. |
 | `resources/lib/gui.py` | Main window with the groups of the lists and the catalogs, movie and series details, the details of catalog titles, sources, addons, downloads, list manager and repository manager. |
 | `resources/lib/series.py` | Episode recognition and grouping into series. |
 | `resources/lib/folders.py` | Video folders: finds the videos and describes them as an M3U list. |
 | `resources/lib/cinemeta.py` | Cinemeta catalogs, search, details and episodes. |
 | `resources/lib/stremio.py` | Stremio addons: manifests, catalogs, details and sources. |
-| `resources/lib/torrents.py` | Torrent engine: starts Torrest and uses its API. |
+| `resources/lib/torrents.py` | Torrent engine: starts Torrest and uses its API, and keeps the files chosen from packs downloading alone. |
 | `resources/bin/` | Torrest executables for each platform, with their license and checksums. |
-| `resources/lib/watcher.py` | Playback, progress and failure detection. |
+| `resources/lib/watcher.py` | Playback from the video playlist of Kodi, the next episode queued after each one, progress and failure detection. |
 | `resources/lib/controls.py` | Playback controls over the video, with the subtitle and audio tracks, the online subtitles and the next episode button. |
 | `resources/lib/subtitles.py` | OpenSubtitles search, ranking, file hash and download. |
 | `resources/lib/m3u.py` | M3U parsing and writing. |

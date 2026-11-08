@@ -31,6 +31,27 @@ class EngineError(Exception):
     """Torrest could not start, or refused a request. The message explains why."""
 
 
+# Picks: the files picked from torrents of which only some files download, as episodes chosen one by one from a
+# season pack, by info hash: {"files": [file ids], "paused": [file ids], "folder": download folder}. A torrent without
+# picks downloads all of its files. They are kept in a file, so the background service applies them too, when the
+# metadata of a torrent arrives after Easy Movie closed.
+
+def read_picks(path):
+    try:
+        with open(path, encoding="utf-8") as source:
+            return json.load(source)
+    except (OSError, ValueError):
+        return {}
+
+
+def write_picks(path, picks):
+    """Write the picks at once, so the service never reads a file half written."""
+    temporary = path + ".tmp"
+    with open(temporary, "w", encoding="utf-8") as target:
+        json.dump(picks, target, ensure_ascii=False)
+    os.replace(temporary, path)
+
+
 def platform_name(android=False):
     """Folder of the Torrest executable for this device, as in "linux_arm64", or None when there is none."""
     machine = platform.machine().lower()
@@ -171,10 +192,13 @@ class Engine:
         if wanted != current:
             self.request("PUT", "/settings", body=wanted)
 
-    def add_magnet(self, uri, download_path):
-        """Add a magnet link and download all of its files into download_path. Returns the info hash."""
+    def add_magnet(self, uri, download_path, download=True):
+        """Add a magnet link into download_path, and download all of its files unless download is False, for a torrent
+        of which only picked files download. A magnet already added keeps its files as they are. Returns the info
+        hash."""
         self.configure(download_path)
-        return self.request("POST", "/add/magnet", {"uri": uri, "download": "true", "ignore_duplicate": "true"})["info_hash"]
+        return self.request("POST", "/add/magnet", {"uri": uri, "download": "true" if download else "false",
+                                                    "ignore_duplicate": "true"})["info_hash"]
 
     def add_torrent_file(self, data, download_path):
         """Add the content of a .torrent file and download all of its files. Returns the info hash."""
@@ -190,25 +214,27 @@ class Engine:
         """Files of a torrent, once its metadata arrived. Before that, Torrest answers with an error."""
         return self.request("GET", "/torrents/%s/files" % info_hash) or []
 
-    def only_file(self, info_hash, file_index, timeout=600):
-        """Download only one file of a torrent, as an episode of a season pack. Waits for the metadata, then stops
-        the other files. Before the metadata nothing is downloaded, so no other file gets data."""
-        deadline = time.time() + timeout
-        while time.time() < deadline:
+    def files_status(self, info_hash):
+        """Files of a torrent with their status: total, total_done, progress, and priority, 0 for a stopped file.
+        Empty before the metadata."""
+        return self.request("GET", "/torrents/%s/files" % info_hash, {"status": "true"}) or []
+
+    def apply_picks(self, info_hash, pick, files=None):
+        """Download the picked files of a torrent that are not paused, and stop the others. files are its files with
+        their status, when the caller has them. Returns False before the metadata, when there are no files yet."""
+        if files is None:
             try:
-                files = self.files(info_hash)
+                files = self.files_status(info_hash)
             except EngineError:
                 files = []
-            if files:
-                for item in files:
-                    if item.get("id") != file_index:
-                        try:
-                            self.request("PUT", "/torrents/%s/files/%s/stop" % (info_hash, item["id"]))
-                        except EngineError:
-                            pass
-                return True
-            time.sleep(2)
-        return False
+        if not files:
+            return False
+        active = set(pick["files"]) - set(pick.get("paused", []))
+        for item in files:
+            wanted = item["id"] in active
+            if wanted != ((item.get("status") or {}).get("priority", 0) > 0):
+                self.request("PUT", "/torrents/%s/files/%s/%s" % (info_hash, item["id"], "download" if wanted else "stop"))
+        return True
 
     def torrents(self):
         """Torrents with their status, newest first as Torrest lists them."""

@@ -1,7 +1,8 @@
 """Background service that opens Easy Movie from the Movies and TV shows entries of the main menu.
 
-It also runs the torrent engine: unfinished downloads resume when Kodi starts, and the engine stops with Kodi. And it
-downloads the direct links of the catalog, so they go on after Easy Movie closes.
+It also runs the torrent engine: unfinished downloads resume when Kodi starts, and the engine stops with Kodi. It
+keeps the files picked from torrents, as episodes of a season pack, downloading alone once their metadata arrives. And
+it downloads the direct links of the catalog, so they go on after Easy Movie closes.
 """
 
 import os
@@ -28,6 +29,8 @@ ENTRIES = {
 POLL_SECONDS = 0.2
 # The videos screen counts as opened from the menu only when it appears this soon after leaving it.
 MENU_SECONDS = 3
+# Seconds between checks of the files picked from torrents.
+PICKS_SECONDS = 15
 
 
 class Monitor(xbmc.Monitor):
@@ -71,6 +74,25 @@ def stop_downloads():
     torrents.Engine(addon.getAddonInfo("path"), data_path).stop()
 
 
+def picked_files():
+    """Download the files picked from torrents and stop the others, as the metadata of a torrent arrives after Easy
+    Movie closed. See torrents.read_picks."""
+    addon = xbmcaddon.Addon(ADDON_ID)
+    profile = xbmcvfs.translatePath(addon.getAddonInfo("profile"))
+    path = os.path.join(profile, "picks.json")
+    engine = torrents.Engine(addon.getAddonInfo("path"), os.path.join(profile, "torrest"))
+    monitor = xbmc.Monitor()
+    while not monitor.waitForAbort(PICKS_SECONDS):
+        picks = torrents.read_picks(path)
+        if not picks or not engine.running():
+            continue
+        for info_hash, pick in picks.items():
+            try:
+                engine.apply_picks(info_hash, pick)
+            except torrents.EngineError as error:
+                xbmc.log("Easy Movie: could not apply the files picked from %s: %s" % (info_hash, error), xbmc.LOGWARNING)
+
+
 def direct_downloads():
     """Download the queued direct links, one at a time, until Kodi quits."""
     addon = xbmcaddon.Addon(ADDON_ID)
@@ -89,6 +111,7 @@ def direct_downloads():
 def run():
     threading.Thread(target=resume_downloads, daemon=True).start()
     threading.Thread(target=direct_downloads, daemon=True).start()
+    threading.Thread(target=picked_files, daemon=True).start()
     try:
         watch_menu()
     finally:

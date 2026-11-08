@@ -1,4 +1,8 @@
-"""Plays movies and episodes, reports the ones that fail to open, and keeps track of how far they were watched."""
+"""Plays movies and episodes, reports the ones that fail to open, and keeps track of how far they were watched.
+
+They play from the video playlist of Kodi. When an episode starts, the next one is queued after it, so Kodi goes on to
+it at the end without leaving the video, as with any playlist.
+"""
 
 import threading
 import time
@@ -31,14 +35,14 @@ def playable_url(url):
 
 
 class Watcher(xbmc.Player):
-    def __init__(self, on_failure, on_progress, next_of=None, play_next=None):
+    def __init__(self, on_failure, on_progress, following=None):
         super().__init__()
         self.on_failure = on_failure
         # Called with the entry, position and total in seconds, and whether playback is over.
         self.on_progress = on_progress
-        # next_of gives the episode after the one playing, or None, which the controls offer near its end, and
-        # play_next plays it. Both take an entry.
-        self.next_of, self.play_next = next_of, play_next
+        # Gives what plays after an episode, as (entry, start, subtitles), or None after the last one.
+        self.following = following
+        self.playlist = xbmc.PlayList(xbmc.PLAYLIST_VIDEO)
         self.monitor = xbmc.Monitor()
         self.lock = threading.Lock()
         self.events = []
@@ -72,8 +76,6 @@ class Watcher(xbmc.Player):
     def play_channel(self, entry, start=0, subtitles=None):
         """Play an entry, from start seconds when resuming. subtitles tells which movie or episode it is, to look up
         its subtitles online, see controls.OnlineSubtitles."""
-        subtitles = subtitles or entry.get("subtitles")
-        channel = entry["channel"]
         with self.lock:
             previous, self.watched = self.watched, None
         self.close_controls()
@@ -91,8 +93,21 @@ class Watcher(xbmc.Player):
             self.monitor.waitForAbort(0.2)
         with self.lock:
             self.events = []
-            self.watched = dict(entry, opened=time.time(), started=None, start=start, position=0, total=0, reported=0,
-                                subtitles=subtitles)
+            self.watched = self.watching(entry, start, subtitles)
+        url, item = self.list_item(entry)
+        # From the playlist, so the next episode can be queued after this one. See queue.
+        self.playlist.clear()
+        self.playlist.add(url, item)
+        self.play(self.playlist, startpos=0)
+
+    def watching(self, entry, start=0, subtitles=None):
+        """The entry about to play, with what is followed of it while it plays."""
+        return dict(entry, opened=time.time(), started=None, start=start, position=0, total=0, reported=0,
+                    subtitles=subtitles or entry.get("subtitles"))
+
+    def list_item(self, entry):
+        """The address and list item Kodi plays an entry with."""
+        channel = entry["channel"]
         url = playable_url(channel["url"])
         item = xbmcgui.ListItem(channel["name"], path=url)
         item.getVideoInfoTag().setTitle(channel["name"])
@@ -104,7 +119,7 @@ class Watcher(xbmc.Player):
         item.setContentLookup(False)
         if ".m3u8" in m3u.base_url(channel["url"]).lower():
             item.setMimeType("application/vnd.apple.mpegurl")
-        self.play(url, item)
+        return url, item
 
     def loop(self):
         while not self.closed and not self.monitor.waitForAbort(0.5):
@@ -114,16 +129,10 @@ class Watcher(xbmc.Player):
             if watched is None:
                 continue
             failed = finished = ended = False
-            for event in events:
+            remaining = []
+            for index, event in enumerate(events):
                 if event == "started":
-                    watched["started"] = time.time()
-                    if watched["start"]:
-                        self.seekTime(watched["start"])
-                    if watched["subtitles"] and self.online is None and self.isPlayingVideo():
-                        self.online = controls.OnlineSubtitles(self, watched["subtitles"])
-                        self.online.start()
-                    if controls.enabled() and self.controls is None and self.isPlayingVideo():
-                        self.open_controls(watched)
+                    self.on_started(watched)
                 elif event == "stopped":
                     # Stopping a movie that never started usually means it was not working.
                     failed = watched["started"] is None
@@ -132,9 +141,12 @@ class Watcher(xbmc.Player):
                     failed = True
                 elif event == "ended":
                     near_end = watched["total"] > 0 and watched["total"] - watched["position"] <= NEAR_END
-                    failed = watched["started"] is None or (time.time() - watched["started"] < EARLY_END and not near_end)
+                    # The next episode button skips to the end, which is not an early end.
+                    early = watched["started"] is None or time.time() - watched["started"] < EARLY_END
+                    failed = early and not near_end and not watched.get("skipped")
                     finished = ended = True
                 if failed or finished:
+                    remaining = events[index + 1:]
                     break
             if watched["started"] and not finished:
                 self.sample(watched)
@@ -143,18 +155,27 @@ class Watcher(xbmc.Player):
                 if not watched.get("checked") and time.time() - watched["opened"] > CHECK_AFTER:
                     watched["checked"] = True
                     failed = probe.check(watched["channel"]["url"], CHECK_TIMEOUT) is not None
+            # At the end of an episode, Kodi goes on by itself to the next one queued after it.
+            following = watched.get("next") if ended and watched.get("queued") else None
             if failed or finished:
                 self.close_controls()
                 with self.lock:
                     # A movie requested meanwhile replaces this one.
                     if self.watched is not watched:
                         continue
-                    self.watched = None
+                    self.watched = self.watching(*following) if following else None
+                    if following:
+                        # The start of the next episode may be among the events already taken.
+                        self.events = remaining + self.events
             if finished and not failed and watched["started"]:
                 if ended:
                     watched["position"] = watched["total"]
                 self.on_progress(watched, watched["position"], watched["total"], True)
-            if failed and not self.closed:
+            if failed and following:
+                # It ended before its end, as an incomplete file, and Kodi went on anyway. Say so without a question
+                # that would stop the next episode.
+                self.report_incomplete(watched)
+            elif failed and not self.closed:
                 if self.isPlaying() and watched["started"] is None:
                     self.stop()
                 # Ask only after Kodi gave up opening the channel and closed its own error notice.
@@ -165,6 +186,45 @@ class Watcher(xbmc.Player):
                     if not self.isPlaying() and not xbmc.getCondVisibility("System.HasActiveModalDialog"):
                         break
                 self.on_failure(watched)
+
+    def on_started(self, watched):
+        watched["started"] = time.time()
+        if watched["start"]:
+            self.seekTime(watched["start"])
+        if watched.get("episode") and "next" not in watched:
+            watched["next"] = self.following(watched) if self.following else None
+            if watched["next"] and controls.autoplay():
+                self.queue(watched)
+        if watched["subtitles"] and self.online is None and self.isPlayingVideo():
+            self.online = controls.OnlineSubtitles(self, watched["subtitles"])
+            self.online.start()
+        if controls.enabled() and self.controls is None and self.isPlayingVideo():
+            self.open_controls(watched)
+
+    def queue(self, watched):
+        """Queue the next episode after the one playing, so Kodi goes on to it at its end without leaving the video."""
+        if watched.get("queued") or not watched.get("next"):
+            return
+        url, item = self.list_item(watched["next"][0])
+        self.playlist.add(url, item)
+        watched["queued"] = True
+
+    def skip_to_next(self, watched):
+        """Go on to the next episode now: skip to the end of the episode, and Kodi goes on as at any end."""
+        if self.watched is not watched:
+            return
+        self.queue(watched)
+        watched["skipped"] = True
+        try:
+            self.seekTime(max(self.getTotalTime() - 1, 0))
+        except RuntimeError:
+            pass
+
+    def report_incomplete(self, watched):
+        episode = watched["episode"]
+        name = "%s S%02dE%02d" % (episode["show"], episode["season"], episode["number"])
+        xbmcgui.Dialog().notification(controls.ADDON.getAddonInfo("name"), controls.text(30383, name),
+                                      xbmcgui.NOTIFICATION_WARNING, 8000)
 
     def sample(self, watched):
         """Remember the playback position, and report it from time to time."""
@@ -185,13 +245,12 @@ class Watcher(xbmc.Player):
             detail = "S%02dE%02d" % (episode["season"], episode["number"]) + ("  ·  " + episode["title"] if episode["title"] else "")
         else:
             title, detail = watched["channel"]["name"], ""
-        next_entry = self.next_of(watched) if episode and self.next_of else None
-        following = on_next = None
-        if next_entry:
-            # Played on a thread, since it closes the controls that ask for it.
-            on_next = lambda: threading.Thread(target=self.play_next, args=(next_entry,), daemon=True).start()
-            following = (next_entry["episode"]["season"], next_entry["episode"]["number"])
-        self.controls = controls.open_controls(self, title, detail, self.online, following, on_next)
+        next_episode = on_next = None
+        if watched.get("next"):
+            entry = watched["next"][0]
+            next_episode = (entry["episode"]["season"], entry["episode"]["number"])
+            on_next = lambda: self.skip_to_next(watched)
+        self.controls = controls.open_controls(self, title, detail, self.online, next_episode, on_next)
 
     def close_controls(self):
         window, self.controls = self.controls, None

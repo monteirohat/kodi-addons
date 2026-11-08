@@ -1216,3 +1216,15 @@ msgstr "Limpar todos"
 msgctxt "#30380"
 msgid "{0} downloads cleared from the list"
 msgstr "{0} downloads tirados da lista"
+
+msgctxt "#30381"
+msgid "Play the next episode when one ends"
+msgstr "Tocar o próximo episódio quando um terminar"
+
+msgctxt "#30382"
+msgid "Next episode  ·  {0}  ·  in {1} s"
+msgstr "Próximo episódio  ·  {0}  ·  em {1} s"
+
+msgctxt "#30383"
+msgid "{0} stopped before its end, and its file may be incomplete."
+msgstr "O {0} parou antes do fim, e o arquivo pode estar incompleto."
