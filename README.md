@@ -30,6 +30,7 @@
   <a href="#installation">Installation</a> ·
   <a href="#add-ons">Add-ons</a> ·
   <a href="#help-and-feedback">Help and feedback</a> ·
+  <a href="#support-the-project">Support</a> ·
   <a href="CONTRIBUTING.md">Contributing</a>
 </p>
 
@@ -310,6 +311,18 @@ Read the [skin guide](skin.monteiro/README.md) for every screen.
 - Questions, tips and lists that work well belong in [Discussions](https://github.com/monteirohat/kodi-addons/discussions).
 
 To build the repository, publish updates or change an add-on, read [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Support the project
+
+The add-ons are free and will stay free. If they are useful to you and you want to support the project, any amount helps.
+
+- **PIX**, from Brazil: use this random key in the app of your bank.
+
+  ```
+  abf3de6b-bad4-4225-8667-c941ebd31039
+  ```
+
+- **Revolut**, from anywhere: open [revolut.me/andrludegv](https://revolut.me/andrludegv), or send to the tag **@andrludegv** in the app.
 
 ## License
 

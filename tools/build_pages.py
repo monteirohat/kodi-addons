@@ -163,6 +163,9 @@ HOME = Template("""<!doctype html>
   .gallery img { border-radius: 12px; border: 1px solid var(--line); }
   .more { font-weight: 600; }
   .note { background: var(--surface); border-left: 4px solid var(--accent); border-radius: 12px; padding: 16px 20px; color: var(--text2); font-size: 15px; }
+  .card .url { margin: 18px 0 0; }
+  a.button { display: inline-flex; align-items: center; margin-top: 18px; min-height: 46px; padding: 0 18px; border-radius: 12px; background: var(--accent); color: #fff; font-weight: 600; font-size: 15px; }
+  a.button:hover { text-decoration: none; filter: brightness(1.1); }
   footer { border-top: 1px solid var(--line); padding: 32px 0 48px; color: var(--text3); font-size: 14px; }
   footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
   @media (max-width: 860px) {
@@ -185,6 +188,7 @@ HOME = Template("""<!doctype html>
     <nav>
       <a href="#install">Install</a>
       <a href="#addons">Add-ons</a>
+      <a href="#support" class="hide-small">Support</a>
       <a href="${github}">GitHub</a>
     </nav>
   </div>
@@ -197,7 +201,7 @@ HOME = Template("""<!doctype html>
       <p class="lead">Live TV and movies from your M3U lists, your music, photos and files, a test of your internet, your Wi-Fi and Bluetooth, a skin made for them, and the right HDMI display, on LibreELEC and Raspberry Pi. Install the repository once, from its address, and every add-on and update comes from it.</p>
       <div class="install">
         <h2>Install in Kodi</h2>
-        <div class="url"><code id="address">${pages}</code><button type="button" id="copy">Copy</button></div>
+        <div class="url"><code id="address">${pages}</code><button type="button" data-copy="address">Copy</button></div>
         <ol class="steps">
           <li>Open <b>Settings &gt; System &gt; Add-ons</b> and turn on <b>Unknown sources</b>.</li>
           <li>Open <b>Settings &gt; File manager &gt; Add source</b>, select <b>&lt;None&gt;</b>, enter the address above and name the source <b>Monteiro</b>.</li>
@@ -424,6 +428,26 @@ HOME = Template("""<!doctype html>
   </div>
 </section>
 
+<section id="support">
+  <div class="wrap">
+    <p class="eyebrow">Support</p>
+    <h2 class="title">Support the project</h2>
+    <p class="lead">The add-ons are free and will stay free. If they are useful to you and you want to support the project, any amount helps.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>PIX</h3>
+        <p>From Brazil: use this random key in the app of your bank.</p>
+        <div class="url"><code id="pix">abf3de6b-bad4-4225-8667-c941ebd31039</code><button type="button" data-copy="pix">Copy</button></div>
+      </div>
+      <div class="card">
+        <h3>Revolut</h3>
+        <p>From anywhere: open the link, or send to the tag <b>@andrludegv</b> in the app.</p>
+        <a class="button" href="https://revolut.me/andrludegv">revolut.me/andrludegv</a>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="wrap">
     <span>Monteiro Kodi Add-ons &middot; MIT license</span>
@@ -432,11 +456,13 @@ HOME = Template("""<!doctype html>
 </footer>
 
 <script>
-  document.getElementById("copy").addEventListener("click", function () {
-    var button = this;
-    navigator.clipboard.writeText(document.getElementById("address").textContent).then(function () {
-      button.textContent = "Copied";
-      setTimeout(function () { button.textContent = "Copy"; }, 2000);
+  // A copy button copies the text of the element its data-copy names: the repository address or the PIX key.
+  document.querySelectorAll("button[data-copy]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      navigator.clipboard.writeText(document.getElementById(button.dataset.copy).textContent).then(function () {
+        button.textContent = "Copied";
+        setTimeout(function () { button.textContent = "Copy"; }, 2000);
+      });
     });
   });
 </script>

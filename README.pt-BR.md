@@ -30,6 +30,7 @@
   <a href="#instalação">Instalação</a> ·
   <a href="#add-ons">Add-ons</a> ·
   <a href="#ajuda-e-sugestões">Ajuda e sugestões</a> ·
+  <a href="#apoie-o-projeto">Apoie o projeto</a> ·
   <a href="CONTRIBUTING.md">Como contribuir</a>
 </p>
 
@@ -312,6 +313,18 @@ Leia o [guia do skin](skin.monteiro/README.md), em inglês, para conhecer cada t
 Os formulários de bug e de sugestão estão em inglês, mas você pode escrever em português.
 
 Para montar o repositório, publicar atualizações ou mudar um add-on, leia o [CONTRIBUTING.md](CONTRIBUTING.md), em inglês.
+
+## Apoie o projeto
+
+Os add-ons são gratuitos e vão continuar gratuitos. Se eles são úteis para você e você quiser apoiar o projeto, qualquer valor ajuda.
+
+- **PIX**: use esta chave aleatória no app do seu banco.
+
+  ```
+  abf3de6b-bad4-4225-8667-c941ebd31039
+  ```
+
+- **Revolut**, de qualquer país: abra [revolut.me/andrludegv](https://revolut.me/andrludegv), ou envie para a tag **@andrludegv** no app.
 
 ## Licença
 
