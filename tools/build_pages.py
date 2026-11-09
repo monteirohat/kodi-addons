@@ -164,6 +164,7 @@ HOME = Template("""<!doctype html>
   .more { font-weight: 600; }
   .note { background: var(--surface); border-left: 4px solid var(--accent); border-radius: 12px; padding: 16px 20px; color: var(--text2); font-size: 15px; }
   .card .url { margin: 18px 0 0; }
+  .card.wide { grid-column: 1 / -1; }
   a.button { display: inline-flex; align-items: center; margin-top: 18px; min-height: 46px; padding: 0 18px; border-radius: 12px; background: var(--accent); color: #fff; font-weight: 600; font-size: 15px; }
   a.button:hover { text-decoration: none; filter: brightness(1.1); }
   footer { border-top: 1px solid var(--line); padding: 32px 0 48px; color: var(--text3); font-size: 14px; }
@@ -434,7 +435,7 @@ HOME = Template("""<!doctype html>
     <h2 class="title">Support the project</h2>
     <p class="lead">The add-ons are free and will stay free. If they are useful to you and you want to support the project, any amount helps.</p>
     <div class="cards">
-      <div class="card">
+      <div class="card wide">
         <h3>PIX</h3>
         <p>From Brazil: use this random key in the app of your bank.</p>
         <div class="url"><code id="pix">abf3de6b-bad4-4225-8667-c941ebd31039</code><button type="button" data-copy="pix">Copy</button></div>
@@ -443,6 +444,11 @@ HOME = Template("""<!doctype html>
         <h3>Revolut</h3>
         <p>From anywhere: open the link, or send to the tag <b>@andrludegv</b> in the app.</p>
         <a class="button" href="https://revolut.me/andrludegv">revolut.me/andrludegv</a>
+      </div>
+      <div class="card">
+        <h3>PayPal</h3>
+        <p>From anywhere: open the link and choose the amount.</p>
+        <a class="button" href="https://www.paypal.me/AMonteiro818">paypal.me/AMonteiro818</a>
       </div>
     </div>
   </div>

@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/licen%C3%A7a-MIT-22272E" alt="Licença MIT">
   <a href="https://github.com/monteirohat/kodi-addons/releases"><img src="https://img.shields.io/github/downloads/monteirohat/kodi-addons/total?label=downloads&color=3B8BFF" alt="Downloads das releases"></a>
   <a href="https://github.com/monteirohat/kodi-addons/stargazers"><img src="https://img.shields.io/github/stars/monteirohat/kodi-addons?label=estrelas&color=FFC53D" alt="Estrelas no GitHub"></a>
-  <a href="#apoie-o-projeto"><img src="https://img.shields.io/badge/doa%C3%A7%C3%A3o-PIX%20%C2%B7%20Revolut-EA4AAA?logo=githubsponsors&logoColor=white" alt="Doe com PIX ou Revolut"></a>
+  <a href="#apoie-o-projeto"><img src="https://img.shields.io/badge/doa%C3%A7%C3%A3o-PIX%20%C2%B7%20Revolut%20%C2%B7%20PayPal-EA4AAA?logo=githubsponsors&logoColor=white" alt="Doe com PIX, Revolut ou PayPal"></a>
 </p>
 
 <p align="center">
@@ -322,6 +322,7 @@ Os add-ons são gratuitos e vão continuar gratuitos. Se eles são úteis para v
 <p>
   <a href="#apoie-o-projeto"><img src="https://img.shields.io/badge/Doar-PIX-32BCAD?style=for-the-badge&logo=pix&logoColor=white" alt="Doar com PIX"></a>
   <a href="https://revolut.me/andrludegv"><img src="https://img.shields.io/badge/Doar-Revolut-0666EB?style=for-the-badge&logo=revolut&logoColor=white" alt="Doar com Revolut"></a>
+  <a href="https://www.paypal.me/AMonteiro818"><img src="https://img.shields.io/badge/Doar-PayPal-003087?style=for-the-badge&logo=paypal&logoColor=white" alt="Doar com PayPal"></a>
 </p>
 
 - **PIX**: use esta chave aleatória no app do seu banco.
@@ -331,6 +332,8 @@ Os add-ons são gratuitos e vão continuar gratuitos. Se eles são úteis para v
   ```
 
 - **Revolut**, de qualquer país: abra [revolut.me/andrludegv](https://revolut.me/andrludegv), ou envie para a tag **@andrludegv** no app.
+
+- **PayPal**, de qualquer país: abra [paypal.me/AMonteiro818](https://www.paypal.me/AMonteiro818) e escolha o valor.
 
 ## Licença
 
