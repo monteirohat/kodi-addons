@@ -19,6 +19,7 @@
   <img src="https://img.shields.io/badge/license-MIT-22272E" alt="MIT license">
   <a href="https://github.com/monteirohat/kodi-addons/releases"><img src="https://img.shields.io/github/downloads/monteirohat/kodi-addons/total?label=downloads&color=3B8BFF" alt="Release downloads"></a>
   <a href="https://github.com/monteirohat/kodi-addons/stargazers"><img src="https://img.shields.io/github/stars/monteirohat/kodi-addons?color=FFC53D" alt="GitHub stars"></a>
+  <a href="#support-the-project"><img src="https://img.shields.io/badge/donate-PIX%20%C2%B7%20Revolut-EA4AAA?logo=githubsponsors&logoColor=white" alt="Donate with PIX or Revolut"></a>
 </p>
 
 <p align="center">
@@ -315,6 +316,11 @@ To build the repository, publish updates or change an add-on, read [CONTRIBUTING
 ## Support the project
 
 The add-ons are free and will stay free. If they are useful to you and you want to support the project, any amount helps.
+
+<p>
+  <a href="#support-the-project"><img src="https://img.shields.io/badge/Donate-PIX-32BCAD?style=for-the-badge&logo=pix&logoColor=white" alt="Donate with PIX"></a>
+  <a href="https://revolut.me/andrludegv"><img src="https://img.shields.io/badge/Donate-Revolut-0666EB?style=for-the-badge&logo=revolut&logoColor=white" alt="Donate with Revolut"></a>
+</p>
 
 - **PIX**, from Brazil: use this random key in the app of your bank.
 
